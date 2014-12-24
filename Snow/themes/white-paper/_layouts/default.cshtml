@@ -1,0 +1,45 @@
+@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Snow.ViewModels.BaseViewModel>
+@using System.Collections.Generic
+@{
+    var keywords = String.Join(",", Model.Keywords);
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+    <meta name="keywords" content="@keywords" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/octicons.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	@Html.CanonicalUrl()
+</head>
+<body>
+  <!-- header -->
+  
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="/"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  
+  <!-- header -->
+  
+  <div class="container">
+	@RenderBody()
+  </div>
+  
+  <!-- /.main -->
+</body>
+</html>

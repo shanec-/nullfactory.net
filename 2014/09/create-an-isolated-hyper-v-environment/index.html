@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+    <meta name="keywords" content="Virtualization,Hyper-V" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/octicons.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="canonical" href="http://nullfactory.net/2014/09/create-an-isolated-hyper-v-environment/" />
+</head>
+<body>
+  <!-- header -->
+  
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="/"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  
+  <!-- header -->
+  
+  <div class="container">
+	
+
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/create-an-isolated-hyper-v-environment/">Create An Isolated Hyper-V Environment</a></h2>
+		<p class="post-date">22 Sep 2014</p>
+		
+		
+
+		<p><em>Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.</em> </p>
+
+<p>This post focuses on building a self-contained, isolated virtual environment with internet connectivity. </p>
+
+<p>My colleague, Chaminda has a <a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html">detailed post</a> on how to setup and isolated environment using virtual box. Go check it out if you would like to implement it via virtual box.  While virtual box is a good virtualization platform on its own right, I have grown accustomed to using Hyper-V in my day-job and has become a personal preference.</p>
+
+<h3>Hyper-V</h3>
+
+<p>My own environment is built around this <a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">excellent post</a>. It details the entire process involved. While my own setup is identical to the above, I have taken into account the following caveats:</p>
+
+<ol>
+<li>As mentioned by one of the comments on the post, it is important to explicitly set the port to <code>eth0</code> soon after flashing the image.</li>
+<li><p>Port Forwarding - Even simple tasks like setting up share folders require that certain ports be accessible. Therefore this it is an important consideration when planning an isolated environment. Here are some of the services and ports I've used for my TFS environment:</p>
+
+<p><img src="/images/posts/IsolatedEnvironment/1_PortForwarding.png" alt="Port Forwarding" /></p></li>
+</ol>
+
+<h3>Setting up Routing</h3>
+
+<p>Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.</p>
+
+<p>The ideal 
+This involves setting up routes on both out internal router as well as the external router under which the external resources exists. </p>
+
+<h3>References</h3>
+
+<ul>
+<li><a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">Your Personal Isolated Lab - Featuring Windows 8 + Hyper-V</a></li>
+<li><a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html">Create a PDC in an Isolated Internal Network - Setup Virtual Environment for TFS 2013 - Using Virtualbox</a></li>
+<li><a href="http://technet.microsoft.com/en-us/library/cc731402.aspx">Understanding Shared Folders and the Windows Firewall</a></li>
+</ul>
+
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2014/09/create-an-isolated-hyper-v-environment/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = '*disqus id*';
+    var disqus_url = 'http://nullfactory.net/2014/09/create-an-isolated-hyper-v-environment/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+		
+	</div>
+</div>
+
+  </div>
+  
+  <!-- /.main -->
+</body>
+</html>

@@ -1,0 +1,605 @@
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2014-12-24T20:09:05+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</id><title type="text">Get a list of files changed between changesets in Visual Studio Online using PowerShell</title><summary type="html">&lt;p&gt;So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.&lt;/p&gt;
+
+&lt;p&gt;I modified the code posted &lt;a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol"&gt;here&lt;/a&gt; in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.&lt;/p&gt;
+
+&lt;p&gt;The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.&lt;/p&gt;
+
+&lt;h3&gt;Pre-Requisites&lt;/h3&gt;
+
+&lt;h5&gt;Security and Credentials&lt;/h5&gt;
+
+&lt;p&gt;In order make things simple, let's enable Alternate Authentication for access the account. This enables the script to use Basic Authentication when making request to the VSO REST service.
+This can be done by navigating to the profile page, selecting &lt;code&gt;Credentials &amp;gt; Enable alternate credentials&lt;/code&gt; and providing new credential information. More instructions available &lt;a href="http://www.visualstudio.com/en-us/integrate/get-started/get-started-auth-introduction-vsi"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The credentials will be collected using the &lt;code&gt;Get-Credentials&lt;/code&gt; &lt;a href="http://technet.microsoft.com/en-us/library/hh849815.aspx"&gt;cmdlet&lt;/a&gt;. This provides the standard windows credentials dialog for the user to enter information. Since this makes the script interactive, I debated about having the username and password as a parameter for the script, but in the end decided against it. Maybe the next improvement would be to include a silent version of the script.&lt;/p&gt;
+
+&lt;h5&gt;The REST call&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;Invoke-RestMethod&lt;/code&gt; cmdlet will be used to make the actual call to the REST service. So what's the difference between &lt;code&gt;Invoke-WebRequest&lt;/code&gt; and &lt;code&gt;Invoke-RestMethod&lt;/code&gt; you may ask? While similar, the &lt;code&gt;Invoke-RestMethod&lt;/code&gt; attempts to parse the returned JSON so that we do not have to do it manually within our script. Think of it as a super set of &lt;code&gt;Invoke-WebRequest&lt;/code&gt; just like &lt;code&gt;Invoke-WebRequest&lt;/code&gt; is a superset of &lt;code&gt;System.Net.WebClient&lt;/code&gt;. Read more about it &lt;a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/"&gt;here&lt;/a&gt; and &lt;a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I ran into strange issue when attempting to authenticate the request. The&lt;br /&gt;
+&lt;code&gt;Get-Credentials&lt;/code&gt; cmdlet would return a &lt;code&gt;System.Management.Automation.PSCredential&lt;/code&gt; object as expected, but when passed into into the &lt;code&gt;Invoke-RestMethod&lt;/code&gt; cmdlet, it was not generating the the basic authentication header token within the request. I still haven't figured out why this happens, but the workaround was to add the authentication header explicitly as &lt;a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/"&gt;shown here&lt;/a&gt;. &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$basicAuth = ("{0}:{1}" -f $username,$password)
+$basicAuth = [System.Text.Encoding]::UTF8.GetBytes($basicAuth)
+$basicAuth = [System.Convert]::ToBase64String($basicAuth)
+$headers = @{Authorization=("Basic {0}" -f $basicAuth)}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Making the call to the service&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;First get a list of changesets related to the project within the timeframe that we're interested in.  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets?api-version=1.0&amp;amp;searchCriteria.fromId=100&amp;amp;searchCriteria.toId=200&amp;amp;searchCriteria.itemPath=$/{project}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It took me a while to figure it out but you should notice this call is only allowed to be made against the entire Team Project Collection. So in order to filter out the project, provide the project path via the &lt;code&gt;searchCriteria.itemPath&lt;/code&gt; filter. That is &lt;code&gt;searchCriteria.itemPath=$/{projectname}&lt;/code&gt; where &lt;code&gt;{projectname}&lt;/code&gt; is the one that you are interested in.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next iterate through each of the results to retrieve the detailed information on of each of the changesets. This result would include a collection of all the files that were affected.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets/{changesetId}/changes?api-version=1.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Again, iterate through each of the changes and extract the &lt;code&gt;path&lt;/code&gt; property of the json result set. This is the path and name of the file.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Remove duplicates entries and folder creation entries as necessary.   &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Final Thoughts&lt;/h3&gt;
+
+&lt;p&gt;You can download my implementation &lt;a href="https://github.com/shanec-/powershell/blob/master/TFS/Get-FilesModifiedByChangeset.ps1"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The next steps would make this to its own cmdlet in order to make it more reusable in other scripts.
+Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah! page&lt;/a&gt; that I created while working on this. &lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol"&gt;Identifying all .vb files changed between two changesets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/hh849815.aspx"&gt;Microsoft Technet - Get-Credential&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/"&gt;Screen scraping for pleasure or profit (with PowerShell’s Invoke-RestMethod)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx"&gt;Hey, Scripting Guy! - InvokeRestMethod for the Rest of Us&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/hh849971.aspx"&gt;Microsoft Technet - Invoke-RestMethod&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/"&gt;Accessing Visual Studio Online REST API using Powershell 4.0, Invoke-RestMethod and Alternate Credentials&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</summary><published>2014-12-13T18:30:00Z</published><updated>2014-12-13T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/" /><content type="html">&lt;p&gt;So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.&lt;/p&gt;
+
+&lt;p&gt;I modified the code posted &lt;a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol"&gt;here&lt;/a&gt; in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.&lt;/p&gt;
+
+&lt;p&gt;The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.&lt;/p&gt;
+
+&lt;h3&gt;Pre-Requisites&lt;/h3&gt;
+
+&lt;h5&gt;Security and Credentials&lt;/h5&gt;
+
+&lt;p&gt;In order make things simple, let's enable Alternate Authentication for access the account. This enables the script to use Basic Authentication when making request to the VSO REST service.
+This can be done by navigating to the profile page, selecting &lt;code&gt;Credentials &amp;gt; Enable alternate credentials&lt;/code&gt; and providing new credential information. More instructions available &lt;a href="http://www.visualstudio.com/en-us/integrate/get-started/get-started-auth-introduction-vsi"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The credentials will be collected using the &lt;code&gt;Get-Credentials&lt;/code&gt; &lt;a href="http://technet.microsoft.com/en-us/library/hh849815.aspx"&gt;cmdlet&lt;/a&gt;. This provides the standard windows credentials dialog for the user to enter information. Since this makes the script interactive, I debated about having the username and password as a parameter for the script, but in the end decided against it. Maybe the next improvement would be to include a silent version of the script.&lt;/p&gt;
+
+&lt;h5&gt;The REST call&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;Invoke-RestMethod&lt;/code&gt; cmdlet will be used to make the actual call to the REST service. So what's the difference between &lt;code&gt;Invoke-WebRequest&lt;/code&gt; and &lt;code&gt;Invoke-RestMethod&lt;/code&gt; you may ask? While similar, the &lt;code&gt;Invoke-RestMethod&lt;/code&gt; attempts to parse the returned JSON so that we do not have to do it manually within our script. Think of it as a super set of &lt;code&gt;Invoke-WebRequest&lt;/code&gt; just like &lt;code&gt;Invoke-WebRequest&lt;/code&gt; is a superset of &lt;code&gt;System.Net.WebClient&lt;/code&gt;. Read more about it &lt;a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/"&gt;here&lt;/a&gt; and &lt;a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I ran into strange issue when attempting to authenticate the request. The&lt;br /&gt;
+&lt;code&gt;Get-Credentials&lt;/code&gt; cmdlet would return a &lt;code&gt;System.Management.Automation.PSCredential&lt;/code&gt; object as expected, but when passed into into the &lt;code&gt;Invoke-RestMethod&lt;/code&gt; cmdlet, it was not generating the the basic authentication header token within the request. I still haven't figured out why this happens, but the workaround was to add the authentication header explicitly as &lt;a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/"&gt;shown here&lt;/a&gt;. &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$basicAuth = ("{0}:{1}" -f $username,$password)
+$basicAuth = [System.Text.Encoding]::UTF8.GetBytes($basicAuth)
+$basicAuth = [System.Convert]::ToBase64String($basicAuth)
+$headers = @{Authorization=("Basic {0}" -f $basicAuth)}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Making the call to the service&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;First get a list of changesets related to the project within the timeframe that we're interested in.  &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets?api-version=1.0&amp;amp;searchCriteria.fromId=100&amp;amp;searchCriteria.toId=200&amp;amp;searchCriteria.itemPath=$/{project}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It took me a while to figure it out but you should notice this call is only allowed to be made against the entire Team Project Collection. So in order to filter out the project, provide the project path via the &lt;code&gt;searchCriteria.itemPath&lt;/code&gt; filter. That is &lt;code&gt;searchCriteria.itemPath=$/{projectname}&lt;/code&gt; where &lt;code&gt;{projectname}&lt;/code&gt; is the one that you are interested in.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next iterate through each of the results to retrieve the detailed information on of each of the changesets. This result would include a collection of all the files that were affected.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets/{changesetId}/changes?api-version=1.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Again, iterate through each of the changes and extract the &lt;code&gt;path&lt;/code&gt; property of the json result set. This is the path and name of the file.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Remove duplicates entries and folder creation entries as necessary.   &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Final Thoughts&lt;/h3&gt;
+
+&lt;p&gt;You can download my implementation &lt;a href="https://github.com/shanec-/powershell/blob/master/TFS/Get-FilesModifiedByChangeset.ps1"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The next steps would make this to its own cmdlet in order to make it more reusable in other scripts.
+Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah! page&lt;/a&gt; that I created while working on this. &lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol"&gt;Identifying all .vb files changed between two changesets&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/hh849815.aspx"&gt;Microsoft Technet - Get-Credential&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/"&gt;Screen scraping for pleasure or profit (with PowerShell’s Invoke-RestMethod)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx"&gt;Hey, Scripting Guy! - InvokeRestMethod for the Rest of Us&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/hh849971.aspx"&gt;Microsoft Technet - Invoke-RestMethod&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/"&gt;Accessing Visual Studio Online REST API using Powershell 4.0, Invoke-RestMethod and Alternate Credentials&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/11/tfs-customizing-build-definition-to-exclude-symbols/</id><title type="text">Team Foundation Server - Customizing a Build Definitions to Exclude Symbols in Symbol Server</title><summary type="html">&lt;p&gt;In my previous post I wrote about updating the build definition in order to automatically publish the symbols. &lt;/p&gt;
+
+&lt;p&gt;This post was inspired by a feedback provided by one of the commentors. The individual required that certain symbols be omitted from being published to the Symbols Server and pushed to clients.
+The feedback provided by ... was customizing the build definition in order to achieve this. I thought I would take upon the challenge to implement the same.&lt;/p&gt;
+
+&lt;p&gt;http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx&lt;/p&gt;
+
+&lt;p&gt;I have done successfully setup Symbol server in TFS. But i need to exclude third part pdb file at that time of publish to Symbol server.
+The options available in client side, but i need to setup in server side (TFS build).&lt;/p&gt;
+
+&lt;p&gt;Hi Rajesh,&lt;/p&gt;
+
+&lt;p&gt;I don't of a particularly easy way to handle this scenario off the top of my head. It would involve customizing the build process template and removing the specific .PDB entries that you don't want to be published from the FileList collection that is passed into the Publish Symbols build workflow activity.&lt;/p&gt;
+
+&lt;p&gt;http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_PublishSymbols&lt;/p&gt;
+</summary><published>2014-11-07T18:30:00Z</published><updated>2014-11-07T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/11/tfs-customizing-build-definition-to-exclude-symbols/" /><content type="html">&lt;p&gt;In my previous post I wrote about updating the build definition in order to automatically publish the symbols. &lt;/p&gt;
+
+&lt;p&gt;This post was inspired by a feedback provided by one of the commentors. The individual required that certain symbols be omitted from being published to the Symbols Server and pushed to clients.
+The feedback provided by ... was customizing the build definition in order to achieve this. I thought I would take upon the challenge to implement the same.&lt;/p&gt;
+
+&lt;p&gt;http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx&lt;/p&gt;
+
+&lt;p&gt;I have done successfully setup Symbol server in TFS. But i need to exclude third part pdb file at that time of publish to Symbol server.
+The options available in client side, but i need to setup in server side (TFS build).&lt;/p&gt;
+
+&lt;p&gt;Hi Rajesh,&lt;/p&gt;
+
+&lt;p&gt;I don't of a particularly easy way to handle this scenario off the top of my head. It would involve customizing the build process template and removing the specific .PDB entries that you don't want to be published from the FileList collection that is passed into the Publish Symbols build workflow activity.&lt;/p&gt;
+
+&lt;p&gt;http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_PublishSymbols&lt;/p&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/11/tfs-build-index-sources/</id><title type="text">Team Foundation Server - Team Build Index Sources</title><summary type="html">&lt;h3&gt;What are debug symbols?&lt;/h3&gt;
+
+&lt;p&gt;Debug symbols are artifacts that a debugger can use in order to better debug an application.&lt;/p&gt;
+
+&lt;p&gt;Within the.NET ecosystem these are managed through PDB files. The PDB files contain information about the source file name, line numbers as well as local variable names. &lt;/p&gt;
+
+&lt;h3&gt;Symbol Server&lt;/h3&gt;
+
+&lt;p&gt;As a software solution evolves, it is likely that multiple versions of it get deployed into different production systems. And once the software is out in the wild, it becomes important that the developers can react to issues discovered by debugging specific versions of the software. In order to do this effectively, it is important that the debug symbols themselves be treated as an important artifact of the build. &lt;/p&gt;
+
+&lt;p&gt;Source Server aids in this by enabling the the debug symbols (PDB) of multiple versions to be stored in a central location. A TFS build definition can be configured in order to automatically publish the symbols.&lt;/p&gt;
+
+&lt;h3&gt;Configuration&lt;/h3&gt;
+
+&lt;p&gt;The following steps are necessary in order to configure the build definition. &lt;/p&gt;
+
+&lt;h4&gt;Server&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code.&lt;/li&gt;
+2. 
+&lt;/ol&gt;
+
+&lt;h4&gt;Clients&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open up Visual Studio and go into options&lt;/li&gt;
+2. 
+&lt;/ol&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;p&gt;http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx&lt;/p&gt;
+</summary><published>2014-11-02T18:30:00Z</published><updated>2014-11-02T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/11/tfs-build-index-sources/" /><content type="html">&lt;h3&gt;What are debug symbols?&lt;/h3&gt;
+
+&lt;p&gt;Debug symbols are artifacts that a debugger can use in order to better debug an application.&lt;/p&gt;
+
+&lt;p&gt;Within the.NET ecosystem these are managed through PDB files. The PDB files contain information about the source file name, line numbers as well as local variable names. &lt;/p&gt;
+
+&lt;h3&gt;Symbol Server&lt;/h3&gt;
+
+&lt;p&gt;As a software solution evolves, it is likely that multiple versions of it get deployed into different production systems. And once the software is out in the wild, it becomes important that the developers can react to issues discovered by debugging specific versions of the software. In order to do this effectively, it is important that the debug symbols themselves be treated as an important artifact of the build. &lt;/p&gt;
+
+&lt;p&gt;Source Server aids in this by enabling the the debug symbols (PDB) of multiple versions to be stored in a central location. A TFS build definition can be configured in order to automatically publish the symbols.&lt;/p&gt;
+
+&lt;h3&gt;Configuration&lt;/h3&gt;
+
+&lt;p&gt;The following steps are necessary in order to configure the build definition. &lt;/p&gt;
+
+&lt;h4&gt;Server&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code.&lt;/li&gt;
+2. 
+&lt;/ol&gt;
+
+&lt;h4&gt;Clients&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open up Visual Studio and go into options&lt;/li&gt;
+2. 
+&lt;/ol&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;p&gt;http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx&lt;/p&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/11/tfs-private-builds/</id><title type="text">Team Foundation Server - Private Builds</title><summary type="html">&lt;h3&gt;What are private builds?&lt;/h3&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+</summary><published>2014-11-01T18:30:00Z</published><updated>2014-11-01T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/11/tfs-private-builds/" /><content type="html">&lt;h3&gt;What are private builds?&lt;/h3&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/09/tfs-installation/</id><title type="text">Team Foundation Server - Installation</title><summary type="html">&lt;p&gt;Today I would be doing an advanced installation of TFS server. Why advanced installation? Because that would be the most typical installation in most production scenarios.&lt;/p&gt;
+
+&lt;p&gt;In my previous post, I summarized the accounts that are required and their requirements for installation. &lt;/p&gt;
+</summary><published>2014-09-24T18:30:00Z</published><updated>2014-09-24T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/tfs-installation/" /><content type="html">&lt;p&gt;Today I would be doing an advanced installation of TFS server. Why advanced installation? Because that would be the most typical installation in most production scenarios.&lt;/p&gt;
+
+&lt;p&gt;In my previous post, I summarized the accounts that are required and their requirements for installation. &lt;/p&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/</id><title type="text">Improved Performance by Hosting Virtual Hard Disk External USB Drives</title><summary type="html">&lt;p&gt;I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.&lt;/p&gt;
+
+&lt;h3&gt;Moving the Virtual Drive Images&lt;/h3&gt;
+
+&lt;p&gt;The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Open up the Hyper-V Management Console.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/1_HyperVManager.png" alt="Hyper-V Management Console" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Create a checkpoint of the VM.&lt;/li&gt;
+&lt;li&gt;Shutdown the VM.&lt;/li&gt;
+&lt;li&gt;Next, navigate to the VM setting panel by right-clicking and selecting &lt;code&gt;Settings&lt;/code&gt; or select it from the right actions pane.&lt;/li&gt;
+&lt;li&gt;On the settings panel, navigate to the &lt;code&gt;hardware &amp;gt; IDE Controller 0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;Virtual hard disk&lt;/code&gt; text box shows the current location of the virtual drive.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/2_HyperVSettings.png" alt="Virtual Machine Settings" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Copy the contents of this entire directory together with the snapshots to the new destination.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/9_FolderLocation.png" alt="Copy Virtual Machine Files" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Change the &lt;code&gt;Virtual hard disk&lt;/code&gt; path to match the new location.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/3_UpdatedHyperVSettings.png" alt="Updated Virtual Machine Settings" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;You would receive the following message warning of data loss:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/4_DataLossWarning.png" alt="Data Loss Warning" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Since a checkpoint was created initially, click on &lt;code&gt;Continue&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on &lt;code&gt;Ok&lt;/code&gt; and the following warning is shown. Click on &lt;code&gt;Continue&lt;/code&gt; as the warning not applicable to us.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/5_DataLossWarning2.png" alt="Chain Breakage" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Start up the virtual machine.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Since I already have checkpoint snapshots of my VMs, Hyper-V did not allow me to change the location. I think I might be able to use symbolic links in order to trick the OS into using the new drive. I will try to explore techniques available in a future post.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/6_CheckPointLocation.png" alt="Checkpoint Location" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now. &lt;/p&gt;
+
+&lt;h3&gt;Benchmarks&lt;/h3&gt;
+
+&lt;p&gt;I decided to do a quick benchmark on the hard disk to satisfy my curiosity. I used CrystalDiskMark as it appears to be one of the more popular ones.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/7_WD_CrystalDiskMark.png" alt="My Passport Ultra CrystalDiskMark" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The numbers are on par with what's to be expected of the drive - here's a 33 gig VPC being copied over.  &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/8_WD_BasicFileCopy.png" alt="My Passport Ultra CrystalDiskMark" /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;While I do not have a conclusive way to prove that get I do get improved performance, my system does feels more responsive. My primary drive no longer chokes with 100% activity when working with multiple VMs.&lt;/p&gt;
+
+&lt;h3&gt;Future Improvements&lt;/h3&gt;
+
+&lt;p&gt;Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data. &lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://workinghardinit.wordpress.com/tag/avhdx/"&gt;Manually Merging Hyper-V Checkpoints&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://crystalmark.info/software/CrystalDiskMark/index-e.html"&gt;CrystalDiskMark&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blog.danieljost.com/symbolic-links-save-space-ssd/"&gt;Using Symbolic Links to Save Space on Your SSD&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</summary><published>2014-09-23T18:30:00Z</published><updated>2014-09-23T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/" /><content type="html">&lt;p&gt;I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.&lt;/p&gt;
+
+&lt;h3&gt;Moving the Virtual Drive Images&lt;/h3&gt;
+
+&lt;p&gt;The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Open up the Hyper-V Management Console.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/1_HyperVManager.png" alt="Hyper-V Management Console" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Create a checkpoint of the VM.&lt;/li&gt;
+&lt;li&gt;Shutdown the VM.&lt;/li&gt;
+&lt;li&gt;Next, navigate to the VM setting panel by right-clicking and selecting &lt;code&gt;Settings&lt;/code&gt; or select it from the right actions pane.&lt;/li&gt;
+&lt;li&gt;On the settings panel, navigate to the &lt;code&gt;hardware &amp;gt; IDE Controller 0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;Virtual hard disk&lt;/code&gt; text box shows the current location of the virtual drive.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/2_HyperVSettings.png" alt="Virtual Machine Settings" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Copy the contents of this entire directory together with the snapshots to the new destination.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/9_FolderLocation.png" alt="Copy Virtual Machine Files" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Change the &lt;code&gt;Virtual hard disk&lt;/code&gt; path to match the new location.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/3_UpdatedHyperVSettings.png" alt="Updated Virtual Machine Settings" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;You would receive the following message warning of data loss:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/4_DataLossWarning.png" alt="Data Loss Warning" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Since a checkpoint was created initially, click on &lt;code&gt;Continue&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on &lt;code&gt;Ok&lt;/code&gt; and the following warning is shown. Click on &lt;code&gt;Continue&lt;/code&gt; as the warning not applicable to us.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/5_DataLossWarning2.png" alt="Chain Breakage" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Start up the virtual machine.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Since I already have checkpoint snapshots of my VMs, Hyper-V did not allow me to change the location. I think I might be able to use symbolic links in order to trick the OS into using the new drive. I will try to explore techniques available in a future post.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/6_CheckPointLocation.png" alt="Checkpoint Location" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now. &lt;/p&gt;
+
+&lt;h3&gt;Benchmarks&lt;/h3&gt;
+
+&lt;p&gt;I decided to do a quick benchmark on the hard disk to satisfy my curiosity. I used CrystalDiskMark as it appears to be one of the more popular ones.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/7_WD_CrystalDiskMark.png" alt="My Passport Ultra CrystalDiskMark" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The numbers are on par with what's to be expected of the drive - here's a 33 gig VPC being copied over.  &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/8_WD_BasicFileCopy.png" alt="My Passport Ultra CrystalDiskMark" /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;While I do not have a conclusive way to prove that get I do get improved performance, my system does feels more responsive. My primary drive no longer chokes with 100% activity when working with multiple VMs.&lt;/p&gt;
+
+&lt;h3&gt;Future Improvements&lt;/h3&gt;
+
+&lt;p&gt;Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data. &lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://workinghardinit.wordpress.com/tag/avhdx/"&gt;Manually Merging Hyper-V Checkpoints&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://crystalmark.info/software/CrystalDiskMark/index-e.html"&gt;CrystalDiskMark&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blog.danieljost.com/symbolic-links-save-space-ssd/"&gt;Using Symbolic Links to Save Space on Your SSD&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/09/tfs-ssrs-installation-and-configuration/</id><title type="text">Team Foundation Server - SSRS Installation and Configuration</title><summary type="html">&lt;h2&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;Why do we need SSRS and what are the benifits that are gained from installing it.&lt;/p&gt;
+
+&lt;h3&gt;Installation&lt;/h3&gt;
+
+&lt;h3&gt;Service Accounts Used&lt;/h3&gt;
+
+&lt;p&gt;The following service accounts need to be created or granted permission in order for SSRS to work:&lt;/p&gt;
+
+&lt;p&gt;TFSReport&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/bb737953(v=vs.110).aspx"&gt;MSDN - Grant permission to view or create SSRS reports in TFS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</summary><published>2014-09-22T18:30:00Z</published><updated>2014-09-22T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/tfs-ssrs-installation-and-configuration/" /><content type="html">&lt;h2&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;Why do we need SSRS and what are the benifits that are gained from installing it.&lt;/p&gt;
+
+&lt;h3&gt;Installation&lt;/h3&gt;
+
+&lt;h3&gt;Service Accounts Used&lt;/h3&gt;
+
+&lt;p&gt;The following service accounts need to be created or granted permission in order for SSRS to work:&lt;/p&gt;
+
+&lt;p&gt;TFSReport&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/bb737953(v=vs.110).aspx"&gt;MSDN - Grant permission to view or create SSRS reports in TFS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/09/create-an-isolated-hyper-v-environment/</id><title type="text">Create An Isolated Hyper-V Environment</title><summary type="html">&lt;p&gt;&lt;em&gt;Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.&lt;/em&gt; &lt;/p&gt;
+
+&lt;p&gt;This post focuses on building a self-contained, isolated virtual environment with internet connectivity. &lt;/p&gt;
+
+&lt;p&gt;My colleague, Chaminda has a &lt;a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html"&gt;detailed post&lt;/a&gt; on how to setup and isolated environment using virtual box. Go check it out if you would like to implement it via virtual box.  While virtual box is a good virtualization platform on its own right, I have grown accustomed to using Hyper-V in my day-job and has become a personal preference.&lt;/p&gt;
+
+&lt;h3&gt;Hyper-V&lt;/h3&gt;
+
+&lt;p&gt;My own environment is built around this &lt;a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx"&gt;excellent post&lt;/a&gt;. It details the entire process involved. While my own setup is identical to the above, I have taken into account the following caveats:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;As mentioned by one of the comments on the post, it is important to explicitly set the port to &lt;code&gt;eth0&lt;/code&gt; soon after flashing the image.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Port Forwarding - Even simple tasks like setting up share folders require that certain ports be accessible. Therefore this it is an important consideration when planning an isolated environment. Here are some of the services and ports I've used for my TFS environment:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/IsolatedEnvironment/1_PortForwarding.png" alt="Port Forwarding" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Setting up Routing&lt;/h3&gt;
+
+&lt;p&gt;Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.&lt;/p&gt;
+
+&lt;p&gt;The ideal 
+This involves setting up routes on both out internal router as well as the external router under which the external resources exists. &lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx"&gt;Your Personal Isolated Lab - Featuring Windows 8 + Hyper-V&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html"&gt;Create a PDC in an Isolated Internal Network - Setup Virtual Environment for TFS 2013 - Using Virtualbox&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/cc731402.aspx"&gt;Understanding Shared Folders and the Windows Firewall&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</summary><published>2014-09-21T18:30:00Z</published><updated>2014-09-21T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/create-an-isolated-hyper-v-environment/" /><content type="html">&lt;p&gt;&lt;em&gt;Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.&lt;/em&gt; &lt;/p&gt;
+
+&lt;p&gt;This post focuses on building a self-contained, isolated virtual environment with internet connectivity. &lt;/p&gt;
+
+&lt;p&gt;My colleague, Chaminda has a &lt;a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html"&gt;detailed post&lt;/a&gt; on how to setup and isolated environment using virtual box. Go check it out if you would like to implement it via virtual box.  While virtual box is a good virtualization platform on its own right, I have grown accustomed to using Hyper-V in my day-job and has become a personal preference.&lt;/p&gt;
+
+&lt;h3&gt;Hyper-V&lt;/h3&gt;
+
+&lt;p&gt;My own environment is built around this &lt;a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx"&gt;excellent post&lt;/a&gt;. It details the entire process involved. While my own setup is identical to the above, I have taken into account the following caveats:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;As mentioned by one of the comments on the post, it is important to explicitly set the port to &lt;code&gt;eth0&lt;/code&gt; soon after flashing the image.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Port Forwarding - Even simple tasks like setting up share folders require that certain ports be accessible. Therefore this it is an important consideration when planning an isolated environment. Here are some of the services and ports I've used for my TFS environment:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/IsolatedEnvironment/1_PortForwarding.png" alt="Port Forwarding" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Setting up Routing&lt;/h3&gt;
+
+&lt;p&gt;Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.&lt;/p&gt;
+
+&lt;p&gt;The ideal 
+This involves setting up routes on both out internal router as well as the external router under which the external resources exists. &lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx"&gt;Your Personal Isolated Lab - Featuring Windows 8 + Hyper-V&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html"&gt;Create a PDC in an Isolated Internal Network - Setup Virtual Environment for TFS 2013 - Using Virtualbox&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/cc731402.aspx"&gt;Understanding Shared Folders and the Windows Firewall&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/09/powershell/</id><title type="text">Batch extract YouTube direct video url via Powershell</title><summary type="html">&lt;p&gt;It's been a while since I've have had the opportunity to write any powershell. So I decided to do something before my muscle memory atrophies completely. &lt;/p&gt;
+
+&lt;p&gt;While I could not come up with a new problem to solve, I decided to re-visit my attempt at extracting the direct download url from a streaming service.I believe this is my 3rd attempt and its fast becoming my version of a "hello world" application. :)&lt;/p&gt;
+
+&lt;p&gt;Previously, I tried to implement and parse out the urls by myself. This version is not going to be as complex as I will be using the &lt;a href="http://www.keepvid.com"&gt;keepvid.com&lt;/a&gt; to do the heavy lifting. &lt;/p&gt;
+
+&lt;p&gt;Here is a list of the steps:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Execute the script by either providing a space delimited list of video urls or location to a file containing the list of urls (one url per line).&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;.\Get-DirectVideoUrl.ps1 -url -filename "C:\downloadlist.txt"&lt;/p&gt;
+  
+  &lt;p&gt;.\Get-DirectVideoUrl.ps1 -url "http://www.youtube.com/watch?v=duKL2dAJN6I http://www.youtube.com/watch?v=R4ajQ-foj2Q"&lt;/p&gt;
+  
+  &lt;p&gt;.\Get-DirectVideoUrl.ps1 -url "http://www.youtube.com/watch?v=duKL2dAJN6I http://www.youtube.com/watch?v=R4ajQ-foj2Q" -filename "C:\downloadlist.txt"&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The script formats the url appropriate for the service and sends out the request.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Once the response is received, the html is parsed out using XPath with the help of the HtmlAgilityPack library. (while this could have been done without the additional dependency, I opted to use it in the hopes that future enhancements would be easier)&lt;/li&gt;
+&lt;li&gt;Repeat the process for all the input video urls that have been provided.&lt;/li&gt;
+&lt;li&gt;Save all the urls to a text file.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now that you have the final urls, it can batch imported into a download accelerator such as &lt;a href="http://nullfactory.net/www.freedownloadmanager.org/"&gt;FDM&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;While I only tested the script against the YouTube service I am sure this should work with any of the other video services supported by keepvid.com&lt;/p&gt;
+
+&lt;p&gt;The script is hosted &lt;a href="https://github.com/shanec-/powershell/tree/master/Get-DirectVideoUrl"&gt;here&lt;/a&gt;, feel free to push back any patches if you decide to improve on the code.&lt;/p&gt;
+
+&lt;p&gt;Same disclaimer applies to this post as per my previous attempts. This was written for educational purposes and I am pretty sure that it is violating the TOS video streaming service or keepvid itself. Therefore please use at your own discretion.&lt;/p&gt;
+</summary><published>2014-09-20T18:30:00Z</published><updated>2014-09-20T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/powershell/" /><content type="html">&lt;p&gt;It's been a while since I've have had the opportunity to write any powershell. So I decided to do something before my muscle memory atrophies completely. &lt;/p&gt;
+
+&lt;p&gt;While I could not come up with a new problem to solve, I decided to re-visit my attempt at extracting the direct download url from a streaming service.I believe this is my 3rd attempt and its fast becoming my version of a "hello world" application. :)&lt;/p&gt;
+
+&lt;p&gt;Previously, I tried to implement and parse out the urls by myself. This version is not going to be as complex as I will be using the &lt;a href="http://www.keepvid.com"&gt;keepvid.com&lt;/a&gt; to do the heavy lifting. &lt;/p&gt;
+
+&lt;p&gt;Here is a list of the steps:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Execute the script by either providing a space delimited list of video urls or location to a file containing the list of urls (one url per line).&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;.\Get-DirectVideoUrl.ps1 -url -filename "C:\downloadlist.txt"&lt;/p&gt;
+  
+  &lt;p&gt;.\Get-DirectVideoUrl.ps1 -url "http://www.youtube.com/watch?v=duKL2dAJN6I http://www.youtube.com/watch?v=R4ajQ-foj2Q"&lt;/p&gt;
+  
+  &lt;p&gt;.\Get-DirectVideoUrl.ps1 -url "http://www.youtube.com/watch?v=duKL2dAJN6I http://www.youtube.com/watch?v=R4ajQ-foj2Q" -filename "C:\downloadlist.txt"&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The script formats the url appropriate for the service and sends out the request.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Once the response is received, the html is parsed out using XPath with the help of the HtmlAgilityPack library. (while this could have been done without the additional dependency, I opted to use it in the hopes that future enhancements would be easier)&lt;/li&gt;
+&lt;li&gt;Repeat the process for all the input video urls that have been provided.&lt;/li&gt;
+&lt;li&gt;Save all the urls to a text file.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now that you have the final urls, it can batch imported into a download accelerator such as &lt;a href="http://nullfactory.net/www.freedownloadmanager.org/"&gt;FDM&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;While I only tested the script against the YouTube service I am sure this should work with any of the other video services supported by keepvid.com&lt;/p&gt;
+
+&lt;p&gt;The script is hosted &lt;a href="https://github.com/shanec-/powershell/tree/master/Get-DirectVideoUrl"&gt;here&lt;/a&gt;, feel free to push back any patches if you decide to improve on the code.&lt;/p&gt;
+
+&lt;p&gt;Same disclaimer applies to this post as per my previous attempts. This was written for educational purposes and I am pretty sure that it is violating the TOS video streaming service or keepvid itself. Therefore please use at your own discretion.&lt;/p&gt;
+</content></entry><entry><id>http://nullfactory.net/2014/09/tfs-service-accounts/</id><title type="text">Team Foundation Server - Service Accounts</title><summary type="html">&lt;p&gt;Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.&lt;/p&gt;
+
+&lt;p&gt;In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS. &lt;/p&gt;
+
+&lt;h2&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;I created this mind map that graphically illustrates the accounts and required permissions by the different services in order to help me remember all the dependencies.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png"&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png" alt="TFS Accounts Overview" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;While the majority of production installations would be deployed in a multi-tiered environment, I would normally assume that all of the accounts listed above are part of the same domain (with the exception of &lt;code&gt;DEPLOY&lt;/code&gt; account. I will discuss cross domain considerations in a different post).&lt;/p&gt;
+
+&lt;p&gt;While I will go into detail in future posts, but for the initial installation the following accounts are required:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;TFSInstall&lt;/code&gt; - An installation account that would automatically be added as a TFS Administrator&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TFSService&lt;/code&gt; - Used to run the Team Foundation Service&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TFSReports&lt;/code&gt; - Used to run the SQL Server Reporting Service (SSRS)&lt;/li&gt;
+&lt;/ul&gt;
+
+</summary><published>2014-09-20T18:30:00Z</published><updated>2014-09-20T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/tfs-service-accounts/" /><content type="html">&lt;p&gt;Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.&lt;/p&gt;
+
+&lt;p&gt;In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS. &lt;/p&gt;
+
+&lt;h2&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;I created this mind map that graphically illustrates the accounts and required permissions by the different services in order to help me remember all the dependencies.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png"&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png" alt="TFS Accounts Overview" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;While the majority of production installations would be deployed in a multi-tiered environment, I would normally assume that all of the accounts listed above are part of the same domain (with the exception of &lt;code&gt;DEPLOY&lt;/code&gt; account. I will discuss cross domain considerations in a different post).&lt;/p&gt;
+
+&lt;p&gt;While I will go into detail in future posts, but for the initial installation the following accounts are required:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;TFSInstall&lt;/code&gt; - An installation account that would automatically be added as a TFS Administrator&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TFSService&lt;/code&gt; - Used to run the Team Foundation Service&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TFSReports&lt;/code&gt; - Used to run the SQL Server Reporting Service (SSRS)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h3&gt;Log on as a Service&lt;/h3&gt;
+
+&lt;p&gt;As shown in the mind map, several of the accounts need to be given the right to log on as a service on their appropriate machines. These steps would be needed to accomplish that:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Log onto the desired server.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open the local group policy by executing &lt;code&gt;gpedit.msc&lt;/code&gt; via a console.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/1_RunDialog.png" alt="Run Dialog" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Navigate to the following tree node: &lt;code&gt;Computer Configuration &amp;gt; Security Settings &amp;gt; User Rights Assigment&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/2_gpedit.png" alt="Local Group Policy" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Edit the &lt;code&gt;Log on as a service&lt;/code&gt; entry by double clicking it and add the necessary accounts.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/3_AddLogOnAsAService.png" alt="Local Group Policy" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Log on Locally&lt;/h3&gt;
+
+&lt;p&gt;The steps are very similar to Log on as a service. Follow steps 1-3 and on the last step choose &lt;code&gt;Allow log on locally&lt;/code&gt; and add the accounts as necessary.&lt;/p&gt;
+
+&lt;h3&gt;SQL Server Reporting Services Permissions&lt;/h3&gt;
+
+&lt;p&gt;Two service accounts need to be updated with permissions in order to properly integrate with SSRS. Here is a summary of what is required:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;TFSReports&lt;/code&gt; - Used as the service account for the reporting services. 
+&lt;ul&gt;
+&lt;li&gt;Allowed to log on locally on the Application Tiers as well as the report Server itself.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TFSWareHouseDataReader&lt;/code&gt; role on the report server.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TFSService&lt;/code&gt; - This account needs to be added as a &lt;code&gt;Content Manager&lt;/code&gt; in the report server.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I will walk through the process of installation and configuring in a future posts.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/ms253149.aspx"&gt;MSDN - Service Accounts and Dependencies in Team Foundation Server&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/bb737953(v=vs.110).aspx"&gt;MSDN - Grant permission to view or create SSRS reports in TFS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/cc739424(v=ws.10).aspx"&gt;Technet - Add the Log on as a service right to an account&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;[Technet - Allow log on locally](http://technet.microsoft.com/en-us/library/cc756809(v=ws.10).aspx&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry></feed>

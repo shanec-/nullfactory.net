@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+    <meta name="keywords" content="Powershell,HtmlAgilityPack" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/octicons.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="canonical" href="http://nullfactory.net/2014/09/powershell/" />
+</head>
+<body>
+  <!-- header -->
+  
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="/"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  
+  <!-- header -->
+  
+  <div class="container">
+	
+
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/powershell/">Batch extract YouTube direct video url via Powershell</a></h2>
+		<p class="post-date">21 Sep 2014</p>
+		
+		
+
+		<p>It's been a while since I've have had the opportunity to write any powershell. So I decided to do something before my muscle memory atrophies completely. </p>
+
+<p>While I could not come up with a new problem to solve, I decided to re-visit my attempt at extracting the direct download url from a streaming service.I believe this is my 3rd attempt and its fast becoming my version of a "hello world" application. :)</p>
+
+<p>Previously, I tried to implement and parse out the urls by myself. This version is not going to be as complex as I will be using the <a href="http://www.keepvid.com">keepvid.com</a> to do the heavy lifting. </p>
+
+<p>Here is a list of the steps:</p>
+
+<ol>
+<li><p>Execute the script by either providing a space delimited list of video urls or location to a file containing the list of urls (one url per line).</p>
+
+<blockquote>
+  <p>.\Get-DirectVideoUrl.ps1 -url -filename "C:\downloadlist.txt"</p>
+  
+  <p>.\Get-DirectVideoUrl.ps1 -url "http://www.youtube.com/watch?v=duKL2dAJN6I http://www.youtube.com/watch?v=R4ajQ-foj2Q"</p>
+  
+  <p>.\Get-DirectVideoUrl.ps1 -url "http://www.youtube.com/watch?v=duKL2dAJN6I http://www.youtube.com/watch?v=R4ajQ-foj2Q" -filename "C:\downloadlist.txt"</p>
+</blockquote></li>
+<li><p>The script formats the url appropriate for the service and sends out the request.</p></li>
+<li>Once the response is received, the html is parsed out using XPath with the help of the HtmlAgilityPack library. (while this could have been done without the additional dependency, I opted to use it in the hopes that future enhancements would be easier)</li>
+<li>Repeat the process for all the input video urls that have been provided.</li>
+<li>Save all the urls to a text file.</li>
+</ol>
+
+<p>Now that you have the final urls, it can batch imported into a download accelerator such as <a href="www.freedownloadmanager.org/">FDM</a>.</p>
+
+<p>While I only tested the script against the YouTube service I am sure this should work with any of the other video services supported by keepvid.com</p>
+
+<p>The script is hosted <a href="https://github.com/shanec-/powershell/tree/master/Get-DirectVideoUrl">here</a>, feel free to push back any patches if you decide to improve on the code.</p>
+
+<p>Same disclaimer applies to this post as per my previous attempts. This was written for educational purposes and I am pretty sure that it is violating the TOS video streaming service or keepvid itself. Therefore please use at your own discretion.</p>
+
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2014/09/powershell/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = '*disqus id*';
+    var disqus_url = 'http://nullfactory.net/2014/09/powershell/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+		
+	</div>
+</div>
+
+  </div>
+  
+  <!-- /.main -->
+</body>
+</html>

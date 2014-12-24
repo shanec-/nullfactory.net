@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+    <meta name="keywords" content="ALM,Team Foundation Server" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/octicons.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="canonical" href="http://nullfactory.net/2014/11/tfs-build-index-sources/" />
+</head>
+<body>
+  <!-- header -->
+  
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="/"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  
+  <!-- header -->
+  
+  <div class="container">
+	
+
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/11/tfs-build-index-sources/">Team Foundation Server - Team Build Index Sources</a></h2>
+		<p class="post-date">03 Nov 2014</p>
+		
+		
+
+		<h3>What are debug symbols?</h3>
+
+<p>Debug symbols are artifacts that a debugger can use in order to better debug an application.</p>
+
+<p>Within the.NET ecosystem these are managed through PDB files. The PDB files contain information about the source file name, line numbers as well as local variable names. </p>
+
+<h3>Symbol Server</h3>
+
+<p>As a software solution evolves, it is likely that multiple versions of it get deployed into different production systems. And once the software is out in the wild, it becomes important that the developers can react to issues discovered by debugging specific versions of the software. In order to do this effectively, it is important that the debug symbols themselves be treated as an important artifact of the build. </p>
+
+<p>Source Server aids in this by enabling the the debug symbols (PDB) of multiple versions to be stored in a central location. A TFS build definition can be configured in order to automatically publish the symbols.</p>
+
+<h3>Configuration</h3>
+
+<p>The following steps are necessary in order to configure the build definition. </p>
+
+<h4>Server</h4>
+
+<ol>
+<li>Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code.</li>
+2. 
+</ol>
+
+<h4>Clients</h4>
+
+<ol>
+<li>Open up Visual Studio and go into options</li>
+2. 
+</ol>
+
+<h3>References</h3>
+
+<p>http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx</p>
+
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2014/11/tfs-build-index-sources/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = '*disqus id*';
+    var disqus_url = 'http://nullfactory.net/2014/11/tfs-build-index-sources/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+		
+	</div>
+</div>
+
+  </div>
+  
+  <!-- /.main -->
+</body>
+</html>

@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+    <meta name="keywords" content="ALM,Team Foundation Server" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/octicons.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="canonical" href="http://nullfactory.net/2014/09/tfs-service-accounts/" />
+</head>
+<body>
+  <!-- header -->
+  
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="/"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  
+  <!-- header -->
+  
+  <div class="container">
+	
+
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/tfs-service-accounts/">Team Foundation Server - Service Accounts</a></h2>
+		<p class="post-date">21 Sep 2014</p>
+		
+		
+
+		<p>Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.</p>
+
+<p>In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS. </p>
+
+<h2>Overview</h2>
+
+<p>I created this mind map that graphically illustrates the accounts and required permissions by the different services in order to help me remember all the dependencies.</p>
+
+<p><a href="/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png"><img src="/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png" alt="TFS Accounts Overview" /></a></p>
+
+<p>While the majority of production installations would be deployed in a multi-tiered environment, I would normally assume that all of the accounts listed above are part of the same domain (with the exception of <code>DEPLOY</code> account. I will discuss cross domain considerations in a different post).</p>
+
+<p>While I will go into detail in future posts, but for the initial installation the following accounts are required:</p>
+
+<ul>
+<li><code>TFSInstall</code> - An installation account that would automatically be added as a TFS Administrator</li>
+<li><code>TFSService</code> - Used to run the Team Foundation Service</li>
+<li><code>TFSReports</code> - Used to run the SQL Server Reporting Service (SSRS)</li>
+</ul>
+
+<!--excerpt-->
+
+<h3>Log on as a Service</h3>
+
+<p>As shown in the mind map, several of the accounts need to be given the right to log on as a service on their appropriate machines. These steps would be needed to accomplish that:</p>
+
+<ol>
+<li>Log onto the desired server.</li>
+<li><p>Open the local group policy by executing <code>gpedit.msc</code> via a console.</p>
+
+<p><img src="/images/posts/TFSServiceAccounts/1_RunDialog.png" alt="Run Dialog" /></p></li>
+<li><p>Navigate to the following tree node: <code>Computer Configuration &gt; Security Settings &gt; User Rights Assigment</code></p>
+
+<p><img src="/images/posts/TFSServiceAccounts/2_gpedit.png" alt="Local Group Policy" /></p></li>
+<li><p>Edit the <code>Log on as a service</code> entry by double clicking it and add the necessary accounts.</p>
+
+<p><img src="/images/posts/TFSServiceAccounts/3_AddLogOnAsAService.png" alt="Local Group Policy" /></p></li>
+</ol>
+
+<h3>Log on Locally</h3>
+
+<p>The steps are very similar to Log on as a service. Follow steps 1-3 and on the last step choose <code>Allow log on locally</code> and add the accounts as necessary.</p>
+
+<h3>SQL Server Reporting Services Permissions</h3>
+
+<p>Two service accounts need to be updated with permissions in order to properly integrate with SSRS. Here is a summary of what is required:</p>
+
+<ul>
+<li><code>TFSReports</code> - Used as the service account for the reporting services. 
+<ul>
+<li>Allowed to log on locally on the Application Tiers as well as the report Server itself.</li>
+<li><code>TFSWareHouseDataReader</code> role on the report server.</li>
+</ul></li>
+<li><code>TFSService</code> - This account needs to be added as a <code>Content Manager</code> in the report server.</li>
+</ul>
+
+<p>I will walk through the process of installation and configuring in a future posts.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/ms253149.aspx">MSDN - Service Accounts and Dependencies in Team Foundation Server</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/bb737953(v=vs.110).aspx">MSDN - Grant permission to view or create SSRS reports in TFS</a></li>
+<li><a href="http://technet.microsoft.com/en-us/library/cc739424(v=ws.10).aspx">Technet - Add the Log on as a service right to an account</a></li>
+<li>[Technet - Allow log on locally](http://technet.microsoft.com/en-us/library/cc756809(v=ws.10).aspx</li>
+</ul>
+
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2014/09/tfs-service-accounts/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = '*disqus id*';
+    var disqus_url = 'http://nullfactory.net/2014/09/tfs-service-accounts/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+		
+	</div>
+</div>
+
+  </div>
+  
+  <!-- /.main -->
+</body>
+</html>

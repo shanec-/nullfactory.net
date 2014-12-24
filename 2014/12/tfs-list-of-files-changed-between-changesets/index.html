@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+    <meta name="keywords" content="ALM,Team Foundation Server,PowerShell" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/octicons.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="canonical" href="http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/" />
+</head>
+<body>
+  <!-- header -->
+  
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="/"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  
+  <!-- header -->
+  
+  <div class="container">
+	
+
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Get a list of files changed between changesets in Visual Studio Online using PowerShell</a></h2>
+		<p class="post-date">14 Dec 2014</p>
+		
+		
+
+		<p>So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.</p>
+
+<p>I modified the code posted <a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">here</a> in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.</p>
+
+<p>The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.</p>
+
+<h3>Pre-Requisites</h3>
+
+<h5>Security and Credentials</h5>
+
+<p>In order make things simple, let's enable Alternate Authentication for access the account. This enables the script to use Basic Authentication when making request to the VSO REST service.
+This can be done by navigating to the profile page, selecting <code>Credentials &gt; Enable alternate credentials</code> and providing new credential information. More instructions available <a href="http://www.visualstudio.com/en-us/integrate/get-started/get-started-auth-introduction-vsi">here</a>.</p>
+
+<p>The credentials will be collected using the <code>Get-Credentials</code> <a href="http://technet.microsoft.com/en-us/library/hh849815.aspx">cmdlet</a>. This provides the standard windows credentials dialog for the user to enter information. Since this makes the script interactive, I debated about having the username and password as a parameter for the script, but in the end decided against it. Maybe the next improvement would be to include a silent version of the script.</p>
+
+<h5>The REST call</h5>
+
+<p><code>Invoke-RestMethod</code> cmdlet will be used to make the actual call to the REST service. So what's the difference between <code>Invoke-WebRequest</code> and <code>Invoke-RestMethod</code> you may ask? While similar, the <code>Invoke-RestMethod</code> attempts to parse the returned JSON so that we do not have to do it manually within our script. Think of it as a super set of <code>Invoke-WebRequest</code> just like <code>Invoke-WebRequest</code> is a superset of <code>System.Net.WebClient</code>. Read more about it <a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/">here</a> and <a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx">here</a>.</p>
+
+<p>I ran into strange issue when attempting to authenticate the request. The<br />
+<code>Get-Credentials</code> cmdlet would return a <code>System.Management.Automation.PSCredential</code> object as expected, but when passed into into the <code>Invoke-RestMethod</code> cmdlet, it was not generating the the basic authentication header token within the request. I still haven't figured out why this happens, but the workaround was to add the authentication header explicitly as <a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/">shown here</a>. </p>
+
+<pre><code>$basicAuth = ("{0}:{1}" -f $username,$password)
+$basicAuth = [System.Text.Encoding]::UTF8.GetBytes($basicAuth)
+$basicAuth = [System.Convert]::ToBase64String($basicAuth)
+$headers = @{Authorization=("Basic {0}" -f $basicAuth)}
+</code></pre>
+
+<h3>Making the call to the service</h3>
+
+<ol>
+<li><p>First get a list of changesets related to the project within the timeframe that we're interested in.  </p>
+
+<pre><code>https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets?api-version=1.0&amp;searchCriteria.fromId=100&amp;searchCriteria.toId=200&amp;searchCriteria.itemPath=$/{project}
+</code></pre>
+
+<p>It took me a while to figure it out but you should notice this call is only allowed to be made against the entire Team Project Collection. So in order to filter out the project, provide the project path via the <code>searchCriteria.itemPath</code> filter. That is <code>searchCriteria.itemPath=$/{projectname}</code> where <code>{projectname}</code> is the one that you are interested in.</p></li>
+<li><p>Next iterate through each of the results to retrieve the detailed information on of each of the changesets. This result would include a collection of all the files that were affected.</p>
+
+<pre><code>https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets/{changesetId}/changes?api-version=1.0
+</code></pre></li>
+<li><p>Again, iterate through each of the changes and extract the <code>path</code> property of the json result set. This is the path and name of the file.</p></li>
+<li>Remove duplicates entries and folder creation entries as necessary.   </li>
+</ol>
+
+<h3>Final Thoughts</h3>
+
+<p>You can download my implementation <a href="https://github.com/shanec-/powershell/blob/master/TFS/Get-FilesModifiedByChangeset.ps1">here</a>.</p>
+
+<p>The next steps would make this to its own cmdlet in order to make it more reusable in other scripts.
+Also check out the <a href="https://curah.microsoft.com/276618/list">Curah! page</a> that I created while working on this. </p>
+
+<h3>References</h3>
+
+<ul>
+<li><a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">Identifying all .vb files changed between two changesets</a></li>
+<li><a href="http://technet.microsoft.com/en-us/library/hh849815.aspx">Microsoft Technet - Get-Credential</a></li>
+<li><a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/">Screen scraping for pleasure or profit (with PowerShell’s Invoke-RestMethod)</a></li>
+<li><a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx">Hey, Scripting Guy! - InvokeRestMethod for the Rest of Us</a></li>
+<li><a href="http://technet.microsoft.com/en-us/library/hh849971.aspx">Microsoft Technet - Invoke-RestMethod</a></li>
+<li><a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/">Accessing Visual Studio Online REST API using Powershell 4.0, Invoke-RestMethod and Alternate Credentials</a></li>
+</ul>
+
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = '*disqus id*';
+    var disqus_url = 'http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+		
+	</div>
+</div>
+
+  </div>
+  
+  <!-- /.main -->
+</body>
+</html>

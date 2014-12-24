@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+    <meta name="keywords" content="Virtualization,Hyper-V" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="/stylesheets/octicons.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="canonical" href="http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/" />
+</head>
+<body>
+  <!-- header -->
+  
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="/"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  
+  <!-- header -->
+  
+  <div class="container">
+	
+
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Improved Performance by Hosting Virtual Hard Disk External USB Drives</a></h2>
+		<p class="post-date">24 Sep 2014</p>
+		
+		
+
+		<p>I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.</p>
+
+<h3>Moving the Virtual Drive Images</h3>
+
+<p>The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.</p>
+
+<ol>
+<li><p>Open up the Hyper-V Management Console.</p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/1_HyperVManager.png" alt="Hyper-V Management Console" /></p></li>
+<li>Create a checkpoint of the VM.</li>
+<li>Shutdown the VM.</li>
+<li>Next, navigate to the VM setting panel by right-clicking and selecting <code>Settings</code> or select it from the right actions pane.</li>
+<li>On the settings panel, navigate to the <code>hardware &gt; IDE Controller 0</code></li>
+<li><p><code>Virtual hard disk</code> text box shows the current location of the virtual drive.</p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/2_HyperVSettings.png" alt="Virtual Machine Settings" /></p></li>
+<li><p>Copy the contents of this entire directory together with the snapshots to the new destination.</p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/9_FolderLocation.png" alt="Copy Virtual Machine Files" /></p></li>
+<li><p>Change the <code>Virtual hard disk</code> path to match the new location.</p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/3_UpdatedHyperVSettings.png" alt="Updated Virtual Machine Settings" /></p></li>
+<li><p>You would receive the following message warning of data loss:</p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/4_DataLossWarning.png" alt="Data Loss Warning" /></p></li>
+<li>Since a checkpoint was created initially, click on <code>Continue</code>.</li>
+<li><p>Click on <code>Ok</code> and the following warning is shown. Click on <code>Continue</code> as the warning not applicable to us.</p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/5_DataLossWarning2.png" alt="Chain Breakage" /></p></li>
+<li>Start up the virtual machine.</li>
+</ol>
+
+<p>Since I already have checkpoint snapshots of my VMs, Hyper-V did not allow me to change the location. I think I might be able to use symbolic links in order to trick the OS into using the new drive. I will try to explore techniques available in a future post.</p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/6_CheckPointLocation.png" alt="Checkpoint Location" /></p>
+
+<p>The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now. </p>
+
+<h3>Benchmarks</h3>
+
+<p>I decided to do a quick benchmark on the hard disk to satisfy my curiosity. I used CrystalDiskMark as it appears to be one of the more popular ones.</p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/7_WD_CrystalDiskMark.png" alt="My Passport Ultra CrystalDiskMark" /></p>
+
+<p>The numbers are on par with what's to be expected of the drive - here's a 33 gig VPC being copied over.  </p>
+
+<p><img src="/images/posts/VirtualHardDiskPerf/8_WD_BasicFileCopy.png" alt="My Passport Ultra CrystalDiskMark" /></p>
+
+<h3>Conclusion</h3>
+
+<p>While I do not have a conclusive way to prove that get I do get improved performance, my system does feels more responsive. My primary drive no longer chokes with 100% activity when working with multiple VMs.</p>
+
+<h3>Future Improvements</h3>
+
+<p>Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data. </p>
+
+<h3>References</h3>
+
+<ul>
+<li><a href="https://workinghardinit.wordpress.com/tag/avhdx/">Manually Merging Hyper-V Checkpoints</a></li>
+<li><a href="http://crystalmark.info/software/CrystalDiskMark/index-e.html">CrystalDiskMark</a></li>
+<li><a href="http://blog.danieljost.com/symbolic-links-save-space-ssd/">Using Symbolic Links to Save Space on Your SSD</a></li>
+</ul>
+
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = '*disqus id*';
+    var disqus_url = 'http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+		
+	</div>
+</div>
+
+  </div>
+  
+  <!-- /.main -->
+</body>
+</html>

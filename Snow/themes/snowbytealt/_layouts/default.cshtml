@@ -1,0 +1,93 @@
+@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Snow.ViewModels.BaseViewModel>
+@using System.Collections.Generic
+@{
+    var keywords = String.Join(",", Model.Keywords);
+}
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="last-modified" content="@Model.GeneratedDate" />
+    <meta name="keywords" content="@keywords" />
+    <title>the nullfactory</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    @Html.CanonicalUrl()
+</head>
+<body class="home blog">
+    <div id="page" class="hfeed site aligncenter">
+        <header id="masthead" class="site-header alignleft" role="banner">
+            <hgroup>
+                <h1 class="site-title"><a href="/" title="the nullfactory" rel="home">the nullfactory</a>
+				<small>shane carvalho</small>
+				<p class="aboutwidget site-description">
+					<img src="/images/shanec-.jpg"  align="left" width="50px" height="50px">a code monkey with interests primarily around dynamics crm and windows phone.
+				</p>
+				</h1>
+            </hgroup>
+            <nav role="navigation" class="site-navigation main-navigation">
+                <h1 class="assistive-text">Menu</h1>
+                <div class="assistive-text skip-link"><a href="#content" title="Skip to content">Skip to content</a></div>
+                <div class="menu" style="clear:both;">
+                    <ul>
+                        <li><a href="/" class="icon" title="home"><i class="fa fa-home fa-2x"></i></a></li>
+                        <!-- <li><a href="/about"  class="icon"><i class="fa fa-user fa-2x"></i></a></li> -->
+                        <li><a href="/category"  class="icon" title="category"><i class="fa fa-list-alt fa-2x"></i></a></li>
+                        <li><a href="/archive"  class="icon" title="archive"><i class="fa fa-file-archive-o fa-2x"></i></a></li>
+                        <li><a href="/rss.xml"  class="icon" title="rss" target="_blank"><i class="fa fa-rss fa-2x"></i></a></li>
+                    </ul>
+                </div>
+				<div class="menu" style="clear:both;">
+                    <ul>
+                        <li><a href="http://twitter.com/shanec_" class="icon" title="twitter" target="_blank"><i class="fa fa-twitter fa-2x"></i></a></li>
+						<li><a href="http://lk.linkedin.com/in/shanecarvalho" class="icon" title="twitter" target="_blank"><i class="fa fa-linkedin fa-2x"></i></a></li>
+						<li><a href="https://github.com/shanec-" class="icon" title="twitter" target="_blank"><i class="fa fa-github fa-2x"></i></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div id="main" class="alignleft">
+            <div id="primary" class="site-content">
+                <div id="content" role="main">
+                  @RenderBody()
+                </div>
+                <!-- #content -->
+            </div>
+            <!-- #primary .site-content -->
+        </div>
+        <!-- #main -->
+
+        <footer class="site-footer" role="contentinfo">
+		
+			<div class="site-info">
+                Shane Carvalho &copy; 2014
+            </div>
+		
+            <div class="site-info">
+                Powered by <a href="https://github.com/Sandra/Sandra.Snow" rel="generator">Sandra.Snow</a>.	
+            </div>
+            <!-- .site-info -->
+        </footer>
+        <!-- #colophon .site-footer -->
+    </div>
+    <!-- #page .hfeed .site -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src='/javascripts/prettify.js' type='text/javascript'></script>
+    
+    @Html.RenderGoogleAnalytics("UA-######-##")
+    
+    <script type='text/javascript'>
+      $(function () {
+        $("pre code").parent().each(function () {
+          if (!$(this).hasClass("prettyprint")) {
+            $(this).addClass("prettyprint");
+            a = true
+          }
+        });
+
+        prettyPrint();
+      });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Snow.ViewModels.PostViewModel>
+@using System.Collections.Generic
+@{
+  Layout = "default.cshtml";
+}
+
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="@Model.Url">@Model.Title</a></h2>
+		<p class="post-date">@Model.PostDate.ToString("dd MMM yyyy")</p>
+		
+		@Html.RenderSeries()
+
+		@Html.Raw(Model.PostContent)
+
+		@Html.RenderDisqusComments("*disqus id*")
+		
+	</div>
+</div>
