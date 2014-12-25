@@ -1,4 +1,4 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2014-12-25T15:51:28+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</id><title type="text">Get a list of files changed between changesets in Visual Studio Online using PowerShell</title><summary type="html">&lt;p&gt;So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2014-12-25T16:20:58+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</id><title type="text">Get a list of files changed between changesets in Visual Studio Online using PowerShell</title><summary type="html">&lt;p&gt;So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.&lt;/p&gt;
 
 &lt;p&gt;I modified the code posted &lt;a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol"&gt;here&lt;/a&gt; in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.&lt;/p&gt;
 
@@ -18,14 +18,14 @@
 
 &lt;h2&gt;Pre-Requisites&lt;/h2&gt;
 
-&lt;h5&gt;Security and Credentials&lt;/h5&gt;
+&lt;h3&gt;Security and Credentials&lt;/h3&gt;
 
 &lt;p&gt;In order make things simple, let's enable Alternate Authentication for access the account. This enables the script to use Basic Authentication when making request to the VSO REST service.
 This can be done by navigating to the profile page, selecting &lt;code&gt;Credentials &amp;gt; Enable alternate credentials&lt;/code&gt; and providing new credential information. More instructions available &lt;a href="http://www.visualstudio.com/en-us/integrate/get-started/get-started-auth-introduction-vsi"&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;The credentials will be collected using the &lt;code&gt;Get-Credentials&lt;/code&gt; &lt;a href="http://technet.microsoft.com/en-us/library/hh849815.aspx"&gt;cmdlet&lt;/a&gt;. This provides the standard windows credentials dialog for the user to enter information. Since this makes the script interactive, I debated about having the username and password as a parameter for the script, but in the end decided against it. Maybe the next improvement would be to include a silent version of the script.&lt;/p&gt;
 
-&lt;h5&gt;The REST call&lt;/h5&gt;
+&lt;h3&gt;The REST call&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;Invoke-RestMethod&lt;/code&gt; cmdlet will be used to make the actual call to the REST service. So what's the difference between &lt;code&gt;Invoke-WebRequest&lt;/code&gt; and &lt;code&gt;Invoke-RestMethod&lt;/code&gt; you may ask? While similar, the &lt;code&gt;Invoke-RestMethod&lt;/code&gt; attempts to parse the returned JSON so that we do not have to do it manually within our script. Think of it as a super set of &lt;code&gt;Invoke-WebRequest&lt;/code&gt; just like &lt;code&gt;Invoke-WebRequest&lt;/code&gt; is a superset of &lt;code&gt;System.Net.WebClient&lt;/code&gt;. Read more about it &lt;a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/"&gt;here&lt;/a&gt; and &lt;a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx"&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -38,7 +38,7 @@ $basicAuth = [System.Convert]::ToBase64String($basicAuth)
 $headers = @{Authorization=("Basic {0}" -f $basicAuth)}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3&gt;Making the call to the service&lt;/h3&gt;
+&lt;h2&gt;Making the call to the service&lt;/h2&gt;
 
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;First get a list of changesets related to the project within the timeframe that we're interested in.  &lt;/p&gt;
@@ -55,7 +55,7 @@ $headers = @{Authorization=("Basic {0}" -f $basicAuth)}
 &lt;li&gt;Remove duplicates entries and folder creation entries as necessary.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h3&gt;Final Thoughts&lt;/h3&gt;
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
 
 &lt;p&gt;You can download my implementation &lt;a href="https://github.com/shanec-/powershell/blob/master/TFS/Get-FilesModifiedByChangeset.ps1"&gt;here&lt;/a&gt;.&lt;/p&gt;
 

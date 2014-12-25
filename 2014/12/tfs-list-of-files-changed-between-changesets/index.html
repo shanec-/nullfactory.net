@@ -10,11 +10,11 @@
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="http://localhost:5498/stylesheets/base.css" type="text/css" />
-	<link rel="stylesheet" href="http://localhost:5498/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://localhost:5498/stylesheets/octicons.css" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="http://localhost:5498/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
 	<link rel="canonical" href="http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/" />
 </head>
 <body>
@@ -24,9 +24,9 @@
 	  <header>
 		  <ul class="nav">
 			<!--Change the  URL here if working on an absolute domain-->
-			<li><a href="http://localhost:5498"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
-			<li><a href="http://localhost:5498/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
-			<li><a href="http://localhost:5498/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
 		  </ul>
 	  </header>
 	</div>
@@ -55,14 +55,14 @@
 
 <h2>Pre-Requisites</h2>
 
-<h5>Security and Credentials</h5>
+<h3>Security and Credentials</h3>
 
 <p>In order make things simple, let's enable Alternate Authentication for access the account. This enables the script to use Basic Authentication when making request to the VSO REST service.
 This can be done by navigating to the profile page, selecting <code>Credentials &gt; Enable alternate credentials</code> and providing new credential information. More instructions available <a href="http://www.visualstudio.com/en-us/integrate/get-started/get-started-auth-introduction-vsi">here</a>.</p>
 
 <p>The credentials will be collected using the <code>Get-Credentials</code> <a href="http://technet.microsoft.com/en-us/library/hh849815.aspx">cmdlet</a>. This provides the standard windows credentials dialog for the user to enter information. Since this makes the script interactive, I debated about having the username and password as a parameter for the script, but in the end decided against it. Maybe the next improvement would be to include a silent version of the script.</p>
 
-<h5>The REST call</h5>
+<h3>The REST call</h3>
 
 <p><code>Invoke-RestMethod</code> cmdlet will be used to make the actual call to the REST service. So what's the difference between <code>Invoke-WebRequest</code> and <code>Invoke-RestMethod</code> you may ask? While similar, the <code>Invoke-RestMethod</code> attempts to parse the returned JSON so that we do not have to do it manually within our script. Think of it as a super set of <code>Invoke-WebRequest</code> just like <code>Invoke-WebRequest</code> is a superset of <code>System.Net.WebClient</code>. Read more about it <a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/">here</a> and <a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx">here</a>.</p>
 
@@ -75,7 +75,7 @@ $basicAuth = [System.Convert]::ToBase64String($basicAuth)
 $headers = @{Authorization=("Basic {0}" -f $basicAuth)}
 </code></pre>
 
-<h3>Making the call to the service</h3>
+<h2>Making the call to the service</h2>
 
 <ol>
 <li><p>First get a list of changesets related to the project within the timeframe that we're interested in.  </p>
@@ -92,7 +92,7 @@ $headers = @{Authorization=("Basic {0}" -f $basicAuth)}
 <li>Remove duplicates entries and folder creation entries as necessary.</li>
 </ol>
 
-<h3>Final Thoughts</h3>
+<h2>Final Thoughts</h2>
 
 <p>You can download my implementation <a href="https://github.com/shanec-/powershell/blob/master/TFS/Get-FilesModifiedByChangeset.ps1">here</a>.</p>
 
