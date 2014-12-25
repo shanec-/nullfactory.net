@@ -3,7 +3,8 @@
 @{
     var keywords = String.Join(",", Model.Keywords);
     //string baseUrl = "http://localhost:5498";
-    string baseUrl = "http://shanec-.github.com/nullfactory.net";
+    //string baseUrl = "http://shanec-.github.com/nullfactory.net";
+    string baseUrl = "http://www.nullfactory.net";
 }
 <!DOCTYPE html>
 <html>
@@ -20,6 +21,7 @@
 	<link rel="stylesheet" href="@baseUrl/stylesheets/github.css" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="@baseUrl/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="@baseUrl/stylesheets/font-awesome/css/font-awesome.min.css" />
 	@Html.CanonicalUrl()
 </head>
 <body>
@@ -43,5 +45,7 @@
   </div>
 
   <!-- /.main -->
+
+  @Html.RenderGoogleAnalytics("UA-57983893-1")
 </body>
 </html>

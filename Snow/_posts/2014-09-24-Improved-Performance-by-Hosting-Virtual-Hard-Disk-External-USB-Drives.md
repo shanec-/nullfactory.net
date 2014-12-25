@@ -1,15 +1,16 @@
 ---
 layout: post
-title: Improved Performance by Hosting Virtual Hard Disk External USB Drives 
+title: Improved Performance by Hosting Virtual Hard Disk External USB Drives
 category: Virtualization, Hyper-V
 ---
 
 I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.
 
-### Moving the Virtual Drive Images 
+## Moving the Virtual Drive Images
 
 The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.
 
+<!--excerpt-->
 
 1. Open up the Hyper-V Management Console.
 
@@ -32,7 +33,7 @@ The entire process entails moving the physical files to the new location and let
 	![Data Loss Warning](/images/posts/VirtualHardDiskPerf/4_DataLossWarning.png)
 10. Since a checkpoint was created initially, click on `Continue`.
 11. Click on `Ok` and the following warning is shown. Click on `Continue` as the warning not applicable to us.
-	
+
 	![Chain Breakage](/images/posts/VirtualHardDiskPerf/5_DataLossWarning2.png)
 12. Start up the virtual machine.
 
@@ -40,9 +41,9 @@ Since I already have checkpoint snapshots of my VMs, Hyper-V did not allow me to
 
 ![Checkpoint Location](/images/posts/VirtualHardDiskPerf/6_CheckPointLocation.png)
 
-The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now. 
+The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now.
 
-### Benchmarks
+## Benchmarks
 
 I decided to do a quick benchmark on the hard disk to satisfy my curiosity. I used CrystalDiskMark as it appears to be one of the more popular ones.
 
@@ -52,17 +53,15 @@ The numbers are on par with what's to be expected of the drive - here's a 33 gig
 
 ![My Passport Ultra CrystalDiskMark](/images/posts/VirtualHardDiskPerf/8_WD_BasicFileCopy.png)
 
-### Conclusion
+## Conclusion
 
 While I do not have a conclusive way to prove that get I do get improved performance, my system does feels more responsive. My primary drive no longer chokes with 100% activity when working with multiple VMs.
 
-  
+## Future Improvements
 
-### Future Improvements
+Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data.
 
-Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data. 
-
-### References
+## References
 
 - [Manually Merging Hyper-V Checkpoints](https://workinghardinit.wordpress.com/tag/avhdx/)
 - [CrystalDiskMark](http://crystalmark.info/software/CrystalDiskMark/index-e.html)

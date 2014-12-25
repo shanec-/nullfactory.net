@@ -14,12 +14,11 @@ The project is now distributed via [Github](https://github.com/shanec-/Nullfacto
 
 I recently viewed the One Drive application statistics and was pleasantly surprised to find quite a number of users that have used it over the last two years.
 
-###Users
+## Users
 ![](/images/posts/bookmark-organizer-users-2012.png)
 ![](/images/posts/bookmark-organizer-users-2013.png)
 ![](/images/posts/bookmark-organizer-users-2014.png)
 
-###Requests
-![](/images/posts/bookmark-organizer-requests-2012.png)
+## Requests
 ![](/images/posts/bookmark-organizer-requests-2013.png)
 ![](/images/posts/bookmark-organizer-requests-2014.png)

@@ -10,10 +10,11 @@
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/base.css" type="text/css" />
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/github.css" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/octicons.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://localhost:5498/stylesheets/font-awesome/css/font-awesome.min.css" />
 	<link rel="canonical" href="http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/" />
 </head>
 <body>
@@ -23,9 +24,9 @@
 	  <header>
 		  <ul class="nav">
 			<!--Change the  URL here if working on an absolute domain-->
-			<li><a href="http://shanec-.github.com/nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
-			<li><a href="http://shanec-.github.com/nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
-			<li><a href="http://shanec-.github.com/nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+			<li><a href="http://localhost:5498"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://localhost:5498/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://localhost:5498/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
 		  </ul>
 	  </header>
 	</div>
@@ -39,14 +40,16 @@
 	<div class="post other link">
 		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Improved Performance by Hosting Virtual Hard Disk External USB Drives</a></h2>
 		<p class="post-date">24 Sep 2014</p>
-		
+
 		
 
 		<p>I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.</p>
 
-<h3>Moving the Virtual Drive Images</h3>
+<h2>Moving the Virtual Drive Images</h2>
 
 <p>The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.</p>
+
+<!--excerpt-->
 
 <ol>
 <li><p>Open up the Hyper-V Management Console.</p>
@@ -79,9 +82,9 @@
 
 <p><img src="/images/posts/VirtualHardDiskPerf/6_CheckPointLocation.png" alt="Checkpoint Location" /></p>
 
-<p>The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now. </p>
+<p>The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now.</p>
 
-<h3>Benchmarks</h3>
+<h2>Benchmarks</h2>
 
 <p>I decided to do a quick benchmark on the hard disk to satisfy my curiosity. I used CrystalDiskMark as it appears to be one of the more popular ones.</p>
 
@@ -91,15 +94,15 @@
 
 <p><img src="/images/posts/VirtualHardDiskPerf/8_WD_BasicFileCopy.png" alt="My Passport Ultra CrystalDiskMark" /></p>
 
-<h3>Conclusion</h3>
+<h2>Conclusion</h2>
 
 <p>While I do not have a conclusive way to prove that get I do get improved performance, my system does feels more responsive. My primary drive no longer chokes with 100% activity when working with multiple VMs.</p>
 
-<h3>Future Improvements</h3>
+<h2>Future Improvements</h2>
 
-<p>Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data. </p>
+<p>Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data.</p>
 
-<h3>References</h3>
+<h2>References</h2>
 
 <ul>
 <li><a href="https://workinghardinit.wordpress.com/tag/avhdx/">Manually Merging Hyper-V Checkpoints</a></li>
@@ -121,7 +124,7 @@
         });
     };
 
-    var disqus_shortname = '*disqus id*';
+    var disqus_shortname = 'thenullfactory';
     var disqus_url = 'http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/';
 
     (function() {
@@ -134,12 +137,28 @@
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-		
+
 	</div>
 </div>
 
   </div>
 
   <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </body>
 </html>

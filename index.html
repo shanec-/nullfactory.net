@@ -10,10 +10,11 @@
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/base.css" type="text/css" />
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/github.css" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/octicons.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://localhost:5498/stylesheets/font-awesome/css/font-awesome.min.css" />
 	<link rel="canonical" href="http://nullfactory.net/" />
 </head>
 <body>
@@ -23,9 +24,9 @@
 	  <header>
 		  <ul class="nav">
 			<!--Change the  URL here if working on an absolute domain-->
-			<li><a href="http://shanec-.github.com/nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
-			<li><a href="http://shanec-.github.com/nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
-			<li><a href="http://shanec-.github.com/nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+			<li><a href="http://localhost:5498"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://localhost:5498/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://localhost:5498/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
 		  </ul>
 	  </header>
 	</div>
@@ -50,160 +51,12 @@
 
 <p>I modified the code posted <a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">here</a> in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.</p>
 
+<h2>Overview</h2>
+
 <p>The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.</p>
 
-<h3>Pre-Requisites</h3>
-
-<h5>Security and Credentials</h5>
-
-<p>In order make things simple, let's enable Alternate Authentication for access the account. This enables the script to use Basic Authentication when making request to the VSO REST service.
-This can be done by navigating to the profile page, selecting <code>Credentials &gt; Enable alternate credentials</code> and providing new credential information. More instructions available <a href="http://www.visualstudio.com/en-us/integrate/get-started/get-started-auth-introduction-vsi">here</a>.</p>
-
-<p>The credentials will be collected using the <code>Get-Credentials</code> <a href="http://technet.microsoft.com/en-us/library/hh849815.aspx">cmdlet</a>. This provides the standard windows credentials dialog for the user to enter information. Since this makes the script interactive, I debated about having the username and password as a parameter for the script, but in the end decided against it. Maybe the next improvement would be to include a silent version of the script.</p>
-
-<h5>The REST call</h5>
-
-<p><code>Invoke-RestMethod</code> cmdlet will be used to make the actual call to the REST service. So what's the difference between <code>Invoke-WebRequest</code> and <code>Invoke-RestMethod</code> you may ask? While similar, the <code>Invoke-RestMethod</code> attempts to parse the returned JSON so that we do not have to do it manually within our script. Think of it as a super set of <code>Invoke-WebRequest</code> just like <code>Invoke-WebRequest</code> is a superset of <code>System.Net.WebClient</code>. Read more about it <a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/">here</a> and <a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx">here</a>.</p>
-
-<p>I ran into strange issue when attempting to authenticate the request. The<br />
-<code>Get-Credentials</code> cmdlet would return a <code>System.Management.Automation.PSCredential</code> object as expected, but when passed into into the <code>Invoke-RestMethod</code> cmdlet, it was not generating the the basic authentication header token within the request. I still haven't figured out why this happens, but the workaround was to add the authentication header explicitly as <a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/">shown here</a>. </p>
-
-<pre><code>$basicAuth = ("{0}:{1}" -f $username,$password)
-$basicAuth = [System.Text.Encoding]::UTF8.GetBytes($basicAuth)
-$basicAuth = [System.Convert]::ToBase64String($basicAuth)
-$headers = @{Authorization=("Basic {0}" -f $basicAuth)}
-</code></pre>
-
-<h3>Making the call to the service</h3>
-
-<ol>
-<li><p>First get a list of changesets related to the project within the timeframe that we're interested in.  </p>
-
-<pre><code>https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets?api-version=1.0&amp;searchCriteria.fromId=100&amp;searchCriteria.toId=200&amp;searchCriteria.itemPath=$/{project}
-</code></pre>
-
-<p>It took me a while to figure it out but you should notice this call is only allowed to be made against the entire Team Project Collection. So in order to filter out the project, provide the project path via the <code>searchCriteria.itemPath</code> filter. That is <code>searchCriteria.itemPath=$/{projectname}</code> where <code>{projectname}</code> is the one that you are interested in.</p></li>
-<li><p>Next iterate through each of the results to retrieve the detailed information on of each of the changesets. This result would include a collection of all the files that were affected.</p>
-
-<pre><code>https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets/{changesetId}/changes?api-version=1.0
-</code></pre></li>
-<li><p>Again, iterate through each of the changes and extract the <code>path</code> property of the json result set. This is the path and name of the file.</p></li>
-<li>Remove duplicates entries and folder creation entries as necessary.   </li>
-</ol>
-
-<h3>Final Thoughts</h3>
-
-<p>You can download my implementation <a href="https://github.com/shanec-/powershell/blob/master/TFS/Get-FilesModifiedByChangeset.ps1">here</a>.</p>
-
-<p>The next steps would make this to its own cmdlet in order to make it more reusable in other scripts.
-Also check out the <a href="https://curah.microsoft.com/276618/list">Curah! page</a> that I created while working on this. </p>
-
-<h3>References</h3>
-
-<ul>
-<li><a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">Identifying all .vb files changed between two changesets</a></li>
-<li><a href="http://technet.microsoft.com/en-us/library/hh849815.aspx">Microsoft Technet - Get-Credential</a></li>
-<li><a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/">Screen scraping for pleasure or profit (with PowerShell’s Invoke-RestMethod)</a></li>
-<li><a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx">Hey, Scripting Guy! - InvokeRestMethod for the Rest of Us</a></li>
-<li><a href="http://technet.microsoft.com/en-us/library/hh849971.aspx">Microsoft Technet - Invoke-RestMethod</a></li>
-<li><a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/">Accessing Visual Studio Online REST API using Powershell 4.0, Invoke-RestMethod and Alternate Credentials</a></li>
-</ul>
 
 		<p><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/11/tfs-customizing-build-definition-to-exclude-symbols/">Team Foundation Server - Customizing a Build Definitions to Exclude Symbols in Symbol Server</a></h2>
-      <p class="post-date">08 Nov 2014</p>
-
-      <p>
-		
-		<p>In my previous post I wrote about updating the build definition in order to automatically publish the symbols. </p>
-
-<p>This post was inspired by a feedback provided by one of the commentors. The individual required that certain symbols be omitted from being published to the Symbols Server and pushed to clients.
-The feedback provided by ... was customizing the build definition in order to achieve this. I thought I would take upon the challenge to implement the same.</p>
-
-<p>http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx</p>
-
-<p>I have done successfully setup Symbol server in TFS. But i need to exclude third part pdb file at that time of publish to Symbol server.
-The options available in client side, but i need to setup in server side (TFS build).</p>
-
-<p>Hi Rajesh,</p>
-
-<p>I don't of a particularly easy way to handle this scenario off the top of my head. It would involve customizing the build process template and removing the specific .PDB entries that you don't want to be published from the FileList collection that is passed into the Publish Symbols build workflow activity.</p>
-
-<p>http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_PublishSymbols</p>
-
-		<p><a href="/2014/11/tfs-customizing-build-definition-to-exclude-symbols/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/11/tfs-build-index-sources/">Team Foundation Server - Team Build Index Sources</a></h2>
-      <p class="post-date">03 Nov 2014</p>
-
-      <p>
-		
-		<h3>What are debug symbols?</h3>
-
-<p>Debug symbols are artifacts that a debugger can use in order to better debug an application.</p>
-
-<p>Within the.NET ecosystem these are managed through PDB files. The PDB files contain information about the source file name, line numbers as well as local variable names. </p>
-
-<h3>Symbol Server</h3>
-
-<p>As a software solution evolves, it is likely that multiple versions of it get deployed into different production systems. And once the software is out in the wild, it becomes important that the developers can react to issues discovered by debugging specific versions of the software. In order to do this effectively, it is important that the debug symbols themselves be treated as an important artifact of the build. </p>
-
-<p>Source Server aids in this by enabling the the debug symbols (PDB) of multiple versions to be stored in a central location. A TFS build definition can be configured in order to automatically publish the symbols.</p>
-
-<h3>Configuration</h3>
-
-<p>The following steps are necessary in order to configure the build definition. </p>
-
-<h4>Server</h4>
-
-<ol>
-<li>Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code.</li>
-2. 
-</ol>
-
-<h4>Clients</h4>
-
-<ol>
-<li>Open up Visual Studio and go into options</li>
-2. 
-</ol>
-
-<h3>References</h3>
-
-<p>http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx</p>
-
-		<p><a href="/2014/11/tfs-build-index-sources/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/11/tfs-private-builds/">Team Foundation Server - Private Builds</a></h2>
-      <p class="post-date">02 Nov 2014</p>
-
-      <p>
-		
-		<h3>What are private builds?</h3>
-
-<h3>References</h3>
-
-		<p><a href="/2014/11/tfs-private-builds/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/tfs-installation/">Team Foundation Server - Installation</a></h2>
-      <p class="post-date">25 Sep 2014</p>
-
-      <p>
-		
-		<p>Today I would be doing an advanced installation of TFS server. Why advanced installation? Because that would be the most typical installation in most production scenarios.</p>
-
-<p>In my previous post, I summarized the accounts that are required and their requirements for installation. </p>
-
-		<p><a href="/2014/09/tfs-installation/">Read more...</a></p>
 	  </p>
     </div>
     <div class="post other link">
@@ -214,97 +67,12 @@ The options available in client side, but i need to setup in server side (TFS bu
 		
 		<p>I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.</p>
 
-<h3>Moving the Virtual Drive Images</h3>
+<h2>Moving the Virtual Drive Images</h2>
 
 <p>The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.</p>
 
-<ol>
-<li><p>Open up the Hyper-V Management Console.</p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/1_HyperVManager.png" alt="Hyper-V Management Console" /></p></li>
-<li>Create a checkpoint of the VM.</li>
-<li>Shutdown the VM.</li>
-<li>Next, navigate to the VM setting panel by right-clicking and selecting <code>Settings</code> or select it from the right actions pane.</li>
-<li>On the settings panel, navigate to the <code>hardware &gt; IDE Controller 0</code></li>
-<li><p><code>Virtual hard disk</code> text box shows the current location of the virtual drive.</p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/2_HyperVSettings.png" alt="Virtual Machine Settings" /></p></li>
-<li><p>Copy the contents of this entire directory together with the snapshots to the new destination.</p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/9_FolderLocation.png" alt="Copy Virtual Machine Files" /></p></li>
-<li><p>Change the <code>Virtual hard disk</code> path to match the new location.</p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/3_UpdatedHyperVSettings.png" alt="Updated Virtual Machine Settings" /></p></li>
-<li><p>You would receive the following message warning of data loss:</p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/4_DataLossWarning.png" alt="Data Loss Warning" /></p></li>
-<li>Since a checkpoint was created initially, click on <code>Continue</code>.</li>
-<li><p>Click on <code>Ok</code> and the following warning is shown. Click on <code>Continue</code> as the warning not applicable to us.</p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/5_DataLossWarning2.png" alt="Chain Breakage" /></p></li>
-<li>Start up the virtual machine.</li>
-</ol>
-
-<p>Since I already have checkpoint snapshots of my VMs, Hyper-V did not allow me to change the location. I think I might be able to use symbolic links in order to trick the OS into using the new drive. I will try to explore techniques available in a future post.</p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/6_CheckPointLocation.png" alt="Checkpoint Location" /></p>
-
-<p>The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now. </p>
-
-<h3>Benchmarks</h3>
-
-<p>I decided to do a quick benchmark on the hard disk to satisfy my curiosity. I used CrystalDiskMark as it appears to be one of the more popular ones.</p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/7_WD_CrystalDiskMark.png" alt="My Passport Ultra CrystalDiskMark" /></p>
-
-<p>The numbers are on par with what's to be expected of the drive - here's a 33 gig VPC being copied over.  </p>
-
-<p><img src="/images/posts/VirtualHardDiskPerf/8_WD_BasicFileCopy.png" alt="My Passport Ultra CrystalDiskMark" /></p>
-
-<h3>Conclusion</h3>
-
-<p>While I do not have a conclusive way to prove that get I do get improved performance, my system does feels more responsive. My primary drive no longer chokes with 100% activity when working with multiple VMs.</p>
-
-<h3>Future Improvements</h3>
-
-<p>Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data. </p>
-
-<h3>References</h3>
-
-<ul>
-<li><a href="https://workinghardinit.wordpress.com/tag/avhdx/">Manually Merging Hyper-V Checkpoints</a></li>
-<li><a href="http://crystalmark.info/software/CrystalDiskMark/index-e.html">CrystalDiskMark</a></li>
-<li><a href="http://blog.danieljost.com/symbolic-links-save-space-ssd/">Using Symbolic Links to Save Space on Your SSD</a></li>
-</ul>
 
 		<p><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/tfs-ssrs-installation-and-configuration/">Team Foundation Server - SSRS Installation and Configuration</a></h2>
-      <p class="post-date">23 Sep 2014</p>
-
-      <p>
-		
-		<h2>Overview</h2>
-
-<p>Why do we need SSRS and what are the benifits that are gained from installing it.</p>
-
-<h3>Installation</h3>
-
-<h3>Service Accounts Used</h3>
-
-<p>The following service accounts need to be created or granted permission in order for SSRS to work:</p>
-
-<p>TFSReport</p>
-
-<h2>References</h2>
-
-<ul>
-<li><a href="http://msdn.microsoft.com/en-us/library/bb737953(v=vs.110).aspx">MSDN - Grant permission to view or create SSRS reports in TFS</a></li>
-</ul>
-
-		<p><a href="/2014/09/tfs-ssrs-installation-and-configuration/">Read more...</a></p>
 	  </p>
     </div>
     <div class="post other link">
@@ -313,13 +81,13 @@ The options available in client side, but i need to setup in server side (TFS bu
 
       <p>
 		
-		<p><em>Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.</em> </p>
+		<p><em>Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.</em></p>
 
-<p>This post focuses on building a self-contained, isolated virtual environment with internet connectivity. </p>
+<p>This post focuses on building a self-contained, isolated virtual environment with internet connectivity.</p>
 
 <p>My colleague, Chaminda has a <a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html">detailed post</a> on how to setup and isolated environment using virtual box. Go check it out if you would like to implement it via virtual box.  While virtual box is a good virtualization platform on its own right, I have grown accustomed to using Hyper-V in my day-job and has become a personal preference.</p>
 
-<h3>Hyper-V</h3>
+<h2>Hyper-V</h2>
 
 <p>My own environment is built around this <a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">excellent post</a>. It details the entire process involved. While my own setup is identical to the above, I have taken into account the following caveats:</p>
 
@@ -334,10 +102,10 @@ The options available in client side, but i need to setup in server side (TFS bu
 
 <p>Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.</p>
 
-<p>The ideal 
-This involves setting up routes on both out internal router as well as the external router under which the external resources exists. </p>
+<p>The ideal
+This involves setting up routes on both out internal router as well as the external router under which the external resources exists.</p>
 
-<h3>References</h3>
+<h2>References</h2>
 
 <ul>
 <li><a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">Your Personal Isolated Lab - Featuring Windows 8 + Hyper-V</a></li>
@@ -349,42 +117,17 @@ This involves setting up routes on both out internal router as well as the exter
 	  </p>
     </div>
     <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/powershell/">Batch extract YouTube direct video url via Powershell</a></h2>
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/powershell/">Extract YouTube direct video url via Powershell</a></h2>
       <p class="post-date">21 Sep 2014</p>
 
       <p>
 		
-		<p>It's been a while since I've have had the opportunity to write any powershell. So I decided to do something before my muscle memory atrophies completely. </p>
+		<p>It's been a while since I've have had the opportunity to write any powershell. So I decided to do something before my muscle memory atrophies completely.</p>
 
 <p>While I could not come up with a new problem to solve, I decided to re-visit my attempt at extracting the direct download url from a streaming service.I believe this is my 3rd attempt and its fast becoming my version of a "hello world" application. :)</p>
 
-<p>Previously, I tried to implement and parse out the urls by myself. This version is not going to be as complex as I will be using the <a href="http://www.keepvid.com">keepvid.com</a> to do the heavy lifting. </p>
+<p>Previously, I tried to implement and parse out the urls by myself. This version is not going to be as complex as I will be using the <a href="http://www.keepvid.com">keepvid.com</a> to do the heavy lifting.</p>
 
-<p>Here is a list of the steps:</p>
-
-<ol>
-<li><p>Execute the script by either providing a space delimited list of video urls or location to a file containing the list of urls (one url per line).</p>
-
-<blockquote>
-  <p>.\Get-DirectVideoUrl.ps1 -url -filename "C:\downloadlist.txt"</p>
-  
-  <p>.\Get-DirectVideoUrl.ps1 -url "http://www.youtube.com/watch?v=duKL2dAJN6I http://www.youtube.com/watch?v=R4ajQ-foj2Q"</p>
-  
-  <p>.\Get-DirectVideoUrl.ps1 -url "http://www.youtube.com/watch?v=duKL2dAJN6I http://www.youtube.com/watch?v=R4ajQ-foj2Q" -filename "C:\downloadlist.txt"</p>
-</blockquote></li>
-<li><p>The script formats the url appropriate for the service and sends out the request.</p></li>
-<li>Once the response is received, the html is parsed out using XPath with the help of the HtmlAgilityPack library. (while this could have been done without the additional dependency, I opted to use it in the hopes that future enhancements would be easier)</li>
-<li>Repeat the process for all the input video urls that have been provided.</li>
-<li>Save all the urls to a text file.</li>
-</ol>
-
-<p>Now that you have the final urls, it can batch imported into a download accelerator such as <a href="www.freedownloadmanager.org/">FDM</a>.</p>
-
-<p>While I only tested the script against the YouTube service I am sure this should work with any of the other video services supported by keepvid.com</p>
-
-<p>The script is hosted <a href="https://github.com/shanec-/powershell/tree/master/Get-DirectVideoUrl">here</a>, feel free to push back any patches if you decide to improve on the code.</p>
-
-<p>Same disclaimer applies to this post as per my previous attempts. This was written for educational purposes and I am pretty sure that it is violating the TOS video streaming service or keepvid itself. Therefore please use at your own discretion.</p>
 
 		<p><a href="/2014/09/powershell/">Read more...</a></p>
 	  </p>
@@ -419,6 +162,22 @@ This involves setting up routes on both out internal router as well as the exter
 		<p><a href="/2014/09/tfs-service-accounts/">Read more...</a></p>
 	  </p>
     </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/08/bookmarks-organizer-source-published/">Bookmarks Organizer Source Published</a></h2>
+      <p class="post-date">16 Aug 2014</p>
+
+      <p>
+		
+		<p>I have been meaning to do this for a while and now finally got around to cleaning up and publishing the source. This was the first Windows Phone app that I actually saw through to completion and was pretty proud of it at the time. You can find the original posts <a href="http://nullfactory.blogspot.com/2012/04/bookmark-organizer-01-for-windows-phone.html">here</a> and <a href="http://nullfactory.blogspot.com/2012/05/bookmark-organizer-02-with-skydrive.html">here</a>  </p>
+
+<p>Although the popularity of the 7.x branch is on the decline, I hope someone would have use for it.</p>
+
+<p>The project is now distributed via <a href="https://github.com/shanec-/Nullfactory.BookmarkSync">Github</a>. Enjoy!</p>
+
+
+		<p><a href="/2014/08/bookmarks-organizer-source-published/">Read more...</a></p>
+	  </p>
+    </div>
 </div>
 
   <div id="post-pagination" class="pagination">
@@ -427,13 +186,26 @@ This involves setting up routes on both out internal router as well as the exter
 
       <!--<a href="/">Previous Page</a>-->
 
-    <p class="previous">
-      <a href="/page2">Next Page</a>
-    </p>
 
   </div>
   </div>
 
   <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </body>
 </html>

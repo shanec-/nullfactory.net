@@ -10,10 +10,11 @@
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/base.css" type="text/css" />
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/github.css" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/octicons.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://localhost:5498/stylesheets/font-awesome/css/font-awesome.min.css" />
 	<link rel="canonical" href="http://nullfactory.net/2014/09/create-an-isolated-hyper-v-environment/" />
 </head>
 <body>
@@ -23,9 +24,9 @@
 	  <header>
 		  <ul class="nav">
 			<!--Change the  URL here if working on an absolute domain-->
-			<li><a href="http://shanec-.github.com/nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
-			<li><a href="http://shanec-.github.com/nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
-			<li><a href="http://shanec-.github.com/nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+			<li><a href="http://localhost:5498"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://localhost:5498/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://localhost:5498/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
 		  </ul>
 	  </header>
 	</div>
@@ -39,16 +40,16 @@
 	<div class="post other link">
 		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/create-an-isolated-hyper-v-environment/">Create An Isolated Hyper-V Environment</a></h2>
 		<p class="post-date">22 Sep 2014</p>
-		
+
 		
 
-		<p><em>Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.</em> </p>
+		<p><em>Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.</em></p>
 
-<p>This post focuses on building a self-contained, isolated virtual environment with internet connectivity. </p>
+<p>This post focuses on building a self-contained, isolated virtual environment with internet connectivity.</p>
 
 <p>My colleague, Chaminda has a <a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html">detailed post</a> on how to setup and isolated environment using virtual box. Go check it out if you would like to implement it via virtual box.  While virtual box is a good virtualization platform on its own right, I have grown accustomed to using Hyper-V in my day-job and has become a personal preference.</p>
 
-<h3>Hyper-V</h3>
+<h2>Hyper-V</h2>
 
 <p>My own environment is built around this <a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">excellent post</a>. It details the entire process involved. While my own setup is identical to the above, I have taken into account the following caveats:</p>
 
@@ -63,10 +64,10 @@
 
 <p>Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.</p>
 
-<p>The ideal 
-This involves setting up routes on both out internal router as well as the external router under which the external resources exists. </p>
+<p>The ideal
+This involves setting up routes on both out internal router as well as the external router under which the external resources exists.</p>
 
-<h3>References</h3>
+<h2>References</h2>
 
 <ul>
 <li><a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">Your Personal Isolated Lab - Featuring Windows 8 + Hyper-V</a></li>
@@ -88,7 +89,7 @@ This involves setting up routes on both out internal router as well as the exter
         });
     };
 
-    var disqus_shortname = '*disqus id*';
+    var disqus_shortname = 'thenullfactory';
     var disqus_url = 'http://nullfactory.net/2014/09/create-an-isolated-hyper-v-environment/';
 
     (function() {
@@ -101,12 +102,28 @@ This involves setting up routes on both out internal router as well as the exter
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-		
+
 	</div>
 </div>
 
   </div>
 
   <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </body>
 </html>

@@ -2,9 +2,8 @@
 layout: post
 title: Flashing An Alternate Product Code Using The Nokia Software Recovery Tool
 category: Mobile Development, Windows Phone
+published: draft
 ---
-
-
 
 I recently struggled to enable 4G on my Lumia 920,
 The instructions below here are not my original research but based off this forum post.
@@ -25,4 +24,3 @@ I did
 ###References
 - http://forums.wpcentral.com/nokia-lumia-920/305090-5.htm
 - http://forum.xda-developers.com/showthread.php?p=47195500
-

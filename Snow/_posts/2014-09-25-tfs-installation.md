@@ -2,6 +2,7 @@
 layout: post
 title: Team Foundation Server - Installation
 category: ALM, Team Foundation Server
+published: draft
 ---
 
 Today I would be doing an advanced installation of TFS server. Why advanced installation? Because that would be the most typical installation in most production scenarios.

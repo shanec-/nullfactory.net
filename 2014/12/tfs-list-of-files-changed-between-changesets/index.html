@@ -10,10 +10,11 @@
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/base.css" type="text/css" />
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/github.css" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://shanec-.github.com/nullfactory.net/stylesheets/octicons.css" type="text/css" />
+	<link rel="stylesheet" href="http://localhost:5498/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://localhost:5498/stylesheets/font-awesome/css/font-awesome.min.css" />
 	<link rel="canonical" href="http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/" />
 </head>
 <body>
@@ -23,9 +24,9 @@
 	  <header>
 		  <ul class="nav">
 			<!--Change the  URL here if working on an absolute domain-->
-			<li><a href="http://shanec-.github.com/nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
-			<li><a href="http://shanec-.github.com/nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
-			<li><a href="http://shanec-.github.com/nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+			<li><a href="http://localhost:5498"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://localhost:5498/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://localhost:5498/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
 		  </ul>
 	  </header>
 	</div>
@@ -39,16 +40,20 @@
 	<div class="post other link">
 		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Get a list of files changed between changesets in Visual Studio Online using PowerShell</a></h2>
 		<p class="post-date">14 Dec 2014</p>
-		
+
 		
 
 		<p>So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.</p>
 
 <p>I modified the code posted <a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">here</a> in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.</p>
 
+<h2>Overview</h2>
+
 <p>The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.</p>
 
-<h3>Pre-Requisites</h3>
+<!--excerpt-->
+
+<h2>Pre-Requisites</h2>
 
 <h5>Security and Credentials</h5>
 
@@ -62,7 +67,7 @@ This can be done by navigating to the profile page, selecting <code>Credentials 
 <p><code>Invoke-RestMethod</code> cmdlet will be used to make the actual call to the REST service. So what's the difference between <code>Invoke-WebRequest</code> and <code>Invoke-RestMethod</code> you may ask? While similar, the <code>Invoke-RestMethod</code> attempts to parse the returned JSON so that we do not have to do it manually within our script. Think of it as a super set of <code>Invoke-WebRequest</code> just like <code>Invoke-WebRequest</code> is a superset of <code>System.Net.WebClient</code>. Read more about it <a href="http://jamesone111.wordpress.com/2014/06/09/screen-scraping-for-pleasure-or-profit-with-powershells-invoke-restmethod/">here</a> and <a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx">here</a>.</p>
 
 <p>I ran into strange issue when attempting to authenticate the request. The<br />
-<code>Get-Credentials</code> cmdlet would return a <code>System.Management.Automation.PSCredential</code> object as expected, but when passed into into the <code>Invoke-RestMethod</code> cmdlet, it was not generating the the basic authentication header token within the request. I still haven't figured out why this happens, but the workaround was to add the authentication header explicitly as <a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/">shown here</a>. </p>
+<code>Get-Credentials</code> cmdlet would return a <code>System.Management.Automation.PSCredential</code> object as expected, but when passed into into the <code>Invoke-RestMethod</code> cmdlet, it was not generating the the basic authentication header token within the request. I still haven't figured out why this happens, but the workaround was to add the authentication header explicitly as <a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/">shown here</a>.</p>
 
 <pre><code>$basicAuth = ("{0}:{1}" -f $username,$password)
 $basicAuth = [System.Text.Encoding]::UTF8.GetBytes($basicAuth)
@@ -84,7 +89,7 @@ $headers = @{Authorization=("Basic {0}" -f $basicAuth)}
 <pre><code>https://{account}.visualstudio.com/defaultcollection/_apis/tfvc/changesets/{changesetId}/changes?api-version=1.0
 </code></pre></li>
 <li><p>Again, iterate through each of the changes and extract the <code>path</code> property of the json result set. This is the path and name of the file.</p></li>
-<li>Remove duplicates entries and folder creation entries as necessary.   </li>
+<li>Remove duplicates entries and folder creation entries as necessary.</li>
 </ol>
 
 <h3>Final Thoughts</h3>
@@ -92,9 +97,9 @@ $headers = @{Authorization=("Basic {0}" -f $basicAuth)}
 <p>You can download my implementation <a href="https://github.com/shanec-/powershell/blob/master/TFS/Get-FilesModifiedByChangeset.ps1">here</a>.</p>
 
 <p>The next steps would make this to its own cmdlet in order to make it more reusable in other scripts.
-Also check out the <a href="https://curah.microsoft.com/276618/list">Curah! page</a> that I created while working on this. </p>
+Also check out the <a href="https://curah.microsoft.com/276618/list">Curah! page</a> that I created while working on this.</p>
 
-<h3>References</h3>
+<h2>References</h2>
 
 <ul>
 <li><a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">Identifying all .vb files changed between two changesets</a></li>
@@ -119,7 +124,7 @@ Also check out the <a href="https://curah.microsoft.com/276618/list">Curah! page
         });
     };
 
-    var disqus_shortname = '*disqus id*';
+    var disqus_shortname = 'thenullfactory';
     var disqus_url = 'http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/';
 
     (function() {
@@ -132,12 +137,28 @@ Also check out the <a href="https://curah.microsoft.com/276618/list">Curah! page
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-		
+
 	</div>
 </div>
 
   </div>
 
   <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </body>
 </html>

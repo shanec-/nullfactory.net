@@ -2,6 +2,7 @@
 layout: post
 title: Team Foundation Server - Customizing a Build Definitions to Exclude Symbols in Symbol Server
 category: ALM, Team Foundation Server
+published: draft
 ---
 
 In my previous post I wrote about updating the build definition in order to automatically publish the symbols. 
