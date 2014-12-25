@@ -1,4 +1,4 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2014-12-25T16:58:07+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</id><title type="text">Get a list of files changed between changesets in Visual Studio Online using PowerShell</title><summary type="html">&lt;p&gt;So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2014-12-25T17:21:55+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</id><title type="text">Get a list of files changed between changesets in Visual Studio Online using PowerShell</title><summary type="html">&lt;p&gt;So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.&lt;/p&gt;
 
 &lt;p&gt;I modified the code posted &lt;a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol"&gt;here&lt;/a&gt; in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.&lt;/p&gt;
 
@@ -165,16 +165,8 @@ Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah
 
 &lt;p&gt;Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.&lt;/p&gt;
 
-&lt;p&gt;The ideal
-This involves setting up routes on both out internal router as well as the external router under which the external resources exists.&lt;/p&gt;
+&lt;p&gt;This involves setting up routes on both out internal router as well as the external router under which the external resources exists.&lt;/p&gt;
 
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx"&gt;Your Personal Isolated Lab - Featuring Windows 8 + Hyper-V&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html"&gt;Create a PDC in an Isolated Internal Network - Setup Virtual Environment for TFS 2013 - Using Virtualbox&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/cc731402.aspx"&gt;Understanding Shared Folders and the Windows Firewall&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </summary><published>2014-09-21T18:30:00Z</published><updated>2014-09-21T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/create-an-isolated-hyper-v-environment/" /><content type="html">&lt;p&gt;&lt;em&gt;Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;This post focuses on building a self-contained, isolated virtual environment with internet connectivity.&lt;/p&gt;
@@ -196,8 +188,9 @@ This involves setting up routes on both out internal router as well as the exter
 
 &lt;p&gt;Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.&lt;/p&gt;
 
-&lt;p&gt;The ideal
-This involves setting up routes on both out internal router as well as the external router under which the external resources exists.&lt;/p&gt;
+&lt;p&gt;This involves setting up routes on both out internal router as well as the external router under which the external resources exists.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;  
 
 &lt;h2&gt;References&lt;/h2&gt;
 

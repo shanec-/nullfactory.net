@@ -22,8 +22,9 @@ My own environment is built around this [excellent post](http://blogs.technet.co
 
 Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.
 
-The ideal
 This involves setting up routes on both out internal router as well as the external router under which the external resources exists.
+
+<!--excerpt-->  
 
 ## References
 
