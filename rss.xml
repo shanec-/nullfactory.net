@@ -1,4 +1,99 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</guid><link>http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</link><title>Get a list of files changed between changesets in Visual Studio Online using PowerShell</title><description>&lt;p&gt;So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2014/12/tfs-enable-reporting-warehouse-analysis-services/</guid><link>http://nullfactory.net/2014/12/tfs-enable-reporting-warehouse-analysis-services/</link><title>TFS 2013 - Enabling Reporting, Warehouse and Analysis Services</title><description>&lt;p&gt;Suppose you already have an Team Foundation Server (TFS) environment where you have opted-out from configuring the Reporting Services and Analysis Services during the installation. The following steps would help you to configure the warehouse and reporting functionality.&lt;/p&gt;
+
+&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Ensure that the SQL Server client tools are installed on the Application Tier.&lt;/p&gt;
+
+&lt;p&gt;If this is not already done, you would most likely receive a &lt;code&gt;TF400465&lt;/code&gt; error when attempting to edit the configuration. &lt;code&gt;TF400465&lt;/code&gt; states that client tool are needed to be installed on the application tier in order for the analysis services to function properly.&lt;/p&gt;
+
+&lt;p&gt;This can be fixed by re-running the SQL Server setup and adding the &lt;code&gt;Client Tools Connectivity&lt;/code&gt; feature &lt;a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once installed, make sure to restart the TFS administration console.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure that &lt;code&gt;Management Tools - Complete&lt;/code&gt; is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Ensure that the Analysis Services have been installed and is up and running. &lt;/li&gt;
+&lt;li&gt;Ensure SQL Server Reporting Services is installed and configured in native mode &lt;a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.&lt;/li&gt;
+&lt;/ol&gt;
+
+</description><pubDate>Fri, 26 Dec 2014 18:30:00 Z</pubDate><a10:updated>2014-12-26T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;Suppose you already have an Team Foundation Server (TFS) environment where you have opted-out from configuring the Reporting Services and Analysis Services during the installation. The following steps would help you to configure the warehouse and reporting functionality.&lt;/p&gt;
+
+&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Ensure that the SQL Server client tools are installed on the Application Tier.&lt;/p&gt;
+
+&lt;p&gt;If this is not already done, you would most likely receive a &lt;code&gt;TF400465&lt;/code&gt; error when attempting to edit the configuration. &lt;code&gt;TF400465&lt;/code&gt; states that client tool are needed to be installed on the application tier in order for the analysis services to function properly.&lt;/p&gt;
+
+&lt;p&gt;This can be fixed by re-running the SQL Server setup and adding the &lt;code&gt;Client Tools Connectivity&lt;/code&gt; feature &lt;a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once installed, make sure to restart the TFS administration console.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure that &lt;code&gt;Management Tools - Complete&lt;/code&gt; is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Ensure that the Analysis Services have been installed and is up and running. &lt;/li&gt;
+&lt;li&gt;Ensure SQL Server Reporting Services is installed and configured in native mode &lt;a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Configuration&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Navigate to TFS Administration Console &lt;code&gt;Application Tier &amp;gt; Reporting&lt;/code&gt;. Notice that the services are not configured.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/1_ConsoleUnconfigured.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click &lt;code&gt;Edit&lt;/code&gt; to edit the configuration.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Check the &lt;code&gt;Use Reporting&lt;/code&gt; check box to get started.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Configure the warehouse house by first selecting the SQL server from the server list. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/2_WarehouseDetails.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, provide a name for the warehouse database; I gave it &lt;code&gt;Tfs_Warehouse&lt;/code&gt; as it is what the latest versions of TFS provides by default.   &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Click &lt;code&gt;Test Connection&lt;/code&gt; to ensure the connectivity to the server.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Switch over to the &lt;code&gt;Analysis Services&lt;/code&gt; tab and select the server for the analysis services from the server list.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/3_AnalysisDetails.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Provide the database name &lt;code&gt;Tfs_Analysis&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Provide the username and password for accessing the data sources.&lt;/li&gt;
+&lt;li&gt;Click &lt;code&gt;Test Connection&lt;/code&gt; to ensure the connectivity to the server.&lt;/li&gt;
+&lt;li&gt;Next select the &lt;code&gt;Reports&lt;/code&gt; tab.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select the report server from the server list.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/4_ReportingDetails.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Populate URLs&lt;/code&gt;. This would retrieve the Web Service and Report Manager urls. In case they are not populated automatically, provide the details manually.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Provide the username and password for accessing the data sources.&lt;/li&gt;
+&lt;li&gt;Click &lt;code&gt;OK&lt;/code&gt; to save the settings.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Start Jobs&lt;/code&gt; to activate the services.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/5_ConsoleConfigured.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The final step is to rebuild the warehouse. This would prepare the database by building the necessary schema and any pre-requisite operations. This can be achieved in one of the following ways:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Executing the &lt;code&gt;RebuildWarehouse&lt;/code&gt; command &lt;a href="http://msdn.microsoft.com/en-us/library/ee349264.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Navigate to the &lt;code&gt;WarehouseControlService&lt;/code&gt; webservice and execute &lt;code&gt;ProcessAnalysisDatabase&lt;/code&gt; with &lt;code&gt;processingType&lt;/code&gt; of &lt;code&gt;Full&lt;/code&gt; &lt;a href="http://msdn.microsoft.com/en-us/library/ff400237.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open up the TFS Administration Console and navigate to &lt;code&gt;Application Tier &amp;gt; Reporting &amp;gt; Start Rebuild&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/6_RebuildConfirmation.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Verification&lt;/h2&gt;
+
+&lt;p&gt;Once the &lt;code&gt;RebuildWarehouse&lt;/code&gt; command has been executed, verify that the warehouse jobs are running. This can be done by logging onto the application tier and then navigating to the &lt;code&gt;WarehouseControlWebService&lt;/code&gt; using the following url and executing the &lt;code&gt;GetProcessingStatus&lt;/code&gt; action:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    http://localhost:8080/tfs/TeamFoundation/Administration/v3.0/WarehouseControlService.asmx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This would return a list of all the jobs that are being executed on the server. The first time I viewed the results, I was a bit overwhelmed by the number of errors shown. If you take a moment and study the errors you realize that these are warnings about SQL locks. Given enough time, and depending on the size of the Project Collections, the errors (warnings) should resolve themselves. As far as I can tell these warnings are expected in a full rebuild.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx"&gt;MSDN - How to Configure Reporting Services&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx"&gt;MSDN - Manually install SQL Server for Team Foundation Server&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/ee349264.aspx"&gt;MSDN - RebuildWarehouse Command&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/ff400237.aspx"&gt;MSDN - Manually process the data warehouse and analysis services cube for Team Foundation Server&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</guid><link>http://nullfactory.net/2014/12/tfs-list-of-files-changed-between-changesets/</link><title>Get a list of files changed between changesets in Visual Studio Online using PowerShell</title><description>&lt;p&gt;So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.&lt;/p&gt;
 
 &lt;p&gt;I modified the code posted &lt;a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol"&gt;here&lt;/a&gt; in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.&lt;/p&gt;
 
