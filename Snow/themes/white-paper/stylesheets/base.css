@@ -452,12 +452,12 @@ pre {
   -webkit-font-smoothing: subpixel-antialiased;
 }
 code{
-  padding: 0 4px;
+  padding: 0px 4px 0px 4px;
   font-family: "Source Code Pro", "Courier New", Courier, sans-serif;
   font-size: 0.9em;
   color: #556270;
-  background: #F4FAFF;
-  border-radius: 3px;
+  background: rgba(0,0,0,.04);
+  border: 1px solid #ccc;
 }
 pre code {
   padding: 0;
