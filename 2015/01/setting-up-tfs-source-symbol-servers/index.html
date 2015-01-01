@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-  <meta name="keywords" content="ALM,Team Foundation Server" />
+	<meta name="keywords" content="Team Foundation Server" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -35,11 +35,12 @@
 
   <div class="container">
 	
-
 <div class="listing">
 	<div class="post other link">
 		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Setting up Source and Symbol Servers in Team Foundation Server</a></h2>
-		<p class="post-date">01 Jan 2015</p>
+		<p class="post-date">01 Jan 2015
+				| <a href="/category/team-foundation-server">Team Foundation Server</a>
+	  </p>
 
 		
 
@@ -63,10 +64,10 @@
 
 <h3>Build Definition (Server)</h3>
 
-<p>Configuring the build definition is pretty straight forward: </p>
+<p>Configuring the build definition is pretty straight forward:</p>
 
 <ol>
-<li>Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code. </li>
+<li>Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code.</li>
 <li>Grant build service account write access permission to the folder.  </li>
 <li>Grant all project contributors read access to this folder.</li>
 <li>Edit the build definition by providing a value to the <code>Publish Symbols &gt; Path to publish symbols</code> property. Set it to the previously created network folder.</li>
@@ -101,6 +102,9 @@
 </ul>
 
 
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
 		<div id="disqus_thread"></div>
 <script>
     var reset_disqus = function(){
@@ -129,6 +133,9 @@
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
 </div>
 
   </div>

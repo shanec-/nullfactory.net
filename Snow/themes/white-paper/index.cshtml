@@ -12,7 +12,11 @@
     @foreach(var postPaged in Model.PostsPaged) {
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="@postPaged.Url">@postPaged.Title</a></h2>
-      <p class="post-date">@postPaged.Date.ToString("dd MMM yyyy")</p>
+      <p class="post-date">@postPaged.Date.ToString("dd MMM yyyy")
+
+      @foreach (var category in @postPaged.Categories) {
+      @:| <a href="/category/@category.ToUrlSlug()" title="@category">@category</a>
+    }</p>
 
       <p>
 		@Html.RenderSeries(postPaged)
@@ -25,7 +29,7 @@
 
   <div id="post-pagination" class="pagination">
 
-   
+
      @if (Model.HasPreviousPage) {
       if (Model.PreviousPage == 1) {
       <p class="previous">
@@ -40,9 +44,9 @@
     }
 
     @if (!Model.HasPreviousPage) {
-    
+
       <!--<a href="/">Previous Page</a>-->
-    
+
     }
 
     @if (Model.HasNextPage) {

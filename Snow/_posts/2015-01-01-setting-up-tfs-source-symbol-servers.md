@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Setting up Source and Symbol Servers in Team Foundation Server
-category: ALM, Team Foundation Server
+category: Team Foundation Server
 ---
 
 ## What are debug symbols?
@@ -20,9 +20,9 @@ A TFS build definition will be configured in order to automatically index source
 There are two components that need to be configured for an effective workflow. The build definition; this would be instructing TFS to index the sources and publish the symbols to a share location. Then instruct each of the clients (Visual Studio in this case) to use the symbol cache.
 
 ### Build Definition (Server)
-Configuring the build definition is pretty straight forward: 
+Configuring the build definition is pretty straight forward:
 
-1. Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code. 
+1. Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code.
 1. Grant build service account write access permission to the folder.  
 1. Grant all project contributors read access to this folder.
 1. Edit the build definition by providing a value to the `Publish Symbols > Path to publish symbols` property. Set it to the previously created network folder.

@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-  <meta name="keywords" content="ALM,Team Foundation Server" />
+	<meta name="keywords" content="Team Foundation Server" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -35,11 +35,12 @@
 
   <div class="container">
 	
-
 <div class="listing">
 	<div class="post other link">
 		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">TFS 2013 - Enabling Reporting, Warehouse and Analysis Services</a></h2>
-		<p class="post-date">27 Dec 2014</p>
+		<p class="post-date">27 Dec 2014
+				| <a href="/category/team-foundation-server">Team Foundation Server</a>
+	  </p>
 
 		
 
@@ -55,8 +56,8 @@
 <p>This can be fixed by re-running the SQL Server setup and adding the <code>Client Tools Connectivity</code> feature <a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx">[Read More]</a>.</p>
 
 <p>Once installed, make sure to restart the TFS administration console.</p></li>
-<li><p>Ensure that <code>Management Tools - Complete</code> is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance. </p></li>
-<li>Ensure that the Analysis Services have been installed and is up and running. </li>
+<li><p>Ensure that <code>Management Tools - Complete</code> is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.</p></li>
+<li>Ensure that the Analysis Services have been installed and is up and running.</li>
 <li>Ensure SQL Server Reporting Services is installed and configured in native mode <a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx">[Read More]</a>.</li>
 <li>This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.</li>
 </ol>
@@ -71,10 +72,10 @@
 <p><img src="/images/posts/TFSEnableReportingAnalysisServices/1_ConsoleUnconfigured.png" alt="" /></p></li>
 <li><p>Click <code>Edit</code> to edit the configuration.</p></li>
 <li>Check the <code>Use Reporting</code> check box to get started.</li>
-<li><p>Configure the warehouse house by first selecting the SQL server from the server list. </p>
+<li><p>Configure the warehouse house by first selecting the SQL server from the server list.</p>
 
 <p><img src="/images/posts/TFSEnableReportingAnalysisServices/2_WarehouseDetails.png" alt="" /></p></li>
-<li><p>Next, provide a name for the warehouse database; I gave it <code>Tfs_Warehouse</code> as it is what the latest versions of TFS provides by default.   </p></li>
+<li><p>Next, provide a name for the warehouse database; I gave it <code>Tfs_Warehouse</code> as it is what the latest versions of TFS provides by default.</p></li>
 <li>Click <code>Test Connection</code> to ensure the connectivity to the server.</li>
 <li><p>Switch over to the <code>Analysis Services</code> tab and select the server for the analysis services from the server list.</p>
 
@@ -122,6 +123,9 @@
 </ul>
 
 
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
 		<div id="disqus_thread"></div>
 <script>
     var reset_disqus = function(){
@@ -150,6 +154,9 @@
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
 </div>
 
   </div>

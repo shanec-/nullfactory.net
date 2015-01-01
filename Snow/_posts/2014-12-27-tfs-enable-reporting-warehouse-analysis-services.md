@@ -1,7 +1,7 @@
 ---
 layout: post
-title: TFS 2013 - Enabling Reporting, Warehouse and Analysis Services 
-category: ALM, Team Foundation Server
+title: TFS 2013 - Enabling Reporting, Warehouse and Analysis Services
+category: Team Foundation Server
 ---
 
 Suppose you already have an Team Foundation Server (TFS) environment where you have opted-out from configuring the Reporting Services and Analysis Services during the installation. The following steps would help you to configure the warehouse and reporting functionality.
@@ -16,8 +16,8 @@ Suppose you already have an Team Foundation Server (TFS) environment where you h
 
 	Once installed, make sure to restart the TFS administration console.
 
-1. Ensure that `Management Tools - Complete` is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance. 
-1. Ensure that the Analysis Services have been installed and is up and running. 
+1. Ensure that `Management Tools - Complete` is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.
+1. Ensure that the Analysis Services have been installed and is up and running.
 1. Ensure SQL Server Reporting Services is installed and configured in native mode [[Read More]](http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx).
 1. This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.
 
@@ -31,11 +31,11 @@ Suppose you already have an Team Foundation Server (TFS) environment where you h
 
 1. Click `Edit` to edit the configuration.
 1. Check the `Use Reporting` check box to get started.
-1. Configure the warehouse house by first selecting the SQL server from the server list. 
+1. Configure the warehouse house by first selecting the SQL server from the server list.
 
 	![](/images/posts/TFSEnableReportingAnalysisServices/2_WarehouseDetails.png)
 
-1. Next, provide a name for the warehouse database; I gave it `Tfs_Warehouse` as it is what the latest versions of TFS provides by default.   
+1. Next, provide a name for the warehouse database; I gave it `Tfs_Warehouse` as it is what the latest versions of TFS provides by default.
 1. Click `Test Connection` to ensure the connectivity to the server.
 1. Switch over to the `Analysis Services` tab and select the server for the analysis services from the server list.
 
@@ -46,7 +46,7 @@ Suppose you already have an Team Foundation Server (TFS) environment where you h
 1. Click `Test Connection` to ensure the connectivity to the server.
 1. Next select the `Reports` tab.
 1. Select the report server from the server list.
-	
+
 	![](/images/posts/TFSEnableReportingAnalysisServices/4_ReportingDetails.png)
 
 1. Click the `Populate URLs`. This would retrieve the Web Service and Report Manager urls. In case they are not populated automatically, provide the details manually.
@@ -60,7 +60,7 @@ Suppose you already have an Team Foundation Server (TFS) environment where you h
 	1. Executing the `RebuildWarehouse` command [[Read More]](http://msdn.microsoft.com/en-us/library/ee349264.aspx).
 	2. Navigate to the `WarehouseControlService` webservice and execute `ProcessAnalysisDatabase` with `processingType` of `Full` [[Read More]](http://msdn.microsoft.com/en-us/library/ff400237.aspx).
 	3. Open up the TFS Administration Console and navigate to `Application Tier > Reporting > Start Rebuild `
-	
+
 		![](/images/posts/TFSEnableReportingAnalysisServices/6_RebuildConfirmation.png)
 
 ## Verification

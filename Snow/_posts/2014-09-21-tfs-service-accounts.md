@@ -1,11 +1,11 @@
 ---
 layout: post
 title: Team Foundation Server - Service Accounts
-category: ALM, Team Foundation Server
+category: Team Foundation Server
 ---
 Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.
 
-In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS. 
+In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS.
 
 ## Overview
 
@@ -48,7 +48,7 @@ The steps are very similar to Log on as a service. Follow steps 1-3 and on the l
 
 Two service accounts need to be updated with permissions in order to properly integrate with SSRS. Here is a summary of what is required:
 
-- `TFSReports` - Used as the service account for the reporting services. 
+- `TFSReports` - Used as the service account for the reporting services.
 	- Allowed to log on locally on the Application Tiers as well as the report Server itself.
 	- `TFSWareHouseDataReader` role on the report server.
 - `TFSService` - This account needs to be added as a `Content Manager` in the report server.

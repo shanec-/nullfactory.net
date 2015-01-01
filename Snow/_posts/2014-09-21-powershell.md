@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Extract YouTube direct video url via Powershell
-category: Powershell, HtmlAgilityPack
+category: PowerShell, HtmlAgilityPack
 ---
 It's been a while since I've have had the opportunity to write any powershell. So I decided to do something before my muscle memory atrophies completely.
 

@@ -30,10 +30,10 @@
 
 &lt;h3&gt;Build Definition (Server)&lt;/h3&gt;
 
-&lt;p&gt;Configuring the build definition is pretty straight forward: &lt;/p&gt;
+&lt;p&gt;Configuring the build definition is pretty straight forward:&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code. &lt;/li&gt;
+&lt;li&gt;Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code.&lt;/li&gt;
 &lt;li&gt;Grant build service account write access permission to the folder.  &lt;/li&gt;
 &lt;li&gt;Grant all project contributors read access to this folder.&lt;/li&gt;
 &lt;li&gt;Edit the build definition by providing a value to the &lt;code&gt;Publish Symbols &amp;gt; Path to publish symbols&lt;/code&gt; property. Set it to the previously created network folder.&lt;/li&gt;
@@ -78,8 +78,8 @@
 &lt;p&gt;This can be fixed by re-running the SQL Server setup and adding the &lt;code&gt;Client Tools Connectivity&lt;/code&gt; feature &lt;a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Once installed, make sure to restart the TFS administration console.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ensure that &lt;code&gt;Management Tools - Complete&lt;/code&gt; is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Ensure that the Analysis Services have been installed and is up and running. &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure that &lt;code&gt;Management Tools - Complete&lt;/code&gt; is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Ensure that the Analysis Services have been installed and is up and running.&lt;/li&gt;
 &lt;li&gt;Ensure SQL Server Reporting Services is installed and configured in native mode &lt;a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.&lt;/li&gt;
 &lt;/ol&gt;
@@ -96,8 +96,8 @@
 &lt;p&gt;This can be fixed by re-running the SQL Server setup and adding the &lt;code&gt;Client Tools Connectivity&lt;/code&gt; feature &lt;a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Once installed, make sure to restart the TFS administration console.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ensure that &lt;code&gt;Management Tools - Complete&lt;/code&gt; is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Ensure that the Analysis Services have been installed and is up and running. &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure that &lt;code&gt;Management Tools - Complete&lt;/code&gt; is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Ensure that the Analysis Services have been installed and is up and running.&lt;/li&gt;
 &lt;li&gt;Ensure SQL Server Reporting Services is installed and configured in native mode &lt;a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.&lt;/li&gt;
 &lt;/ol&gt;
@@ -112,10 +112,10 @@
 &lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/1_ConsoleUnconfigured.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Click &lt;code&gt;Edit&lt;/code&gt; to edit the configuration.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;Check the &lt;code&gt;Use Reporting&lt;/code&gt; check box to get started.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Configure the warehouse house by first selecting the SQL server from the server list. &lt;/p&gt;
+&lt;li&gt;&lt;p&gt;Configure the warehouse house by first selecting the SQL server from the server list.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/2_WarehouseDetails.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, provide a name for the warehouse database; I gave it &lt;code&gt;Tfs_Warehouse&lt;/code&gt; as it is what the latest versions of TFS provides by default.   &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, provide a name for the warehouse database; I gave it &lt;code&gt;Tfs_Warehouse&lt;/code&gt; as it is what the latest versions of TFS provides by default.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;Click &lt;code&gt;Test Connection&lt;/code&gt; to ensure the connectivity to the server.&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Switch over to the &lt;code&gt;Analysis Services&lt;/code&gt; tab and select the server for the analysis services from the server list.&lt;/p&gt;
 
@@ -400,7 +400,7 @@ Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah
 &lt;p&gt;Same disclaimer applies to this post as per my previous attempts. This was written for educational purposes and I am pretty sure that it is violating the TOS video streaming service or keepvid itself. Therefore please use at your own discretion.&lt;/p&gt;
 </a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2014/09/tfs-service-accounts/</guid><link>http://nullfactory.net/2014/09/tfs-service-accounts/</link><title>Team Foundation Server - Service Accounts</title><description>&lt;p&gt;Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.&lt;/p&gt;
 
-&lt;p&gt;In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS. &lt;/p&gt;
+&lt;p&gt;In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS.&lt;/p&gt;
 
 &lt;h2&gt;Overview&lt;/h2&gt;
 
@@ -420,7 +420,7 @@ Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah
 
 </description><pubDate>Sat, 20 Sep 2014 18:30:00 Z</pubDate><a10:updated>2014-09-20T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.&lt;/p&gt;
 
-&lt;p&gt;In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS. &lt;/p&gt;
+&lt;p&gt;In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS.&lt;/p&gt;
 
 &lt;h2&gt;Overview&lt;/h2&gt;
 
@@ -466,7 +466,7 @@ Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah
 &lt;p&gt;Two service accounts need to be updated with permissions in order to properly integrate with SSRS. Here is a summary of what is required:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;TFSReports&lt;/code&gt; - Used as the service account for the reporting services. 
+&lt;li&gt;&lt;code&gt;TFSReports&lt;/code&gt; - Used as the service account for the reporting services.
 &lt;ul&gt;
 &lt;li&gt;Allowed to log on locally on the Application Tiers as well as the report Server itself.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;TFSWareHouseDataReader&lt;/code&gt; role on the report server.&lt;/li&gt;
