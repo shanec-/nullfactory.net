@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+  <meta name="keywords" content="ALM,Team Foundation Server" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/drafts/2014/12/setting-up-tfs-source-symbol-servers/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/drafts/2014/12/setting-up-tfs-source-symbol-servers/">Setting up Source and Symbol Servers in Team Foundation Server</a></h2>
+		<p class="post-date">31 Dec 2014</p>
+
+		
+
+		<h2>What are debug symbols?</h2>
+
+<p>Debug symbols are artifacts that a debugger can use in order to better debug an application. Within the.NET ecosystem these are managed through PDB files. The PDB files contain information about the source file name, line numbers as well as local variable names <a href="....">[read more]</a>.</p>
+
+<p>As a software solution evolves, it is likely that multiple versions of it gets deployed into different production systems. And once the software is out in the wild, it becomes important that the developers can react to issues discovered by debugging specific versions. In order to do this effectively, it is important that the debug symbols themselves be treated as an first class artifact of the build and that it is readily accessible. Team Foundation Server (TFS) achieves this via a Source Server and Symbol Server.</p>
+
+<h2>Source Server and Symbol Server</h2>
+
+<p>A Source Server component is essentially letting TFS know that we would be retrieving specific versions of source files and that it should be indexed. And a Symbol Server is a fancy name for a networked file share location containing the multiple versions of symbols <a href="http://blogs.msdn.com/b/jimlamb/archive/2009/06/15/symbol-and-source-server-in-tfs-2010.aspx">[read more]</a>.</p>
+
+<p>A TFS build definition will be configured in order to automatically index sources and publish symbols <a href="http://blogs.msdn.com/b/adamroot/archive/2009/06/17/source-server-and-symbol-server-features-in-team-foundation-server-2010-beta-1.aspx">[read more]</a>.</p>
+
+<h2>Configuration</h2>
+
+<p>There are two components that need to be configured for an effective workflow. The build definition; this would be instructing TFS to index the sources and publish the symbols. The other is the visual studio clients so that the symbols can be used.</p>
+
+<h3>Build Definition (Server)</h3>
+
+<p>Configuring the build definition is pretty straight forward: </p>
+
+<ol>
+<li>Setup a file share on a server other than the build agent. This server should be able to be accessed from the build agent as well as any clients that would be debugging the code. </li>
+<li>Grant build service account write access permission to the share.  </li>
+<li>Grant all project contributors read access to this folder.</li>
+<li>Set the <code>Index Sources</code> flag to true</li>
+<li>set the <code>sdsd</code> property to the previously setup folder.</li>
+</ol>
+
+<h3>Clients</h3>
+
+<p>Now that the server is setup, the clients need to be configured to take advantage of the symbols.</p>
+
+<ol>
+<li>Open up Visual Studio and navigate to <code>Tools &gt; Options &gt; Debugging &gt; Symbols</code></li>
+<li>Create a new symbol cache by clicking on the new icon</li>
+</ol>
+
+<h2>Conclusion</h2>
+
+<p>Now every time a new build is triggered, the debug symbols are published. </p>
+
+<p>Now that everything is configured visual studio should be able to pick up</p>
+
+<p>Intellisense</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx">Source Server and Symbol Server Support in TFS 2010 - Ed Squared</a></li>
+<li><a href="http://blogs.msdn.com/b/adamroot/archive/2009/06/17/source-server-and-symbol-server-features-in-team-foundation-server-2010-beta-1.aspx">MSDN Blogs - Source Server and Symbol Server Features in Team Foundation Server 2010 - Anything's Possible</a></li>
+<li><a href="http://blogs.msdn.com/b/jimlamb/archive/2009/06/15/symbol-and-source-server-in-tfs-2010.aspx">MSDN Blogs - Enabling Symbol and Source Server Support in TFS Build 2010</a></li>
+<li><a href="http://blogs.msdn.com/b/buckh/archive/2011/04/11/making-debugging-easier-source-indexing-and-symbol-server.aspx">MSDN Blogs - Making debugging easier: Source Indexing and Symbol Server</a></li>
+</ul>
+
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/drafts/2014/12/setting-up-tfs-source-symbol-servers/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/drafts/2014/12/setting-up-tfs-source-symbol-servers/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  
+</body>
+</html>
