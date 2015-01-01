@@ -42,6 +42,28 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Setting up Source and Symbol Servers in Team Foundation Server</a></h2>
+      <p class="post-date">01 Jan 2015</p>
+
+      <p>
+		
+		<h2>What are debug symbols?</h2>
+
+<p>Debug symbols are artifacts that a debugger can use in order to better debug an application. Within the.NET ecosystem these are managed through PDB files. The PDB files contain information about the source file name, line numbers as well as local variable names.</p>
+
+<p>As a software solution evolves, it is likely that multiple versions of it gets deployed into different production systems. And once the software is out in the wild, it becomes important that the developers can react to issues discovered by debugging specific versions. In order to do this effectively, it is important that the debug symbols themselves be treated as an first class artifact of the build and that it is readily accessible. Team Foundation Server (TFS) achieves this via a Source Server and Symbol Server.</p>
+
+<h2>The Source Server and Symbol Server</h2>
+
+<p>A Source Server component is essentially letting TFS know that we would be retrieving specific versions of source files and that it should be indexed. And a Symbol Server is a fancy name for a networked file share location containing the multiple versions of symbols <a href="http://blogs.msdn.com/b/jimlamb/archive/2009/06/15/symbol-and-source-server-in-tfs-2010.aspx">[read more]</a>.</p>
+
+<p>A TFS build definition will be configured in order to automatically index sources and publish symbols <a href="http://blogs.msdn.com/b/adamroot/archive/2009/06/17/source-server-and-symbol-server-features-in-team-foundation-server-2010-beta-1.aspx">[read more]</a>.</p>
+
+
+		<p><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">TFS 2013 - Enabling Reporting, Warehouse and Analysis Services</a></h2>
       <p class="post-date">27 Dec 2014</p>
 
