@@ -1,4 +1,31 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-01-11T14:31:34+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/01/tfs-scheduled-backups-not-working-quiesced/</id><title type="text">TFS Tip: Scheduled Backups Do Not Work While the Service Is Quiesced</title><summary type="html">&lt;p&gt;Last month I worked on upgrading a Team Foundation Server from 2012.2 to 2013.4. While majority of the process was based on the off of the &lt;a href="http://vsarupgradeguide.codeplex.com/"&gt;ALM Rangers upgrade guide&lt;/a&gt;, there were a few interesting tidbits that we learned during the upgrade.  &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-01-11T20:48:11+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/</id><title type="text">TFS Tip: Disable Windows Update Prior TFS Upgrade</title><summary type="html">&lt;p&gt;Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.&lt;/p&gt;
+
+&lt;p&gt;Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.&lt;/p&gt;
+
+&lt;p&gt;Personally I use the &lt;code&gt;net stop "windows update"&lt;/code&gt; command as it is only effective until you restart the computer/service.&lt;/p&gt;
+
+</summary><published>2015-01-10T18:30:00Z</published><updated>2015-01-10T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/" /><content type="html">&lt;p&gt;Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.&lt;/p&gt;
+
+&lt;p&gt;Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.&lt;/p&gt;
+
+&lt;p&gt;Personally I use the &lt;code&gt;net stop "windows update"&lt;/code&gt; command as it is only effective until you restart the computer/service.&lt;/p&gt;
+
+&lt;!--excerpt--&gt; 
+
+&lt;p&gt;Here are some ways to achieve the same: &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting"&gt;http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update"&gt;http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting"&gt;Super User - shutdown - How do I stop the Windows 8 restart clock; '15 minutes' and counting...?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update"&gt;WikiHow - 3 Ways to Disable Automatic Reboot After Windows Update&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2015/01/tfs-scheduled-backups-not-working-quiesced/</id><title type="text">TFS Tip: Scheduled Backups Do Not Work While the Service Is Quiesced</title><summary type="html">&lt;p&gt;Last month I worked on upgrading a Team Foundation Server from 2012.2 to 2013.4. While majority of the process was based on the off of the &lt;a href="http://vsarupgradeguide.codeplex.com/"&gt;ALM Rangers upgrade guide&lt;/a&gt;, there were a few interesting tidbits that we learned during the upgrade.  &lt;/p&gt;
 
 &lt;p&gt;The most important one was that Scheduled Backups feature no longer works if the services are stopped using the &lt;code&gt;TFSServiceControl quiesce&lt;/code&gt; command.&lt;/p&gt;
 

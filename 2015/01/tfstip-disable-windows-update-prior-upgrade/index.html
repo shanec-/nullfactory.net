@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Team Foundation Server" />
+	<meta name="keywords" content="ALM,Team Foundation Server,TFS Tips" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -15,7 +15,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
   <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
-	<link rel="canonical" href="http://nullfactory.net/drafts/2014/12/upgrading-tfs-2013-3-to-2013-4/" />
+	<link rel="canonical" href="http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/" />
 </head>
 <body>
   <!-- header -->
@@ -37,15 +37,36 @@
 	
 <div class="listing">
 	<div class="post other link">
-		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/drafts/2014/12/upgrading-tfs-2013-3-to-2013-4/">Upgrading TFS 2013.3 to 2013.4</a></h2>
-		<p class="post-date">27 Dec 2014
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">TFS Tip: Disable Windows Update Prior TFS Upgrade</a></h2>
+		<p class="post-date">11 Jan 2015
 				| <a href="/category/alm">ALM</a>
 				| <a href="/category/team-foundation-server">Team Foundation Server</a>
+				| <a href="/category/tfs-tips">TFS Tips</a>
 	  </p>
 
 		
 
-		<p></p>
+		<p>Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.</p>
+
+<p>Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.</p>
+
+<p>Personally I use the <code>net stop "windows update"</code> command as it is only effective until you restart the computer/service.</p>
+
+<!--excerpt--> 
+
+<p>Here are some ways to achieve the same: </p>
+
+<ul>
+<li><a href="http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting">http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting</a></li>
+<li><a href="http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update">http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update</a></li>
+</ul>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting">Super User - shutdown - How do I stop the Windows 8 restart clock; '15 minutes' and counting...?</a></li>
+<li><a href="http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update">WikiHow - 3 Ways to Disable Automatic Reboot After Windows Update</a></li>
+</ul>
 
 
 	<!-- Go to www.addthis.com/dashboard to customize your tools -->
@@ -58,14 +79,14 @@
             reload: true,
             config: function () {
                 //this.page.identifier = '';
-                this.page.url = 'http://nullfactory.net/drafts/2014/12/upgrading-tfs-2013-3-to-2013-4/';
+                this.page.url = 'http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/';
                 //this.page.title = '';
             }
         });
     };
 
     var disqus_shortname = 'thenullfactory';
-    var disqus_url = 'http://nullfactory.net/drafts/2014/12/upgrading-tfs-2013-3-to-2013-4/';
+    var disqus_url = 'http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -88,6 +109,20 @@
 
   <!-- /.main -->
 
-  
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </body>
 </html>
