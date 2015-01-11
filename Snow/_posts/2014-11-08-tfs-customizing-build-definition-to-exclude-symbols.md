@@ -1,21 +1,19 @@
 ---
 layout: post
 title: Team Foundation Server - Customizing a Build Definitions to Exclude Symbols in Symbol Server
-category: ALM, Team Foundation Server
+category: Team Foundation Server, Build
 published: draft
 ---
 
-## Overview
-
 In my previous post I wrote about updating the build definition in order to automatically publish the symbols. 
 
-This post was inspired by a feedback provided by one of the commenter on [this post](http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx). The individual required that certain third party symbols be omitted from being published to the Symbols Server and pushed to clients.
+This post was inspired by a feedback provided by one of the commenter on [this post](http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx). This individual required that certain third party symbols be omitted from being published to the Symbols Server.
+
 I thought I would take upon the challenge to implement the same.
 
 ## Pre-Requisites
 
-This assumes that you have already successfully setup a symbol server and  
-
+This assumes that you have already successfully setup a symbol server. If not, view my previous on how to set this up.  
 
 I have done successfully setup Symbol server in TFS. But i need to exclude third part pdb file at that time of publish to Symbol server.
 The options available in client side, but i need to setup in server side (TFS build).
