@@ -1,4 +1,109 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-01-11T20:48:11+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/</id><title type="text">TFS Tip: Disable Windows Update Prior TFS Upgrade</title><summary type="html">&lt;p&gt;Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-02-09T01:02:01+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/</id><title type="text">Customize a Build Template to Exclude Symbols From Being Published to the Symbol Server</title><summary type="html">&lt;p&gt;This post was inspired by a feedback provided by one of the commenters on &lt;a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx"&gt;this post&lt;/a&gt;. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.&lt;/p&gt;
+
+&lt;p&gt;As suggested in the same comment thread, my approach would revolve around explicitly setting the &lt;code&gt;FileList&lt;/code&gt; property in the &lt;code&gt;PublishSymbols&lt;/code&gt; activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.&lt;/p&gt;
+
+&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A properly configured symbol server. Check out my previous on &lt;a href="http://nullfactory.net/2015/01/setting-up-tfs-source-symbol-servers/"&gt;automatically publishing debug symbols&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Customization Steps&lt;/h2&gt;
+
+&lt;p&gt;My template is based on the default TFS template &lt;code&gt;TfvcTemplate.12.xaml&lt;/code&gt; and customized with the following changes:&lt;/p&gt;
+
+</summary><published>2015-02-08T18:30:00Z</published><updated>2015-02-08T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/" /><content type="html">&lt;p&gt;This post was inspired by a feedback provided by one of the commenters on &lt;a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx"&gt;this post&lt;/a&gt;. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.&lt;/p&gt;
+
+&lt;p&gt;As suggested in the same comment thread, my approach would revolve around explicitly setting the &lt;code&gt;FileList&lt;/code&gt; property in the &lt;code&gt;PublishSymbols&lt;/code&gt; activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.&lt;/p&gt;
+
+&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A properly configured symbol server. Check out my previous on &lt;a href="http://nullfactory.net/2015/01/setting-up-tfs-source-symbol-servers/"&gt;automatically publishing debug symbols&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Customization Steps&lt;/h2&gt;
+
+&lt;p&gt;My template is based on the default TFS template &lt;code&gt;TfvcTemplate.12.xaml&lt;/code&gt; and customized with the following changes:&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Start off by adding the build template parameter that accepts filter:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;ExclusionFilter&lt;/code&gt; - &lt;em&gt;Text that would be used as part of the wild card filter.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/10_Parameters.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, the variables that would be needed:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CustomAllSymbolsList&lt;/code&gt; - &lt;em&gt;Temporarily store the symbol files that are found&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CustomExcludedSymbolsList&lt;/code&gt; - &lt;em&gt;Temporarily store the symbols that need to be excluded.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CustomFilteredSymbolsList&lt;/code&gt; - &lt;em&gt;The final list of symbols that would be published to the symbol server.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;CustomBinDirectory&lt;/code&gt; - &lt;em&gt;Temporary store the Binaries Directory path.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/20_Variables.png" alt="Build Process Variables" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now get the &lt;code&gt;WellKnowEnvironmentalVariables.BinariesDirectory&lt;/code&gt; value using the &lt;code&gt;GetEnvironmentalVariable&amp;lt;T&amp;gt;&lt;/code&gt; activity.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/40_EnvronmentalVariableActivity.png" alt="GetEnvironmentalVariable&lt;T&gt;" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/30_EnvironmentalVariable.png" alt="Built-In Environmental Variable" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Get a list of all the available symbols from the build folder.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;This is done using a &lt;code&gt;FindMatchingFiles&lt;/code&gt; activity with a &lt;code&gt;String.Format("{0}\**\*.pdb", CustomBinDirectory)&lt;/code&gt; pattern.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/45_FindAllSymbols.png" alt="Find All Symbols" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Get a list of of symbols that need to be excluded from the Symbol Server.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Again, a &lt;code&gt;FindMatchingFiles&lt;/code&gt; activity with &lt;code&gt;String.Format("{0}\**\*{1}*.pdb", CustomBinDirectory, ExclusionFilter)&lt;/code&gt; pattern.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/47_FindSymbolsToExclude.png" alt="Find Symbols to be excluded" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Since the &lt;code&gt;FindMatchingFiles&lt;/code&gt; activity returns an &lt;code&gt;IEnumberable&amp;lt;string&amp;gt;&lt;/code&gt; we create a new list that we can actually manipulate.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/50_InitializeSymbolList.png" alt="Find Symbols to be excluded" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add all the symbols to the new list.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/60_AddToCollection.png" alt="Add symbols" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Remove the symbols that need to be excluded. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/70_RemoveFromCollection.png" alt="Remove symbols" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Pass the filtered collection into the &lt;code&gt;PublishSymbols&lt;/code&gt; activity via the &lt;code&gt;FileList&lt;/code&gt; property.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/80_PublishSymbols.png" alt="PublishSymbols Activity" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/90_FilteredPublishSymbols.png" alt="PublishSymbols, FileList" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Using the Build Definition&lt;/h2&gt;
+
+&lt;p&gt;Create a new build definition using the new template and provide valid values for &lt;code&gt;Path to publish symbols&lt;/code&gt;and &lt;code&gt;ExclusionFilter&lt;/code&gt; parameters. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/100_EditBuildDefinition.png" alt="Edit build definition" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, queue a new build and verify that the symbols are excluded the symbols store. &lt;/p&gt;
+
+&lt;p&gt;The final customized template can be &lt;a href="https://github.com/shanec-/Nullfactory.TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml"&gt;downloaded here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/hh190722.aspx"&gt;MSDN - Index and publish symbol data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_IndexSources"&gt;MSDN - Embed version control paths and versions into the symbol data in Your PDB files (IndexSources activity)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_PublishSymbols"&gt;MSDN - Publish symbols to a SymStore symbol store (PublishSymbols activity)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.ewaldhofman.nl/post/2010/04/27/Customize-Team-Build-2010-e28093-Part-2-Add-arguments-and-variables.aspx"&gt;Ewald Hofman | Customize Team Build 2010 – Part 2: Add arguments and variables&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/dd647551.aspx"&gt;MSDN- Customize your build process template&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-gb/library/hh850448.aspx"&gt;MSDN - Team Foundation Build environment variables&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/dn231755.aspx"&gt;MSDN - GetEnvironmentVariable&lt;T&gt; Class&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.build.activities.extensions.wellknownenvironmentvariables.binariesdirectory.aspx"&gt;MSDN - WellKnownEnvironmentVariables.BinariesDirectory Field&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/</id><title type="text">TFS Tip: Disable Windows Update Prior TFS Upgrade</title><summary type="html">&lt;p&gt;Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.&lt;/p&gt;
 
 &lt;p&gt;Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.&lt;/p&gt;
 
@@ -541,30 +646,4 @@ Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah
 &lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/cc739424(v=ws.10).aspx"&gt;Technet - Add the Log on as a service right to an account&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;[Technet - Allow log on locally](http://technet.microsoft.com/en-us/library/cc756809(v=ws.10).aspx&lt;/li&gt;
 &lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2014/08/bookmarks-organizer-source-published/</id><title type="text">Bookmarks Organizer Source Published</title><summary type="html">&lt;p&gt;I have been meaning to do this for a while and now finally got around to cleaning up and publishing the source. This was the first Windows Phone app that I actually saw through to completion and was pretty proud of it at the time. You can find the original posts &lt;a href="http://nullfactory.blogspot.com/2012/04/bookmark-organizer-01-for-windows-phone.html"&gt;here&lt;/a&gt; and &lt;a href="http://nullfactory.blogspot.com/2012/05/bookmark-organizer-02-with-skydrive.html"&gt;here&lt;/a&gt;  &lt;/p&gt;
-
-&lt;p&gt;Although the popularity of the 7.x branch is on the decline, I hope someone would have use for it.&lt;/p&gt;
-
-&lt;p&gt;The project is now distributed via &lt;a href="https://github.com/shanec-/Nullfactory.BookmarkSync"&gt;Github&lt;/a&gt;. Enjoy!&lt;/p&gt;
-
-</summary><published>2014-08-15T18:30:00Z</published><updated>2014-08-15T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/08/bookmarks-organizer-source-published/" /><content type="html">&lt;p&gt;I have been meaning to do this for a while and now finally got around to cleaning up and publishing the source. This was the first Windows Phone app that I actually saw through to completion and was pretty proud of it at the time. You can find the original posts &lt;a href="http://nullfactory.blogspot.com/2012/04/bookmark-organizer-01-for-windows-phone.html"&gt;here&lt;/a&gt; and &lt;a href="http://nullfactory.blogspot.com/2012/05/bookmark-organizer-02-with-skydrive.html"&gt;here&lt;/a&gt;  &lt;/p&gt;
-
-&lt;p&gt;Although the popularity of the 7.x branch is on the decline, I hope someone would have use for it.&lt;/p&gt;
-
-&lt;p&gt;The project is now distributed via &lt;a href="https://github.com/shanec-/Nullfactory.BookmarkSync"&gt;Github&lt;/a&gt;. Enjoy!&lt;/p&gt;
-
-&lt;!--excerpt--&gt;  
-
-&lt;p&gt;I recently viewed the One Drive application statistics and was pleasantly surprised to find quite a number of users that have used it over the last two years.&lt;/p&gt;
-
-&lt;h2&gt;Users&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/bookmark-organizer-users-2012.png" alt="" /&gt;
-&lt;img src="http://nullfactory.net/images/posts/bookmark-organizer-users-2013.png" alt="" /&gt;
-&lt;img src="http://nullfactory.net/images/posts/bookmark-organizer-users-2014.png" alt="" /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Requests&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/bookmark-organizer-requests-2013.png" alt="" /&gt;
-&lt;img src="http://nullfactory.net/images/posts/bookmark-organizer-requests-2014.png" alt="" /&gt;&lt;/p&gt;
 </content></entry></feed>

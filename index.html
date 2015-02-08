@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,Team Foundation Server,TFS Tips,Virtualization,Windows Phone" />
+	<meta name="keywords" content="ALM,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,34 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/02/tfs-customizie-build-template-to-exclude-symbols/">Customize a Build Template to Exclude Symbols From Being Published to the Symbol Server</a></h2>
+      <p class="post-date">09 Feb 2015
+
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/team-build" title="Team Build">Team Build</a>
+</p>
+
+      <p>
+		
+		<p>This post was inspired by a feedback provided by one of the commenters on <a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx">this post</a>. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.</p>
+
+<p>As suggested in the same comment thread, my approach would revolve around explicitly setting the <code>FileList</code> property in the <code>PublishSymbols</code> activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.</p>
+
+<h2>Pre-Requisites</h2>
+
+<ul>
+<li>A properly configured symbol server. Check out my previous on <a href="/2015/01/setting-up-tfs-source-symbol-servers/">automatically publishing debug symbols</a>.</li>
+</ul>
+
+<h2>Customization Steps</h2>
+
+<p>My template is based on the default TFS template <code>TfvcTemplate.12.xaml</code> and customized with the following changes:</p>
+
+
+		<p><a href="/2015/02/tfs-customizie-build-template-to-exclude-symbols/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">TFS Tip: Disable Windows Update Prior TFS Upgrade</a></h2>
       <p class="post-date">11 Jan 2015
@@ -273,26 +301,6 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
 		<p><a href="/2014/09/tfs-service-accounts/">Read more...</a></p>
 	  </p>
     </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/08/bookmarks-organizer-source-published/">Bookmarks Organizer Source Published</a></h2>
-      <p class="post-date">16 Aug 2014
-
-      | <a href="/category/mobile-development" title="Mobile Development">Mobile Development</a>
-      | <a href="/category/windows-phone" title="Windows Phone">Windows Phone</a>
-</p>
-
-      <p>
-		
-		<p>I have been meaning to do this for a while and now finally got around to cleaning up and publishing the source. This was the first Windows Phone app that I actually saw through to completion and was pretty proud of it at the time. You can find the original posts <a href="http://nullfactory.blogspot.com/2012/04/bookmark-organizer-01-for-windows-phone.html">here</a> and <a href="http://nullfactory.blogspot.com/2012/05/bookmark-organizer-02-with-skydrive.html">here</a>  </p>
-
-<p>Although the popularity of the 7.x branch is on the decline, I hope someone would have use for it.</p>
-
-<p>The project is now distributed via <a href="https://github.com/shanec-/Nullfactory.BookmarkSync">Github</a>. Enjoy!</p>
-
-
-		<p><a href="/2014/08/bookmarks-organizer-source-published/">Read more...</a></p>
-	  </p>
-    </div>
 </div>
 
   <div id="post-pagination" class="pagination">
@@ -301,6 +309,9 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
 
       <!--<a href="/">Previous Page</a>-->
 
+    <p class="previous">
+      <a href="/page2">Next Page</a>
+    </p>
 
   </div>
 

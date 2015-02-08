@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Team Foundation Server,Team Build" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/02/tfs-customizie-build-template-to-exclude-symbols/">Customize a Build Template to Exclude Symbols From Being Published to the Symbol Server</a></h2>
+		<p class="post-date">09 Feb 2015
+				| <a href="/category/team-foundation-server">Team Foundation Server</a>
+				| <a href="/category/team-build">Team Build</a>
+	  </p>
+
+		
+
+		<p>This post was inspired by a feedback provided by one of the commenters on <a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx">this post</a>. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.</p>
+
+<p>As suggested in the same comment thread, my approach would revolve around explicitly setting the <code>FileList</code> property in the <code>PublishSymbols</code> activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.</p>
+
+<h2>Pre-Requisites</h2>
+
+<ul>
+<li>A properly configured symbol server. Check out my previous on <a href="/2015/01/setting-up-tfs-source-symbol-servers/">automatically publishing debug symbols</a>.</li>
+</ul>
+
+<h2>Customization Steps</h2>
+
+<p>My template is based on the default TFS template <code>TfvcTemplate.12.xaml</code> and customized with the following changes:</p>
+
+<!--excerpt-->
+
+<ol>
+<li><p>Start off by adding the build template parameter that accepts filter:</p>
+
+<ul>
+<li><p><code>ExclusionFilter</code> - <em>Text that would be used as part of the wild card filter.</em></p>
+
+<p><img src="/images/posts/ExcludeSymbols/10_Parameters.png" alt="Build Process Parameter" /></p></li>
+</ul></li>
+<li><p>Next, the variables that would be needed:</p>
+
+<ul>
+<li><code>CustomAllSymbolsList</code> - <em>Temporarily store the symbol files that are found</em></li>
+<li><code>CustomExcludedSymbolsList</code> - <em>Temporarily store the symbols that need to be excluded.</em></li>
+<li><code>CustomFilteredSymbolsList</code> - <em>The final list of symbols that would be published to the symbol server.</em></li>
+<li><p><code>CustomBinDirectory</code> - <em>Temporary store the Binaries Directory path.</em></p>
+
+<p><img src="/images/posts/ExcludeSymbols/20_Variables.png" alt="Build Process Variables" /></p></li>
+</ul></li>
+<li><p>Now get the <code>WellKnowEnvironmentalVariables.BinariesDirectory</code> value using the <code>GetEnvironmentalVariable&lt;T&gt;</code> activity.</p>
+
+<p><img src="/images/posts/ExcludeSymbols/40_EnvronmentalVariableActivity.png" alt="GetEnvironmentalVariable<T>" /></p>
+
+<p><img src="/images/posts/ExcludeSymbols/30_EnvironmentalVariable.png" alt="Built-In Environmental Variable" /></p></li>
+<li><p>Get a list of all the available symbols from the build folder.</p>
+
+<ul>
+<li>This is done using a <code>FindMatchingFiles</code> activity with a <code>String.Format("{0}\**\*.pdb", CustomBinDirectory)</code> pattern.</li>
+</ul>
+
+<p><img src="/images/posts/ExcludeSymbols/45_FindAllSymbols.png" alt="Find All Symbols" /></p></li>
+<li><p>Get a list of of symbols that need to be excluded from the Symbol Server.</p>
+
+<ul>
+<li>Again, a <code>FindMatchingFiles</code> activity with <code>String.Format("{0}\**\*{1}*.pdb", CustomBinDirectory, ExclusionFilter)</code> pattern.</li>
+</ul>
+
+<p><img src="/images/posts/ExcludeSymbols/47_FindSymbolsToExclude.png" alt="Find Symbols to be excluded" /></p></li>
+<li><p>Since the <code>FindMatchingFiles</code> activity returns an <code>IEnumberable&lt;string&gt;</code> we create a new list that we can actually manipulate.</p>
+
+<p><img src="/images/posts/ExcludeSymbols/50_InitializeSymbolList.png" alt="Find Symbols to be excluded" /></p></li>
+<li><p>Add all the symbols to the new list.</p>
+
+<p><img src="/images/posts/ExcludeSymbols/60_AddToCollection.png" alt="Add symbols" /></p></li>
+<li><p>Remove the symbols that need to be excluded. </p>
+
+<p><img src="/images/posts/ExcludeSymbols/70_RemoveFromCollection.png" alt="Remove symbols" /></p></li>
+<li><p>Pass the filtered collection into the <code>PublishSymbols</code> activity via the <code>FileList</code> property.</p>
+
+<p><img src="/images/posts/ExcludeSymbols/80_PublishSymbols.png" alt="PublishSymbols Activity" /></p>
+
+<p><img src="/images/posts/ExcludeSymbols/90_FilteredPublishSymbols.png" alt="PublishSymbols, FileList" /></p></li>
+</ol>
+
+<h2>Using the Build Definition</h2>
+
+<p>Create a new build definition using the new template and provide valid values for <code>Path to publish symbols</code>and <code>ExclusionFilter</code> parameters. </p>
+
+<p><img src="/images/posts/ExcludeSymbols/100_EditBuildDefinition.png" alt="Edit build definition" /></p>
+
+<p>Finally, queue a new build and verify that the symbols are excluded the symbols store. </p>
+
+<p>The final customized template can be <a href="https://github.com/shanec-/Nullfactory.TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml">downloaded here</a>.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/hh190722.aspx">MSDN - Index and publish symbol data</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_IndexSources">MSDN - Embed version control paths and versions into the symbol data in Your PDB files (IndexSources activity)</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_PublishSymbols">MSDN - Publish symbols to a SymStore symbol store (PublishSymbols activity)</a></li>
+<li><a href="http://www.ewaldhofman.nl/post/2010/04/27/Customize-Team-Build-2010-e28093-Part-2-Add-arguments-and-variables.aspx">Ewald Hofman | Customize Team Build 2010 – Part 2: Add arguments and variables</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/library/dd647551.aspx">MSDN- Customize your build process template</a></li>
+<li><a href="http://msdn.microsoft.com/en-gb/library/hh850448.aspx">MSDN - Team Foundation Build environment variables</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/dn231755.aspx">MSDN - GetEnvironmentVariable<T> Class</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.build.activities.extensions.wellknownenvironmentvariables.binariesdirectory.aspx">MSDN - WellKnownEnvironmentVariables.BinariesDirectory Field</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
