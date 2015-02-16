@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="SharePoint,SQL Server Reporting Services,Code Access Security" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/02/obfuscate-sharepoint-ssrs-datasource/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/02/obfuscate-sharepoint-ssrs-datasource/">Obfuscating a SharePoint-Integrated SSRS DataSource's Connection String</a></h2>
+		<p class="post-date">16 Feb 2015
+				| <a href="/category/sharepoint">SharePoint</a>
+				| <a href="/category/sql-server-reporting-services">SQL Server Reporting Services</a>
+				| <a href="/category/code-access-security">Code Access Security</a>
+	  </p>
+
+		
+
+		<p>When SQL Server Reporting Services (SSRS) is deployed as an SharePoint integrated solution, it enables much of its functionality to be managed right from within SharePoint. Starting from the 2013 version, the integration between SharePoint and SQL Server Reporting Services 2012 is more tightly coupled than previous iterations. </p>
+
+<p>One feature in integrated mode is the ability to have the data sources (.rsds) and report files (.rdl) within a document library itself. This means that reports can reference a DataSource within any document library in the SharePoint site. </p>
+
+<p>In order for the report to work the user should have read permission on both the data source as well as the report file. The problem with this is that the same user can now potentially view the settings within the data source file, including the connection string.</p>
+
+<h2>The Solution</h2>
+
+<p>In order to protect the connection string, I came up with a solution to obscure it through encryption. The solution can be broken down to two major steps:</p>
+
+<ol>
+<li>Force the reports to get the connection string by evaluating an expression embedded within itself. </li>
+<li>Within this expression, call some custom code which manages the retrieval and decryption of the connection string. </li>
+</ol>
+
+<p>One of the limitations with this method is that you can no longer use a shared data source and each report has to have its credentials embedded.</p>
+
+<p>In my example below, I will be retrieving the configuration string from a configuration list stored in the same SharePoint server. </p>
+
+<!--excerpt-->
+
+<h3>Create the report extensions assembly</h3>
+
+<p>Here's a summary of steps used to create report extension. You can find a link to the full source at the bottom of the post.</p>
+
+<ol>
+<li>Create new a class library to host your custom code.</li>
+<li>Next, sign the assembly as we would be deploying it into the Global Assembly Cache. </li>
+<li><p>In order for the report server to call the custom code, the strong-named assembly must be marked with the <code>[assembly: AllowPartiallyTrustedCallers]</code> attribute. Let's do this now.</p>
+
+<p><img src="/images/posts/ObfuscateSSRS/10_AllowPartiallyTrustedCallers.png" alt="Allow Partially Trusted Callers" /></p></li>
+<li><p>Create a new public class and method that would retrieve the connection string. This method would take the report server url as its only parameter. This parameter would be parsed and later used to generate the REST call to SharePoint. Next, add a <code>[SecuritySafeCritical]</code> attribute to the method, we need to this to perform operations that require access outside of the sandbox. </p>
+
+<p><img src="/images/posts/ObfuscateSSRS/20_CodeGetConnectionString.png" alt="GetConnectionStringMethod" /></p></li>
+<li><p>Now, create a helper method that retrieves the default credentials. This too would be decorated with the <code>[SecuritySafeCritical]</code> attribute. In the body of the method, I explicitly assert the <code>EnvironmentPermission(EnvironmentPermissionAccess.Read, "USERNAME")</code> permissions before using the <code>CredentialStore</code>. We would run into a security exception if the explicit assertion is not done. </p>
+
+<p><img src="/images/posts/ObfuscateSSRS/50_CodeGetSecurityCredentials.png" alt="GetSecurityCredential Method" /></p></li>
+<li><p>Finally, create the method that makes the REST call to retrieve the obfuscated connection string from a SharePoint configuration list.</p>
+
+<p><img src="/images/posts/ObfuscateSSRS/40_CodeGetWebPermission.png" alt="GetConnectionStringFromSharePointList Method" /></p></li>
+<li><p>The <code>EnvironmentPermission</code> assertion operation has to be in its own method with its own <code>[SecuritySafeCritical]</code> attribute for it to work together with the <code>WebPermission</code> assertion. Otherwise the following exception would be thrown:</p>
+
+<pre><code>Exception: System.Security.SecurityException Exception Message: Stack walk modifier must be reverted before another modification of the same type can be performed. Stacktrace:    at System.Security.CodeAccessSecurityEngine.Assert(CodeAccessPermission cap, StackCrawlMark&amp; stackMark)
+   at System.Security.CodeAccessPermission.Assert()
+</code></pre>
+
+<p>After numerous failed attempts at accessing the SPList via the SharePoint object model (I kept running into exceptions stating that I required full trust), I find that partial trust mode is <a href="https://msdn.microsoft.com/en-us/library/office/dn268593.aspx">no longer supported and has been deprecated</a>. As I was unable to find anyone online who had successfully got it to work, I opted to access the list via the REST service for its lesser dependencies and security permission requirements. </p></li>
+<li><p>Compile and deploy the assembly into the Global Assembly Cache.</p></li>
+</ol>
+
+<h3>Setting up the Report</h3>
+
+<ol>
+<li>Open up a copy of your report using the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=29072">latest version of Report Builder</a>. </li>
+<li><p>Right click on the work space area outside to bring up the context menu. Select the <code>Report Properties...</code> menu item which opens up the <code>Report Properties</code> dialog.</p>
+
+<p><img src="/images/posts/ObfuscateSSRS/60_ReportPropertiesContextMenu.png" alt="Build Process Parameter" /></p>
+
+<p><img src="/images/posts/ObfuscateSSRS/70_ReoprtPropertiesDialog.png" alt="Build Process Parameter" /></p></li>
+<li><p>Navigate to the <code>References</code> tab and add an entry for our custom assembly.</p></li>
+<li><p>Next, create a new entry for the class containing our custom logic. Ensure that the class name is referred to using it full namespace and provide an instance name that would be used to call our code from within the report.  </p>
+
+<p><img src="/images/posts/ObfuscateSSRS/80_ReportPropertiesDialog.png" alt="Build Process Parameter" /></p></li>
+<li><p>Now that our declarations have been done, edit the report data source for the report.</p>
+
+<p><img src="/images/posts/ObfuscateSSRS/90_EditDataSource.png" alt="Build Process Parameter" /></p></li>
+<li><p>Click on the <code>fx</code> button to open up the expressions dialog.</p>
+
+<p><img src="/images/posts/ObfuscateSSRS/100_ConnStringSetExpression0.png" alt="Build Process Parameter" /></p></li>
+<li><p>Edit the expression to use the new custom method created previously. Pass in <code>Globals!ReportServerUrl</code> as the method parameter.</p>
+
+<p><img src="/images/posts/ObfuscateSSRS/110_ConnStringSetExpression1.png" alt="Build Process Parameter" /></p></li>
+<li><p>Now, upload the updated report back into the SharePoint list hosting our report files. If you already have a report with the same name and with a shared data source linked to it, our connection details would be overwritten. In order to avoid this, delete the report in the list and re-upload our new one. </p></li>
+<li><p>Next, edit the Report Data Source by selecting the <code>Manage Data Sources</code> menu item in the context menu. Ensure that connection type is set to <code>Custom data source</code> and connection string to <code>Use connection string expression defined in the report</code>.</p>
+
+<p><img src="/images/posts/ObfuscateSSRS/130_ManageDataSource.png" alt="Build Process Parameter" /></p>
+
+<p><img src="/images/posts/ObfuscateSSRS/120_ConnStringNotInitialized.png" alt="Build Process Parameter" /></p></li>
+<li><p>For the credentials, I will be using stored credentials. Note that the <code>Test Connection</code> button does not work if the connection string needs to be evaluated at runtime.</p></li>
+</ol>
+
+<h2>Final Thoughts</h2>
+
+<ul>
+<li>You can find the <a href="https://github.com/shanec-/Nullfactory.SSRSExtensions">source here</a>. It is meant only to be a template and should be extended to work with your own requirements.</li>
+<li>Since the custom assembly needs to be deployed into the Global Assembly Cache, I suggest including it as <a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx">part of the SharePoint Solution Package</a> when automating your deployment process. </li>
+<li>Although this implementation was tested with a Microsoft SQL Server data source type, I suspect it can be altered to work with different connection types.</li>
+</ul>
+
+<p>I would finally like to highlight the following articles as they gave me a lot of insight into Code Access Security (CAS) and better understanding of the security requirements I needed to address:</p>
+
+<ul>
+<li><a href="https://www.simple-talk.com/dotnet/.net-framework/code-access-security-in-asp.net-4.0/">Simple-Talk - Code Access Security in ASP.NET 4.0</a></li>
+<li><a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-i/">Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part I</a></li>
+<li><a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-2/">Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part 2</a></li>
+</ul>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://technet.microsoft.com/en-us/library/bb326290%28v=sql.105%29.aspx">Technet - Features Supported by Reporting Services in SharePoint Integrated Mode</a></li>
+<li><a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/d4588e88-5cb9-47cf-817b-a69942c507ac/how-to-use-microsoftsharepointdll-api-in-custom-assembly-of-ssrs-report?forum=sqlreportingservices">MSDN Forums - How to use "Microsoft.SharePoint.dll" API in custom assembly of SSRS report</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ms154658.aspx">MSDN - Code Access Security in Reporting Services</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ms153561.aspx">MSDN - Using Custom Assemblies with Reports</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ms154645.aspx">MSDN - Referencing Assemblies in an RDL File</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ms155034.aspx">MSDN - Deploying a Custom Assembly</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ms153587.aspx">MSDN - Asserting Permissions in Custom Assemblies</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ms154507.aspx">MSDN - Accessing Custom Assemblies Through Expressions</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ms153693.aspx">MSDN - How to: Debug Custom Assemblies</a></li>
+<li><a href="https://www.simple-talk.com/dotnet/.net-framework/code-access-security-in-asp.net-4.0/">Simple-Talk - Code Access Security in ASP.NET 4.0</a></li>
+<li><a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-i/">Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part I</a></li>
+<li><a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-2/">Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part 2</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/office/dn268593.aspx">MSDN - Deciding between apps for SharePoint and SharePoint solution - Partial-trust user code is deprecated</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx">MSDN - How to: Add and Remove Additional Assemblies</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/02/obfuscate-sharepoint-ssrs-datasource/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/02/obfuscate-sharepoint-ssrs-datasource/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

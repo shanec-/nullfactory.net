@@ -1,4 +1,138 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-02-09T01:02:01+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/</id><title type="text">Customize a Build Template to Exclude Symbols From Being Published to the Symbol Server</title><summary type="html">&lt;p&gt;This post was inspired by a feedback provided by one of the commenters on &lt;a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx"&gt;this post&lt;/a&gt;. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-02-16T17:37:20+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/02/obfuscate-sharepoint-ssrs-datasource/</id><title type="text">Obfuscating a SharePoint-Integrated SSRS DataSource's Connection String</title><summary type="html">&lt;p&gt;When SQL Server Reporting Services (SSRS) is deployed as an SharePoint integrated solution, it enables much of its functionality to be managed right from within SharePoint. Starting from the 2013 version, the integration between SharePoint and SQL Server Reporting Services 2012 is more tightly coupled than previous iterations. &lt;/p&gt;
+
+&lt;p&gt;One feature in integrated mode is the ability to have the data sources (.rsds) and report files (.rdl) within a document library itself. This means that reports can reference a DataSource within any document library in the SharePoint site. &lt;/p&gt;
+
+&lt;p&gt;In order for the report to work the user should have read permission on both the data source as well as the report file. The problem with this is that the same user can now potentially view the settings within the data source file, including the connection string.&lt;/p&gt;
+
+&lt;h2&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;In order to protect the connection string, I came up with a solution to obscure it through encryption. The solution can be broken down to two major steps:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Force the reports to get the connection string by evaluating an expression embedded within itself. &lt;/li&gt;
+&lt;li&gt;Within this expression, call some custom code which manages the retrieval and decryption of the connection string. &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;One of the limitations with this method is that you can no longer use a shared data source and each report has to have its credentials embedded.&lt;/p&gt;
+
+&lt;p&gt;In my example below, I will be retrieving the configuration string from a configuration list stored in the same SharePoint server. &lt;/p&gt;
+
+</summary><published>2015-02-15T18:30:00Z</published><updated>2015-02-15T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/02/obfuscate-sharepoint-ssrs-datasource/" /><content type="html">&lt;p&gt;When SQL Server Reporting Services (SSRS) is deployed as an SharePoint integrated solution, it enables much of its functionality to be managed right from within SharePoint. Starting from the 2013 version, the integration between SharePoint and SQL Server Reporting Services 2012 is more tightly coupled than previous iterations. &lt;/p&gt;
+
+&lt;p&gt;One feature in integrated mode is the ability to have the data sources (.rsds) and report files (.rdl) within a document library itself. This means that reports can reference a DataSource within any document library in the SharePoint site. &lt;/p&gt;
+
+&lt;p&gt;In order for the report to work the user should have read permission on both the data source as well as the report file. The problem with this is that the same user can now potentially view the settings within the data source file, including the connection string.&lt;/p&gt;
+
+&lt;h2&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;In order to protect the connection string, I came up with a solution to obscure it through encryption. The solution can be broken down to two major steps:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Force the reports to get the connection string by evaluating an expression embedded within itself. &lt;/li&gt;
+&lt;li&gt;Within this expression, call some custom code which manages the retrieval and decryption of the connection string. &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;One of the limitations with this method is that you can no longer use a shared data source and each report has to have its credentials embedded.&lt;/p&gt;
+
+&lt;p&gt;In my example below, I will be retrieving the configuration string from a configuration list stored in the same SharePoint server. &lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h3&gt;Create the report extensions assembly&lt;/h3&gt;
+
+&lt;p&gt;Here's a summary of steps used to create report extension. You can find a link to the full source at the bottom of the post.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create new a class library to host your custom code.&lt;/li&gt;
+&lt;li&gt;Next, sign the assembly as we would be deploying it into the Global Assembly Cache. &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In order for the report server to call the custom code, the strong-named assembly must be marked with the &lt;code&gt;[assembly: AllowPartiallyTrustedCallers]&lt;/code&gt; attribute. Let's do this now.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/10_AllowPartiallyTrustedCallers.png" alt="Allow Partially Trusted Callers" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Create a new public class and method that would retrieve the connection string. This method would take the report server url as its only parameter. This parameter would be parsed and later used to generate the REST call to SharePoint. Next, add a &lt;code&gt;[SecuritySafeCritical]&lt;/code&gt; attribute to the method, we need to this to perform operations that require access outside of the sandbox. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/20_CodeGetConnectionString.png" alt="GetConnectionStringMethod" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now, create a helper method that retrieves the default credentials. This too would be decorated with the &lt;code&gt;[SecuritySafeCritical]&lt;/code&gt; attribute. In the body of the method, I explicitly assert the &lt;code&gt;EnvironmentPermission(EnvironmentPermissionAccess.Read, "USERNAME")&lt;/code&gt; permissions before using the &lt;code&gt;CredentialStore&lt;/code&gt;. We would run into a security exception if the explicit assertion is not done. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/50_CodeGetSecurityCredentials.png" alt="GetSecurityCredential Method" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Finally, create the method that makes the REST call to retrieve the obfuscated connection string from a SharePoint configuration list.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/40_CodeGetWebPermission.png" alt="GetConnectionStringFromSharePointList Method" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;EnvironmentPermission&lt;/code&gt; assertion operation has to be in its own method with its own &lt;code&gt;[SecuritySafeCritical]&lt;/code&gt; attribute for it to work together with the &lt;code&gt;WebPermission&lt;/code&gt; assertion. Otherwise the following exception would be thrown:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Exception: System.Security.SecurityException Exception Message: Stack walk modifier must be reverted before another modification of the same type can be performed. Stacktrace:    at System.Security.CodeAccessSecurityEngine.Assert(CodeAccessPermission cap, StackCrawlMark&amp;amp; stackMark)
+   at System.Security.CodeAccessPermission.Assert()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After numerous failed attempts at accessing the SPList via the SharePoint object model (I kept running into exceptions stating that I required full trust), I find that partial trust mode is &lt;a href="https://msdn.microsoft.com/en-us/library/office/dn268593.aspx"&gt;no longer supported and has been deprecated&lt;/a&gt;. As I was unable to find anyone online who had successfully got it to work, I opted to access the list via the REST service for its lesser dependencies and security permission requirements. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Compile and deploy the assembly into the Global Assembly Cache.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Setting up the Report&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open up a copy of your report using the &lt;a href="http://www.microsoft.com/en-us/download/details.aspx?id=29072"&gt;latest version of Report Builder&lt;/a&gt;. &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Right click on the work space area outside to bring up the context menu. Select the &lt;code&gt;Report Properties...&lt;/code&gt; menu item which opens up the &lt;code&gt;Report Properties&lt;/code&gt; dialog.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/60_ReportPropertiesContextMenu.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/70_ReoprtPropertiesDialog.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Navigate to the &lt;code&gt;References&lt;/code&gt; tab and add an entry for our custom assembly.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, create a new entry for the class containing our custom logic. Ensure that the class name is referred to using it full namespace and provide an instance name that would be used to call our code from within the report.  &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/80_ReportPropertiesDialog.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now that our declarations have been done, edit the report data source for the report.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/90_EditDataSource.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on the &lt;code&gt;fx&lt;/code&gt; button to open up the expressions dialog.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/100_ConnStringSetExpression0.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Edit the expression to use the new custom method created previously. Pass in &lt;code&gt;Globals!ReportServerUrl&lt;/code&gt; as the method parameter.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/110_ConnStringSetExpression1.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now, upload the updated report back into the SharePoint list hosting our report files. If you already have a report with the same name and with a shared data source linked to it, our connection details would be overwritten. In order to avoid this, delete the report in the list and re-upload our new one. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, edit the Report Data Source by selecting the &lt;code&gt;Manage Data Sources&lt;/code&gt; menu item in the context menu. Ensure that connection type is set to &lt;code&gt;Custom data source&lt;/code&gt; and connection string to &lt;code&gt;Use connection string expression defined in the report&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/130_ManageDataSource.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/120_ConnStringNotInitialized.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For the credentials, I will be using stored credentials. Note that the &lt;code&gt;Test Connection&lt;/code&gt; button does not work if the connection string needs to be evaluated at runtime.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You can find the &lt;a href="https://github.com/shanec-/Nullfactory.SSRSExtensions"&gt;source here&lt;/a&gt;. It is meant only to be a template and should be extended to work with your own requirements.&lt;/li&gt;
+&lt;li&gt;Since the custom assembly needs to be deployed into the Global Assembly Cache, I suggest including it as &lt;a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx"&gt;part of the SharePoint Solution Package&lt;/a&gt; when automating your deployment process. &lt;/li&gt;
+&lt;li&gt;Although this implementation was tested with a Microsoft SQL Server data source type, I suspect it can be altered to work with different connection types.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I would finally like to highlight the following articles as they gave me a lot of insight into Code Access Security (CAS) and better understanding of the security requirements I needed to address:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/code-access-security-in-asp.net-4.0/"&gt;Simple-Talk - Code Access Security in ASP.NET 4.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-i/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part I&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-2/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://technet.microsoft.com/en-us/library/bb326290%28v=sql.105%29.aspx"&gt;Technet - Features Supported by Reporting Services in SharePoint Integrated Mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/d4588e88-5cb9-47cf-817b-a69942c507ac/how-to-use-microsoftsharepointdll-api-in-custom-assembly-of-ssrs-report?forum=sqlreportingservices"&gt;MSDN Forums - How to use "Microsoft.SharePoint.dll" API in custom assembly of SSRS report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms154658.aspx"&gt;MSDN - Code Access Security in Reporting Services&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms153561.aspx"&gt;MSDN - Using Custom Assemblies with Reports&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms154645.aspx"&gt;MSDN - Referencing Assemblies in an RDL File&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms155034.aspx"&gt;MSDN - Deploying a Custom Assembly&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms153587.aspx"&gt;MSDN - Asserting Permissions in Custom Assemblies&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms154507.aspx"&gt;MSDN - Accessing Custom Assemblies Through Expressions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms153693.aspx"&gt;MSDN - How to: Debug Custom Assemblies&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/code-access-security-in-asp.net-4.0/"&gt;Simple-Talk - Code Access Security in ASP.NET 4.0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-i/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part I&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-2/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part 2&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/office/dn268593.aspx"&gt;MSDN - Deciding between apps for SharePoint and SharePoint solution - Partial-trust user code is deprecated&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx"&gt;MSDN - How to: Add and Remove Additional Assemblies&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/</id><title type="text">Customize a Build Template to Exclude Symbols From Being Published to the Symbol Server</title><summary type="html">&lt;p&gt;This post was inspired by a feedback provided by one of the commenters on &lt;a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx"&gt;this post&lt;/a&gt;. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.&lt;/p&gt;
 
 &lt;p&gt;As suggested in the same comment thread, my approach would revolve around explicitly setting the &lt;code&gt;FileList&lt;/code&gt; property in the &lt;code&gt;PublishSymbols&lt;/code&gt; activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.&lt;/p&gt;
 
@@ -560,90 +694,4 @@ Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah
 &lt;p&gt;The script is hosted &lt;a href="https://github.com/shanec-/powershell/tree/master/Get-DirectVideoUrl"&gt;here&lt;/a&gt;, feel free to let me know your throughts.&lt;/p&gt;
 
 &lt;p&gt;Same disclaimer applies to this post as per my previous attempts. This was written for educational purposes and I am pretty sure that it is violating the TOS video streaming service or keepvid itself. Therefore please use at your own discretion.&lt;/p&gt;
-</content></entry><entry><id>http://nullfactory.net/2014/09/tfs-service-accounts/</id><title type="text">Team Foundation Server - Service Accounts</title><summary type="html">&lt;p&gt;Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.&lt;/p&gt;
-
-&lt;p&gt;In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS.&lt;/p&gt;
-
-&lt;h2&gt;Overview&lt;/h2&gt;
-
-&lt;p&gt;I created this mind map that graphically illustrates the accounts and required permissions by the different services in order to help me remember all the dependencies.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png"&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png" alt="TFS Accounts Overview" /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;While the majority of production installations would be deployed in a multi-tiered environment, I would normally assume that all of the accounts listed above are part of the same domain (with the exception of &lt;code&gt;DEPLOY&lt;/code&gt; account. I will discuss cross domain considerations in a different post).&lt;/p&gt;
-
-&lt;p&gt;While I will go into detail in future posts, but for the initial installation the following accounts are required:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;TFSInstall&lt;/code&gt; - An installation account that would automatically be added as a TFS Administrator&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TFSService&lt;/code&gt; - Used to run the Team Foundation Service&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TFSReports&lt;/code&gt; - Used to run the SQL Server Reporting Service (SSRS)&lt;/li&gt;
-&lt;/ul&gt;
-
-</summary><published>2014-09-20T18:30:00Z</published><updated>2014-09-20T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/tfs-service-accounts/" /><content type="html">&lt;p&gt;Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.&lt;/p&gt;
-
-&lt;p&gt;In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS.&lt;/p&gt;
-
-&lt;h2&gt;Overview&lt;/h2&gt;
-
-&lt;p&gt;I created this mind map that graphically illustrates the accounts and required permissions by the different services in order to help me remember all the dependencies.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png"&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png" alt="TFS Accounts Overview" /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;While the majority of production installations would be deployed in a multi-tiered environment, I would normally assume that all of the accounts listed above are part of the same domain (with the exception of &lt;code&gt;DEPLOY&lt;/code&gt; account. I will discuss cross domain considerations in a different post).&lt;/p&gt;
-
-&lt;p&gt;While I will go into detail in future posts, but for the initial installation the following accounts are required:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;TFSInstall&lt;/code&gt; - An installation account that would automatically be added as a TFS Administrator&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TFSService&lt;/code&gt; - Used to run the Team Foundation Service&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TFSReports&lt;/code&gt; - Used to run the SQL Server Reporting Service (SSRS)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h3&gt;Log on as a Service&lt;/h3&gt;
-
-&lt;p&gt;As shown in the mind map, several of the accounts need to be given the right to log on as a service on their appropriate machines. These steps would be needed to accomplish that:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Log onto the desired server.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Open the local group policy by executing &lt;code&gt;gpedit.msc&lt;/code&gt; via a console.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/1_RunDialog.png" alt="Run Dialog" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Navigate to the following tree node: &lt;code&gt;Computer Configuration &amp;gt; Security Settings &amp;gt; User Rights Assigment&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/2_gpedit.png" alt="Local Group Policy" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Edit the &lt;code&gt;Log on as a service&lt;/code&gt; entry by double clicking it and add the necessary accounts.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSServiceAccounts/3_AddLogOnAsAService.png" alt="Local Group Policy" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Log on Locally&lt;/h3&gt;
-
-&lt;p&gt;The steps are very similar to Log on as a service. Follow steps 1-3 and on the last step choose &lt;code&gt;Allow log on locally&lt;/code&gt; and add the accounts as necessary.&lt;/p&gt;
-
-&lt;h3&gt;SQL Server Reporting Services Permissions&lt;/h3&gt;
-
-&lt;p&gt;Two service accounts need to be updated with permissions in order to properly integrate with SSRS. Here is a summary of what is required:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;TFSReports&lt;/code&gt; - Used as the service account for the reporting services.
-&lt;ul&gt;
-&lt;li&gt;Allowed to log on locally on the Application Tiers as well as the report Server itself.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TFSWareHouseDataReader&lt;/code&gt; role on the report server.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TFSService&lt;/code&gt; - This account needs to be added as a &lt;code&gt;Content Manager&lt;/code&gt; in the report server.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I will walk through the process of installation and configuring in a future posts.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/ms253149.aspx"&gt;MSDN - Service Accounts and Dependencies in Team Foundation Server&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/bb737953(v=vs.110).aspx"&gt;MSDN - Grant permission to view or create SSRS reports in TFS&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/cc739424(v=ws.10).aspx"&gt;Technet - Add the Log on as a service right to an account&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;[Technet - Allow log on locally](http://technet.microsoft.com/en-us/library/cc756809(v=ws.10).aspx&lt;/li&gt;
-&lt;/ul&gt;
 </content></entry></feed>
