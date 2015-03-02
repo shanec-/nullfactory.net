@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,SharePoint,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows Phone" />
+	<meta name="keywords" content="ALM,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,Security,SharePoint,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,25 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/could-not-establish-trust-relationship-ssl-tls/">Could Not Establish Trust Relationship for SSL/TLS Secure Channel</a></h2>
+      <p class="post-date">02 Mar 2015
+
+      | <a href="/category/security" title="Security">Security</a>
+</p>
+
+      <p>
+		
+		<p>A while back I worked on a project that required me to integrate to a third-party web service. The web service also in development in parallel by the external team and our team was provided a development endpoint that would be used for testing. </p>
+
+<p>The problem was the certificate used in the SSL was the same as the one production. This resulted in any call to the web service throwing an <code>Could not establish trust relationship for SSL/TLS secure channel</code> error because of the url mismatch. </p>
+
+<p>Due to various constraints we were unable to get certificate replaced. So our temporary work around was to make our code to explicitly trust the external web service host:</p>
+
+
+		<p><a href="/2015/03/could-not-establish-trust-relationship-ssl-tls/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/02/obfuscate-sharepoint-ssrs-datasource/">Obfuscating a SharePoint-Integrated SSRS DataSource's Connection String</a></h2>
       <p class="post-date">16 Feb 2015
@@ -280,26 +299,6 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
 
 
 		<p><a href="/2014/09/create-an-isolated-hyper-v-environment/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/powershell/">Extract YouTube direct video url via Powershell</a></h2>
-      <p class="post-date">21 Sep 2014
-
-      | <a href="/category/powershell" title="PowerShell">PowerShell</a>
-      | <a href="/category/htmlagilitypack" title="HtmlAgilityPack">HtmlAgilityPack</a>
-</p>
-
-      <p>
-		
-		<p>It's been a while since I've have had the opportunity to write any powershell. So I decided to do something before my muscle memory atrophies completely.</p>
-
-<p>While I could not come up with a new problem to solve, I decided to re-visit my attempt at extracting the direct download url from a streaming service.I believe this is my 3rd attempt and its fast becoming my version of a "hello world" application. :)</p>
-
-<p>Previously, I tried to implement and parse out the urls by myself. This version is not going to be as complex as I will be using the <a href="http://www.keepvid.com">keepvid.com</a> to do the heavy lifting.</p>
-
-
-		<p><a href="/2014/09/powershell/">Read more...</a></p>
 	  </p>
     </div>
 </div>

@@ -1,8 +1,7 @@
 ---
 layout: post
-title: Could Not Establish Trust Relationship for SSL/TLS Secure Channel  
+title: Could Not Establish Trust Relationship for SSL/TLS Secure Channel
 category: Security
-published: draft
 ---
 
 A while back I worked on a project that required me to integrate to a third-party web service. The web service also in development in parallel by the external team and our team was provided a development endpoint that would be used for testing. 
@@ -51,4 +50,4 @@ Due to various constraints we were unable to get certificate replaced. So our te
 The above callback invoked every time a certificate is validated. Call it once before making requests to the web service.
 
 ## References
-- http://stackoverflow.com/questions/703272/could-not-establish-trust-relationship-for-ssl-tls-secure-channel-soap
+- [StackOverFlow - Could not establish trust relationship for SSL/TLS secure channel — SOAP](http://stackoverflow.com/questions/703272/could-not-establish-trust-relationship-for-ssl-tls-secure-channel-soap)

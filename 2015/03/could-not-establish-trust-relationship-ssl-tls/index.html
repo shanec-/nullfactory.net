@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Security" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/03/could-not-establish-trust-relationship-ssl-tls/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/could-not-establish-trust-relationship-ssl-tls/">Could Not Establish Trust Relationship for SSL/TLS Secure Channel</a></h2>
+		<p class="post-date">02 Mar 2015
+				| <a href="/category/security">Security</a>
+	  </p>
+
+		
+
+		<p>A while back I worked on a project that required me to integrate to a third-party web service. The web service also in development in parallel by the external team and our team was provided a development endpoint that would be used for testing. </p>
+
+<p>The problem was the certificate used in the SSL was the same as the one production. This resulted in any call to the web service throwing an <code>Could not establish trust relationship for SSL/TLS secure channel</code> error because of the url mismatch. </p>
+
+<p>Due to various constraints we were unable to get certificate replaced. So our temporary work around was to make our code to explicitly trust the external web service host:</p>
+
+<!--excerpt-->
+
+<pre><code>using System.Linq;
+using System.Net;
+using System.Net.Security;
+
+namespace SslTest
+{
+    public static class SslHelper
+    {
+        /// &lt;summary&gt;
+        /// Explicitly trust the list of hosts provided and ignores any SSL trust related errors.
+        /// &lt;/summary&gt;
+        /// &lt;param name="hosts"&gt;List of hosts that are trusted&lt;/param&gt;
+        /// &lt;remarks&gt;Only to be used in development environment. Do not use in production!&lt;/remarks&gt;
+        public static void EnableTrustedHosts(string[] hosts)
+        {
+            ServicePointManager.ServerCertificateValidationCallback =
+                (sender, certificate, chain, errors) =&gt;
+                {
+                    if (errors == SslPolicyErrors.None)
+                    {
+                        return true;
+                    }
+
+                    var request = sender as HttpWebRequest;
+                    if (request != null)
+                    {
+                        return hosts.Contains(request.RequestUri.Host);
+                    }
+
+                    return false;
+                };
+        }
+    }
+}
+</code></pre>
+
+<p>The above callback invoked every time a certificate is validated. Call it once before making requests to the web service.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/703272/could-not-establish-trust-relationship-for-ssl-tls-secure-channel-soap">StackOverFlow - Could not establish trust relationship for SSL/TLS secure channel — SOAP</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/03/could-not-establish-trust-relationship-ssl-tls/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/03/could-not-establish-trust-relationship-ssl-tls/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
