@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Security" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/03/creating-a-self-signed-wild-card-ssl-certificate/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Creating a Self-Signed Wild Card SSL Certificate for Your Development Environment</a></h2>
+		<p class="post-date">05 Mar 2015
+				| <a href="/category/security">Security</a>
+	  </p>
+
+		
+
+		<p>Secure Socket Layer (SSL) is a security standard used to ensure secure communication between a web server and browser and used in most modern web application. As a developer it is prudent to setup your development environment to closely resemble production as much as possible, including security concerns. However, getting a full fledged CA SSL certificate for you development environment might not be the most cost-effective solution. Therefore post summarizes the steps I take to create a self signed wild card certificate to be used in the internal environments. My guide is based on this <a href="https://www.macaw.nl/weblog/2013/6/configuring-an-asp-net-project-for-development-with-ssl">excellent post</a>.</p>
+
+<h2>Create the Certificate</h2>
+
+<p>In order to create the certificate we would be using the <code>MakeCert.exe</code> tool which can be found at <code>C:\Program Files (x86)\Windows Kits\8.1\bin\x64\</code>. This command creates the certificate and adds it to the logged in user's personal certificate store:</p>
+
+<pre><code>makecert -r -pe -e 01/01/2099 -eku 1.3.6.1.5.5.7.3.1 -ss My -n CN="*.wunder.local" -sky exchange -sp "Microsoft RSA SChannel Cryptographic Provider" -sy 12 -len 2048 
+</code></pre>
+
+<p>Some of the notable flags:</p>
+
+<ul>
+<li><strong>-r</strong> - Indicates that we're creating a self-signed certificate.</li>
+<li><strong>-pe</strong> - Includes the private key in the certificate and makes it exportable.</li>
+<li><strong>-e</strong> - The validity period of the certificate.</li>
+<li><p><strong>-n</strong> - The subject's certificate name - specify the wildcard url. </p>
+
+<p><img src="/images/posts/SSWildCardSSL/1_CreateCertificate.png" alt="Create Certificate" /></p></li>
+</ul>
+
+<!--excerpt-->
+
+<h3>Verify Creation</h3>
+
+<ol>
+<li>Open a new <code>Microsoft Management Console (mmc.exe)</code>.</li>
+<li>Add the <code>Certificates</code> Snap-In for <code>My Account</code>.</li>
+<li><p>Under the <code>Personal</code> node, ensure that the newly created certificate exists.  </p>
+
+<p><img src="/images/posts/SSWildCardSSL/2_CreateCertificate.png" alt="Verify Certificate" /></p></li>
+</ol>
+
+<h3>Export Certificate</h3>
+
+<p>Next we export the certificate, one with the private key (pfx) and one without (cer). </p>
+
+<ol>
+<li><p>Within the same snap-in, right click on the certificate and select export. </p>
+
+<p><img src="/images/posts/SSWildCardSSL/3_ExportCertificate.png" alt="Export Certificate Menu" /></p></li>
+<li><p>Select the option to export the private key. </p>
+
+<p><img src="/images/posts/SSWildCardSSL/4_ExportPfxWizard.png" alt="Export Pfx Wizard 1" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/5_ExportPfxWizard.png" alt="Export Pfx Wizard 2" /></p></li>
+<li><p>Provide a password to protect the private key. </p>
+
+<p><img src="/images/posts/SSWildCardSSL/6_ExportPfxWizard.png" alt="Export Pfx Wizard 3" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/7_ExportPfxWizard.png" alt="Export Pfx Wizard 4" /></p></li>
+<li><p>Provide a location to export the file.</p>
+
+<p><img src="/images/posts/SSWildCardSSL/8_ExportPfxWizard.png" alt="Export Pfx Wizard 5" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/9_ExportPfxWizard.png" alt="Export Pfx Wizard 6" /></p></li>
+<li><p>Next let export the (.cer) file. Let's repeat the steps 1-4 but this time opting out of exporting the private key.</p>
+
+<p><img src="/images/posts/SSWildCardSSL/10_ExportCerWizard.png" alt="Export Cer Wizard 1" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/11_ExportCerWizard.png" alt="Export Cer Wizard 2" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/12_ExportCerWizard.png" alt="Export Cer Wizard 3" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/13_ExportCerWizard.png" alt="Export Cer Wizard 4" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/14_ExportCerWizard.png" alt="Export Cer Wizard 5" /></p></li>
+</ol>
+
+<h2>Installation</h2>
+
+<p>Now, we install the pfx on the web server and each of the client machines consuming the web application.</p>
+
+<h4>Web Server</h4>
+
+<ol>
+<li><p>The easiest way to install the certificate is to right-click the certificate within explorer and select <code>Install PFX</code>.</p>
+
+<p><img src="/images/posts/SSWildCardSSL/15_InstallPfxWizard.png" alt="Install Pfx Wizard 1" /></p></li>
+<li><p>This would launch the Certificate Import Wizard. Select the <code>Local Machine</code> as the certificate store.</p>
+
+<p><img src="/images/posts/SSWildCardSSL/16_InstallPfxWizard.png" alt="Install Pfx Wizard 2" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/17_InstallPfxWizard.png" alt="Install Pfx Wizard 3" /></p></li>
+<li><p>Provide the password for the private key. </p>
+
+<p><img src="/images/posts/SSWildCardSSL/18_InstallPfxWizard.png" alt="Install Pfx Wizard 4" /></p></li>
+<li><p>Ensure that the certificate is installed under the <code>Personal</code> store.</p>
+
+<p><img src="/images/posts/SSWildCardSSL/19_InstallPfxWizard.png" alt="Install Pfx Wizard 5" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/20_InstallPfxWizard.png" alt="Install Pfx Wizard 6" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/21_InstallPfxWizard.png" alt="Install Pfx Wizard 7" /></p></li>
+</ol>
+
+<p>Navigate to Internet Information Services (IIS) Manager and make sure that the certificate is visible.</p>
+
+<p><img src="/images/posts/SSWildCardSSL/22_VerifyIIS.png" alt="Verify Certificate in IIS" /></p>
+
+<p>Bind the certificate to the SSL Port and configure the web application as necessary.</p>
+
+<h4>Client Machines</h4>
+
+<p>Each of the client machines accessing the web application would have to trust the new certificate. This is done by adding the certificate to the the <code>Trusted Root Certification Authorities</code> store.  </p>
+
+<ol>
+<li><p>On the client machine, right-click the certificate and selecting <code>Install</code> from the menu. On the wizard select the <code>Local Machine</code> as the store.</p>
+
+<p><img src="/images/posts/SSWildCardSSL/23_InstallCertificate.png" alt="Install as Trusted Authority 1" /></p></li>
+<li><p>Add the certificate to the <code>Trusted Root Certification Authorities</code> store.</p>
+
+<p><img src="/images/posts/SSWildCardSSL/24_InstallCertificate.png" alt="Install as Trusted Authority 2" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/25_InstallCertificate.png" alt="Install as Trusted Authority 3" /></p>
+
+<p><img src="/images/posts/SSWildCardSSL/26_InstallCertificate.png" alt="Install as Trusted Authority 4" /></p></li>
+</ol>
+
+<h2>Final Thoughts</h2>
+
+<ul>
+<li>As suggested in the <a href="https://www.macaw.nl/weblog/2013/6/configuring-an-asp-net-project-for-development-with-ssl">original article</a>, this would be a good time check-in the certificates into source control so that the entire development team has access to the same files.</li>
+<li>While <code>Makecert.exe</code> was used to create the certificate, there are other options such as OpenSSL that would work just the same. </li>
+</ul>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.macaw.nl/weblog/2013/6/configuring-an-asp-net-project-for-development-with-ssl">Configuring an ASP.NET project for development with SSL</a></li>
+<li><a href="http://blogs.technet.com/b/salbawany/archive/2014/05/24/how-to-create-a-self-signed-wild-card-ssl-certificate.aspx">Technet - Faisal (Sal) Bawany’s TechNet Blog - How to create a self-signed Wildcard SSL Certificate</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/bfsktky3(v=vs.110).aspx">MSDN - Makecert.exe (Certificate Creation Tool)</a></li>
+<li><a href="http://stackoverflow.com/questions/26186780/difference-between-makecert-and-openssl-wrt-c-sharp-sslstream">Difference between MakeCert and OpenSSL wrt C# SslStream</a></li>
+<li><a href="http://stackoverflow.com/questions/26681192/whats-the-difference-between-the-personal-and-web-hosting-certificate-store">StackOverFlow - What's the difference between the Personal and Web Hosting certificate store?</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/03/creating-a-self-signed-wild-card-ssl-certificate/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/03/creating-a-self-signed-wild-card-ssl-certificate/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
