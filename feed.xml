@@ -1,4 +1,32 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-03-05T19:28:34+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/03/creating-a-self-signed-wild-card-ssl-certificate/</id><title type="text">Creating a Self-Signed Wild Card SSL Certificate for Your Development Environment</title><summary type="html">&lt;p&gt;Secure Socket Layer (SSL) is a security standard used to ensure secure communication between a web server and browser and used in most modern web application. As a developer it is prudent to setup your development environment to closely resemble production as much as possible, including security concerns. However, getting a full fledged CA SSL certificate for you development environment might not be the most cost-effective solution. Therefore post summarizes the steps I take to create a self signed wild card certificate to be used in the internal environments. My guide is based on this &lt;a href="https://www.macaw.nl/weblog/2013/6/configuring-an-asp-net-project-for-development-with-ssl"&gt;excellent post&lt;/a&gt;.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-03-07T12:19:28+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/03/create-elevated-command-prompt-different-user-context/</id><title type="text">Create an Elevated Command Prompt Running Under a Different User Context</title><summary type="html">&lt;p&gt;User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. &lt;/p&gt;
+
+&lt;p&gt;This is achieved by using the &lt;code&gt;runas&lt;/code&gt; command with the &lt;code&gt;/noprofile&lt;/code&gt; flag. The command below creates an elevated command line running under the &lt;code&gt;wunder\admin&lt;/code&gt; user:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;runas /noprofile /user:wunder\admin cmd 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, all commands executed within this new command prompt would be in the same elevated status.&lt;/p&gt;
+
+</summary><published>2015-03-06T18:30:00Z</published><updated>2015-03-06T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/03/create-elevated-command-prompt-different-user-context/" /><content type="html">&lt;p&gt;User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. &lt;/p&gt;
+
+&lt;p&gt;This is achieved by using the &lt;code&gt;runas&lt;/code&gt; command with the &lt;code&gt;/noprofile&lt;/code&gt; flag. The command below creates an elevated command line running under the &lt;code&gt;wunder\admin&lt;/code&gt; user:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;runas /noprofile /user:wunder\admin cmd 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, all commands executed within this new command prompt would be in the same elevated status.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://ss64.com/nt/runas.html"&gt;Runas - Run under a different user account | Windows CMD | SS64.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://windows.microsoft.com/en-us/windows7/products/features/user-account-control"&gt;User Account Control&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://superuser.com/questions/42537/is-there-any-sudo-command-for-windows"&gt;SuperUser - Is there any 'sudo' command for Windows?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/12903629/how-do-i-run-a-program-from-command-prompt-as-a-different-user-and-as-an-admin"&gt;StackOverflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2015/03/creating-a-self-signed-wild-card-ssl-certificate/</id><title type="text">Creating a Self-Signed Wild Card SSL Certificate for Your Development Environment</title><summary type="html">&lt;p&gt;Secure Socket Layer (SSL) is a security standard used to ensure secure communication between a web server and browser and used in most modern web application. As a developer it is prudent to setup your development environment to closely resemble production as much as possible, including security concerns. However, getting a full fledged CA SSL certificate for you development environment might not be the most cost-effective solution. Therefore post summarizes the steps I take to create a self signed wild card certificate to be used in the internal environments. My guide is based on this &lt;a href="https://www.macaw.nl/weblog/2013/6/configuring-an-asp-net-project-for-development-with-ssl"&gt;excellent post&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2&gt;Create the Certificate&lt;/h2&gt;
 
@@ -741,77 +769,5 @@ Also check out the &lt;a href="https://curah.microsoft.com/276618/list"&gt;Curah
 &lt;li&gt;&lt;a href="http://blogs.technet.com/b/heyscriptingguy/archive/2013/10/21/invokerestmethod-for-the-rest-of-us.aspx"&gt;Hey, Scripting Guy! - InvokeRestMethod for the Rest of Us&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://technet.microsoft.com/en-us/library/hh849971.aspx"&gt;Microsoft Technet - Invoke-RestMethod&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://stuartpreston.net/2014/05/accessing-visual-studio-online-rest-api-using-powershell-4-0-invoke-restmethod-and-alternate-credentials/"&gt;Accessing Visual Studio Online REST API using Powershell 4.0, Invoke-RestMethod and Alternate Credentials&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/</id><title type="text">Improved Performance by Hosting Virtual Hard Disk External USB Drives</title><summary type="html">&lt;p&gt;I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.&lt;/p&gt;
-
-&lt;h2&gt;Moving the Virtual Drive Images&lt;/h2&gt;
-
-&lt;p&gt;The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.&lt;/p&gt;
-
-</summary><published>2014-09-23T18:30:00Z</published><updated>2014-09-23T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/" /><content type="html">&lt;p&gt;I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.&lt;/p&gt;
-
-&lt;h2&gt;Moving the Virtual Drive Images&lt;/h2&gt;
-
-&lt;p&gt;The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Open up the Hyper-V Management Console.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/1_HyperVManager.png" alt="Hyper-V Management Console" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Create a checkpoint of the VM.&lt;/li&gt;
-&lt;li&gt;Shutdown the VM.&lt;/li&gt;
-&lt;li&gt;Next, navigate to the VM setting panel by right-clicking and selecting &lt;code&gt;Settings&lt;/code&gt; or select it from the right actions pane.&lt;/li&gt;
-&lt;li&gt;On the settings panel, navigate to the &lt;code&gt;hardware &amp;gt; IDE Controller 0&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;Virtual hard disk&lt;/code&gt; text box shows the current location of the virtual drive.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/2_HyperVSettings.png" alt="Virtual Machine Settings" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Copy the contents of this entire directory together with the snapshots to the new destination.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/9_FolderLocation.png" alt="Copy Virtual Machine Files" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Change the &lt;code&gt;Virtual hard disk&lt;/code&gt; path to match the new location.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/3_UpdatedHyperVSettings.png" alt="Updated Virtual Machine Settings" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;You would receive the following message warning of data loss:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/4_DataLossWarning.png" alt="Data Loss Warning" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Since a checkpoint was created initially, click on &lt;code&gt;Continue&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click on &lt;code&gt;Ok&lt;/code&gt; and the following warning is shown. Click on &lt;code&gt;Continue&lt;/code&gt; as the warning not applicable to us.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/5_DataLossWarning2.png" alt="Chain Breakage" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Start up the virtual machine.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Since I already have checkpoint snapshots of my VMs, Hyper-V did not allow me to change the location. I think I might be able to use symbolic links in order to trick the OS into using the new drive. I will try to explore techniques available in a future post.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/6_CheckPointLocation.png" alt="Checkpoint Location" /&gt;&lt;/p&gt;
-
-&lt;p&gt;The only time this has become an issue is when saving the state of the VM. This causes hyper-v to writes a significant amount to the primary drive. This is something I can live with for now.&lt;/p&gt;
-
-&lt;h2&gt;Benchmarks&lt;/h2&gt;
-
-&lt;p&gt;I decided to do a quick benchmark on the hard disk to satisfy my curiosity. I used CrystalDiskMark as it appears to be one of the more popular ones.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/7_WD_CrystalDiskMark.png" alt="My Passport Ultra CrystalDiskMark" /&gt;&lt;/p&gt;
-
-&lt;p&gt;The numbers are on par with what's to be expected of the drive - here's a 33 gig VPC being copied over.  &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VirtualHardDiskPerf/8_WD_BasicFileCopy.png" alt="My Passport Ultra CrystalDiskMark" /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;While I do not have a conclusive way to prove that get I do get improved performance, my system does feels more responsive. My primary drive no longer chokes with 100% activity when working with multiple VMs.&lt;/p&gt;
-
-&lt;h2&gt;Future Improvements&lt;/h2&gt;
-
-&lt;p&gt;Setting up the operating system on a Solid State Drive (SSD) should be the next step in improving the overall system performance. Replacing the slow mechanical hard drive should in theory bring all kinds of performance improvements. And in order to get the maximum benefit of SSDs, one would need to think about strategies such as partitioning schemes in effectively segmenting data.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://workinghardinit.wordpress.com/tag/avhdx/"&gt;Manually Merging Hyper-V Checkpoints&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://crystalmark.info/software/CrystalDiskMark/index-e.html"&gt;CrystalDiskMark&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://blog.danieljost.com/symbolic-links-save-space-ssd/"&gt;Using Symbolic Links to Save Space on Your SSD&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
