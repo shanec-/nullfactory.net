@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="SharePoint,Windows" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/03/disabling-sharepoint-search-service/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/disabling-sharepoint-search-service/">Disabling the SharePoint Search Service</a></h2>
+		<p class="post-date">11 Mar 2015
+				| <a href="/category/sharepoint">SharePoint</a>
+				| <a href="/category/windows">Windows</a>
+	  </p>
+
+		
+
+		<p>If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.</p>
+
+<p><a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182">This seems to be most effective</a> way to completely disable the service. Although changing the password to an invalid one works as expected, it is important to replace the user account from a domain to a local user account as well. If not, the constant invalid login attempts could trigger your account lock out threshold policy in the domain.</p>
+
+<p>So for convenience sake I created two batch files - one to disable the service and another to bring it back up.  </p>
+
+<!--excerpt-->
+
+<h2>Disable the Search Service</h2>
+
+<p>The commands used to disable the search service:</p>
+
+<pre><code>net user searchDummy Sup3rSecr3tPwd /add /passwordchg:no /expires:never
+net stop SPSearchHostController
+net stop OSearch15
+sc config "SPSearchHostController" obj= ".\searchDummy" password= "WrongPwd"
+sc config "OSearch15" obj= ".\searchDummy" password= "WrongPwd"
+taskkill /im:noderunner.exe /f
+</code></pre>
+
+<p>Notice that: </p>
+
+<ul>
+<li>The first command creates the dummy user in the local machine - this will substitute the domain service account.</li>
+<li>The password is intentionally set to an incorrect one when assigned to the service.</li>
+<li>The last command is to force terminate any instances of <code>noderunner.exe</code> and release some memory.</li>
+</ul>
+
+<h2>Enable the Search Service</h2>
+
+<p>The commands used to start the service up again:</p>
+
+<pre><code>sc config "SPSearchHostController" obj= "domain\searchservice" password= "CorrectPwd"
+sc config "OSearch15" obj= "domain\searchservice" password= "CorrectPwd"
+net start OSearch15
+net start SPSearchHostController
+</code></pre>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182">How to Disable SharePoint 2013 Search - IT Knowledgebase</a></li>
+<li><a href="https://technet.microsoft.com/en-us/library/hh994574.aspx">Technet -Account lockout threshold</a></li>
+<li><a href="https://technet.microsoft.com/en-us/library/cc990290.aspx">Technet - Sc Config</a></li>
+<li><a href="http://stackoverflow.com/questions/308298/how-to-set-windows-service-username-and-password-through-commandline">StackOverflow - how to set windows service username and password through commandline</a></li>
+<li><a href="http://blogs.msdn.com/b/ssehgal/archive/2009/06/01/configuring-windows-services-using-command-prompt.aspx">MSDN Blogs - Configuring Windows services using Command Prompt - Sidharth Sehgal's blog</a></li>
+<li><a href="http://www.windows-commandline.com/add-user-from-command-line/">Add new user account from command line (CMD)</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/03/disabling-sharepoint-search-service/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/03/disabling-sharepoint-search-service/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

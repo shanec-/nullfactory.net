@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,Security,SharePoint,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows Phone" />
+	<meta name="keywords" content="ALM,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,Security,SharePoint,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,29 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Get a list of files changed between changesets in Visual Studio Online using PowerShell</a></h2>
+      <p class="post-date">14 Dec 2014
+
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/powershell" title="PowerShell">PowerShell</a>
+</p>
+
+      <p>
+		
+		<p>So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.</p>
+
+<p>I modified the code posted <a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">here</a> in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.</p>
+
+<h2>Overview</h2>
+
+<p>The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.</p>
+
+
+		<p><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Improved Performance by Hosting Virtual Hard Disk External USB Drives</a></h2>
       <p class="post-date">24 Sep 2014
