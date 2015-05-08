@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="SharePoint,SQL Server Reporting Services" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/drafts/2015/03/enable-ssrs-remote-error-sharepoint-integrated/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/drafts/2015/03/enable-ssrs-remote-error-sharepoint-integrated/">Enable SSRS Remote Errors in SharePoint Integrated Mode</a></h2>
+		<p class="post-date">17 Mar 2015
+				| <a href="/category/sharepoint">SharePoint</a>
+				| <a href="/category/sql-server-reporting-services">SQL Server Reporting Services</a>
+	  </p>
+
+		
+
+		<p>I've been troubleshooting some SQL Server Reporting Services (SSRS) reports that were deployed in SharePoint-Integrated mode. I was seeing the usual familiar error message:</p>
+
+<p>So as suggested, I tried logging into one of the web front ends (WFE) in order to see the underlying error but SSRS would not recognize that I was accessing the reports from the local server. I tried the other WFEs as well as the SQL Server itself, but nothing seemed to work. After an frustrating hour of trying to figure this out, I bit the bullet and decided to enable remote errors temporarily. </p>
+
+<p>Remote errors are enabled via the SSRS Service Application:</p>
+
+<ol>
+<li>Navigate to <code>Central Administration &gt; Application Management &gt; Manage Service Applications</code></li>
+<li>Next, click on the appropriate  <code>SQL Server Reporting Services Service Application</code> service application to manage it. </li>
+<li>Enable remote errors by navigating into <code>System Settings</code> and checking the <code>Enable Remote Errors</code> checkbox. </li>
+</ol>
+
+<p>Although the MSDN documentation says this is all that is required, I had to enable it on the individual site's settings in order to get it to work:</p>
+
+<ol>
+<li>Navigate to <code>Site Settings &gt; Reporting Services &gt; Reporting Services Site Settings</code></li>
+<li>Ensure that the <code>Enable Local Mode Error Messages</code> is checked</li>
+</ol>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/4850346/ssrs-remote-errors-enabled-but-not-working">StackOverflow - SSRS Remote Errors Enabled but NOT Working</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/drafts/2015/03/enable-ssrs-remote-error-sharepoint-integrated/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/drafts/2015/03/enable-ssrs-remote-error-sharepoint-integrated/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  
+</body>
+</html>

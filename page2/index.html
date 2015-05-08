@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,Security,SharePoint,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,Security,SharePoint,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,37 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">TFS 2013 - Enabling Reporting, Warehouse and Analysis Services</a></h2>
+      <p class="post-date">27 Dec 2014
+
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+</p>
+
+      <p>
+		
+		<p>Suppose you already have an Team Foundation Server (TFS) environment where you have opted-out from configuring the Reporting Services and Analysis Services during the installation. The following steps would help you to configure the warehouse and reporting functionality.</p>
+
+<h2>Pre-Requisites</h2>
+
+<ol>
+<li><p>Ensure that the SQL Server client tools are installed on the Application Tier.</p>
+
+<p>If this is not already done, you would most likely receive a <code>TF400465</code> error when attempting to edit the configuration. <code>TF400465</code> states that client tool are needed to be installed on the application tier in order for the analysis services to function properly.</p>
+
+<p>This can be fixed by re-running the SQL Server setup and adding the <code>Client Tools Connectivity</code> feature <a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx">[Read More]</a>.</p>
+
+<p>Once installed, make sure to restart the TFS administration console.</p></li>
+<li><p>Ensure that <code>Management Tools - Complete</code> is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.</p></li>
+<li>Ensure that the Analysis Services have been installed and is up and running.</li>
+<li>Ensure SQL Server Reporting Services is installed and configured in native mode <a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx">[Read More]</a>.</li>
+<li>This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.</li>
+</ol>
+
+
+		<p><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Get a list of files changed between changesets in Visual Studio Online using PowerShell</a></h2>
       <p class="post-date">14 Dec 2014

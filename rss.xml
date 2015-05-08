@@ -1,4 +1,132 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/03/disabling-sharepoint-search-service/</guid><link>http://nullfactory.net/2015/03/disabling-sharepoint-search-service/</link><title>Disabling the SharePoint Search Service</title><description>&lt;p&gt;If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/05/ssdt-deployment-plan-modifer/</guid><link>http://nullfactory.net/2015/05/ssdt-deployment-plan-modifer/</link><title>Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions</title><description>&lt;p&gt;I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.&lt;/p&gt;
+
+&lt;p&gt;I first parameterized the the schema name as a SQLCMD variable - &lt;code&gt;$TenantName&lt;/code&gt;: &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/10_varcmd.png" alt="SqlCmd Variable" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next I tried to replace the schema name with the new variable, but this did not work as trying to build the solution now returns with a 71502 error as the project is no longer able to resolve and validate schema objects.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/20_SchemaValidation.png" alt="Schema Validation" /&gt;&lt;/p&gt;
+
+&lt;p&gt;SQLCMD does not have any complaints if I replace the &lt;code&gt;[dbo].&lt;/code&gt; with &lt;code&gt;[$TenantName]&lt;/code&gt; in the generated script so its the SSDT project that is attempting to maintain the integrity of database. &lt;/p&gt;
+
+&lt;p&gt;One possible way to overcome this is to &lt;a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt"&gt;suppress the 71502&lt;/a&gt; by turning them into &lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt"&gt;warnings&lt;/a&gt;. The disadvantage in this approach is that you loose the rich validation in exchange for something that is essentially a deployment convenience.&lt;/p&gt;
+
+&lt;p&gt;Another duct tape and bubble gum approach would be to just have some kind of post deployment operation that does a find and replace on the schema name. Sure it would work, but that's not going to be reliable in the long run. &lt;/p&gt;
+
+&lt;p&gt;A little bit of research reveals that the proper way to alter the creation of deployment script process is to create a deployment plan modifier. A deployment plan modifier is essentially a class that inherits &lt;code&gt;DeploymentPlanModifier&lt;/code&gt; and allows you to inject custom actions when deploying a SQL project. There does not seem to be much formal documentation on the process, so I relied a lot on &lt;a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx"&gt;this article in MSDN&lt;/a&gt;, the sample &lt;a href="https://github.com/Microsoft/DACExtensions"&gt;DACExtensions&lt;/a&gt; and what forum posts I could find. So with a lot of trial and error I wrote my own plan modifier that would replace the schema identifiers when the database project is published.&lt;/p&gt;
+
+</description><pubDate>Fri, 08 May 2015 18:30:00 Z</pubDate><a10:updated>2015-05-08T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.&lt;/p&gt;
+
+&lt;p&gt;I first parameterized the the schema name as a SQLCMD variable - &lt;code&gt;$TenantName&lt;/code&gt;: &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/10_varcmd.png" alt="SqlCmd Variable" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next I tried to replace the schema name with the new variable, but this did not work as trying to build the solution now returns with a 71502 error as the project is no longer able to resolve and validate schema objects.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/20_SchemaValidation.png" alt="Schema Validation" /&gt;&lt;/p&gt;
+
+&lt;p&gt;SQLCMD does not have any complaints if I replace the &lt;code&gt;[dbo].&lt;/code&gt; with &lt;code&gt;[$TenantName]&lt;/code&gt; in the generated script so its the SSDT project that is attempting to maintain the integrity of database. &lt;/p&gt;
+
+&lt;p&gt;One possible way to overcome this is to &lt;a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt"&gt;suppress the 71502&lt;/a&gt; by turning them into &lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt"&gt;warnings&lt;/a&gt;. The disadvantage in this approach is that you loose the rich validation in exchange for something that is essentially a deployment convenience.&lt;/p&gt;
+
+&lt;p&gt;Another duct tape and bubble gum approach would be to just have some kind of post deployment operation that does a find and replace on the schema name. Sure it would work, but that's not going to be reliable in the long run. &lt;/p&gt;
+
+&lt;p&gt;A little bit of research reveals that the proper way to alter the creation of deployment script process is to create a deployment plan modifier. A deployment plan modifier is essentially a class that inherits &lt;code&gt;DeploymentPlanModifier&lt;/code&gt; and allows you to inject custom actions when deploying a SQL project. There does not seem to be much formal documentation on the process, so I relied a lot on &lt;a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx"&gt;this article in MSDN&lt;/a&gt;, the sample &lt;a href="https://github.com/Microsoft/DACExtensions"&gt;DACExtensions&lt;/a&gt; and what forum posts I could find. So with a lot of trial and error I wrote my own plan modifier that would replace the schema identifiers when the database project is published.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;How it works&lt;/h2&gt;
+
+&lt;p&gt;There are two main components to the solution; first one is the &lt;code&gt;SchemaSubstituteScriptContributor&lt;/code&gt; that is based off of &lt;code&gt;DeploymentPlanModifier&lt;/code&gt; that hosts and coordinates the injection process. And the other is &lt;code&gt;OverrideSchemaVisitor&lt;/code&gt; which is based off of &lt;code&gt;TSqlFragmentVisitor&lt;/code&gt; and does the actual schema substitution.&lt;/p&gt;
+
+&lt;p&gt;On the &lt;code&gt;SchemaSubstituteScriptContributor&lt;/code&gt; class, I've overridden the &lt;code&gt;OnExecute&lt;/code&gt; method to look for steps of type &lt;code&gt;DeploymentScriptDomStep&lt;/code&gt; and once it find it, navigate down the class hierarchy until it reaches the actual &lt;code&gt;TSqlStatement&lt;/code&gt;. And into this &lt;code&gt;TSqlStatement&lt;/code&gt; I pass in a new instance of &lt;code&gt;OverrideSchemaVisitor&lt;/code&gt; via the &lt;code&gt;Accept&lt;/code&gt; method.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;OverrideSchemaVisitor&lt;/code&gt; has overridden methods to handle each type of statement that have schema references and need to be altered.&lt;/p&gt;
+
+&lt;h2&gt;Installation and Usage&lt;/h2&gt;
+
+&lt;p&gt;Visual Studio loads up any extensions that are available in the extensions folder every time it starts up. 
+Now copy the assembly to the extensions folder that Visual Studio checks when it starts-up. I had some trouble locating as it was not in the location that the article mentioned (see &lt;em&gt;troubleshooting&lt;/em&gt;). Eventually I found out that mine was located at &lt;code&gt;%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Extensions&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/30_ExtensionsFolder.png" alt="Extensions Folder" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, in order for the database project to make use of the new extensions, I add the following properties to the database project &lt;code&gt;SqlProj&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;PropertyGroup&amp;gt;
+    &amp;lt;DeploymentContributors&amp;gt;    
+      $(DeploymentContributors);Nullfactory.SchemaSubstitute
+    &amp;lt;/DeploymentContributors&amp;gt;
+    &amp;lt;ContributorArguments Condition="'$(Configuration)' == 'Debug'"&amp;gt;
+      $(ContributorArguments);Nullfactory.SchemaSubstitute.OldSchemaName=dbo;Nullfactory.SchemaSubstitute.NewSchemaName=$TenantSchema;
+    &amp;lt;/ContributorArguments&amp;gt;
+  &amp;lt;/PropertyGroup&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The parameters for the extension are passed via the &lt;code&gt;&amp;lt;ContributorArguments&amp;gt;&lt;/code&gt; tag in a key-value pair format; where &lt;code&gt;Nullfactory.SchemaSubstitute.OldSchemaName&lt;/code&gt; is the source schema name and &lt;code&gt;Nullfactory.SchemaSubstitute.NewSchemaName&lt;/code&gt; is the new schema name. &lt;/p&gt;
+
+&lt;p&gt;Now that everything is setup, anytime the project is published the schema name would be substituted appropriately. &lt;/p&gt;
+
+&lt;h2&gt;Troubleshooting&lt;/h2&gt;
+
+&lt;p&gt;My first problem was trying to figure out where to deploy the extensions. Although the source article stated that it should be in the &lt;code&gt;%Program Files%\Microsoft SQL Server\110\DAC\Bin\Extensions&lt;/code&gt; folder, Visual Studio refused to recognize it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/40_UnableToLoadExtension.png" alt="Unable to Load Extensions" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Digging through the forums, I found out that the locations in which visual studio checks for extensions depends on how it was installed. The multiple locations are there in &lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/be484b63-a6cc-4dac-a2c2-78a56ff5b502/where-is-the-microsoftsqlserverdacdll-that-includes-support-for-sql-server-2014?forum=ssdt"&gt;order to avoid conflicts and maintain backward compatibility&lt;/a&gt;. Luckily, I found another post that shows how to &lt;a href="https://social.msdn.microsoft.com/Forums/en-US/eb0ccd5b-e7e0-4d90-950b-a4c696f0bd6e/deployment-contributor-could-not-be-loaded?forum=ssdt"&gt;definitively identify the location that is being checked&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;ol&gt;
+  &lt;li&gt;Open a new command prompt as Administrator.&lt;/li&gt;
+  &lt;li&gt;&lt;p&gt;Run the following command&lt;/p&gt;
+  
+  &lt;p&gt;&lt;code&gt;logman create trace -n DacFxDebug -p "Microsoft-SQLServerDataTools" 0x800 -o "%LOCALAPPDATA%\DacFxDebug.etl" -ets&lt;/code&gt;
+  &lt;code&gt;logman create trace -n SSDTDebug -p "Microsoft-SQLServerDataToolsVS" 0x800 -o "%LOCALAPPDATA%\SSDTDebug.etl" -ets&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;p&gt;Run whatever the target/issue scenario is in SSDT.&lt;/p&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;p&gt;Go back to the command prompt and run the following commands&lt;/p&gt;
+  
+  &lt;p&gt;&lt;code&gt;logman stop DacFxDebug -ets&lt;/code&gt;
+  &lt;code&gt;logman stop SSDTDebug -ets&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+  &lt;/ol&gt;
+  
+  &lt;p&gt;The resulting ETL files will be located at &lt;code&gt;%LOCALAPPDATA%\SSDTDebug.etl &amp;amp; %LOCALAPPDATA%\DacFxDebug.etl&lt;/code&gt; and can be navigated to using Windows Explorer.
+  The &lt;code&gt;DacFxDebug.etl&lt;/code&gt; file will contain extension load information. This can be opened and analyzed using the Windows Event Viewer.
+  To do this, open the Windows Event Viewer application. In the right-hand panel, select Open Saved Log. Navigate to the location where you saved the log, open, and review the contents of the trace.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/50_EventViewerLocation.png" alt="Event Viewer extensions location" /&gt;&lt;/p&gt;
+
+&lt;p&gt;I also had some trouble with referencing correct version of the assemblies. Here is the final list of references and the locations that they resided in. I am using SQL Server Data Tools version 12.0.50318.0 at the time of writing this post.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;System.ComponentModel.Composition - Framework
+
+Microsoft.Data.Tools.Schema.Sql.dll - `C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.Data.Tools.Schema.Sql.dll`
+Microsoft.SqlServer.Dac.dll - `C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.dll`
+Microsoft.SqlServer.Dac.Extensions.dll - `C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.Extensions.dll`
+Microsoft.SqlServer.TransactSql.ScriptDom.dll - `C:\Program Files (x86)\Microsoft SQL Server\120\SDK\Assemblies\Microsoft.SqlServer.TransactSql.ScriptDom.dll`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Final thoughts&lt;/h2&gt;
+
+&lt;p&gt;Its worth mentioning that this is not a problem for scripts that do not have a build action and scripts such as the pre and post deployment scripts are able to use the parameterized schema variable with no additional effort. &lt;/p&gt;
+
+&lt;p&gt;Next step for me is to look at integrating this into and publishing script as part of a team build. Stay tuned.  &lt;/p&gt;
+
+&lt;p&gt;I've hosted my final &lt;a href="https://github.com/shanec-/Nullfactory-DACExtensions"&gt;implementation here&lt;/a&gt; along with a sample database demonstrating its usage.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx"&gt;MSDN - Walkthrough: Extend Database Project Deployment to Modify the Deployment Plan&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/dn306080(v=vs.103).aspx"&gt;MSDN - Walkthrough: Extend Database Project Build to Generate Model Statistics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/Microsoft/DACExtensions"&gt;Microsoft/DACExtensions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/eb0ccd5b-e7e0-4d90-950b-a4c696f0bd6e/deployment-contributor-could-not-be-loaded?forum=ssdt"&gt;MSDN Forum - Deployment Contributor could not be loaded&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://technet.microsoft.com/en-us/library/microsoft.sqlserver.dac.packageoptions.contributorarguments(v=sql.110).aspx"&gt;Technet - PackageOptions.ContributorArguments Property (Microsoft.SqlServer.Dac)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt"&gt;Suppress some warnings in SQL Server SSDT - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt"&gt;MSDN Forum - Treat specific warning as error?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/NuGet/NuGet.Operations/blob/master/ext/SqlServer/Microsoft.SqlServer.Dac.Extensions.xml"&gt;NuGet.Operations/Microsoft.SqlServer.Dac.Extensions.xml at master · NuGet/NuGet.Operations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/03/disabling-sharepoint-search-service/</guid><link>http://nullfactory.net/2015/03/disabling-sharepoint-search-service/</link><title>Disabling the SharePoint Search Service</title><description>&lt;p&gt;If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182"&gt;This seems to be most effective&lt;/a&gt; way to completely disable the service. Although changing the password to an invalid one works as expected, it is important to replace the user account from a domain to a local user account as well. If not, the constant invalid login attempts could trigger your account lock out threshold policy in the domain.&lt;/p&gt;
 
@@ -654,100 +782,5 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
 &lt;li&gt;&lt;a href="http://blogs.msdn.com/b/adamroot/archive/2009/06/17/source-server-and-symbol-server-features-in-team-foundation-server-2010-beta-1.aspx"&gt;MSDN Blogs - Source Server and Symbol Server Features in Team Foundation Server 2010 - Anything's Possible&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://blogs.msdn.com/b/jimlamb/archive/2009/06/15/symbol-and-source-server-in-tfs-2010.aspx"&gt;MSDN Blogs - Enabling Symbol and Source Server Support in TFS Build 2010&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://blogs.msdn.com/b/buckh/archive/2011/04/11/making-debugging-easier-source-indexing-and-symbol-server.aspx"&gt;MSDN Blogs - Making debugging easier: Source Indexing and Symbol Server&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2014/12/tfs-enable-reporting-warehouse-analysis-services/</guid><link>http://nullfactory.net/2014/12/tfs-enable-reporting-warehouse-analysis-services/</link><title>TFS 2013 - Enabling Reporting, Warehouse and Analysis Services</title><description>&lt;p&gt;Suppose you already have an Team Foundation Server (TFS) environment where you have opted-out from configuring the Reporting Services and Analysis Services during the installation. The following steps would help you to configure the warehouse and reporting functionality.&lt;/p&gt;
-
-&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Ensure that the SQL Server client tools are installed on the Application Tier.&lt;/p&gt;
-
-&lt;p&gt;If this is not already done, you would most likely receive a &lt;code&gt;TF400465&lt;/code&gt; error when attempting to edit the configuration. &lt;code&gt;TF400465&lt;/code&gt; states that client tool are needed to be installed on the application tier in order for the analysis services to function properly.&lt;/p&gt;
-
-&lt;p&gt;This can be fixed by re-running the SQL Server setup and adding the &lt;code&gt;Client Tools Connectivity&lt;/code&gt; feature &lt;a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Once installed, make sure to restart the TFS administration console.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ensure that &lt;code&gt;Management Tools - Complete&lt;/code&gt; is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Ensure that the Analysis Services have been installed and is up and running.&lt;/li&gt;
-&lt;li&gt;Ensure SQL Server Reporting Services is installed and configured in native mode &lt;a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.&lt;/li&gt;
-&lt;/ol&gt;
-
-</description><pubDate>Fri, 26 Dec 2014 18:30:00 Z</pubDate><a10:updated>2014-12-26T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;Suppose you already have an Team Foundation Server (TFS) environment where you have opted-out from configuring the Reporting Services and Analysis Services during the installation. The following steps would help you to configure the warehouse and reporting functionality.&lt;/p&gt;
-
-&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Ensure that the SQL Server client tools are installed on the Application Tier.&lt;/p&gt;
-
-&lt;p&gt;If this is not already done, you would most likely receive a &lt;code&gt;TF400465&lt;/code&gt; error when attempting to edit the configuration. &lt;code&gt;TF400465&lt;/code&gt; states that client tool are needed to be installed on the application tier in order for the analysis services to function properly.&lt;/p&gt;
-
-&lt;p&gt;This can be fixed by re-running the SQL Server setup and adding the &lt;code&gt;Client Tools Connectivity&lt;/code&gt; feature &lt;a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Once installed, make sure to restart the TFS administration console.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ensure that &lt;code&gt;Management Tools - Complete&lt;/code&gt; is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Ensure that the Analysis Services have been installed and is up and running.&lt;/li&gt;
-&lt;li&gt;Ensure SQL Server Reporting Services is installed and configured in native mode &lt;a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;Configuration&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Navigate to TFS Administration Console &lt;code&gt;Application Tier &amp;gt; Reporting&lt;/code&gt;. Notice that the services are not configured.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/1_ConsoleUnconfigured.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click &lt;code&gt;Edit&lt;/code&gt; to edit the configuration.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Check the &lt;code&gt;Use Reporting&lt;/code&gt; check box to get started.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Configure the warehouse house by first selecting the SQL server from the server list.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/2_WarehouseDetails.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, provide a name for the warehouse database; I gave it &lt;code&gt;Tfs_Warehouse&lt;/code&gt; as it is what the latest versions of TFS provides by default.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;Test Connection&lt;/code&gt; to ensure the connectivity to the server.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Switch over to the &lt;code&gt;Analysis Services&lt;/code&gt; tab and select the server for the analysis services from the server list.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/3_AnalysisDetails.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Provide the database name &lt;code&gt;Tfs_Analysis&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Provide the username and password for accessing the data sources.&lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;Test Connection&lt;/code&gt; to ensure the connectivity to the server.&lt;/li&gt;
-&lt;li&gt;Next select the &lt;code&gt;Reports&lt;/code&gt; tab.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select the report server from the server list.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/4_ReportingDetails.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Populate URLs&lt;/code&gt;. This would retrieve the Web Service and Report Manager urls. In case they are not populated automatically, provide the details manually.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Provide the username and password for accessing the data sources.&lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;OK&lt;/code&gt; to save the settings.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Start Jobs&lt;/code&gt; to activate the services.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/5_ConsoleConfigured.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The final step is to rebuild the warehouse. This would prepare the database by building the necessary schema and any pre-requisite operations. This can be achieved in one of the following ways:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Executing the &lt;code&gt;RebuildWarehouse&lt;/code&gt; command &lt;a href="http://msdn.microsoft.com/en-us/library/ee349264.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Navigate to the &lt;code&gt;WarehouseControlService&lt;/code&gt; webservice and execute &lt;code&gt;ProcessAnalysisDatabase&lt;/code&gt; with &lt;code&gt;processingType&lt;/code&gt; of &lt;code&gt;Full&lt;/code&gt; &lt;a href="http://msdn.microsoft.com/en-us/library/ff400237.aspx"&gt;[Read More]&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Open up the TFS Administration Console and navigate to &lt;code&gt;Application Tier &amp;gt; Reporting &amp;gt; Start Rebuild&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TFSEnableReportingAnalysisServices/6_RebuildConfirmation.png" alt="" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Verification&lt;/h2&gt;
-
-&lt;p&gt;Once the &lt;code&gt;RebuildWarehouse&lt;/code&gt; command has been executed, verify that the warehouse jobs are running. This can be done by logging onto the application tier and then navigating to the &lt;code&gt;WarehouseControlWebService&lt;/code&gt; using the following url and executing the &lt;code&gt;GetProcessingStatus&lt;/code&gt; action:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    http://localhost:8080/tfs/TeamFoundation/Administration/v3.0/WarehouseControlService.asmx
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This would return a list of all the jobs that are being executed on the server. The first time I viewed the results, I was a bit overwhelmed by the number of errors shown. If you take a moment and study the errors you realize that these are warnings about SQL locks. Given enough time, and depending on the size of the Project Collections, the errors (warnings) should resolve themselves. As far as I can tell these warnings are expected in a full rebuild.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx"&gt;MSDN - How to Configure Reporting Services&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx"&gt;MSDN - Manually install SQL Server for Team Foundation Server&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/ee349264.aspx"&gt;MSDN - RebuildWarehouse Command&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/ff400237.aspx"&gt;MSDN - Manually process the data warehouse and analysis services cube for Team Foundation Server&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>
