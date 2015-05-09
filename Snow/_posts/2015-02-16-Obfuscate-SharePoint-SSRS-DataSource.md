@@ -92,7 +92,7 @@ Here's a summary of steps used to create report extension. You can find a link t
 
 ## Final Thoughts
 
-* You can find the [source here](https://github.com/shanec-/Nullfactory.SSRSExtensions). It is meant only to be a template and should be extended to work with your own requirements.
+* You can find the [source here](https://github.com/shanec-/Nullfactory-SSRSExtensions). It is meant only to be a template and should be extended to work with your own requirements.
 * Since the custom assembly needs to be deployed into the Global Assembly Cache, I suggest including it as [part of the SharePoint Solution Package](https://msdn.microsoft.com/en-us/library/ee231595.aspx) when automating your deployment process. 
 * Although this implementation was tested with a Microsoft SQL Server data source type, I suspect it can be altered to work with different connection types.
 

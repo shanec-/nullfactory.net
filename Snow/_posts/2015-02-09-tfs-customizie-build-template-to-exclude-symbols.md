@@ -73,7 +73,7 @@ Create a new build definition using the new template and provide valid values fo
 
 Finally, queue a new build and verify that the symbols are excluded the symbols store. 
 
-The final customized template can be [downloaded here](https://github.com/shanec-/Nullfactory.TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml).
+The final customized template can be [downloaded here](https://github.com/shanec-/Nullfactory-TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml).
 
 ## References
 

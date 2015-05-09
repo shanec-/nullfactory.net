@@ -522,7 +522,7 @@ namespace SslTest
 &lt;h2&gt;Final Thoughts&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;You can find the &lt;a href="https://github.com/shanec-/Nullfactory.SSRSExtensions"&gt;source here&lt;/a&gt;. It is meant only to be a template and should be extended to work with your own requirements.&lt;/li&gt;
+&lt;li&gt;You can find the &lt;a href="https://github.com/shanec-/Nullfactory-SSRSExtensions"&gt;source here&lt;/a&gt;. It is meant only to be a template and should be extended to work with your own requirements.&lt;/li&gt;
 &lt;li&gt;Since the custom assembly needs to be deployed into the Global Assembly Cache, I suggest including it as &lt;a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx"&gt;part of the SharePoint Solution Package&lt;/a&gt; when automating your deployment process. &lt;/li&gt;
 &lt;li&gt;Although this implementation was tested with a Microsoft SQL Server data source type, I suspect it can be altered to work with different connection types.&lt;/li&gt;
 &lt;/ul&gt;
@@ -644,7 +644,7 @@ namespace SslTest
 
 &lt;p&gt;Finally, queue a new build and verify that the symbols are excluded the symbols store. &lt;/p&gt;
 
-&lt;p&gt;The final customized template can be &lt;a href="https://github.com/shanec-/Nullfactory.TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml"&gt;downloaded here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The final customized template can be &lt;a href="https://github.com/shanec-/Nullfactory-TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml"&gt;downloaded here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2&gt;References&lt;/h2&gt;
 

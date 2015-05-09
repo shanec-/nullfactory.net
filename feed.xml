@@ -1,4 +1,4 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-05-09T05:16:02+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/05/ssdt-deployment-plan-modifer/</id><title type="text">Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions</title><summary type="html">&lt;p&gt;I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-05-09T12:29:42+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/05/ssdt-deployment-plan-modifer/</id><title type="text">Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions</title><summary type="html">&lt;p&gt;I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.&lt;/p&gt;
 
 &lt;p&gt;I first parameterized the the schema name as a SQLCMD variable - &lt;code&gt;$TenantName&lt;/code&gt;: &lt;/p&gt;
 
@@ -522,7 +522,7 @@ namespace SslTest
 &lt;h2&gt;Final Thoughts&lt;/h2&gt;
 
 &lt;ul&gt;
-&lt;li&gt;You can find the &lt;a href="https://github.com/shanec-/Nullfactory.SSRSExtensions"&gt;source here&lt;/a&gt;. It is meant only to be a template and should be extended to work with your own requirements.&lt;/li&gt;
+&lt;li&gt;You can find the &lt;a href="https://github.com/shanec-/Nullfactory-SSRSExtensions"&gt;source here&lt;/a&gt;. It is meant only to be a template and should be extended to work with your own requirements.&lt;/li&gt;
 &lt;li&gt;Since the custom assembly needs to be deployed into the Global Assembly Cache, I suggest including it as &lt;a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx"&gt;part of the SharePoint Solution Package&lt;/a&gt; when automating your deployment process. &lt;/li&gt;
 &lt;li&gt;Although this implementation was tested with a Microsoft SQL Server data source type, I suspect it can be altered to work with different connection types.&lt;/li&gt;
 &lt;/ul&gt;
@@ -644,7 +644,7 @@ namespace SslTest
 
 &lt;p&gt;Finally, queue a new build and verify that the symbols are excluded the symbols store. &lt;/p&gt;
 
-&lt;p&gt;The final customized template can be &lt;a href="https://github.com/shanec-/Nullfactory.TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml"&gt;downloaded here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The final customized template can be &lt;a href="https://github.com/shanec-/Nullfactory-TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml"&gt;downloaded here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2&gt;References&lt;/h2&gt;
 
