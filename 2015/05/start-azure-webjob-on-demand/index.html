@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Azure,Powershell,REST" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/05/start-azure-webjob-on-demand/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/start-azure-webjob-on-demand/">Start Azure Web Jobs On Demand</a></h2>
+		<p class="post-date">18 May 2015
+				| <a href="/category/azure">Azure</a>
+				| <a href="/category/powershell">Powershell</a>
+				| <a href="/category/rest">REST</a>
+	  </p>
+
+		
+
+		<p>I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
+The problem with the free tiers is that there's a high possibility that the web job would shut itself down and hibernate if it is <a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">idle for more that 20 mins</a>:</p>
+
+<blockquote>
+  <p>As of March 2014, web apps in Free mode can time out after 20 minutes if there are no requests to the scm (deployment) site and the web app's portal is not open in Azure. Requests to the actual site will not reset this.</p>
+</blockquote>
+
+<p>A little research shows a few possible solutions:</p>
+
+<ol>
+<li>If the job is not time sensitive, then manually start the service remotely using a script or tool. </li>
+<li>Make your code explicitly start the web job just as a new request is being enqueued. This can be done by <a href="https://github.com/projectkudu/kudu/wiki/WebJobs-API">making a REST call</a> to the deployment site.</li>
+<li>And lastly, upgrade to a basic or standard tier and enabling "Always On" keeps the site (and jobs) "warm" and prevent them from hibernating.</li>
+</ol>
+
+<!--excerpt-->
+
+<h3>Using Powershell</h3>
+
+<p>This method requires the <code>Microsoft Azure Powershell</code> module to be installed on the machine. This can be <a href="http://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/">installed via the Web Platform Installer</a>.</p>
+
+<ol>
+<li><p>Start of by logging into the Azure account and registering your subscription </p>
+
+<p><code>Add-AzureAccount</code></p></li>
+<li><p>Next, starts the job: </p>
+
+<p><code>start-azurewebsitejob -name samplejobweb -jobname sample-execution-job -jobtype continuous</code></p></li>
+<li><p>And this command to stop the job: </p>
+
+<p><code>stop-azurewebsitejob -name samplejobweb -jobname sample-execution-job</code></p></li>
+</ol>
+
+<h3>Using REST / Code</h3>
+
+<p>I <a href="http://stackoverflow.com/questions/28904186/how-can-i-keep-my-azure-webjob-running-without-always-on/28923039#28923039">used this code as a template</a>  to whip up a console application that can be used to start the service:</p>
+
+<pre><code>static void Main(string[] args)
+{
+    string websiteName = "&lt;website name&gt;";
+    string webjobName = "&lt;job name&gt;";
+    string userName = "&lt;publishing username&gt;";
+    string userPWD = "&lt;publishing password&gt;";
+    string webjobUrl = string.Format("https://{0}.scm.azurewebsites.net/api/continuouswebjobs/{1}", websiteName, webjobName);
+
+    var result = GetWebjobState(webjobUrl, userName, userPWD);
+    Console.WriteLine(result);
+
+    var postResult = StartWebjob(webjobUrl + "/Start", userName, userPWD);
+    Console.WriteLine(postResult);
+
+    Console.ReadKey(true);
+}
+
+private static JObject GetWebjobState(string url, string username, string password)
+{
+    var client = CreateHttpClient(username, password);
+    var data = client.GetStringAsync(url).Result;
+    var result = JsonConvert.DeserializeObject(data) as JObject;
+    return result;
+}
+
+private static bool StartWebjob(string url, string username, string password)
+{
+    var client = CreateHttpClient(username, password);
+    HttpResponseMessage data = client.PostAsync(url, new StringContent(string.Empty)).Result;
+    return data.StatusCode == System.Net.HttpStatusCode.OK;
+}
+
+private static HttpClient CreateHttpClient(string username, string password)
+{
+    HttpClient client = new HttpClient();
+    string auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ':' + password));
+    client.DefaultRequestHeaders.Add("authorization", auth);
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    return client;
+}
+</code></pre>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">Run Background tasks with WebJobs</a></li>
+<li><a href="http://stackoverflow.com/questions/28904186/how-can-i-keep-my-azure-webjob-running-without-always-on/28923039#28923039">How can I keep my Azure WebJob running without "Always On" - Stack Overflow</a></li>
+<li><a href="http://stackoverflow.com/questions/28502696/continuous-webjob-stops-automatically">azure - continuous WebJob stops automatically - Stack Overflow</a></li>
+<li><a href="https://github.com/projectkudu/kudu/wiki/WebJobs-API">Github  - WebJobs API · projectkudu/kudu Wiki</a></li>
+<li><a href="https://github.com/projectkudu/kudu/wiki/Deployment-credentials">Github - Deployment credentials · projectkudu/kudu Wiki</a></li>
+<li><a href="https://github.com/Azure/azure-powershell">Github - Azure/azure-powershell</a></li>
+<li><a href="http://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/">MSDN - How to install and configure Azure PowerShell</a></li>
+<li><a href="https://msdn.microsoft.com/library/azure/jj554330.aspx">MSDN - Azure Cmdlet Reference</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/05/start-azure-webjob-on-demand/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/05/start-azure-webjob-on-demand/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

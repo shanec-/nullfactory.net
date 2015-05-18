@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,Security,SharePoint,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,Powershell,PowerShell,REST,Security,SharePoint,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,36 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/start-azure-webjob-on-demand/">Start Azure Web Jobs On Demand</a></h2>
+      <p class="post-date">18 May 2015
+
+      | <a href="/category/azure" title="Azure">Azure</a>
+      | <a href="/category/powershell" title="Powershell">Powershell</a>
+      | <a href="/category/rest" title="REST">REST</a>
+</p>
+
+      <p>
+		
+		<p>I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
+The problem with the free tiers is that there's a high possibility that the web job would shut itself down and hibernate if it is <a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">idle for more that 20 mins</a>:</p>
+
+<blockquote>
+  <p>As of March 2014, web apps in Free mode can time out after 20 minutes if there are no requests to the scm (deployment) site and the web app's portal is not open in Azure. Requests to the actual site will not reset this.</p>
+</blockquote>
+
+<p>A little research shows a few possible solutions:</p>
+
+<ol>
+<li>If the job is not time sensitive, then manually start the service remotely using a script or tool. </li>
+<li>Make your code explicitly start the web job just as a new request is being enqueued. This can be done by <a href="https://github.com/projectkudu/kudu/wiki/WebJobs-API">making a REST call</a> to the deployment site.</li>
+<li>And lastly, upgrade to a basic or standard tier and enabling "Always On" keeps the site (and jobs) "warm" and prevent them from hibernating.</li>
+</ol>
+
+
+		<p><a href="/2015/05/start-azure-webjob-on-demand/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/ssdt-deployment-plan-modifer/">Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions</a></h2>
       <p class="post-date">09 May 2015
@@ -269,31 +299,6 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
 
 
 		<p><a href="/2015/01/tfs-scheduled-backups-not-working-quiesced/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Setting up Source and Symbol Servers in Team Foundation Server</a></h2>
-      <p class="post-date">01 Jan 2015
-
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-</p>
-
-      <p>
-		
-		<h2>What are debug symbols?</h2>
-
-<p>Debug symbols are artifacts that a debugger can use in order to better debug an application. Within the.NET ecosystem these are managed through PDB files. The PDB files contain information about the source file name, line numbers as well as local variable names.</p>
-
-<p>As a software solution evolves, it is likely that multiple versions of it gets deployed into different production systems. And once the software is out in the wild, it becomes important that the developers can react to issues discovered by debugging specific versions. In order to do this effectively, it is important that the debug symbols themselves be treated as an first class artifact of the build and that it is readily accessible. Team Foundation Server (TFS) achieves this via a Source Server and Symbol Server.</p>
-
-<h2>The Source Server and Symbol Server</h2>
-
-<p>A Source Server component is essentially letting TFS know that we would be retrieving specific versions of source files and that it should be indexed. And a Symbol Server is a fancy name for a networked file share location containing the multiple versions of symbols <a href="http://blogs.msdn.com/b/jimlamb/archive/2009/06/15/symbol-and-source-server-in-tfs-2010.aspx">[read more]</a>.</p>
-
-<p>A TFS build definition will be configured in order to automatically index sources and publish symbols <a href="http://blogs.msdn.com/b/adamroot/archive/2009/06/17/source-server-and-symbol-server-features-in-team-foundation-server-2010-beta-1.aspx">[read more]</a>.</p>
-
-
-		<p><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Read more...</a></p>
 	  </p>
     </div>
 </div>
