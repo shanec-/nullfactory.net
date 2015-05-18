@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Start Azure Web Jobs On Demand
-category: Azure, Powershell, REST
+category: Azure, PowerShell, REST
 ---
 
 I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
