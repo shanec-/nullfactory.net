@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Azure,Log4Net" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/recording-diagnostics-azure-app-service-website-log4net/">Recording Diagnostics on a Azure App Service Hosted Website using Log4Net</a></h2>
+		<p class="post-date">24 May 2015
+				| <a href="/category/azure">Azure</a>
+				| <a href="/category/log4net">Log4Net</a>
+	  </p>
+
+		
+
+		<p>I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.</p>
+
+<p>The <a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/">official documentation states</a> that calls to the <code>System.Diagnostics.Trace</code> methods are all that is required to start capturing diagnostic information. In summary, this is all I needed to do:</p>
+
+<ol>
+<li>Enable diagnostics and configure the storage locations (discussed later down the post).</li>
+<li>From within my code write the <code>Warning</code>, <code>Error</code> and <code>Information</code> messages via their respective trace methods.</li>
+<li>...</li>
+<li>Azure starts capturing the custom diagnostics information - PROFIT! </li>
+</ol>
+
+<p>Sounds simple enough. </p>
+
+<p>So I thought if I just set up a <code>TraceAppender</code> everything would work fine and that would be the end of it. The results were not what I was expecting and this was the output in my table storage:</p>
+
+<p><img src="/images/posts/AzureAppSvcDiag/10_AppServiceTableDiag.png" alt="Table Diagnostics" /></p>
+
+<p>The trace entries are bunched together as a single <code>Verbose</code> entry and the writes appear to be buffered. Not acceptable. I suppose the buffering could be because I had not used the <code>ImmediateFlush</code> option for the <code>TraceAppender</code>, but I need to have each Trace statement to have its own entry in the table.</p>
+
+<p>While there are a lot of posts on the internet on how to setup Log4Net with Azure, most of them appear to be out of date and seem to be compensating for features were not available in the Azure at the time of their implementation. Then there are others that targeted towards integrating with the Cloud Service which is not what I was looking for.</p>
+
+<!--excerpt-->
+
+<p>Unable to find any existing implementation, I decided to roll my own appender. I started off by <a href="https://github.com/apache/log4net/blob/trunk/src/log4net/Appender/TraceAppender.cs">looking at the TraceAppender code</a> and observed that it just does a <code>Trace.Write</code>, which I suppose is why Azure categorizes the entries under the <code>Verbose</code> level. So my implementation would be identical but would make explicit calls to the <code>Trace.TraceWarning</code>, <code>Trace.TraceError</code> and <code>Trace.TraceInformation</code> methods as necessary.</p>
+
+<p>Its quite simple really, this is the gist of it:</p>
+
+<pre><code>protected override void Append(LoggingEvent loggingEvent)
+{
+    string logMessage = string.Format(this.RenderLoggingEvent(loggingEvent), ((LayoutSkeleton)this.category).Format(loggingEvent));
+
+    if (loggingEvent.Level == Level.Alert ||
+        loggingEvent.Level == Level.Critical ||
+        loggingEvent.Level == Level.Emergency ||
+        loggingEvent.Level == Level.Error ||
+        loggingEvent.Level == Level.Fatal ||
+        loggingEvent.Level == Level.Log4Net_Debug ||
+        loggingEvent.Level == Level.Severe)
+    {
+        Trace.TraceError(logMessage);
+    }
+    else if (loggingEvent.Level == Level.Warn)
+    {
+        Trace.TraceWarning(logMessage);
+    }
+    else if (loggingEvent.Level == Level.Debug ||
+        loggingEvent.Level == Level.Fine ||
+        loggingEvent.Level == Level.Finer ||
+        loggingEvent.Level == Level.Finest ||
+        loggingEvent.Level == Level.Info ||
+        loggingEvent.Level == Level.Notice ||
+        loggingEvent.Level == Level.Trace ||
+        loggingEvent.Level == Level.Verbose)
+    {
+        Trace.TraceInformation(logMessage);
+    }
+
+    if (!this.ImmediateFlush)
+    {
+        return;
+    }
+
+    Trace.Flush();
+}
+</code></pre>
+
+<p>Configure the appender the same as you would the <code>TraceAppender</code>:</p>
+
+<pre><code>&lt;appender name="SimpleTraceAppender" type="Nullfactory.Log4Net.SimpleTraceAppender, Nullfactory.Log4Net"&gt;
+    &lt;layout type="log4net.Layout.PatternLayout"&gt;
+        &lt;conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" /&gt;
+    &lt;/layout&gt;
+&lt;/appender&gt;
+</code></pre>
+
+<p>And finally for the webjob contained in my solution, I paired my custom appender with a <code>ConsoleAppender</code> so that it would automatically take advantage of the web job logging architecture without any additional code.</p>
+
+<p>I've uploaded my <a href="https://github.com/shanec-/Nullfactory-Azure">full implementation and sample usage here</a>.</p>
+
+<h2>Enabling Diagnostics on the Azure Portal</h2>
+
+<p>There are couple of steps that need to be done in order to enable diagnostics on the app service:</p>
+
+<ol>
+<li>Login to the older Azure portal - <a href="https://manage.windowsazure.net">https://manage.windowsazure.net</a></li>
+<li>Ensure that you already have a storage account set up. This would house the table that stores the diagnostic entries. </li>
+<li><p>Next, navigate to the web app configuration page. </p>
+
+<p><img src="/images/posts/AzureAppSvcDiag/20_WebAppDiagConfig.png" alt="Web App Configure" /></p></li>
+<li><p>Enable application logging (table storage)
+and select a logging level.</p>
+
+<p><img src="/images/posts/AzureAppSvcDiag/30_DiagTableStorage.png" alt="Web App, Application Diagnostics" /></p></li>
+<li><p>Next click on the <code>manage table storage</code> button allows to configure the storage account and the table into which the diagnostic information is recorded into.</p>
+
+<p><img src="/images/posts/AzureAppSvcDiag/40_DiagTableStorage2.png" alt="Web App Application Diagnostics Table Name" /></p></li>
+<li><p>That's it, the web app should start capturing logging information. </p></li>
+</ol>
+
+<p>There were a few quirks that I faced attempting to set it up:</p>
+
+<ul>
+<li><p>This how-to provides the following instructions on <a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-enable-diagnostic-log/">enabling diagnostics</a>:  </p>
+
+<blockquote>
+  <p>When enabling Application Logging you must also select the Logging Level and whether to enable logging to the file system, table storage, or blob storage. While all three storage locations provide the same basic information for logged events, table storage and blob storage log additional information such as the instance ID, thread ID, and a more granular timestamp (tick format) than logging to file system.</p>
+  
+  <p>When enabling site diagnostics, you must select storage or file system for web server logging. Selecting storage allows you to select a storage account, and then a blob container that the logs will be written to. All other logs for site diagnostics are written to the file system only.</p>
+</blockquote>
+
+<p>At the time of writing this post the preview portal does not appear to have the diagnostics feature fully ported. While it does have the switch to enable it, it does not provide the options to select the storage location. That's why it is required to be enabled via the <a href="https://manage.windowsazure.com/">older portal</a>.</p>
+
+<p><img src="/images/posts/AzureAppSvcDiag/60_PreviewAppDiagLogs.png" alt="Preview Portal, Web App Logging" /></p></li>
+<li><p>The newer (v2) storage accounts do not seem to be recognized by the older portal. So if you already using them via the preview portal, you would need to create a second set of storage accounts just for the diagnostics. Again, this is something I think this would be sorted out in future releases  </p>
+
+<p><img src="/images/posts/AzureAppSvcDiag/50_StorAccV2Diag.png" alt="Web App, Diagnostics Storage Account V2 Missing" /></p></li>
+</ul>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://github.com/apache/log4net/blob/trunk/src/log4net/Appender/TraceAppender.cs">log4net/TraceAppender.cs at trunk · apache/log4net · GitHub</a></li>
+<li><a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/">Enable diagnostics logging for web apps in Azure App Service</a></li>
+<li><a href="http://blog.tylerdoerksen.com/2012/04/15/logging-in-azure-part-1/">Logging in Azure: Part 1 | Tyler's Azure Blog</a></li>
+<li><a href="http://blog.tylerdoerksen.com/2012/04/17/logging-in-azure-part-2table-storage/">Logging in Azure: Part 2–Table Storage | Tyler's Azure Blog</a></li>
+<li><a href="http://zacg.github.io/blog/2014/02/05/azure-log4net-appender/">Azure Log4Net Appender - Zac Gross</a></li>
+<li><a href="http://blog.kloud.com.au/2014/10/22/logging-with-log4net-and-azure-diagnostics-on-web-and-worker-roles/">Logging with log4net and Azure Diagnostics on Web and Worker Roles | Kloud Blog</a></li>
+<li><a href="https://cloudshaper.wordpress.com/2010/10/30/logging-with-log4net-on-the-azure-platform/">Logging with Log4Net on the Azure platform | Cloud Shaper</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

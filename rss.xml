@@ -1,4 +1,154 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/05/start-azure-webjobs-on-demand/</guid><link>http://nullfactory.net/2015/05/start-azure-webjobs-on-demand/</link><title>Start Azure Web Jobs On Demand</title><description>&lt;p&gt;I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/</guid><link>http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/</link><title>Recording Diagnostics on a Azure App Service Hosted Website using Log4Net</title><description>&lt;p&gt;I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/"&gt;official documentation states&lt;/a&gt; that calls to the &lt;code&gt;System.Diagnostics.Trace&lt;/code&gt; methods are all that is required to start capturing diagnostic information. In summary, this is all I needed to do:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Enable diagnostics and configure the storage locations (discussed later down the post).&lt;/li&gt;
+&lt;li&gt;From within my code write the &lt;code&gt;Warning&lt;/code&gt;, &lt;code&gt;Error&lt;/code&gt; and &lt;code&gt;Information&lt;/code&gt; messages via their respective trace methods.&lt;/li&gt;
+&lt;li&gt;...&lt;/li&gt;
+&lt;li&gt;Azure starts capturing the custom diagnostics information - PROFIT! &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Sounds simple enough. &lt;/p&gt;
+
+&lt;p&gt;So I thought if I just set up a &lt;code&gt;TraceAppender&lt;/code&gt; everything would work fine and that would be the end of it. The results were not what I was expecting and this was the output in my table storage:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/10_AppServiceTableDiag.png" alt="Table Diagnostics" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The trace entries are bunched together as a single &lt;code&gt;Verbose&lt;/code&gt; entry and the writes appear to be buffered. Not acceptable. I suppose the buffering could be because I had not used the &lt;code&gt;ImmediateFlush&lt;/code&gt; option for the &lt;code&gt;TraceAppender&lt;/code&gt;, but I need to have each Trace statement to have its own entry in the table.&lt;/p&gt;
+
+&lt;p&gt;While there are a lot of posts on the internet on how to setup Log4Net with Azure, most of them appear to be out of date and seem to be compensating for features were not available in the Azure at the time of their implementation. Then there are others that targeted towards integrating with the Cloud Service which is not what I was looking for.&lt;/p&gt;
+
+</description><pubDate>Sat, 23 May 2015 18:30:00 Z</pubDate><a10:updated>2015-05-23T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/"&gt;official documentation states&lt;/a&gt; that calls to the &lt;code&gt;System.Diagnostics.Trace&lt;/code&gt; methods are all that is required to start capturing diagnostic information. In summary, this is all I needed to do:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Enable diagnostics and configure the storage locations (discussed later down the post).&lt;/li&gt;
+&lt;li&gt;From within my code write the &lt;code&gt;Warning&lt;/code&gt;, &lt;code&gt;Error&lt;/code&gt; and &lt;code&gt;Information&lt;/code&gt; messages via their respective trace methods.&lt;/li&gt;
+&lt;li&gt;...&lt;/li&gt;
+&lt;li&gt;Azure starts capturing the custom diagnostics information - PROFIT! &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Sounds simple enough. &lt;/p&gt;
+
+&lt;p&gt;So I thought if I just set up a &lt;code&gt;TraceAppender&lt;/code&gt; everything would work fine and that would be the end of it. The results were not what I was expecting and this was the output in my table storage:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/10_AppServiceTableDiag.png" alt="Table Diagnostics" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The trace entries are bunched together as a single &lt;code&gt;Verbose&lt;/code&gt; entry and the writes appear to be buffered. Not acceptable. I suppose the buffering could be because I had not used the &lt;code&gt;ImmediateFlush&lt;/code&gt; option for the &lt;code&gt;TraceAppender&lt;/code&gt;, but I need to have each Trace statement to have its own entry in the table.&lt;/p&gt;
+
+&lt;p&gt;While there are a lot of posts on the internet on how to setup Log4Net with Azure, most of them appear to be out of date and seem to be compensating for features were not available in the Azure at the time of their implementation. Then there are others that targeted towards integrating with the Cloud Service which is not what I was looking for.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;Unable to find any existing implementation, I decided to roll my own appender. I started off by &lt;a href="https://github.com/apache/log4net/blob/trunk/src/log4net/Appender/TraceAppender.cs"&gt;looking at the TraceAppender code&lt;/a&gt; and observed that it just does a &lt;code&gt;Trace.Write&lt;/code&gt;, which I suppose is why Azure categorizes the entries under the &lt;code&gt;Verbose&lt;/code&gt; level. So my implementation would be identical but would make explicit calls to the &lt;code&gt;Trace.TraceWarning&lt;/code&gt;, &lt;code&gt;Trace.TraceError&lt;/code&gt; and &lt;code&gt;Trace.TraceInformation&lt;/code&gt; methods as necessary.&lt;/p&gt;
+
+&lt;p&gt;Its quite simple really, this is the gist of it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;protected override void Append(LoggingEvent loggingEvent)
+{
+    string logMessage = string.Format(this.RenderLoggingEvent(loggingEvent), ((LayoutSkeleton)this.category).Format(loggingEvent));
+
+    if (loggingEvent.Level == Level.Alert ||
+        loggingEvent.Level == Level.Critical ||
+        loggingEvent.Level == Level.Emergency ||
+        loggingEvent.Level == Level.Error ||
+        loggingEvent.Level == Level.Fatal ||
+        loggingEvent.Level == Level.Log4Net_Debug ||
+        loggingEvent.Level == Level.Severe)
+    {
+        Trace.TraceError(logMessage);
+    }
+    else if (loggingEvent.Level == Level.Warn)
+    {
+        Trace.TraceWarning(logMessage);
+    }
+    else if (loggingEvent.Level == Level.Debug ||
+        loggingEvent.Level == Level.Fine ||
+        loggingEvent.Level == Level.Finer ||
+        loggingEvent.Level == Level.Finest ||
+        loggingEvent.Level == Level.Info ||
+        loggingEvent.Level == Level.Notice ||
+        loggingEvent.Level == Level.Trace ||
+        loggingEvent.Level == Level.Verbose)
+    {
+        Trace.TraceInformation(logMessage);
+    }
+
+    if (!this.ImmediateFlush)
+    {
+        return;
+    }
+
+    Trace.Flush();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Configure the appender the same as you would the &lt;code&gt;TraceAppender&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;appender name="SimpleTraceAppender" type="Nullfactory.Log4Net.SimpleTraceAppender, Nullfactory.Log4Net"&amp;gt;
+    &amp;lt;layout type="log4net.Layout.PatternLayout"&amp;gt;
+        &amp;lt;conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" /&amp;gt;
+    &amp;lt;/layout&amp;gt;
+&amp;lt;/appender&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And finally for the webjob contained in my solution, I paired my custom appender with a &lt;code&gt;ConsoleAppender&lt;/code&gt; so that it would automatically take advantage of the web job logging architecture without any additional code.&lt;/p&gt;
+
+&lt;p&gt;I've uploaded my &lt;a href="https://github.com/shanec-/Nullfactory-Azure"&gt;full implementation and sample usage here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Enabling Diagnostics on the Azure Portal&lt;/h2&gt;
+
+&lt;p&gt;There are couple of steps that need to be done in order to enable diagnostics on the app service:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Login to the older Azure portal - &lt;a href="https://manage.windowsazure.net"&gt;https://manage.windowsazure.net&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ensure that you already have a storage account set up. This would house the table that stores the diagnostic entries. &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, navigate to the web app configuration page. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/20_WebAppDiagConfig.png" alt="Web App Configure" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Enable application logging (table storage)
+and select a logging level.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/30_DiagTableStorage.png" alt="Web App, Application Diagnostics" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next click on the &lt;code&gt;manage table storage&lt;/code&gt; button allows to configure the storage account and the table into which the diagnostic information is recorded into.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/40_DiagTableStorage2.png" alt="Web App Application Diagnostics Table Name" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;That's it, the web app should start capturing logging information. &lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;There were a few quirks that I faced attempting to set it up:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;This how-to provides the following instructions on &lt;a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-enable-diagnostic-log/"&gt;enabling diagnostics&lt;/a&gt;:  &lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;When enabling Application Logging you must also select the Logging Level and whether to enable logging to the file system, table storage, or blob storage. While all three storage locations provide the same basic information for logged events, table storage and blob storage log additional information such as the instance ID, thread ID, and a more granular timestamp (tick format) than logging to file system.&lt;/p&gt;
+  
+  &lt;p&gt;When enabling site diagnostics, you must select storage or file system for web server logging. Selecting storage allows you to select a storage account, and then a blob container that the logs will be written to. All other logs for site diagnostics are written to the file system only.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;At the time of writing this post the preview portal does not appear to have the diagnostics feature fully ported. While it does have the switch to enable it, it does not provide the options to select the storage location. That's why it is required to be enabled via the &lt;a href="https://manage.windowsazure.com/"&gt;older portal&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/60_PreviewAppDiagLogs.png" alt="Preview Portal, Web App Logging" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The newer (v2) storage accounts do not seem to be recognized by the older portal. So if you already using them via the preview portal, you would need to create a second set of storage accounts just for the diagnostics. Again, this is something I think this would be sorted out in future releases  &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/50_StorAccV2Diag.png" alt="Web App, Diagnostics Storage Account V2 Missing" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/apache/log4net/blob/trunk/src/log4net/Appender/TraceAppender.cs"&gt;log4net/TraceAppender.cs at trunk · apache/log4net · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/"&gt;Enable diagnostics logging for web apps in Azure App Service&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blog.tylerdoerksen.com/2012/04/15/logging-in-azure-part-1/"&gt;Logging in Azure: Part 1 | Tyler's Azure Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blog.tylerdoerksen.com/2012/04/17/logging-in-azure-part-2table-storage/"&gt;Logging in Azure: Part 2–Table Storage | Tyler's Azure Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://zacg.github.io/blog/2014/02/05/azure-log4net-appender/"&gt;Azure Log4Net Appender - Zac Gross&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blog.kloud.com.au/2014/10/22/logging-with-log4net-and-azure-diagnostics-on-web-and-worker-roles/"&gt;Logging with log4net and Azure Diagnostics on Web and Worker Roles | Kloud Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://cloudshaper.wordpress.com/2010/10/30/logging-with-log4net-on-the-azure-platform/"&gt;Logging with Log4Net on the Azure platform | Cloud Shaper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/05/start-azure-webjobs-on-demand/</guid><link>http://nullfactory.net/2015/05/start-azure-webjobs-on-demand/</link><title>Start Azure Web Jobs On Demand</title><description>&lt;p&gt;I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
 The problem with the free tiers is that there's a high possibility that the web job would shut itself down and hibernate if it is &lt;a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/"&gt;idle for more that 20 mins&lt;/a&gt;:&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -790,35 +940,5 @@ namespace SslTest
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting"&gt;Super User - shutdown - How do I stop the Windows 8 restart clock; '15 minutes' and counting...?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update"&gt;WikiHow - 3 Ways to Disable Automatic Reboot After Windows Update&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/01/tfs-scheduled-backups-not-working-quiesced/</guid><link>http://nullfactory.net/2015/01/tfs-scheduled-backups-not-working-quiesced/</link><title>TFS Tip: Scheduled Backups Do Not Work While the Service Is Quiesced</title><description>&lt;p&gt;Last month I worked on upgrading a Team Foundation Server from 2012.2 to 2013.4. While majority of the process was based on the off of the &lt;a href="http://vsarupgradeguide.codeplex.com/"&gt;ALM Rangers upgrade guide&lt;/a&gt;, there were a few interesting tidbits that we learned during the upgrade.  &lt;/p&gt;
-
-&lt;p&gt;The most important one was that Scheduled Backups feature no longer works if the services are stopped using the &lt;code&gt;TFSServiceControl quiesce&lt;/code&gt; command.&lt;/p&gt;
-
-&lt;p&gt;While the &lt;a href="http://msdn.microsoft.com/en-us/library/ff470382.aspx"&gt;MSDN Article&lt;/a&gt; for the command does state that it would take down all the services, it also says that you would normally use this command in order to facilitate backups. 
-As such we assumed, incorrectly, that it would not apply to the scheduled backup service. &lt;/p&gt;
-
-</description><pubDate>Fri, 09 Jan 2015 18:30:00 Z</pubDate><a10:updated>2015-01-09T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;Last month I worked on upgrading a Team Foundation Server from 2012.2 to 2013.4. While majority of the process was based on the off of the &lt;a href="http://vsarupgradeguide.codeplex.com/"&gt;ALM Rangers upgrade guide&lt;/a&gt;, there were a few interesting tidbits that we learned during the upgrade.  &lt;/p&gt;
-
-&lt;p&gt;The most important one was that Scheduled Backups feature no longer works if the services are stopped using the &lt;code&gt;TFSServiceControl quiesce&lt;/code&gt; command.&lt;/p&gt;
-
-&lt;p&gt;While the &lt;a href="http://msdn.microsoft.com/en-us/library/ff470382.aspx"&gt;MSDN Article&lt;/a&gt; for the command does state that it would take down all the services, it also says that you would normally use this command in order to facilitate backups. 
-As such we assumed, incorrectly, that it would not apply to the scheduled backup service. &lt;/p&gt;
-
-&lt;!--excerpt--&gt; 
-
-&lt;blockquote&gt;
-  &lt;p&gt;The lesson learned here is that we should &lt;code&gt;quiesce&lt;/code&gt; the service only for manual backups of the databases. &lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;One we figured this out, we manually took the backups and everything was alright in the world again. &lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/ms253151.aspx"&gt;MSDN - Understanding backing up Team Foundation Server&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://blogs.msdn.com/b/granth/archive/2013/02/13/tfs2012-what-are-all-the-different-jobs-built-in-to-tfs.aspx"&gt;Grant Holliday’s blog - TFS2012: What are all the different Jobs built-in to TFS?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://vsarupgradeguide.codeplex.com/"&gt;CodePlex - TFS Upgrade Guide&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://chamindac.blogspot.com/2014/12/tfs-backuprestore-lessons-learnt.html"&gt;Chaminda's Blog - TFS Backup/Restore – Lessons Learnt&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>

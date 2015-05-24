@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Code Access Security,HtmlAgilityPack,Hyper-V,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Code Access Security,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,28 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfs-scheduled-backups-not-working-quiesced/">TFS Tip: Scheduled Backups Do Not Work While the Service Is Quiesced</a></h2>
+      <p class="post-date">10 Jan 2015
+
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/tfs-tips" title="TFS Tips">TFS Tips</a>
+</p>
+
+      <p>
+		
+		<p>Last month I worked on upgrading a Team Foundation Server from 2012.2 to 2013.4. While majority of the process was based on the off of the <a href="http://vsarupgradeguide.codeplex.com/">ALM Rangers upgrade guide</a>, there were a few interesting tidbits that we learned during the upgrade.  </p>
+
+<p>The most important one was that Scheduled Backups feature no longer works if the services are stopped using the <code>TFSServiceControl quiesce</code> command.</p>
+
+<p>While the <a href="http://msdn.microsoft.com/en-us/library/ff470382.aspx">MSDN Article</a> for the command does state that it would take down all the services, it also says that you would normally use this command in order to facilitate backups. 
+As such we assumed, incorrectly, that it would not apply to the scheduled backup service. </p>
+
+
+		<p><a href="/2015/01/tfs-scheduled-backups-not-working-quiesced/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Setting up Source and Symbol Servers in Team Foundation Server</a></h2>
       <p class="post-date">01 Jan 2015
