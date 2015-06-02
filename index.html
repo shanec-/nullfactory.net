@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Code Access Security,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Code Access Security,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,51 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/entity-framework-multiple-context-namespace-collision/">Entity Framework Namespace Collisions When Working with Multiple Contexts</a></h2>
+      <p class="post-date">03 Jun 2015
+
+      | <a href="/category/entity-framework" title="Entity Framework">Entity Framework</a>
+      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
+</p>
+
+      <p>
+		
+		<p>I came across the following exception whilst attempting working with a solution that contained a <em>couple of</em> Entity Framework (EF) 6 database contexts.</p>
+
+<pre><code>System.Data.Entity.Core.MetadataException
+
+Schema specified is not valid. Errors: 
+The mapping of CLR type to EDM type is ambiguous because multiple CLR types match the EDM type 'Setting'. Previously found CLR type 'SqlHelper.Primary.Setting', newly found CLR type 'SqlHelper.Secondary.Setting'.
+
+at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.LoadAssemblyFromCache(Assembly assembly, Boolean loadReferencedAssemblies, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.ExplicitLoadFromAssembly(Assembly assembly, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.ExplicitLoadFromAssembly(Assembly assembly, ObjectItemCollection collection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly)
+at System.Data.Entity.Internal.InternalContext.TryUpdateEntitySetMappingsForType(Type entityType)
+at System.Data.Entity.Internal.InternalContext.UpdateEntitySetMappingsForType(Type entityType)
+at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+at System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+at System.Data.Entity.DbSet`1.Add(TEntity entity)
+at MultiContextConsoleApp.Program.Main(String[] args) in e:\shane\Projects\Orca\Sandbox\MultiContextConsoleApp\MultiContextConsoleApp\Program.cs:line 16
+at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
+at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
+at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+at System.Threading.ThreadHelper.ThreadStart()
+</code></pre>
+
+
+		<p><a href="/2015/06/entity-framework-multiple-context-namespace-collision/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Generate a Clean Up Script to Drop All Objects in a SQL Server Database</a></h2>
       <p class="post-date">02 Jun 2015
@@ -300,34 +345,6 @@ The problem with the free tiers is that there's a high possibility that the web 
 
 
 		<p><a href="/2015/02/obfuscate-sharepoint-ssrs-datasource/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/02/tfs-customizie-build-template-to-exclude-symbols/">Customize a Build Template to Exclude Symbols From Being Published to the Symbol Server</a></h2>
-      <p class="post-date">09 Feb 2015
-
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-      | <a href="/category/team-build" title="Team Build">Team Build</a>
-</p>
-
-      <p>
-		
-		<p>This post was inspired by a feedback provided by one of the commenters on <a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx">this post</a>. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.</p>
-
-<p>As suggested in the same comment thread, my approach would revolve around explicitly setting the <code>FileList</code> property in the <code>PublishSymbols</code> activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.</p>
-
-<h2>Pre-Requisites</h2>
-
-<ul>
-<li>A properly configured symbol server. Check out my previous on <a href="/2015/01/setting-up-tfs-source-symbol-servers/">automatically publishing debug symbols</a>.</li>
-</ul>
-
-<h2>Customization Steps</h2>
-
-<p>My template is based on the default TFS template <code>TfvcTemplate.12.xaml</code> and customized with the following changes:</p>
-
-
-		<p><a href="/2015/02/tfs-customizie-build-template-to-exclude-symbols/">Read more...</a></p>
 	  </p>
     </div>
 </div>

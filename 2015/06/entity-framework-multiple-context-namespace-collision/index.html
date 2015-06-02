@@ -15,7 +15,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
   <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
-	<link rel="canonical" href="http://nullfactory.net/drafts/2015/05/entity-framework-multiple-context-namespace-collision/" />
+	<link rel="canonical" href="http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/" />
 </head>
 <body>
   <!-- header -->
@@ -37,15 +37,15 @@
 	
 <div class="listing">
 	<div class="post other link">
-		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/drafts/2015/05/entity-framework-multiple-context-namespace-collision/">Entity Framework Namespace Collisions when working with Multiple Contexts</a></h2>
-		<p class="post-date">25 May 2015
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/entity-framework-multiple-context-namespace-collision/">Entity Framework Namespace Collisions When Working with Multiple Contexts</a></h2>
+		<p class="post-date">03 Jun 2015
 				| <a href="/category/entity-framework">Entity Framework</a>
 				| <a href="/category/sql-server">SQL Server</a>
 	  </p>
 
 		
 
-		<p>I ran into the following issue the other day while integrating Entity Framework 6. It turns out to be a design limitation of the framework. Fortunately the workaround for it is fairly simple. </p>
+		<p>I came across the following exception whilst attempting working with a solution that contained a <em>couple of</em> Entity Framework (EF) 6 database contexts.</p>
 
 <pre><code>System.Data.Entity.Core.MetadataException
 
@@ -76,25 +76,57 @@ at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, Cont
 at System.Threading.ThreadHelper.ThreadStart()
 </code></pre>
 
-<h3>Reproducing the Problem</h3>
+<!--excerpt-->
 
-<p>The problem can be reproduced using the following steps:</p>
+<h2>Reproducing the Problem</h2>
+
+<p>Here's a quick run down of the steps required to reproduce the scenario:</p>
 
 <ol>
-<li>Create two databases and then a new table with the same name on both of them.  </li>
-<li>Next, create a new class library to host the database contexts.</li>
-<li>Now create two contexts, one for each database. Ensure that each context is created under its own namespace.</li>
-<li>The moment we attempt to interact with the context, we get the exception.</li>
+<li>Start off by creating two databases.</li>
+<li><p>Create a new table with the same name on each of them.</p>
+
+<p><img src="/images/posts/EFNamespaceConflict/10_DatabaseSchema.png" alt="Database Schema" /></p></li>
+<li><p>Next, open up Visual Studio and create a Class Library project to host both EF database contexts.</p></li>
+<li><p>Within the same project, create two EF (<em>ADO.NET Entity Data Model</em>) contexts; one for each database. Ensure that each context is under its own namespace.</p>
+
+<p><img src="/images/posts/EFNamespaceConflict/15_InitialProjectStructure.png" alt="Project Structure" /></p>
+
+<p><img src="/images/posts/EFNamespaceConflict/20_PrimaryContext.png" alt="Primary Context" /></p>
+
+<p><img src="/images/posts/EFNamespaceConflict/30_SecondaryContext.png" alt="Secondary Context" /></p>
+
+<p><img src="/images/posts/EFNamespaceConflict/40_PrimarySetting.png" alt="Primary Context Settings File" /></p>
+
+<p><img src="/images/posts/EFNamespaceConflict/50_SecondarySetting.png" alt="Secondary Context Settings File" /></p></li>
+<li><p>Next, let's create a simple console application that would act as the client and invoke operations on the contexts. </p></li>
+<li><p>Run the application - an exception is thrown the moment there is any kind of interaction with either of the contexts. </p>
+
+<p><img src="/images/posts/EFNamespaceConflict/60_Exception.png" alt="SSMS Context Menu" /></p></li>
 </ol>
 
-<h3>The Solution</h3>
+<h2>The Solution</h2>
 
-<p>The problem appears to be how Entity Framework handles namespaces and their resolution, this post goes into more detail.
-The solution itself is pretty simple and is more of inconvenience than a real problem.   </p>
+<p>This issue is only reproducible when working with multiple database contexts that have tables with the same name and share the same assembly. It does not even matter that the contexts are across different namespaces. </p>
 
-<h3>The Workaround</h3>
+<p>The problem appears to be how Entity Framework resolves namespaces, <a href="http://entityframework.codeplex.com/workitem/483">this ticket goes into more detail</a>. I was able to reproduce this with the latest version of EF and a fix does not appear to be on the immediate schedule. </p>
 
-<h2>### References</h2>
+<p>Luckily there are couple of workarounds which are pretty straightforward:</p>
+
+<ol>
+<li>Make sure that that both contexts don't share tables with the same name - <em>not the most practical approach</em>.</li>
+<li><p>Restructure the solution by isolating the database contexts within their own assemblies.</p>
+
+<p><img src="/images/posts/EFNamespaceConflict/70_NewProjectStructure.png" alt="SSMS Context Menu" />   </p></li>
+</ol>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://entityframework.codeplex.com/workitem/483">CodePlex - Entity Framework - View Issue #483: Can't map two classes with same name from different namespace</a></li>
+<li><a href="http://stackoverflow.com/questions/14927391/the-mapping-of-clr-type-to-edm-type-is-ambiguous-with-ef-6-5">StackOverflow.com - c# - The mapping of CLR type to EDM type is ambiguous with EF 6 &amp; 5?</a></li>
+<li><a href="https://social.msdn.microsoft.com/Forums/en-US/5a8ea003-c6bc-4fc6-ad2a-634f09447c49/ef4-mapping-of-clr-type-to-edm-type-is-ambiguous-error?forum=adodotnetentityframework">MSDN Forum - EF4 Mapping of CLR type to EDM type is ambiguous error.</a></li>
+</ul>
 
 
 	<!-- Go to www.addthis.com/dashboard to customize your tools -->
@@ -107,14 +139,14 @@ The solution itself is pretty simple and is more of inconvenience than a real pr
             reload: true,
             config: function () {
                 //this.page.identifier = '';
-                this.page.url = 'http://nullfactory.net/drafts/2015/05/entity-framework-multiple-context-namespace-collision/';
+                this.page.url = 'http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/';
                 //this.page.title = '';
             }
         });
     };
 
     var disqus_shortname = 'thenullfactory';
-    var disqus_url = 'http://nullfactory.net/drafts/2015/05/entity-framework-multiple-context-namespace-collision/';
+    var disqus_url = 'http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -137,6 +169,20 @@ The solution itself is pretty simple and is more of inconvenience than a real pr
 
   <!-- /.main -->
 
-  
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </body>
 </html>

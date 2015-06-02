@@ -1,4 +1,117 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/</guid><link>http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/</link><title>Generate a Clean Up Script to Drop All Objects in a SQL Server Database</title><description>&lt;p&gt;I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/</guid><link>http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/</link><title>Entity Framework Namespace Collisions When Working with Multiple Contexts</title><description>&lt;p&gt;I came across the following exception whilst attempting working with a solution that contained a &lt;em&gt;couple of&lt;/em&gt; Entity Framework (EF) 6 database contexts.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;System.Data.Entity.Core.MetadataException
+
+Schema specified is not valid. Errors: 
+The mapping of CLR type to EDM type is ambiguous because multiple CLR types match the EDM type 'Setting'. Previously found CLR type 'SqlHelper.Primary.Setting', newly found CLR type 'SqlHelper.Secondary.Setting'.
+
+at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.LoadAssemblyFromCache(Assembly assembly, Boolean loadReferencedAssemblies, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.ExplicitLoadFromAssembly(Assembly assembly, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.ExplicitLoadFromAssembly(Assembly assembly, ObjectItemCollection collection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly)
+at System.Data.Entity.Internal.InternalContext.TryUpdateEntitySetMappingsForType(Type entityType)
+at System.Data.Entity.Internal.InternalContext.UpdateEntitySetMappingsForType(Type entityType)
+at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+at System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+at System.Data.Entity.DbSet`1.Add(TEntity entity)
+at MultiContextConsoleApp.Program.Main(String[] args) in e:\shane\Projects\Orca\Sandbox\MultiContextConsoleApp\MultiContextConsoleApp\Program.cs:line 16
+at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
+at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
+at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+at System.Threading.ThreadHelper.ThreadStart()
+&lt;/code&gt;&lt;/pre&gt;
+
+</description><pubDate>Tue, 02 Jun 2015 18:30:00 Z</pubDate><a10:updated>2015-06-02T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;I came across the following exception whilst attempting working with a solution that contained a &lt;em&gt;couple of&lt;/em&gt; Entity Framework (EF) 6 database contexts.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;System.Data.Entity.Core.MetadataException
+
+Schema specified is not valid. Errors: 
+The mapping of CLR type to EDM type is ambiguous because multiple CLR types match the EDM type 'Setting'. Previously found CLR type 'SqlHelper.Primary.Setting', newly found CLR type 'SqlHelper.Secondary.Setting'.
+
+at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.LoadAssemblyFromCache(Assembly assembly, Boolean loadReferencedAssemblies, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.ExplicitLoadFromAssembly(Assembly assembly, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.ExplicitLoadFromAssembly(Assembly assembly, ObjectItemCollection collection, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly, Action`1 logLoadMessage)
+at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly)
+at System.Data.Entity.Internal.InternalContext.TryUpdateEntitySetMappingsForType(Type entityType)
+at System.Data.Entity.Internal.InternalContext.UpdateEntitySetMappingsForType(Type entityType)
+at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+at System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+at System.Data.Entity.DbSet`1.Add(TEntity entity)
+at MultiContextConsoleApp.Program.Main(String[] args) in e:\shane\Projects\Orca\Sandbox\MultiContextConsoleApp\MultiContextConsoleApp\Program.cs:line 16
+at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
+at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
+at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+at System.Threading.ThreadHelper.ThreadStart()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Reproducing the Problem&lt;/h2&gt;
+
+&lt;p&gt;Here's a quick run down of the steps required to reproduce the scenario:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Start off by creating two databases.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Create a new table with the same name on each of them.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/10_DatabaseSchema.png" alt="Database Schema" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, open up Visual Studio and create a Class Library project to host both EF database contexts.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Within the same project, create two EF (&lt;em&gt;ADO.NET Entity Data Model&lt;/em&gt;) contexts; one for each database. Ensure that each context is under its own namespace.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/15_InitialProjectStructure.png" alt="Project Structure" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/20_PrimaryContext.png" alt="Primary Context" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/30_SecondaryContext.png" alt="Secondary Context" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/40_PrimarySetting.png" alt="Primary Context Settings File" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/50_SecondarySetting.png" alt="Secondary Context Settings File" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, let's create a simple console application that would act as the client and invoke operations on the contexts. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Run the application - an exception is thrown the moment there is any kind of interaction with either of the contexts. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/60_Exception.png" alt="SSMS Context Menu" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;This issue is only reproducible when working with multiple database contexts that have tables with the same name and share the same assembly. It does not even matter that the contexts are across different namespaces. &lt;/p&gt;
+
+&lt;p&gt;The problem appears to be how Entity Framework resolves namespaces, &lt;a href="http://entityframework.codeplex.com/workitem/483"&gt;this ticket goes into more detail&lt;/a&gt;. I was able to reproduce this with the latest version of EF and a fix does not appear to be on the immediate schedule. &lt;/p&gt;
+
+&lt;p&gt;Luckily there are couple of workarounds which are pretty straightforward:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Make sure that that both contexts don't share tables with the same name - &lt;em&gt;not the most practical approach&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Restructure the solution by isolating the database contexts within their own assemblies.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/70_NewProjectStructure.png" alt="SSMS Context Menu" /&gt;   &lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://entityframework.codeplex.com/workitem/483"&gt;CodePlex - Entity Framework - View Issue #483: Can't map two classes with same name from different namespace&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/14927391/the-mapping-of-clr-type-to-edm-type-is-ambiguous-with-ef-6-5"&gt;StackOverflow.com - c# - The mapping of CLR type to EDM type is ambiguous with EF 6 &amp;amp; 5?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/en-US/5a8ea003-c6bc-4fc6-ad2a-634f09447c49/ef4-mapping-of-clr-type-to-edm-type-is-ambiguous-error?forum=adodotnetentityframework"&gt;MSDN Forum - EF4 Mapping of CLR type to EDM type is ambiguous error.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/</guid><link>http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/</link><title>Generate a Clean Up Script to Drop All Objects in a SQL Server Database</title><description>&lt;p&gt;I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.&lt;/p&gt;
 
 &lt;p&gt;In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.&lt;/p&gt;
 
@@ -889,110 +1002,5 @@ namespace SslTest
 &lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-2/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part 2&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/office/dn268593.aspx"&gt;MSDN - Deciding between apps for SharePoint and SharePoint solution - Partial-trust user code is deprecated&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx"&gt;MSDN - How to: Add and Remove Additional Assemblies&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/</guid><link>http://nullfactory.net/2015/02/tfs-customizie-build-template-to-exclude-symbols/</link><title>Customize a Build Template to Exclude Symbols From Being Published to the Symbol Server</title><description>&lt;p&gt;This post was inspired by a feedback provided by one of the commenters on &lt;a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx"&gt;this post&lt;/a&gt;. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.&lt;/p&gt;
-
-&lt;p&gt;As suggested in the same comment thread, my approach would revolve around explicitly setting the &lt;code&gt;FileList&lt;/code&gt; property in the &lt;code&gt;PublishSymbols&lt;/code&gt; activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.&lt;/p&gt;
-
-&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;A properly configured symbol server. Check out my previous on &lt;a href="http://nullfactory.net/2015/01/setting-up-tfs-source-symbol-servers/"&gt;automatically publishing debug symbols&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Customization Steps&lt;/h2&gt;
-
-&lt;p&gt;My template is based on the default TFS template &lt;code&gt;TfvcTemplate.12.xaml&lt;/code&gt; and customized with the following changes:&lt;/p&gt;
-
-</description><pubDate>Sun, 08 Feb 2015 18:30:00 Z</pubDate><a10:updated>2015-02-08T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;This post was inspired by a feedback provided by one of the commenters on &lt;a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx"&gt;this post&lt;/a&gt;. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.&lt;/p&gt;
-
-&lt;p&gt;As suggested in the same comment thread, my approach would revolve around explicitly setting the &lt;code&gt;FileList&lt;/code&gt; property in the &lt;code&gt;PublishSymbols&lt;/code&gt; activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.&lt;/p&gt;
-
-&lt;h2&gt;Pre-Requisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;A properly configured symbol server. Check out my previous on &lt;a href="http://nullfactory.net/2015/01/setting-up-tfs-source-symbol-servers/"&gt;automatically publishing debug symbols&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Customization Steps&lt;/h2&gt;
-
-&lt;p&gt;My template is based on the default TFS template &lt;code&gt;TfvcTemplate.12.xaml&lt;/code&gt; and customized with the following changes:&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Start off by adding the build template parameter that accepts filter:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;ExclusionFilter&lt;/code&gt; - &lt;em&gt;Text that would be used as part of the wild card filter.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/10_Parameters.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, the variables that would be needed:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;CustomAllSymbolsList&lt;/code&gt; - &lt;em&gt;Temporarily store the symbol files that are found&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;CustomExcludedSymbolsList&lt;/code&gt; - &lt;em&gt;Temporarily store the symbols that need to be excluded.&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;CustomFilteredSymbolsList&lt;/code&gt; - &lt;em&gt;The final list of symbols that would be published to the symbol server.&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;CustomBinDirectory&lt;/code&gt; - &lt;em&gt;Temporary store the Binaries Directory path.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/20_Variables.png" alt="Build Process Variables" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Now get the &lt;code&gt;WellKnowEnvironmentalVariables.BinariesDirectory&lt;/code&gt; value using the &lt;code&gt;GetEnvironmentalVariable&amp;lt;T&amp;gt;&lt;/code&gt; activity.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/40_EnvronmentalVariableActivity.png" alt="GetEnvironmentalVariable&lt;T&gt;" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/30_EnvironmentalVariable.png" alt="Built-In Environmental Variable" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Get a list of all the available symbols from the build folder.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This is done using a &lt;code&gt;FindMatchingFiles&lt;/code&gt; activity with a &lt;code&gt;String.Format("{0}\**\*.pdb", CustomBinDirectory)&lt;/code&gt; pattern.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/45_FindAllSymbols.png" alt="Find All Symbols" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Get a list of of symbols that need to be excluded from the Symbol Server.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Again, a &lt;code&gt;FindMatchingFiles&lt;/code&gt; activity with &lt;code&gt;String.Format("{0}\**\*{1}*.pdb", CustomBinDirectory, ExclusionFilter)&lt;/code&gt; pattern.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/47_FindSymbolsToExclude.png" alt="Find Symbols to be excluded" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Since the &lt;code&gt;FindMatchingFiles&lt;/code&gt; activity returns an &lt;code&gt;IEnumberable&amp;lt;string&amp;gt;&lt;/code&gt; we create a new list that we can actually manipulate.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/50_InitializeSymbolList.png" alt="Find Symbols to be excluded" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Add all the symbols to the new list.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/60_AddToCollection.png" alt="Add symbols" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Remove the symbols that need to be excluded. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/70_RemoveFromCollection.png" alt="Remove symbols" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Pass the filtered collection into the &lt;code&gt;PublishSymbols&lt;/code&gt; activity via the &lt;code&gt;FileList&lt;/code&gt; property.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/80_PublishSymbols.png" alt="PublishSymbols Activity" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/90_FilteredPublishSymbols.png" alt="PublishSymbols, FileList" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Using the Build Definition&lt;/h2&gt;
-
-&lt;p&gt;Create a new build definition using the new template and provide valid values for &lt;code&gt;Path to publish symbols&lt;/code&gt;and &lt;code&gt;ExclusionFilter&lt;/code&gt; parameters. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ExcludeSymbols/100_EditBuildDefinition.png" alt="Edit build definition" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally, queue a new build and verify that the symbols are excluded the symbols store. &lt;/p&gt;
-
-&lt;p&gt;The final customized template can be &lt;a href="https://github.com/shanec-/Nullfactory-TfsBuildExtensions/blob/master/src/Template/ExcludedSymbolsTfvcTemplate.12.xaml"&gt;downloaded here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/hh190722.aspx"&gt;MSDN - Index and publish symbol data&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_IndexSources"&gt;MSDN - Embed version control paths and versions into the symbol data in Your PDB files (IndexSources activity)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/gg265783.aspx#Activity_PublishSymbols"&gt;MSDN - Publish symbols to a SymStore symbol store (PublishSymbols activity)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.ewaldhofman.nl/post/2010/04/27/Customize-Team-Build-2010-e28093-Part-2-Add-arguments-and-variables.aspx"&gt;Ewald Hofman | Customize Team Build 2010 – Part 2: Add arguments and variables&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/dd647551.aspx"&gt;MSDN- Customize your build process template&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-gb/library/hh850448.aspx"&gt;MSDN - Team Foundation Build environment variables&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/dn231755.aspx"&gt;MSDN - GetEnvironmentVariable&lt;T&gt; Class&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.build.activities.extensions.wellknownenvironmentvariables.binariesdirectory.aspx"&gt;MSDN - WellKnownEnvironmentVariables.BinariesDirectory Field&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>
