@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Obfuscating a SharePoint-Integrated SSRS DataSource's Connection String  
-category: SharePoint, SQL Server Reporting Services, Code Access Security
+category: SharePoint, SQL Server, SQL Server Reporting Services, Code Access Security
 ---
 
 When SQL Server Reporting Services (SSRS) is deployed as an SharePoint integrated solution, it enables much of its functionality to be managed right from within SharePoint. Starting from the 2013 version, the integration between SharePoint and SQL Server Reporting Services 2012 is more tightly coupled than previous iterations. 

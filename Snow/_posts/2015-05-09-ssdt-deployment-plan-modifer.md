@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions
-category: SQL Server Data Tools
+category: SQL Server, SQL Server Data Tools
 ---
 
 I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.

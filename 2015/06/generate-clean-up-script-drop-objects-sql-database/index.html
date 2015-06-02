@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="SQL Server" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Generate a Clean Up Script to Drop All Objects in a SQL Server Database</a></h2>
+		<p class="post-date">02 Jun 2015
+				| <a href="/category/sql-server">SQL Server</a>
+	  </p>
+
+		
+
+		<p>I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.</p>
+
+<p>In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.</p>
+
+<p>I saw a few possible solutions and finally settled on using the <a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend">out-of-the-box feature</a> that's already available through SQL Server Management Studio (SSMS).</p>
+
+<ol>
+<li>Open up SQL Server Management Studio.</li>
+<li><p>Select <code>Task  &gt; Generate Script...</code> on on your the database context menu. This would open up the <code>Generate and Publish Scripts</code> dialog.</p>
+
+<p><img src="/images/posts/GenerateDropScript/10_ContextMenu.png" alt="SSMS Context Menu" /></p></li>
+<li><p>First, navigate to the <code>Choose Objects</code> tab and select all the objects that need to be dropped.</p></li>
+<li><p>Next, on the <code>Set Scripting Options</code> tab, select the preferred output location.</p>
+
+<p><img src="/images/posts/GenerateDropScript/20_SetScriptingOptions.png" alt="Set Scripting Options" /></p></li>
+<li><p>Next, click the <code>Advanced</code> button which result in the <code>Advanced Scripting Options</code> dialog.</p>
+
+<p><img src="/images/posts/GenerateDropScript/30_AdvancedScriptingOptions.png" alt="Advanced Scripting Options" /></p></li>
+<li><p>Navigate down towards to and change the <code>General &gt; Script DROP and CREATE</code> option to <code>Script DROP</code>.</p></li>
+<li>Set the default values for the rest of the steps and finally click the <code>Finish</code> button.</li>
+</ol>
+
+<!--excerpt-->
+
+<p>SSMS sorts out the dependencies and generates a script similar to the one below. Note that the statements are in the required sequence.</p>
+
+<pre><code>USE [test]
+GO
+ALTER TABLE [dbo].[Contact] DROP CONSTRAINT [FK_Contact_Company]
+GO
+/****** Object:  Table [dbo].[Contact]Script Date: 6/2/2015 9:33:36 AM ******/
+DROP TABLE [dbo].[Contact]
+GO
+/****** Object:  Table [dbo].[Company]Script Date: 6/2/2015 9:33:36 AM ******/
+DROP TABLE [dbo].[Company]
+GO
+</code></pre>
+
+<p>I finally made the following tweaks to convert the script to a <code>SQLCMD</code> script and parameterize the schema:</p>
+
+<pre><code>:setvar TenantSchemaName "scm"
+
+ALTER TABLE [$(TenantSchemaName)].[Contact] DROP CONSTRAINT [FK_Contact_Company]
+GO
+/****** Object:  Table [$(TenantSchemaName)].[Contact]    Script Date: 6/2/2015 9:33:36 AM ******/
+DROP TABLE [$(TenantSchemaName)].[Contact]
+GO
+/****** Object:  Table [$(TenantSchemaName)].[Company]    Script Date: 6/2/2015 9:33:36 AM ******/
+DROP TABLE [$(TenantSchemaName)].[Company]
+GO
+</code></pre>
+
+<p>Although, I was not really focused on automation, it should not be too difficult to integrate it with existing automated processes.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend">StackOverflow.com - sql server - Drop all the tables, stored procedures, triggers, constraints and all the dependencies in one sql statement - Stack Overflow</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

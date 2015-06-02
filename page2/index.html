@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Code Access Security,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Code Access Security,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,27 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">TFS Tip: Disable Windows Update Prior TFS Upgrade</a></h2>
+      <p class="post-date">11 Jan 2015
+
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/tfs-tips" title="TFS Tips">TFS Tips</a>
+</p>
+
+      <p>
+		
+		<p>Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.</p>
+
+<p>Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.</p>
+
+<p>Personally I use the <code>net stop "windows update"</code> command as it is only effective until you restart the computer/service.</p>
+
+
+		<p><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfs-scheduled-backups-not-working-quiesced/">TFS Tip: Scheduled Backups Do Not Work While the Service Is Quiesced</a></h2>
       <p class="post-date">10 Jan 2015

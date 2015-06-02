@@ -1,4 +1,85 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-05-24T19:50:26+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/</id><title type="text">Recording Diagnostics on a Azure App Service Hosted Website using Log4Net</title><summary type="html">&lt;p&gt;I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-06-02T14:47:08+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/</id><title type="text">Generate a Clean Up Script to Drop All Objects in a SQL Server Database</title><summary type="html">&lt;p&gt;I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.&lt;/p&gt;
+
+&lt;p&gt;In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.&lt;/p&gt;
+
+&lt;p&gt;I saw a few possible solutions and finally settled on using the &lt;a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend"&gt;out-of-the-box feature&lt;/a&gt; that's already available through SQL Server Management Studio (SSMS).&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open up SQL Server Management Studio.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select &lt;code&gt;Task  &amp;gt; Generate Script...&lt;/code&gt; on on your the database context menu. This would open up the &lt;code&gt;Generate and Publish Scripts&lt;/code&gt; dialog.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/10_ContextMenu.png" alt="SSMS Context Menu" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;First, navigate to the &lt;code&gt;Choose Objects&lt;/code&gt; tab and select all the objects that need to be dropped.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, on the &lt;code&gt;Set Scripting Options&lt;/code&gt; tab, select the preferred output location.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/20_SetScriptingOptions.png" alt="Set Scripting Options" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, click the &lt;code&gt;Advanced&lt;/code&gt; button which result in the &lt;code&gt;Advanced Scripting Options&lt;/code&gt; dialog.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/30_AdvancedScriptingOptions.png" alt="Advanced Scripting Options" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Navigate down towards to and change the &lt;code&gt;General &amp;gt; Script DROP and CREATE&lt;/code&gt; option to &lt;code&gt;Script DROP&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Set the default values for the rest of the steps and finally click the &lt;code&gt;Finish&lt;/code&gt; button.&lt;/li&gt;
+&lt;/ol&gt;
+
+</summary><published>2015-06-01T18:30:00Z</published><updated>2015-06-01T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/" /><content type="html">&lt;p&gt;I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.&lt;/p&gt;
+
+&lt;p&gt;In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.&lt;/p&gt;
+
+&lt;p&gt;I saw a few possible solutions and finally settled on using the &lt;a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend"&gt;out-of-the-box feature&lt;/a&gt; that's already available through SQL Server Management Studio (SSMS).&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open up SQL Server Management Studio.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select &lt;code&gt;Task  &amp;gt; Generate Script...&lt;/code&gt; on on your the database context menu. This would open up the &lt;code&gt;Generate and Publish Scripts&lt;/code&gt; dialog.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/10_ContextMenu.png" alt="SSMS Context Menu" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;First, navigate to the &lt;code&gt;Choose Objects&lt;/code&gt; tab and select all the objects that need to be dropped.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, on the &lt;code&gt;Set Scripting Options&lt;/code&gt; tab, select the preferred output location.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/20_SetScriptingOptions.png" alt="Set Scripting Options" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, click the &lt;code&gt;Advanced&lt;/code&gt; button which result in the &lt;code&gt;Advanced Scripting Options&lt;/code&gt; dialog.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/30_AdvancedScriptingOptions.png" alt="Advanced Scripting Options" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Navigate down towards to and change the &lt;code&gt;General &amp;gt; Script DROP and CREATE&lt;/code&gt; option to &lt;code&gt;Script DROP&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Set the default values for the rest of the steps and finally click the &lt;code&gt;Finish&lt;/code&gt; button.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;SSMS sorts out the dependencies and generates a script similar to the one below. Note that the statements are in the required sequence.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;USE [test]
+GO
+ALTER TABLE [dbo].[Contact] DROP CONSTRAINT [FK_Contact_Company]
+GO
+/****** Object:  Table [dbo].[Contact]Script Date: 6/2/2015 9:33:36 AM ******/
+DROP TABLE [dbo].[Contact]
+GO
+/****** Object:  Table [dbo].[Company]Script Date: 6/2/2015 9:33:36 AM ******/
+DROP TABLE [dbo].[Company]
+GO
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I finally made the following tweaks to convert the script to a &lt;code&gt;SQLCMD&lt;/code&gt; script and parameterize the schema:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;:setvar TenantSchemaName "scm"
+
+ALTER TABLE [$(TenantSchemaName)].[Contact] DROP CONSTRAINT [FK_Contact_Company]
+GO
+/****** Object:  Table [$(TenantSchemaName)].[Contact]    Script Date: 6/2/2015 9:33:36 AM ******/
+DROP TABLE [$(TenantSchemaName)].[Contact]
+GO
+/****** Object:  Table [$(TenantSchemaName)].[Company]    Script Date: 6/2/2015 9:33:36 AM ******/
+DROP TABLE [$(TenantSchemaName)].[Company]
+GO
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Although, I was not really focused on automation, it should not be too difficult to integrate it with existing automated processes.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend"&gt;StackOverflow.com - sql server - Drop all the tables, stored procedures, triggers, constraints and all the dependencies in one sql statement - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/</id><title type="text">Recording Diagnostics on a Azure App Service Hosted Website using Log4Net</title><summary type="html">&lt;p&gt;I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.&lt;/p&gt;
 
 &lt;p&gt;The &lt;a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/"&gt;official documentation states&lt;/a&gt; that calls to the &lt;code&gt;System.Diagnostics.Trace&lt;/code&gt; methods are all that is required to start capturing diagnostic information. In summary, this is all I needed to do:&lt;/p&gt;
 
@@ -913,32 +994,5 @@ namespace SslTest
 &lt;li&gt;&lt;a href="http://msdn.microsoft.com/en-gb/library/hh850448.aspx"&gt;MSDN - Team Foundation Build environment variables&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/dn231755.aspx"&gt;MSDN - GetEnvironmentVariable&lt;T&gt; Class&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/microsoft.teamfoundation.build.activities.extensions.wellknownenvironmentvariables.binariesdirectory.aspx"&gt;MSDN - WellKnownEnvironmentVariables.BinariesDirectory Field&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/</id><title type="text">TFS Tip: Disable Windows Update Prior TFS Upgrade</title><summary type="html">&lt;p&gt;Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.&lt;/p&gt;
-
-&lt;p&gt;Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.&lt;/p&gt;
-
-&lt;p&gt;Personally I use the &lt;code&gt;net stop "windows update"&lt;/code&gt; command as it is only effective until you restart the computer/service.&lt;/p&gt;
-
-</summary><published>2015-01-10T18:30:00Z</published><updated>2015-01-10T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/01/tfstip-disable-windows-update-prior-upgrade/" /><content type="html">&lt;p&gt;Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.&lt;/p&gt;
-
-&lt;p&gt;Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.&lt;/p&gt;
-
-&lt;p&gt;Personally I use the &lt;code&gt;net stop "windows update"&lt;/code&gt; command as it is only effective until you restart the computer/service.&lt;/p&gt;
-
-&lt;!--excerpt--&gt; 
-
-&lt;p&gt;Here are some ways to achieve the same: &lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting"&gt;http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update"&gt;http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://superuser.com/questions/603315/how-do-i-stop-the-windows-8-restart-clock-15-minutes-and-counting"&gt;Super User - shutdown - How do I stop the Windows 8 restart clock; '15 minutes' and counting...?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.wikihow.com/Disable-Automatic-Reboot-After-Windows-Update"&gt;WikiHow - 3 Ways to Disable Automatic Reboot After Windows Update&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
