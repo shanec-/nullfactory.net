@@ -1,4 +1,43 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-06-03T00:36:37+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/</id><title type="text">Entity Framework Namespace Collisions When Working with Multiple Contexts</title><summary type="html">&lt;p&gt;I came across the following exception whilst attempting working with a solution that contained a &lt;em&gt;couple of&lt;/em&gt; Entity Framework (EF) 6 database contexts.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-08-29T11:26:47+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/08/enable-ssrs-remote-error-sharepoint-integrated/</id><title type="text">Enable SSRS Remote Errors in SharePoint Integrated Mode</title><summary type="html">&lt;p&gt;Any time I have to troubleshoot issues in SQL Server Reporting Services (SSRS) reports in a production environment, I usually end up enabling &lt;code&gt;Remote Errors&lt;/code&gt; at some point as part my process. &lt;/p&gt;
+
+&lt;p&gt;Remote errors are enabled via the SSRS Service Application:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Navigate to &lt;code&gt;Central Administration &amp;gt; Application Management &amp;gt; Manage Service Applications&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Next, click on the appropriate  &lt;code&gt;SQL Server Reporting Services Service Application&lt;/code&gt; service application to manage it. &lt;/li&gt;
+&lt;li&gt;Click &lt;code&gt;System Settings&lt;/code&gt; from the toolbar.&lt;/li&gt;
+&lt;li&gt;Finally, enable remote errors by navigating into checking the &lt;code&gt;Enable Remote Errors&lt;/code&gt; checkbox. &lt;/li&gt;
+&lt;/ol&gt;
+
+</summary><published>2015-08-27T18:30:00Z</published><updated>2015-08-27T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/08/enable-ssrs-remote-error-sharepoint-integrated/" /><content type="html">&lt;p&gt;Any time I have to troubleshoot issues in SQL Server Reporting Services (SSRS) reports in a production environment, I usually end up enabling &lt;code&gt;Remote Errors&lt;/code&gt; at some point as part my process. &lt;/p&gt;
+
+&lt;p&gt;Remote errors are enabled via the SSRS Service Application:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Navigate to &lt;code&gt;Central Administration &amp;gt; Application Management &amp;gt; Manage Service Applications&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Next, click on the appropriate  &lt;code&gt;SQL Server Reporting Services Service Application&lt;/code&gt; service application to manage it. &lt;/li&gt;
+&lt;li&gt;Click &lt;code&gt;System Settings&lt;/code&gt; from the toolbar.&lt;/li&gt;
+&lt;li&gt;Finally, enable remote errors by navigating into checking the &lt;code&gt;Enable Remote Errors&lt;/code&gt; checkbox. &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;Although the &lt;a href="https://msdn.microsoft.com/en-us/library/aa337165.aspx"&gt;MSDN documentation&lt;/a&gt; states that this is all that is required, I've found that I need to enable it on the individual site's settings in order to get it working:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Navigate to &lt;code&gt;Site Settings &amp;gt; Reporting Services &amp;gt; Reporting Services Site Settings&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Ensure that the &lt;code&gt;Enable Local Mode Error Messages&lt;/code&gt; is checked.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Once the troubleshooting session is over, follow the same steps in reverse order to disable remote errors.  &lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/aa337165.aspx"&gt;Enable Remote Errors (Reporting Services)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/4850346/ssrs-remote-errors-enabled-but-not-working"&gt;StackOverflow - SSRS Remote Errors Enabled but NOT Working&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/</id><title type="text">Entity Framework Namespace Collisions When Working with Multiple Contexts</title><summary type="html">&lt;p&gt;I came across the following exception whilst attempting working with a solution that contained a &lt;em&gt;couple of&lt;/em&gt; Entity Framework (EF) 6 database contexts.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;System.Data.Entity.Core.MetadataException
 
@@ -868,139 +907,5 @@ namespace SslTest
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/703272/could-not-establish-trust-relationship-for-ssl-tls-secure-channel-soap"&gt;StackOverFlow - Could not establish trust relationship for SSL/TLS secure channel — SOAP&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/02/obfuscate-sharepoint-ssrs-datasource/</id><title type="text">Obfuscating a SharePoint-Integrated SSRS DataSource's Connection String</title><summary type="html">&lt;p&gt;When SQL Server Reporting Services (SSRS) is deployed as an SharePoint integrated solution, it enables much of its functionality to be managed right from within SharePoint. Starting from the 2013 version, the integration between SharePoint and SQL Server Reporting Services 2012 is more tightly coupled than previous iterations. &lt;/p&gt;
-
-&lt;p&gt;One feature in integrated mode is the ability to have the data sources (.rsds) and report files (.rdl) within a document library itself. This means that reports can reference a DataSource within any document library in the SharePoint site. &lt;/p&gt;
-
-&lt;p&gt;In order for the report to work the user should have read permission on both the data source as well as the report file. The problem with this is that the same user can now potentially view the settings within the data source file, including the connection string.&lt;/p&gt;
-
-&lt;h2&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;In order to protect the connection string, I came up with a solution to obscure it through encryption. The solution can be broken down to two major steps:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Force the reports to get the connection string by evaluating an expression embedded within itself. &lt;/li&gt;
-&lt;li&gt;Within this expression, call some custom code which manages the retrieval and decryption of the connection string. &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;One of the limitations with this method is that you can no longer use a shared data source and each report has to have its credentials embedded.&lt;/p&gt;
-
-&lt;p&gt;In my example below, I will be retrieving the configuration string from a configuration list stored in the same SharePoint server. &lt;/p&gt;
-
-</summary><published>2015-02-15T18:30:00Z</published><updated>2015-02-15T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/02/obfuscate-sharepoint-ssrs-datasource/" /><content type="html">&lt;p&gt;When SQL Server Reporting Services (SSRS) is deployed as an SharePoint integrated solution, it enables much of its functionality to be managed right from within SharePoint. Starting from the 2013 version, the integration between SharePoint and SQL Server Reporting Services 2012 is more tightly coupled than previous iterations. &lt;/p&gt;
-
-&lt;p&gt;One feature in integrated mode is the ability to have the data sources (.rsds) and report files (.rdl) within a document library itself. This means that reports can reference a DataSource within any document library in the SharePoint site. &lt;/p&gt;
-
-&lt;p&gt;In order for the report to work the user should have read permission on both the data source as well as the report file. The problem with this is that the same user can now potentially view the settings within the data source file, including the connection string.&lt;/p&gt;
-
-&lt;h2&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;In order to protect the connection string, I came up with a solution to obscure it through encryption. The solution can be broken down to two major steps:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Force the reports to get the connection string by evaluating an expression embedded within itself. &lt;/li&gt;
-&lt;li&gt;Within this expression, call some custom code which manages the retrieval and decryption of the connection string. &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;One of the limitations with this method is that you can no longer use a shared data source and each report has to have its credentials embedded.&lt;/p&gt;
-
-&lt;p&gt;In my example below, I will be retrieving the configuration string from a configuration list stored in the same SharePoint server. &lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h3&gt;Create the report extensions assembly&lt;/h3&gt;
-
-&lt;p&gt;Here's a summary of steps used to create report extension. You can find a link to the full source at the bottom of the post.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create new a class library to host your custom code.&lt;/li&gt;
-&lt;li&gt;Next, sign the assembly as we would be deploying it into the Global Assembly Cache. &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;In order for the report server to call the custom code, the strong-named assembly must be marked with the &lt;code&gt;[assembly: AllowPartiallyTrustedCallers]&lt;/code&gt; attribute. Let's do this now.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/10_AllowPartiallyTrustedCallers.png" alt="Allow Partially Trusted Callers" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Create a new public class and method that would retrieve the connection string. This method would take the report server url as its only parameter. This parameter would be parsed and later used to generate the REST call to SharePoint. Next, add a &lt;code&gt;[SecuritySafeCritical]&lt;/code&gt; attribute to the method, we need to this to perform operations that require access outside of the sandbox. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/20_CodeGetConnectionString.png" alt="GetConnectionStringMethod" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Now, create a helper method that retrieves the default credentials. This too would be decorated with the &lt;code&gt;[SecuritySafeCritical]&lt;/code&gt; attribute. In the body of the method, I explicitly assert the &lt;code&gt;EnvironmentPermission(EnvironmentPermissionAccess.Read, "USERNAME")&lt;/code&gt; permissions before using the &lt;code&gt;CredentialStore&lt;/code&gt;. We would run into a security exception if the explicit assertion is not done. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/50_CodeGetSecurityCredentials.png" alt="GetSecurityCredential Method" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Finally, create the method that makes the REST call to retrieve the obfuscated connection string from a SharePoint configuration list.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/40_CodeGetWebPermission.png" alt="GetConnectionStringFromSharePointList Method" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The &lt;code&gt;EnvironmentPermission&lt;/code&gt; assertion operation has to be in its own method with its own &lt;code&gt;[SecuritySafeCritical]&lt;/code&gt; attribute for it to work together with the &lt;code&gt;WebPermission&lt;/code&gt; assertion. Otherwise the following exception would be thrown:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Exception: System.Security.SecurityException Exception Message: Stack walk modifier must be reverted before another modification of the same type can be performed. Stacktrace:    at System.Security.CodeAccessSecurityEngine.Assert(CodeAccessPermission cap, StackCrawlMark&amp;amp; stackMark)
-   at System.Security.CodeAccessPermission.Assert()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;After numerous failed attempts at accessing the SPList via the SharePoint object model (I kept running into exceptions stating that I required full trust), I find that partial trust mode is &lt;a href="https://msdn.microsoft.com/en-us/library/office/dn268593.aspx"&gt;no longer supported and has been deprecated&lt;/a&gt;. As I was unable to find anyone online who had successfully got it to work, I opted to access the list via the REST service for its lesser dependencies and security permission requirements. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Compile and deploy the assembly into the Global Assembly Cache.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Setting up the Report&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Open up a copy of your report using the &lt;a href="http://www.microsoft.com/en-us/download/details.aspx?id=29072"&gt;latest version of Report Builder&lt;/a&gt;. &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Right click on the work space area outside to bring up the context menu. Select the &lt;code&gt;Report Properties...&lt;/code&gt; menu item which opens up the &lt;code&gt;Report Properties&lt;/code&gt; dialog.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/60_ReportPropertiesContextMenu.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/70_ReoprtPropertiesDialog.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Navigate to the &lt;code&gt;References&lt;/code&gt; tab and add an entry for our custom assembly.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, create a new entry for the class containing our custom logic. Ensure that the class name is referred to using it full namespace and provide an instance name that would be used to call our code from within the report.  &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/80_ReportPropertiesDialog.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Now that our declarations have been done, edit the report data source for the report.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/90_EditDataSource.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click on the &lt;code&gt;fx&lt;/code&gt; button to open up the expressions dialog.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/100_ConnStringSetExpression0.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Edit the expression to use the new custom method created previously. Pass in &lt;code&gt;Globals!ReportServerUrl&lt;/code&gt; as the method parameter.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/110_ConnStringSetExpression1.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Now, upload the updated report back into the SharePoint list hosting our report files. If you already have a report with the same name and with a shared data source linked to it, our connection details would be overwritten. In order to avoid this, delete the report in the list and re-upload our new one. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, edit the Report Data Source by selecting the &lt;code&gt;Manage Data Sources&lt;/code&gt; menu item in the context menu. Ensure that connection type is set to &lt;code&gt;Custom data source&lt;/code&gt; and connection string to &lt;code&gt;Use connection string expression defined in the report&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/130_ManageDataSource.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ObfuscateSSRS/120_ConnStringNotInitialized.png" alt="Build Process Parameter" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;For the credentials, I will be using stored credentials. Note that the &lt;code&gt;Test Connection&lt;/code&gt; button does not work if the connection string needs to be evaluated at runtime.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Final Thoughts&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;You can find the &lt;a href="https://github.com/shanec-/Nullfactory-SSRSExtensions"&gt;source here&lt;/a&gt;. It is meant only to be a template and should be extended to work with your own requirements.&lt;/li&gt;
-&lt;li&gt;Since the custom assembly needs to be deployed into the Global Assembly Cache, I suggest including it as &lt;a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx"&gt;part of the SharePoint Solution Package&lt;/a&gt; when automating your deployment process. &lt;/li&gt;
-&lt;li&gt;Although this implementation was tested with a Microsoft SQL Server data source type, I suspect it can be altered to work with different connection types.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I would finally like to highlight the following articles as they gave me a lot of insight into Code Access Security (CAS) and better understanding of the security requirements I needed to address:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/code-access-security-in-asp.net-4.0/"&gt;Simple-Talk - Code Access Security in ASP.NET 4.0&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-i/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part I&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-2/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part 2&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://technet.microsoft.com/en-us/library/bb326290%28v=sql.105%29.aspx"&gt;Technet - Features Supported by Reporting Services in SharePoint Integrated Mode&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/d4588e88-5cb9-47cf-817b-a69942c507ac/how-to-use-microsoftsharepointdll-api-in-custom-assembly-of-ssrs-report?forum=sqlreportingservices"&gt;MSDN Forums - How to use "Microsoft.SharePoint.dll" API in custom assembly of SSRS report&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms154658.aspx"&gt;MSDN - Code Access Security in Reporting Services&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms153561.aspx"&gt;MSDN - Using Custom Assemblies with Reports&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms154645.aspx"&gt;MSDN - Referencing Assemblies in an RDL File&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms155034.aspx"&gt;MSDN - Deploying a Custom Assembly&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms153587.aspx"&gt;MSDN - Asserting Permissions in Custom Assemblies&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms154507.aspx"&gt;MSDN - Accessing Custom Assemblies Through Expressions&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ms153693.aspx"&gt;MSDN - How to: Debug Custom Assemblies&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/code-access-security-in-asp.net-4.0/"&gt;Simple-Talk - Code Access Security in ASP.NET 4.0&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-i/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part I&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-2/"&gt;Simple-Talk - What's New in Code Access Security in .NET Framework 4.0 - Part 2&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/office/dn268593.aspx"&gt;MSDN - Deciding between apps for SharePoint and SharePoint solution - Partial-trust user code is deprecated&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/ee231595.aspx"&gt;MSDN - How to: Add and Remove Additional Assemblies&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
