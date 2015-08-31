@@ -105,26 +105,6 @@ $publish.GacInstall("c:\temp\publish_dll.dll")
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/aa337165.aspx"&gt;Enable Remote Errors (Reporting Services)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/4850346/ssrs-remote-errors-enabled-but-not-working"&gt;StackOverflow - SSRS Remote Errors Enabled but NOT Working&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/06/syspreping-windows-10-10130/</guid><link>http://nullfactory.net/2015/06/syspreping-windows-10-10130/</link><description>&lt;p&gt;Normally the imageX application is included as part of the Windows Automation Installation Kit.
-The stand alone version of imagex can be downloaded as a hotfix - email is required.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;p&gt;Windows Automation Installation Kit&lt;/p&gt;
-
-&lt;p&gt;http://blogs.technet.com/b/aviraj/archive/2009/01/18/windows-7-boot-from-vhd-first-impression-part-2.aspx
-https://social.technet.microsoft.com/Forums/windows/en-US/d4c05ee3-2838-4c02-bfa1-09e99c90f247/is-imagex-available-for-download
-http://support.microsoft.com/hotfix/KBHotfix.aspx?kbnum=2525084&amp;amp;kbln=en-us&lt;/p&gt;
-</description><pubDate>Sat, 13 Jun 2015 18:30:00 Z</pubDate><a10:updated>2015-06-13T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;Normally the imageX application is included as part of the Windows Automation Installation Kit.
-The stand alone version of imagex can be downloaded as a hotfix - email is required.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;p&gt;Windows Automation Installation Kit&lt;/p&gt;
-
-&lt;p&gt;http://blogs.technet.com/b/aviraj/archive/2009/01/18/windows-7-boot-from-vhd-first-impression-part-2.aspx
-https://social.technet.microsoft.com/Forums/windows/en-US/d4c05ee3-2838-4c02-bfa1-09e99c90f247/is-imagex-available-for-download
-http://support.microsoft.com/hotfix/KBHotfix.aspx?kbnum=2525084&amp;amp;kbln=en-us&lt;/p&gt;
 </a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/</guid><link>http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/</link><title>Entity Framework Namespace Collisions When Working with Multiple Contexts</title><description>&lt;p&gt;I came across the following exception whilst attempting working with a solution that contained a &lt;em&gt;couple of&lt;/em&gt; Entity Framework (EF) 6 database contexts.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;System.Data.Entity.Core.MetadataException
@@ -756,5 +736,33 @@ net start SPSearchHostController
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/308298/how-to-set-windows-service-username-and-password-through-commandline"&gt;StackOverflow - how to set windows service username and password through commandline&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://blogs.msdn.com/b/ssehgal/archive/2009/06/01/configuring-windows-services-using-command-prompt.aspx"&gt;MSDN Blogs - Configuring Windows services using Command Prompt - Sidharth Sehgal's blog&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.windows-commandline.com/add-user-from-command-line/"&gt;Add new user account from command line (CMD)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/03/create-elevated-command-prompt-different-user-context/</guid><link>http://nullfactory.net/2015/03/create-elevated-command-prompt-different-user-context/</link><title>Create an Elevated Command Prompt Running Under a Different User Context</title><description>&lt;p&gt;User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. &lt;/p&gt;
+
+&lt;p&gt;This is achieved by using the &lt;code&gt;runas&lt;/code&gt; command with the &lt;code&gt;/noprofile&lt;/code&gt; flag. The command below creates an elevated command line running under the &lt;code&gt;wunder\admin&lt;/code&gt; user:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;runas /noprofile /user:wunder\admin cmd 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, all commands executed within this new command prompt would be in the same elevated status.&lt;/p&gt;
+
+</description><pubDate>Fri, 06 Mar 2015 18:30:00 Z</pubDate><a10:updated>2015-03-06T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. &lt;/p&gt;
+
+&lt;p&gt;This is achieved by using the &lt;code&gt;runas&lt;/code&gt; command with the &lt;code&gt;/noprofile&lt;/code&gt; flag. The command below creates an elevated command line running under the &lt;code&gt;wunder\admin&lt;/code&gt; user:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;runas /noprofile /user:wunder\admin cmd 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, all commands executed within this new command prompt would be in the same elevated status.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://ss64.com/nt/runas.html"&gt;Runas - Run under a different user account | Windows CMD | SS64.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://windows.microsoft.com/en-us/windows7/products/features/user-account-control"&gt;User Account Control&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://superuser.com/questions/42537/is-there-any-sudo-command-for-windows"&gt;SuperUser - Is there any 'sudo' command for Windows?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/12903629/how-do-i-run-a-program-from-command-prompt-as-a-different-user-and-as-an-admin"&gt;StackOverflow&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>
