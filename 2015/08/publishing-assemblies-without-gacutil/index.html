@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="Coding" />
+	<meta name="keywords" content="Deployment" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -15,7 +15,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
   <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
-	<link rel="canonical" href="http://nullfactory.net/drafts/2015/03/razor-engine-for-maintainable-email-templates/" />
+	<link rel="canonical" href="http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/" />
 </head>
 <body>
   <!-- header -->
@@ -37,20 +37,29 @@
 	
 <div class="listing">
 	<div class="post other link">
-		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/drafts/2015/03/razor-engine-for-maintainable-email-templates/">Using the Razor Engine to Create Maintainable Email Templates</a></h2>
-		<p class="post-date">15 Mar 2015
-				| <a href="/category/coding">Coding</a>
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/publishing-assemblies-without-gacutil/">Publishing Assemblies into the GAC without GacUtil</a></h2>
+		<p class="post-date">31 Aug 2015
+				| <a href="/category/deployment">Deployment</a>
 	  </p>
 
 		
 
-		<p>Ever needed to send email thorough the software you're building? The chances are yes.</p>
+		<p>I constantly find myself googling this code snippet - its nice to keep handy: </p>
 
-<p>I stumbled upon this open source project a while ago and have been itching to use it in a production application ever since. So why am I excited about razor engine? What makes it special is that it allows you to embed the very intuitive ASP.NET razor syntax as part of the (email) templates. Yes, this means that you can embed simple logic as part of the template and makes parameterization of values that that much easier. No more syntax like this:  </p>
+<pre><code>[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
+$publish = New-Object System.EnterpriseServices.Internal.Publish
+$publish.GacInstall("c:\temp\publish_dll.dll")
+</code></pre>
 
-<p>And you're in a pickle if you need to anything complex like a list</p>
+<!--excerpt-->
 
-<p>In the example below, I am going to assume that I have a </p>
+<h2>References</h2>
+
+<ul>
+<li><a href="https://msdn.microsoft.com/en-us/library/system.enterpriseservices.internal.publish.gacinstall.aspx">MSDN - Publish.GacInstall Method (System.EnterpriseServices.Internal)</a></li>
+<li><a href="http://weblogs.asp.net/adweigert/powershell-install-gac-gacutil-for-powershell">The Technical Adventures of Adam Weigert - PowerShell: Install-Gac (GACUTIL for PowerShell)</a></li>
+<li><a href="http://stackoverflow.com/questions/24950268/deploy-multiple-dll-files-into-gac-without-gacutil">StackOverflow.com - Deploy multiple dll files into gac without gacutil</a></li>
+</ul>
 
 
 	<!-- Go to www.addthis.com/dashboard to customize your tools -->
@@ -63,14 +72,14 @@
             reload: true,
             config: function () {
                 //this.page.identifier = '';
-                this.page.url = 'http://nullfactory.net/drafts/2015/03/razor-engine-for-maintainable-email-templates/';
+                this.page.url = 'http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/';
                 //this.page.title = '';
             }
         });
     };
 
     var disqus_shortname = 'thenullfactory';
-    var disqus_url = 'http://nullfactory.net/drafts/2015/03/razor-engine-for-maintainable-email-templates/';
+    var disqus_url = 'http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -93,6 +102,20 @@
 
   <!-- /.main -->
 
-  
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </body>
 </html>

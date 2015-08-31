@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Azure" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/08/sharing-configuration-between-webjobs/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/sharing-configuration-between-webjobs/">Sharing Configuration Between WebJobs</a></h2>
+		<p class="post-date">29 Aug 2015
+				| <a href="/category/azure">Azure</a>
+	  </p>
+
+		
+
+		<p>The project I am working on started out with the single webjob and has since grown to multiple jobs running in parallel. They are all hosted within a dedicated web app, which allows us to scale the jobs independent of the rest of the application. And because they share a single container there is the added side effect of the jobs sharing all the Application Settings and connection strings too.</p>
+
+<p>While each webjob had its own class library, I didn't want to maintain multiple copies of  the <code>App.Config</code> file. I decided to share the the common bits (<code>AppSettings</code> and <code>ConnectionString</code> sections) in their own files:</p>
+
+<ol>
+<li><p>In one of the webjob projects, I moved the <code>AppSettings</code> and <code>ConnectionStrings</code> into their own <code>.config</code> files - <code>appSettings.config</code> and <code>connectionStrings.config</code> respectively.</p></li>
+<li><p>Next, I referenced them back to the <code>App.config</code> using the <code>configSource</code> attribute.</p></li>
+<li><p>Finally, I added the same files as linked files to the otherweb jobs and set their <code>Copy to Output Directory</code> file property to <code>Copy Always</code>.</p></li>
+</ol>
+
+<p>This works well enough, but for one caveat - which prompted me to write this post in the first place. The problem is that the <code>Web Deploy Package</code> publishing process does not appear to honor folder structures for the config files. That means that if you've separated the configuration into sub folders (like shown below), the publishing process would flatten it out.</p>
+
+<!--excerpt-->
+
+<pre><code>&lt;appSettings configSource="CommonConfig/appSettings.config" /&gt;
+&lt;connectionStrings configSource="CommonConfig/connectionString.config" /&gt;
+</code></pre>
+
+<p><img src="/images/posts/ShareConfigWebJob/10_SolutionStructure.png" alt="Solution Structure" /></p>
+
+<p>This is the new structure created when published:</p>
+
+<p><img src="/images/posts/ShareConfigWebJob/20_PackageStructure.png" alt="Package Structure" /></p>
+
+<p>I suppose we could possibly make it work if we create the webjob folder structure manually in the App_Data folder in your web project, but I don't think its worth the additional complexity for such a trivial issue.</p>
+
+<p>I guess the work around/best practice would be use a simple flat configuration folder structure.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/7417062/how-to-use-partial-config-files">c# - How to use partial config files - Stack Overflow</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/08/sharing-configuration-between-webjobs/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/08/sharing-configuration-between-webjobs/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
