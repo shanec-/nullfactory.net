@@ -4,7 +4,7 @@
 
 &lt;p&gt;Something I found out after the fact was that CDN endpoints &lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;currently only support classic storage accounts&lt;/a&gt;. So the first order of business is to create a classic storage account either via old portal or using a &lt;a href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/"&gt;resource group manager template&lt;/a&gt;. &lt;/p&gt;
 
-&lt;p&gt;Another thing I found out is that, at the time of writing this, classic storage accounts cannot be made on the 'East US' location. The 'East US 2' was available location and worked fine; I guess its something to worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
+&lt;p&gt;Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
 
 &lt;h2&gt;Upgrade the Storage Account to a Newer Service Version&lt;/h2&gt;
 
@@ -27,7 +27,7 @@
 
 &lt;p&gt;Something I found out after the fact was that CDN endpoints &lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;currently only support classic storage accounts&lt;/a&gt;. So the first order of business is to create a classic storage account either via old portal or using a &lt;a href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/"&gt;resource group manager template&lt;/a&gt;. &lt;/p&gt;
 
-&lt;p&gt;Another thing I found out is that, at the time of writing this, classic storage accounts cannot be made on the 'East US' location. The 'East US 2' was available location and worked fine; I guess its something to worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
+&lt;p&gt;Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
 
 &lt;h2&gt;Upgrade the Storage Account to a Newer Service Version&lt;/h2&gt;
 

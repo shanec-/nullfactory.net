@@ -58,7 +58,7 @@
 
 <p>Something I found out after the fact was that CDN endpoints <a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts">currently only support classic storage accounts</a>. So the first order of business is to create a classic storage account either via old portal or using a <a href="/2015/10/deploy-classic-storage-azure-resource-manager/">resource group manager template</a>. </p>
 
-<p>Another thing I found out is that, at the time of writing this, classic storage accounts cannot be made on the 'East US' location. The 'East US 2' was available location and worked fine; I guess its something to worth considering if you wanted to co-locate all your resources.</p>
+<p>Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.</p>
 
 <h2>Upgrade the Storage Account to a Newer Service Version</h2>
 
