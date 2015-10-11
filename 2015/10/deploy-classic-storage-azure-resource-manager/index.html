@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Azure,Deployment,Azure Storage Accounts" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Deploying a Azure Classic Storage Account using Azure Resource Manager</a></h2>
+		<p class="post-date">10 Oct 2015
+				| <a href="/category/azure">Azure</a>
+				| <a href="/category/deployment">Deployment</a>
+				| <a href="/category/azure-storage-accounts">Azure Storage Accounts</a>
+	  </p>
+
+		
+
+		<p>I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a <code>Microsoft.ClassicStorage/StorageAccounts</code> using the Azure Resource Manager(ARM) API.</p>
+
+<p>The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully <a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager">this</a> post pointed me in the right direction. And after a little bit of fiddling I find that <code>2015-06-01</code> appears to be last supported <code>apiVersion</code> that works with classic storage.</p>
+
+<p><a href="/images/posts/DeployClassicStorageArm/10_SupportedVersion.png"><img src="/images/posts/DeployClassicStorageArm/10_SupportedVersion.png" alt="Azure PowerShell Unsupported" /></a></p>
+
+<p>Here's the final script I used to create a classic storage container: </p>
+
+<pre><code>{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "PrimaryStorageName": {
+            "type": "string"
+        },
+        "PrimaryStorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "PrimaryStorageLocation": {
+        "type": "string",
+        "defaultValue": "East US",
+        "allowedValues": [
+            "East US",
+            "West US",
+            "West Europe",
+            "East Asia",
+            "South East Asia"
+            ]
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('PrimaryStorageName')]",
+            "type": "Microsoft.ClassicStorage/StorageAccounts",
+            "location": "[parameters('PrimaryStorageLocation')]",
+            "apiVersion":  "2015-06-01",
+            "dependsOn": [ ],
+            "properties": {
+                "accountType": "[parameters('PrimaryStorageType')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
+</code></pre>
+
+<!--excerpt-->
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://azure.microsoft.com/en-us/documentation/articles/resource-manager-deployment-model/">Microsoft Azure - Understand differences between Resource Manager and classic deployment models</a></li>
+<li><a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager">Stack Overflow - Add storage to Azure resource manager</a></li>
+<li><a href="http://stackoverflow.com/questions/31886601/how-to-force-azure-storage-account-as-classic">Stack Overflow - powershell - How to force Azure Storage Account as classic</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Code Access Security,Deployment,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,48 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/disabling-sharepoint-search-service/">Disabling the SharePoint Search Service</a></h2>
+      <p class="post-date">11 Mar 2015
+
+      | <a href="/category/sharepoint" title="SharePoint">SharePoint</a>
+      | <a href="/category/windows" title="Windows">Windows</a>
+</p>
+
+      <p>
+		
+		<p>If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.</p>
+
+<p><a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182">This seems to be most effective</a> way to completely disable the service. Although changing the password to an invalid one works as expected, it is important to replace the user account from a domain to a local user account as well. If not, the constant invalid login attempts could trigger your account lock out threshold policy in the domain.</p>
+
+<p>So for convenience sake I created two batch files - one to disable the service and another to bring it back up.  </p>
+
+
+		<p><a href="/2015/03/disabling-sharepoint-search-service/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/create-elevated-command-prompt-different-user-context/">Create an Elevated Command Prompt Running Under a Different User Context</a></h2>
+      <p class="post-date">07 Mar 2015
+
+      | <a href="/category/security" title="Security">Security</a>
+</p>
+
+      <p>
+		
+		<p>User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. </p>
+
+<p>This is achieved by using the <code>runas</code> command with the <code>/noprofile</code> flag. The command below creates an elevated command line running under the <code>wunder\admin</code> user:</p>
+
+<pre><code>runas /noprofile /user:wunder\admin cmd 
+</code></pre>
+
+<p>Now, all commands executed within this new command prompt would be in the same elevated status.</p>
+
+
+		<p><a href="/2015/03/create-elevated-command-prompt-different-user-context/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Creating a Self-Signed Wild Card SSL Certificate for Your Development Environment</a></h2>
       <p class="post-date">05 Mar 2015
@@ -253,49 +295,6 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
 
 
 		<p><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Get a list of files changed between changesets in Visual Studio Online using PowerShell</a></h2>
-      <p class="post-date">14 Dec 2014
-
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-      | <a href="/category/powershell" title="PowerShell">PowerShell</a>
-</p>
-
-      <p>
-		
-		<p>So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.</p>
-
-<p>I modified the code posted <a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">here</a> in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.</p>
-
-<h2>Overview</h2>
-
-<p>The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.</p>
-
-
-		<p><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Improved Performance by Hosting Virtual Hard Disk External USB Drives</a></h2>
-      <p class="post-date">24 Sep 2014
-
-      | <a href="/category/virtualization" title="Virtualization">Virtualization</a>
-      | <a href="/category/hyper-v" title="Hyper-V">Hyper-V</a>
-</p>
-
-      <p>
-		
-		<p>I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.</p>
-
-<h2>Moving the Virtual Drive Images</h2>
-
-<p>The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.</p>
-
-
-		<p><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Read more...</a></p>
 	  </p>
     </div>
 </div>

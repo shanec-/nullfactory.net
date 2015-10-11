@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Azure,Deployment" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/drafts/2015/09/failure-deploy-dacpac-web-deploy-basic-pricing/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/drafts/2015/09/failure-deploy-dacpac-web-deploy-basic-pricing/">Failure to Deploy a dacpac using Web Deploy when using a Basic Pricing Tier</a></h2>
+		<p class="post-date">12 Sep 2015
+				| <a href="/category/azure">Azure</a>
+				| <a href="/category/deployment">Deployment</a>
+	  </p>
+
+		
+
+		<p>I ran into this strange issue today that had left me scratching my head.</p>
+
+<p>I was re-builing an Azure development environment that included a web app and a couple of SQL Server Databases. I use WebDeploy to deploy the web apps and</p>
+
+<p>I was using a Azure Resource Template to do the deployment and had done so many time using the template, so was pretty certain that it was not the template that was at fault.</p>
+
+<p>After much trial and error and hair pulling, I find that it related to the pricing tier for the SQL Server. The problem turned out to be the <code>web</code> pricing tier that was being used by the SQL Server. Since I knew that that particular tier was being retired, I had decided that I might as well switch to a different tier. I choose the <code>Basic</code> tier as the substitute. </p>
+
+<p>The gist of the issue is that if you've got a SQL Database running in a</p>
+
+<p>The Workaround?</p>
+
+<h2>References</h2>
+
+<ul>
+<li>http://www.microsoft.com/en-us/download/details.aspx?id=43717</li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/drafts/2015/09/failure-deploy-dacpac-web-deploy-basic-pricing/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/drafts/2015/09/failure-deploy-dacpac-web-deploy-basic-pricing/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  
+</body>
+</html>

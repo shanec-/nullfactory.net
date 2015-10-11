@@ -1,4 +1,198 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/</guid><link>http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/</link><title>Publishing Assemblies into the GAC without GacUtil</title><description>&lt;p&gt;I constantly find myself googling this code snippet - its nice to keep handy: &lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/</guid><link>http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/</link><title>Setting up a CDN to Stream Video via Azure Storage</title><description>&lt;p&gt;I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.&lt;/p&gt;
+
+&lt;h2&gt;Create the Storage Account&lt;/h2&gt;
+
+&lt;p&gt;Something I found out after the fact was that CDN endpoints &lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;currently only support classic storage accounts&lt;/a&gt;. So the first order of business is to create a classic storage account either via old portal or using a &lt;a href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/"&gt;resource group manager template&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;Another thing I found out is that, at the time of writing this, classic storage accounts cannot be made on the 'East US' location. The 'East US 2' was available location and worked fine; I guess its something to worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
+
+&lt;h2&gt;Upgrade the Storage Account to a Newer Service Version&lt;/h2&gt;
+
+&lt;p&gt;The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. &lt;a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/"&gt;Read more here&lt;/a&gt;, &lt;a href="https://msdn.microsoft.com/library/azure/dd894041.aspx"&gt;and here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So the next step is update the storage account to the latest version in order to take advantage of the improvements. This can be done using the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var credentials = new StorageCredentials("accountname", "accountkey");
+    var account = new CloudStorageAccount(credentials, true);
+    var client = account.CreateCloudBlobClient();
+    var properties = client.GetServiceProperties();
+    properties.DefaultServiceVersion = "2013-08-15";
+    client.SetServiceProperties(properties);
+    Console.WriteLine(properties.DefaultServiceVersion);
+&lt;/code&gt;&lt;/pre&gt;
+
+</description><pubDate>Sat, 10 Oct 2015 18:30:00 Z</pubDate><a10:updated>2015-10-10T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.&lt;/p&gt;
+
+&lt;h2&gt;Create the Storage Account&lt;/h2&gt;
+
+&lt;p&gt;Something I found out after the fact was that CDN endpoints &lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;currently only support classic storage accounts&lt;/a&gt;. So the first order of business is to create a classic storage account either via old portal or using a &lt;a href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/"&gt;resource group manager template&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;Another thing I found out is that, at the time of writing this, classic storage accounts cannot be made on the 'East US' location. The 'East US 2' was available location and worked fine; I guess its something to worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
+
+&lt;h2&gt;Upgrade the Storage Account to a Newer Service Version&lt;/h2&gt;
+
+&lt;p&gt;The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. &lt;a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/"&gt;Read more here&lt;/a&gt;, &lt;a href="https://msdn.microsoft.com/library/azure/dd894041.aspx"&gt;and here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So the next step is update the storage account to the latest version in order to take advantage of the improvements. This can be done using the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var credentials = new StorageCredentials("accountname", "accountkey");
+    var account = new CloudStorageAccount(credentials, true);
+    var client = account.CreateCloudBlobClient();
+    var properties = client.GetServiceProperties();
+    properties.DefaultServiceVersion = "2013-08-15";
+    client.SetServiceProperties(properties);
+    Console.WriteLine(properties.DefaultServiceVersion);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Create the CDN Endpoint&lt;/h2&gt;
+
+&lt;p&gt;Setting up the CDN itself it pretty straight forward:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a new CDN through the old portal by selecting &lt;code&gt;New &amp;gt; CDN &amp;gt; Quick Create&lt;/code&gt;. &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select your subscription and set the origin type as &lt;code&gt;Storage Account&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/AzureCDNStream/10_CreateCDN.png"&gt;&lt;img src="http://nullfactory.net/images/posts/AzureCDNStream/10_CreateCDN.png" alt="Azure Create CDN" /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select one of the classic storage accounts from the &lt;code&gt;Origin Url&lt;/code&gt; drop down and hit the create button.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/AzureCDNStream/20_CDNCreated.png"&gt;&lt;img src="http://nullfactory.net/images/posts/AzureCDNStream/20_CDNCreated.png" alt="Azure CDN Created" /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Upload Content&lt;/h2&gt;
+
+&lt;p&gt;Now that everything is setup, go ahead and upload the content into blob storage using Visual Studio or &lt;a href="https://azurestorageexplorer.codeplex.com/"&gt;Azure Storage Explorer&lt;/a&gt;. Once the content is propagated, video streaming should be smooth and working as expected.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;Stack Overflow - Azure Resource Manager Deployment vs Classic Deployment of Storage Accounts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/7235082/is-microsoft-azure-cdn-a-real-cdn-or-something-else-entirely"&gt;Stack Overflow - Is Microsoft Azure CDN A Real CDN Or Something Else Entirely?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/"&gt;Streaming MP4 video in Azure Storage containers (Blob Storage) | thoughtstuff | Tom Morgan&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/library/azure/dd894041.aspx"&gt;MSDN - Versioning for the Azure Storage Services&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://azurestorageexplorer.codeplex.com/"&gt;Azure Storage Explorer - Home&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/</guid><link>http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/</link><title>Deploying a Azure Classic Storage Account using Azure Resource Manager</title><description>&lt;p&gt;I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a &lt;code&gt;Microsoft.ClassicStorage/StorageAccounts&lt;/code&gt; using the Azure Resource Manager(ARM) API.&lt;/p&gt;
+
+&lt;p&gt;The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully &lt;a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager"&gt;this&lt;/a&gt; post pointed me in the right direction. And after a little bit of fiddling I find that &lt;code&gt;2015-06-01&lt;/code&gt; appears to be last supported &lt;code&gt;apiVersion&lt;/code&gt; that works with classic storage.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/DeployClassicStorageArm/10_SupportedVersion.png"&gt;&lt;img src="http://nullfactory.net/images/posts/DeployClassicStorageArm/10_SupportedVersion.png" alt="Azure PowerShell Unsupported" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Here's the final script I used to create a classic storage container: &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "PrimaryStorageName": {
+            "type": "string"
+        },
+        "PrimaryStorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "PrimaryStorageLocation": {
+        "type": "string",
+        "defaultValue": "East US",
+        "allowedValues": [
+            "East US",
+            "West US",
+            "West Europe",
+            "East Asia",
+            "South East Asia"
+            ]
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('PrimaryStorageName')]",
+            "type": "Microsoft.ClassicStorage/StorageAccounts",
+            "location": "[parameters('PrimaryStorageLocation')]",
+            "apiVersion":  "2015-06-01",
+            "dependsOn": [ ],
+            "properties": {
+                "accountType": "[parameters('PrimaryStorageType')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+</description><pubDate>Fri, 09 Oct 2015 18:30:00 Z</pubDate><a10:updated>2015-10-09T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a &lt;code&gt;Microsoft.ClassicStorage/StorageAccounts&lt;/code&gt; using the Azure Resource Manager(ARM) API.&lt;/p&gt;
+
+&lt;p&gt;The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully &lt;a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager"&gt;this&lt;/a&gt; post pointed me in the right direction. And after a little bit of fiddling I find that &lt;code&gt;2015-06-01&lt;/code&gt; appears to be last supported &lt;code&gt;apiVersion&lt;/code&gt; that works with classic storage.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/DeployClassicStorageArm/10_SupportedVersion.png"&gt;&lt;img src="http://nullfactory.net/images/posts/DeployClassicStorageArm/10_SupportedVersion.png" alt="Azure PowerShell Unsupported" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Here's the final script I used to create a classic storage container: &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "PrimaryStorageName": {
+            "type": "string"
+        },
+        "PrimaryStorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "PrimaryStorageLocation": {
+        "type": "string",
+        "defaultValue": "East US",
+        "allowedValues": [
+            "East US",
+            "West US",
+            "West Europe",
+            "East Asia",
+            "South East Asia"
+            ]
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('PrimaryStorageName')]",
+            "type": "Microsoft.ClassicStorage/StorageAccounts",
+            "location": "[parameters('PrimaryStorageLocation')]",
+            "apiVersion":  "2015-06-01",
+            "dependsOn": [ ],
+            "properties": {
+                "accountType": "[parameters('PrimaryStorageType')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://azure.microsoft.com/en-us/documentation/articles/resource-manager-deployment-model/"&gt;Microsoft Azure - Understand differences between Resource Manager and classic deployment models&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager"&gt;Stack Overflow - Add storage to Azure resource manager&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/31886601/how-to-force-azure-storage-account-as-classic"&gt;Stack Overflow - powershell - How to force Azure Storage Account as classic&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/</guid><link>http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/</link><title>Publishing Assemblies into the GAC without GacUtil</title><description>&lt;p&gt;I constantly find myself googling this code snippet - its nice to keep handy: &lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
 $publish = New-Object System.EnterpriseServices.Internal.Publish
@@ -682,87 +876,5 @@ Microsoft.SqlServer.TransactSql.ScriptDom.dll - `C:\Program Files (x86)\Microsof
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt"&gt;Suppress some warnings in SQL Server SSDT - Stack Overflow&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt"&gt;MSDN Forum - Treat specific warning as error?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://github.com/NuGet/NuGet.Operations/blob/master/ext/SqlServer/Microsoft.SqlServer.Dac.Extensions.xml"&gt;NuGet.Operations/Microsoft.SqlServer.Dac.Extensions.xml at master · NuGet/NuGet.Operations&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/03/disabling-sharepoint-search-service/</guid><link>http://nullfactory.net/2015/03/disabling-sharepoint-search-service/</link><title>Disabling the SharePoint Search Service</title><description>&lt;p&gt;If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182"&gt;This seems to be most effective&lt;/a&gt; way to completely disable the service. Although changing the password to an invalid one works as expected, it is important to replace the user account from a domain to a local user account as well. If not, the constant invalid login attempts could trigger your account lock out threshold policy in the domain.&lt;/p&gt;
-
-&lt;p&gt;So for convenience sake I created two batch files - one to disable the service and another to bring it back up.  &lt;/p&gt;
-
-</description><pubDate>Tue, 10 Mar 2015 18:30:00 Z</pubDate><a10:updated>2015-03-10T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182"&gt;This seems to be most effective&lt;/a&gt; way to completely disable the service. Although changing the password to an invalid one works as expected, it is important to replace the user account from a domain to a local user account as well. If not, the constant invalid login attempts could trigger your account lock out threshold policy in the domain.&lt;/p&gt;
-
-&lt;p&gt;So for convenience sake I created two batch files - one to disable the service and another to bring it back up.  &lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;Disable the Search Service&lt;/h2&gt;
-
-&lt;p&gt;The commands used to disable the search service:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;net user searchDummy Sup3rSecr3tPwd /add /passwordchg:no /expires:never
-net stop SPSearchHostController
-net stop OSearch15
-sc config "SPSearchHostController" obj= ".\searchDummy" password= "WrongPwd"
-sc config "OSearch15" obj= ".\searchDummy" password= "WrongPwd"
-taskkill /im:noderunner.exe /f
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Notice that: &lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The first command creates the dummy user in the local machine - this will substitute the domain service account.&lt;/li&gt;
-&lt;li&gt;The password is intentionally set to an incorrect one when assigned to the service.&lt;/li&gt;
-&lt;li&gt;The last command is to force terminate any instances of &lt;code&gt;noderunner.exe&lt;/code&gt; and release some memory.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Enable the Search Service&lt;/h2&gt;
-
-&lt;p&gt;The commands used to start the service up again:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;sc config "SPSearchHostController" obj= "domain\searchservice" password= "CorrectPwd"
-sc config "OSearch15" obj= "domain\searchservice" password= "CorrectPwd"
-net start OSearch15
-net start SPSearchHostController
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182"&gt;How to Disable SharePoint 2013 Search - IT Knowledgebase&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://technet.microsoft.com/en-us/library/hh994574.aspx"&gt;Technet -Account lockout threshold&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://technet.microsoft.com/en-us/library/cc990290.aspx"&gt;Technet - Sc Config&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/308298/how-to-set-windows-service-username-and-password-through-commandline"&gt;StackOverflow - how to set windows service username and password through commandline&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://blogs.msdn.com/b/ssehgal/archive/2009/06/01/configuring-windows-services-using-command-prompt.aspx"&gt;MSDN Blogs - Configuring Windows services using Command Prompt - Sidharth Sehgal's blog&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.windows-commandline.com/add-user-from-command-line/"&gt;Add new user account from command line (CMD)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/03/create-elevated-command-prompt-different-user-context/</guid><link>http://nullfactory.net/2015/03/create-elevated-command-prompt-different-user-context/</link><title>Create an Elevated Command Prompt Running Under a Different User Context</title><description>&lt;p&gt;User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. &lt;/p&gt;
-
-&lt;p&gt;This is achieved by using the &lt;code&gt;runas&lt;/code&gt; command with the &lt;code&gt;/noprofile&lt;/code&gt; flag. The command below creates an elevated command line running under the &lt;code&gt;wunder\admin&lt;/code&gt; user:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;runas /noprofile /user:wunder\admin cmd 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now, all commands executed within this new command prompt would be in the same elevated status.&lt;/p&gt;
-
-</description><pubDate>Fri, 06 Mar 2015 18:30:00 Z</pubDate><a10:updated>2015-03-06T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. &lt;/p&gt;
-
-&lt;p&gt;This is achieved by using the &lt;code&gt;runas&lt;/code&gt; command with the &lt;code&gt;/noprofile&lt;/code&gt; flag. The command below creates an elevated command line running under the &lt;code&gt;wunder\admin&lt;/code&gt; user:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;runas /noprofile /user:wunder\admin cmd 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now, all commands executed within this new command prompt would be in the same elevated status.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://ss64.com/nt/runas.html"&gt;Runas - Run under a different user account | Windows CMD | SS64.com&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://windows.microsoft.com/en-us/windows7/products/features/user-account-control"&gt;User Account Control&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://superuser.com/questions/42537/is-there-any-sudo-command-for-windows"&gt;SuperUser - Is there any 'sudo' command for Windows?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/12903629/how-do-i-run-a-program-from-command-prompt-as-a-different-user-and-as-an-admin"&gt;StackOverflow&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>
