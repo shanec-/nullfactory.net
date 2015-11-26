@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="SQL Server,SQL Server Data Tools" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Strategy for Updating an SQL Server Database Schema via SSDT Delta Script</a></h2>
+		<p class="post-date">25 Nov 2015
+				| <a href="/category/sql-server">SQL Server</a>
+				| <a href="/category/sql-server-data-tools">SQL Server Data Tools</a>
+	  </p>
+
+		
+
+		<p>This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. </p>
+
+<p>This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.</p>
+
+<p>Here are the steps I followed in order to bring the production environment up-to-date: </p>
+
+<!--excerpt-->
+
+<ol>
+<li>Create a baseline DACPAC and move it into source control - this represents the schema currently in production.</li>
+<li><p>Next, ensure that every time the SSDT project is built a post event would generate a differential delta script between the baseline and latest DACPAC. I tried to simplify the following command by wrapping it up within a powershell script:</p>
+
+<pre><code>&amp;"C:\Program Files (x86)\Microsoft SQL Server\110\DAC\bin\sqlpackage" /a:Script /sf:$SourceDacpac  /tf:$TargetDacpac /op:$OutputDeltaFile /tdn:$DBName /p:IncludeTransactionalScripts=True /p:IncludeCompositeObjects=True /p:ScriptDatabaseOptions=False /p:BlockOnPossibleDataLoss=True /v:TenantSchemaName=dbo
+</code></pre>
+
+<p>Note that one of the parameters (<code>p:IncludeTransactionalScripts=True</code>) was to ensure that the script would be generated as a transaction.  </p></li>
+<li><p>(optional) Perform any post processing on the generated delta script - In my specific use-case I had to tinker the script to work within a multi-tenant scenario. </p></li>
+<li>Deploy the generated delta script against the target environment. This can be done using a tools <code>SqlCmd</code> or a custom tool such as <a href="https://github.com/rusanu/DbUtilSqlCmd">https://github.com/rusanu/DbUtilSqlCmd</a></li>
+<li>Upon successful release, update the baseline to the latest DACPAC file.</li>
+</ol>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://stackoverflow.com/questions/22352298/sqlpackage-with-script-action-does-not-produce-any-copy-always-scripts">Stack Overflow - ssdt - SQLPackage with Script Action does not produce any Copy Always scripts</a> </li>
+<li><a href="http://stackoverflow.com/questions/15502659/what-is-the-syntax-for-adding-multiple-arguments-onto-the-variables-parameter">Stack Overflow - ssdt - What is the syntax for adding multiple arguments onto the "Variables" parameter in sqlpackage.exe?</a> </li>
+<li><a href="https://msdn.microsoft.com/en-us/library/hh550080(v=vs.103).aspx">MSDN - SqlPackage.exe</a></li>
+<li><a href="http://phoebix.com/2013/09/19/extract-dacpac-using-command-line/">Extract DacPac Using Command Line | phoebix</a></li>
+<li><a href="https://github.com/rusanu/DbUtilSqlCmd">rusanu/DbUtilSqlCmd · GitHub</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

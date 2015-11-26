@@ -42,6 +42,26 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Strategy for Updating an SQL Server Database Schema via SSDT Delta Script</a></h2>
+      <p class="post-date">25 Nov 2015
+
+      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
+      | <a href="/category/sql-server-data-tools" title="SQL Server Data Tools">SQL Server Data Tools</a>
+</p>
+
+      <p>
+		
+		<p>This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. </p>
+
+<p>This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.</p>
+
+<p>Here are the steps I followed in order to bring the production environment up-to-date: </p>
+
+
+		<p><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/cdn-streaming-video-azure-storage/">Setting up a CDN to Stream Video via Azure Storage</a></h2>
       <p class="post-date">11 Oct 2015
 
@@ -59,6 +79,8 @@
 <p>Something I found out after the fact was that CDN endpoints <a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts">currently only support classic storage accounts</a>. So the first order of business is to create a classic storage account either via old portal or using a <a href="/2015/10/deploy-classic-storage-azure-resource-manager/">resource group manager template</a>. </p>
 
 <p>Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.</p>
+
+<p>Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to <code>Public Blob</code>.</p>
 
 <h2>Upgrade the Storage Account to a Newer Service Version</h2>
 
@@ -362,38 +384,6 @@ The problem with the free tiers is that there's a high possibility that the web 
 
 
 		<p><a href="/2015/05/start-azure-webjobs-on-demand/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/ssdt-deployment-plan-modifer/">Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions</a></h2>
-      <p class="post-date">09 May 2015
-
-      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
-      | <a href="/category/sql-server-data-tools" title="SQL Server Data Tools">SQL Server Data Tools</a>
-</p>
-
-      <p>
-		
-		<p>I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.</p>
-
-<p>I first parameterized the the schema name as a SQLCMD variable - <code>$TenantName</code>: </p>
-
-<p><img src="/images/posts/DeploymentPlanModifer/10_varcmd.png" alt="SqlCmd Variable" /></p>
-
-<p>Next I tried to replace the schema name with the new variable, but this did not work as trying to build the solution now returns with a 71502 error as the project is no longer able to resolve and validate schema objects.</p>
-
-<p><img src="/images/posts/DeploymentPlanModifer/20_SchemaValidation.png" alt="Schema Validation" /></p>
-
-<p>SQLCMD does not have any complaints if I replace the <code>[dbo].</code> with <code>[$TenantName]</code> in the generated script so its the SSDT project that is attempting to maintain the integrity of database. </p>
-
-<p>One possible way to overcome this is to <a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt">suppress the 71502</a> by turning them into <a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt">warnings</a>. The disadvantage in this approach is that you loose the rich validation in exchange for something that is essentially a deployment convenience.</p>
-
-<p>Another duct tape and bubble gum approach would be to just have some kind of post deployment operation that does a find and replace on the schema name. Sure it would work, but that's not going to be reliable in the long run. </p>
-
-<p>A little bit of research reveals that the proper way to alter the creation of deployment script process is to create a deployment plan modifier. A deployment plan modifier is essentially a class that inherits <code>DeploymentPlanModifier</code> and allows you to inject custom actions when deploying a SQL project. There does not seem to be much formal documentation on the process, so I relied a lot on <a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx">this article in MSDN</a>, the sample <a href="https://github.com/Microsoft/DACExtensions">DACExtensions</a> and what forum posts I could find. So with a lot of trial and error I wrote my own plan modifier that would replace the schema identifiers when the database project is published.</p>
-
-
-		<p><a href="/2015/05/ssdt-deployment-plan-modifer/">Read more...</a></p>
 	  </p>
     </div>
 </div>

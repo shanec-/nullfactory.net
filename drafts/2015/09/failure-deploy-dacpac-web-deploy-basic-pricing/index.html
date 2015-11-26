@@ -45,13 +45,15 @@
 
 		
 
-		<p>I ran into this strange issue today that had left me scratching my head.</p>
+		<p>The project I am working on uses WebDeploy in order to publish both the web application and database tier. </p>
+
+<p>After much trial and error and hair pulling, I narrowed it down to the pricing tier for the SQL Server. The problem turned out to be that we were originally using the <code>web</code> pricing tier. And given its imminent retirement, I had decided to upgrade to tier to the. I choose the <code>Basic</code> tier as the substitute.</p>
+
+<p>I ran into this strange issue today that had left me scratching my head.</p>
 
 <p>I was re-builing an Azure development environment that included a web app and a couple of SQL Server Databases. I use WebDeploy to deploy the web apps and</p>
 
 <p>I was using a Azure Resource Template to do the deployment and had done so many time using the template, so was pretty certain that it was not the template that was at fault.</p>
-
-<p>After much trial and error and hair pulling, I find that it related to the pricing tier for the SQL Server. The problem turned out to be the <code>web</code> pricing tier that was being used by the SQL Server. Since I knew that that particular tier was being retired, I had decided that I might as well switch to a different tier. I choose the <code>Basic</code> tier as the substitute. </p>
 
 <p>The gist of the issue is that if you've got a SQL Database running in a</p>
 

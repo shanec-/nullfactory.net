@@ -11,6 +11,8 @@ Something I found out after the fact was that CDN endpoints [currently only supp
 
 Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.
 
+Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to `Public Blob`.
+
 ## Upgrade the Storage Account to a Newer Service Version 
 
 The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. [Read more here](http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/), [and here](https://msdn.microsoft.com/library/azure/dd894041.aspx).

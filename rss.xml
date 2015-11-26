@@ -1,10 +1,48 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/</guid><link>http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/</link><title>Setting up a CDN to Stream Video via Azure Storage</title><description>&lt;p&gt;I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/</guid><link>http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/</link><title>Strategy for Updating an SQL Server Database Schema via SSDT Delta Script</title><description>&lt;p&gt;This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. &lt;/p&gt;
+
+&lt;p&gt;This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.&lt;/p&gt;
+
+&lt;p&gt;Here are the steps I followed in order to bring the production environment up-to-date: &lt;/p&gt;
+
+</description><pubDate>Tue, 24 Nov 2015 18:30:00 Z</pubDate><a10:updated>2015-11-24T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. &lt;/p&gt;
+
+&lt;p&gt;This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.&lt;/p&gt;
+
+&lt;p&gt;Here are the steps I followed in order to bring the production environment up-to-date: &lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a baseline DACPAC and move it into source control - this represents the schema currently in production.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, ensure that every time the SSDT project is built a post event would generate a differential delta script between the baseline and latest DACPAC. I tried to simplify the following command by wrapping it up within a powershell script:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;amp;"C:\Program Files (x86)\Microsoft SQL Server\110\DAC\bin\sqlpackage" /a:Script /sf:$SourceDacpac  /tf:$TargetDacpac /op:$OutputDeltaFile /tdn:$DBName /p:IncludeTransactionalScripts=True /p:IncludeCompositeObjects=True /p:ScriptDatabaseOptions=False /p:BlockOnPossibleDataLoss=True /v:TenantSchemaName=dbo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that one of the parameters (&lt;code&gt;p:IncludeTransactionalScripts=True&lt;/code&gt;) was to ensure that the script would be generated as a transaction.  &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;(optional) Perform any post processing on the generated delta script - In my specific use-case I had to tinker the script to work within a multi-tenant scenario. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Deploy the generated delta script against the target environment. This can be done using a tools &lt;code&gt;SqlCmd&lt;/code&gt; or a custom tool such as &lt;a href="https://github.com/rusanu/DbUtilSqlCmd"&gt;https://github.com/rusanu/DbUtilSqlCmd&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Upon successful release, update the baseline to the latest DACPAC file.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/22352298/sqlpackage-with-script-action-does-not-produce-any-copy-always-scripts"&gt;Stack Overflow - ssdt - SQLPackage with Script Action does not produce any Copy Always scripts&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/15502659/what-is-the-syntax-for-adding-multiple-arguments-onto-the-variables-parameter"&gt;Stack Overflow - ssdt - What is the syntax for adding multiple arguments onto the "Variables" parameter in sqlpackage.exe?&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/hh550080(v=vs.103).aspx"&gt;MSDN - SqlPackage.exe&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://phoebix.com/2013/09/19/extract-dacpac-using-command-line/"&gt;Extract DacPac Using Command Line | phoebix&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/rusanu/DbUtilSqlCmd"&gt;rusanu/DbUtilSqlCmd · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/</guid><link>http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/</link><title>Setting up a CDN to Stream Video via Azure Storage</title><description>&lt;p&gt;I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.&lt;/p&gt;
 
 &lt;h2&gt;Create the Storage Account&lt;/h2&gt;
 
 &lt;p&gt;Something I found out after the fact was that CDN endpoints &lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;currently only support classic storage accounts&lt;/a&gt;. So the first order of business is to create a classic storage account either via old portal or using a &lt;a href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/"&gt;resource group manager template&lt;/a&gt;. &lt;/p&gt;
 
 &lt;p&gt;Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
+
+&lt;p&gt;Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to &lt;code&gt;Public Blob&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2&gt;Upgrade the Storage Account to a Newer Service Version&lt;/h2&gt;
 
@@ -28,6 +66,8 @@
 &lt;p&gt;Something I found out after the fact was that CDN endpoints &lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;currently only support classic storage accounts&lt;/a&gt;. So the first order of business is to create a classic storage account either via old portal or using a &lt;a href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/"&gt;resource group manager template&lt;/a&gt;. &lt;/p&gt;
 
 &lt;p&gt;Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
+
+&lt;p&gt;Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to &lt;code&gt;Public Blob&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2&gt;Upgrade the Storage Account to a Newer Service Version&lt;/h2&gt;
 
@@ -748,133 +788,5 @@ private static HttpClient CreateHttpClient(string username, string password)
 &lt;li&gt;&lt;a href="https://github.com/Azure/azure-powershell"&gt;Github - Azure/azure-powershell&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/"&gt;MSDN - How to install and configure Azure PowerShell&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/library/azure/jj554330.aspx"&gt;MSDN - Azure Cmdlet Reference&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/05/ssdt-deployment-plan-modifer/</guid><link>http://nullfactory.net/2015/05/ssdt-deployment-plan-modifer/</link><title>Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions</title><description>&lt;p&gt;I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.&lt;/p&gt;
-
-&lt;p&gt;I first parameterized the the schema name as a SQLCMD variable - &lt;code&gt;$TenantName&lt;/code&gt;: &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/10_varcmd.png" alt="SqlCmd Variable" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Next I tried to replace the schema name with the new variable, but this did not work as trying to build the solution now returns with a 71502 error as the project is no longer able to resolve and validate schema objects.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/20_SchemaValidation.png" alt="Schema Validation" /&gt;&lt;/p&gt;
-
-&lt;p&gt;SQLCMD does not have any complaints if I replace the &lt;code&gt;[dbo].&lt;/code&gt; with &lt;code&gt;[$TenantName]&lt;/code&gt; in the generated script so its the SSDT project that is attempting to maintain the integrity of database. &lt;/p&gt;
-
-&lt;p&gt;One possible way to overcome this is to &lt;a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt"&gt;suppress the 71502&lt;/a&gt; by turning them into &lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt"&gt;warnings&lt;/a&gt;. The disadvantage in this approach is that you loose the rich validation in exchange for something that is essentially a deployment convenience.&lt;/p&gt;
-
-&lt;p&gt;Another duct tape and bubble gum approach would be to just have some kind of post deployment operation that does a find and replace on the schema name. Sure it would work, but that's not going to be reliable in the long run. &lt;/p&gt;
-
-&lt;p&gt;A little bit of research reveals that the proper way to alter the creation of deployment script process is to create a deployment plan modifier. A deployment plan modifier is essentially a class that inherits &lt;code&gt;DeploymentPlanModifier&lt;/code&gt; and allows you to inject custom actions when deploying a SQL project. There does not seem to be much formal documentation on the process, so I relied a lot on &lt;a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx"&gt;this article in MSDN&lt;/a&gt;, the sample &lt;a href="https://github.com/Microsoft/DACExtensions"&gt;DACExtensions&lt;/a&gt; and what forum posts I could find. So with a lot of trial and error I wrote my own plan modifier that would replace the schema identifiers when the database project is published.&lt;/p&gt;
-
-</description><pubDate>Fri, 08 May 2015 18:30:00 Z</pubDate><a10:updated>2015-05-08T18:30:00Z</a10:updated><a10:content type="html">&lt;p&gt;I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.&lt;/p&gt;
-
-&lt;p&gt;I first parameterized the the schema name as a SQLCMD variable - &lt;code&gt;$TenantName&lt;/code&gt;: &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/10_varcmd.png" alt="SqlCmd Variable" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Next I tried to replace the schema name with the new variable, but this did not work as trying to build the solution now returns with a 71502 error as the project is no longer able to resolve and validate schema objects.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/20_SchemaValidation.png" alt="Schema Validation" /&gt;&lt;/p&gt;
-
-&lt;p&gt;SQLCMD does not have any complaints if I replace the &lt;code&gt;[dbo].&lt;/code&gt; with &lt;code&gt;[$TenantName]&lt;/code&gt; in the generated script so its the SSDT project that is attempting to maintain the integrity of database. &lt;/p&gt;
-
-&lt;p&gt;One possible way to overcome this is to &lt;a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt"&gt;suppress the 71502&lt;/a&gt; by turning them into &lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt"&gt;warnings&lt;/a&gt;. The disadvantage in this approach is that you loose the rich validation in exchange for something that is essentially a deployment convenience.&lt;/p&gt;
-
-&lt;p&gt;Another duct tape and bubble gum approach would be to just have some kind of post deployment operation that does a find and replace on the schema name. Sure it would work, but that's not going to be reliable in the long run. &lt;/p&gt;
-
-&lt;p&gt;A little bit of research reveals that the proper way to alter the creation of deployment script process is to create a deployment plan modifier. A deployment plan modifier is essentially a class that inherits &lt;code&gt;DeploymentPlanModifier&lt;/code&gt; and allows you to inject custom actions when deploying a SQL project. There does not seem to be much formal documentation on the process, so I relied a lot on &lt;a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx"&gt;this article in MSDN&lt;/a&gt;, the sample &lt;a href="https://github.com/Microsoft/DACExtensions"&gt;DACExtensions&lt;/a&gt; and what forum posts I could find. So with a lot of trial and error I wrote my own plan modifier that would replace the schema identifiers when the database project is published.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;How it works&lt;/h2&gt;
-
-&lt;p&gt;There are two main components to the solution; first one is the &lt;code&gt;SchemaSubstituteScriptContributor&lt;/code&gt; that is based off of &lt;code&gt;DeploymentPlanModifier&lt;/code&gt; that hosts and coordinates the injection process. And the other is &lt;code&gt;OverrideSchemaVisitor&lt;/code&gt; which is based off of &lt;code&gt;TSqlFragmentVisitor&lt;/code&gt; and does the actual schema substitution.&lt;/p&gt;
-
-&lt;p&gt;On the &lt;code&gt;SchemaSubstituteScriptContributor&lt;/code&gt; class, I've overridden the &lt;code&gt;OnExecute&lt;/code&gt; method to look for steps of type &lt;code&gt;DeploymentScriptDomStep&lt;/code&gt; and once it find it, navigate down the class hierarchy until it reaches the actual &lt;code&gt;TSqlStatement&lt;/code&gt;. And into this &lt;code&gt;TSqlStatement&lt;/code&gt; I pass in a new instance of &lt;code&gt;OverrideSchemaVisitor&lt;/code&gt; via the &lt;code&gt;Accept&lt;/code&gt; method.&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;OverrideSchemaVisitor&lt;/code&gt; has overridden methods to handle each type of statement that have schema references and need to be altered.&lt;/p&gt;
-
-&lt;h2&gt;Installation and Usage&lt;/h2&gt;
-
-&lt;p&gt;Visual Studio loads up any extensions that are available in the extensions folder every time it starts up. 
-Now copy the assembly to the extensions folder that Visual Studio checks when it starts-up. I had some trouble locating as it was not in the location that the article mentioned (see &lt;em&gt;troubleshooting&lt;/em&gt;). Eventually I found out that mine was located at &lt;code&gt;%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Extensions&lt;/code&gt;. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/30_ExtensionsFolder.png" alt="Extensions Folder" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Next, in order for the database project to make use of the new extensions, I add the following properties to the database project &lt;code&gt;SqlProj&lt;/code&gt; file:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;  &amp;lt;PropertyGroup&amp;gt;
-    &amp;lt;DeploymentContributors&amp;gt;    
-      $(DeploymentContributors);Nullfactory.SchemaSubstitute
-    &amp;lt;/DeploymentContributors&amp;gt;
-    &amp;lt;ContributorArguments Condition="'$(Configuration)' == 'Debug'"&amp;gt;
-      $(ContributorArguments);Nullfactory.SchemaSubstitute.OldSchemaName=dbo;Nullfactory.SchemaSubstitute.NewSchemaName=$TenantSchema;
-    &amp;lt;/ContributorArguments&amp;gt;
-  &amp;lt;/PropertyGroup&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The parameters for the extension are passed via the &lt;code&gt;&amp;lt;ContributorArguments&amp;gt;&lt;/code&gt; tag in a key-value pair format; where &lt;code&gt;Nullfactory.SchemaSubstitute.OldSchemaName&lt;/code&gt; is the source schema name and &lt;code&gt;Nullfactory.SchemaSubstitute.NewSchemaName&lt;/code&gt; is the new schema name. &lt;/p&gt;
-
-&lt;p&gt;Now that everything is setup, anytime the project is published the schema name would be substituted appropriately. &lt;/p&gt;
-
-&lt;h2&gt;Troubleshooting&lt;/h2&gt;
-
-&lt;p&gt;My first problem was trying to figure out where to deploy the extensions. Although the source article stated that it should be in the &lt;code&gt;%Program Files%\Microsoft SQL Server\110\DAC\Bin\Extensions&lt;/code&gt; folder, Visual Studio refused to recognize it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/40_UnableToLoadExtension.png" alt="Unable to Load Extensions" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Digging through the forums, I found out that the locations in which visual studio checks for extensions depends on how it was installed. The multiple locations are there in &lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/be484b63-a6cc-4dac-a2c2-78a56ff5b502/where-is-the-microsoftsqlserverdacdll-that-includes-support-for-sql-server-2014?forum=ssdt"&gt;order to avoid conflicts and maintain backward compatibility&lt;/a&gt;. Luckily, I found another post that shows how to &lt;a href="https://social.msdn.microsoft.com/Forums/en-US/eb0ccd5b-e7e0-4d90-950b-a4c696f0bd6e/deployment-contributor-could-not-be-loaded?forum=ssdt"&gt;definitively identify the location that is being checked&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;ol&gt;
-  &lt;li&gt;Open a new command prompt as Administrator.&lt;/li&gt;
-  &lt;li&gt;&lt;p&gt;Run the following command&lt;/p&gt;
-  
-  &lt;p&gt;&lt;code&gt;logman create trace -n DacFxDebug -p "Microsoft-SQLServerDataTools" 0x800 -o "%LOCALAPPDATA%\DacFxDebug.etl" -ets&lt;/code&gt;
-  &lt;code&gt;logman create trace -n SSDTDebug -p "Microsoft-SQLServerDataToolsVS" 0x800 -o "%LOCALAPPDATA%\SSDTDebug.etl" -ets&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;p&gt;Run whatever the target/issue scenario is in SSDT.&lt;/p&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;p&gt;Go back to the command prompt and run the following commands&lt;/p&gt;
-  
-  &lt;p&gt;&lt;code&gt;logman stop DacFxDebug -ets&lt;/code&gt;
-  &lt;code&gt;logman stop SSDTDebug -ets&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-  &lt;/ol&gt;
-  
-  &lt;p&gt;The resulting ETL files will be located at &lt;code&gt;%LOCALAPPDATA%\SSDTDebug.etl &amp;amp; %LOCALAPPDATA%\DacFxDebug.etl&lt;/code&gt; and can be navigated to using Windows Explorer.
-  The &lt;code&gt;DacFxDebug.etl&lt;/code&gt; file will contain extension load information. This can be opened and analyzed using the Windows Event Viewer.
-  To do this, open the Windows Event Viewer application. In the right-hand panel, select Open Saved Log. Navigate to the location where you saved the log, open, and review the contents of the trace.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/DeploymentPlanModifer/50_EventViewerLocation.png" alt="Event Viewer extensions location" /&gt;&lt;/p&gt;
-
-&lt;p&gt;I also had some trouble with referencing correct version of the assemblies. Here is the final list of references and the locations that they resided in. I am using SQL Server Data Tools version 12.0.50318.0 at the time of writing this post.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;System.ComponentModel.Composition - Framework
-
-Microsoft.Data.Tools.Schema.Sql.dll - `C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.Data.Tools.Schema.Sql.dll`
-Microsoft.SqlServer.Dac.dll - `C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.dll`
-Microsoft.SqlServer.Dac.Extensions.dll - `C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\120\Microsoft.SqlServer.Dac.Extensions.dll`
-Microsoft.SqlServer.TransactSql.ScriptDom.dll - `C:\Program Files (x86)\Microsoft SQL Server\120\SDK\Assemblies\Microsoft.SqlServer.TransactSql.ScriptDom.dll`
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;Final thoughts&lt;/h2&gt;
-
-&lt;p&gt;Its worth mentioning that this is not a problem for scripts that do not have a build action and scripts such as the pre and post deployment scripts are able to use the parameterized schema variable with no additional effort. &lt;/p&gt;
-
-&lt;p&gt;Next step for me is to look at integrating this into and publishing script as part of a team build. Stay tuned.  &lt;/p&gt;
-
-&lt;p&gt;I've hosted my final &lt;a href="https://github.com/shanec-/Nullfactory-DACExtensions"&gt;implementation here&lt;/a&gt; along with a sample database demonstrating its usage.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx"&gt;MSDN - Walkthrough: Extend Database Project Deployment to Modify the Deployment Plan&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/dn306080(v=vs.103).aspx"&gt;MSDN - Walkthrough: Extend Database Project Build to Generate Model Statistics&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/Microsoft/DACExtensions"&gt;Microsoft/DACExtensions&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/eb0ccd5b-e7e0-4d90-950b-a4c696f0bd6e/deployment-contributor-could-not-be-loaded?forum=ssdt"&gt;MSDN Forum - Deployment Contributor could not be loaded&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://technet.microsoft.com/en-us/library/microsoft.sqlserver.dac.packageoptions.contributorarguments(v=sql.110).aspx"&gt;Technet - PackageOptions.ContributorArguments Property (Microsoft.SqlServer.Dac)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt"&gt;Suppress some warnings in SQL Server SSDT - Stack Overflow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt"&gt;MSDN Forum - Treat specific warning as error?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/NuGet/NuGet.Operations/blob/master/ext/SqlServer/Microsoft.SqlServer.Dac.Extensions.xml"&gt;NuGet.Operations/Microsoft.SqlServer.Dac.Extensions.xml at master · NuGet/NuGet.Operations&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>
