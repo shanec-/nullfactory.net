@@ -1,4 +1,25 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-11-26T22:27:47+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/</id><title type="text">Strategy for Updating an SQL Server Database Schema via SSDT Delta Script</title><summary type="html">&lt;p&gt;This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-12-20T02:01:13+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/12/disabling-recurring-ondemand-webjob/</id><title type="text">Disabling Recurring and OnDemand Web Jobs within a Deployment Slot</title><summary type="html">&lt;p&gt;I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned &lt;em&gt;the hard way&lt;/em&gt; that stopping a slotted Web App does &lt;strong&gt;not&lt;/strong&gt; stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
+Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a &lt;code&gt;stop&lt;/code&gt; option for &lt;code&gt;continuous&lt;/code&gt; jobs and not for the &lt;code&gt;recurring&lt;/code&gt; and &lt;code&gt;OnDemand&lt;/code&gt; jobs.&lt;/p&gt;
+
+&lt;p&gt;This limits us to a few possible solutions:&lt;/p&gt;
+
+</summary><published>2015-12-19T18:30:00Z</published><updated>2015-12-19T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/12/disabling-recurring-ondemand-webjob/" /><content type="html">&lt;p&gt;I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned &lt;em&gt;the hard way&lt;/em&gt; that stopping a slotted Web App does &lt;strong&gt;not&lt;/strong&gt; stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
+Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a &lt;code&gt;stop&lt;/code&gt; option for &lt;code&gt;continuous&lt;/code&gt; jobs and not for the &lt;code&gt;recurring&lt;/code&gt; and &lt;code&gt;OnDemand&lt;/code&gt; jobs.&lt;/p&gt;
+
+&lt;p&gt;This limits us to a few possible solutions:&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Make sure that all the resources accessed by the slotted web app / jobs are isolated from each other - Ensure that the necessary appsettings are defined as slot settings and point to different values. This is done so as to ensure that you do not inadvertently run a scheduled job multiple times (once via the production slot and one time for each of the slots). &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Baking-in custom disabling logic right into your job - For example, a web job could skip its operation based on a custom appsetting value. Once again, this appsetting would be defined as a slot setting. &lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A word of caution - be weary when implementing the "skipping" logic on continous jobs as "skipping" can be considered a successful run which would in turn pop the last message in the tiggered queue.&lt;/p&gt;
+&lt;/blockquote&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The nuke option - entirely delete the web job entries in each of the slots (not recommended).&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content></entry><entry><id>http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/</id><title type="text">Strategy for Updating a SQL Server Database Schema via SSDT Delta Script</title><summary type="html">&lt;p&gt;This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. &lt;/p&gt;
 
 &lt;p&gt;This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.&lt;/p&gt;
 
@@ -682,111 +703,5 @@ and select a logging level.&lt;/p&gt;
 &lt;li&gt;&lt;a href="http://zacg.github.io/blog/2014/02/05/azure-log4net-appender/"&gt;Azure Log4Net Appender - Zac Gross&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://blog.kloud.com.au/2014/10/22/logging-with-log4net-and-azure-diagnostics-on-web-and-worker-roles/"&gt;Logging with log4net and Azure Diagnostics on Web and Worker Roles | Kloud Blog&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://cloudshaper.wordpress.com/2010/10/30/logging-with-log4net-on-the-azure-platform/"&gt;Logging with Log4Net on the Azure platform | Cloud Shaper&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/05/start-azure-webjobs-on-demand/</id><title type="text">Start Azure Web Jobs On Demand</title><summary type="html">&lt;p&gt;I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
-The problem with the free tiers is that there's a high possibility that the web job would shut itself down and hibernate if it is &lt;a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/"&gt;idle for more that 20 mins&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;As of March 2014, web apps in Free mode can time out after 20 minutes if there are no requests to the scm (deployment) site and the web app's portal is not open in Azure. Requests to the actual site will not reset this.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;A little research shows a few possible solutions:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;If the job is not time sensitive, then manually start the service remotely using a script or tool. &lt;/li&gt;
-&lt;li&gt;Make your code explicitly start the web job just as a new request is being enqueued. This can be done by &lt;a href="https://github.com/projectkudu/kudu/wiki/WebJobs-API"&gt;making a REST call&lt;/a&gt; to the deployment site.&lt;/li&gt;
-&lt;li&gt;And lastly, upgrade to a basic or standard tier and enabling "Always On" keeps the site (and jobs) "warm" and prevent them from hibernating.&lt;/li&gt;
-&lt;/ol&gt;
-
-</summary><published>2015-05-17T18:30:00Z</published><updated>2015-05-17T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/05/start-azure-webjobs-on-demand/" /><content type="html">&lt;p&gt;I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
-The problem with the free tiers is that there's a high possibility that the web job would shut itself down and hibernate if it is &lt;a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/"&gt;idle for more that 20 mins&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;As of March 2014, web apps in Free mode can time out after 20 minutes if there are no requests to the scm (deployment) site and the web app's portal is not open in Azure. Requests to the actual site will not reset this.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;A little research shows a few possible solutions:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;If the job is not time sensitive, then manually start the service remotely using a script or tool. &lt;/li&gt;
-&lt;li&gt;Make your code explicitly start the web job just as a new request is being enqueued. This can be done by &lt;a href="https://github.com/projectkudu/kudu/wiki/WebJobs-API"&gt;making a REST call&lt;/a&gt; to the deployment site.&lt;/li&gt;
-&lt;li&gt;And lastly, upgrade to a basic or standard tier and enabling "Always On" keeps the site (and jobs) "warm" and prevent them from hibernating.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h3&gt;Using Powershell&lt;/h3&gt;
-
-&lt;p&gt;This method requires the &lt;code&gt;Microsoft Azure Powershell&lt;/code&gt; module to be installed on the machine. This can be &lt;a href="http://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/"&gt;installed via the Web Platform Installer&lt;/a&gt;.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Start of by logging into the Azure account and registering your subscription &lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Add-AzureAccount&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, starts the job: &lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;start-azurewebsitejob -name samplejobweb -jobname sample-execution-job -jobtype continuous&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;And this command to stop the job: &lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;stop-azurewebsitejob -name samplejobweb -jobname sample-execution-job&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Using REST / Code&lt;/h3&gt;
-
-&lt;p&gt;I &lt;a href="http://stackoverflow.com/questions/28904186/how-can-i-keep-my-azure-webjob-running-without-always-on/28923039#28923039"&gt;used this code as a template&lt;/a&gt;  to whip up a console application that can be used to start the service:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;static void Main(string[] args)
-{
-    string websiteName = "&amp;lt;website name&amp;gt;";
-    string webjobName = "&amp;lt;job name&amp;gt;";
-    string userName = "&amp;lt;publishing username&amp;gt;";
-    string userPWD = "&amp;lt;publishing password&amp;gt;";
-    string webjobUrl = string.Format("https://{0}.scm.azurewebsites.net/api/continuouswebjobs/{1}", websiteName, webjobName);
-
-    var result = GetWebjobState(webjobUrl, userName, userPWD);
-    Console.WriteLine(result);
-
-    var postResult = StartWebjob(webjobUrl + "/Start", userName, userPWD);
-    Console.WriteLine(postResult);
-
-    Console.ReadKey(true);
-}
-
-private static JObject GetWebjobState(string url, string username, string password)
-{
-    var client = CreateHttpClient(username, password);
-    var data = client.GetStringAsync(url).Result;
-    var result = JsonConvert.DeserializeObject(data) as JObject;
-    return result;
-}
-
-private static bool StartWebjob(string url, string username, string password)
-{
-    var client = CreateHttpClient(username, password);
-    HttpResponseMessage data = client.PostAsync(url, new StringContent(string.Empty)).Result;
-    return data.StatusCode == System.Net.HttpStatusCode.OK;
-}
-
-private static HttpClient CreateHttpClient(string username, string password)
-{
-    HttpClient client = new HttpClient();
-    string auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ':' + password));
-    client.DefaultRequestHeaders.Add("authorization", auth);
-    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-    return client;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/"&gt;Run Background tasks with WebJobs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/28904186/how-can-i-keep-my-azure-webjob-running-without-always-on/28923039#28923039"&gt;How can I keep my Azure WebJob running without "Always On" - Stack Overflow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/28502696/continuous-webjob-stops-automatically"&gt;azure - continuous WebJob stops automatically - Stack Overflow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/projectkudu/kudu/wiki/WebJobs-API"&gt;Github  - WebJobs API · projectkudu/kudu Wiki&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/projectkudu/kudu/wiki/Deployment-credentials"&gt;Github - Deployment credentials · projectkudu/kudu Wiki&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/Azure/azure-powershell"&gt;Github - Azure/azure-powershell&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://azure.microsoft.com/en-us/documentation/articles/powershell-install-configure/"&gt;MSDN - How to install and configure Azure PowerShell&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/library/azure/jj554330.aspx"&gt;MSDN - Azure Cmdlet Reference&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>

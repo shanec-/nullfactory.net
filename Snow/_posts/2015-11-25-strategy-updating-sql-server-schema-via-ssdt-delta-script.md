@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Strategy for Updating an SQL Server Database Schema via SSDT Delta Script
+title: Strategy for Updating a SQL Server Database Schema via SSDT Delta Script
 category: SQL Server, SQL Server Data Tools
 ---
 

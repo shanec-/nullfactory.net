@@ -42,7 +42,25 @@
 </header>
  <div class="listing">
     <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Strategy for Updating an SQL Server Database Schema via SSDT Delta Script</a></h2>
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/12/disabling-recurring-ondemand-webjob/">Disabling Recurring and OnDemand Web Jobs within a Deployment Slot</a></h2>
+      <p class="post-date">20 Dec 2015
+
+      | <a href="/category/azure" title="Azure">Azure</a>
+</p>
+
+      <p>
+		
+		<p>I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned <em>the hard way</em> that stopping a slotted Web App does <strong>not</strong> stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
+Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a <code>stop</code> option for <code>continuous</code> jobs and not for the <code>recurring</code> and <code>OnDemand</code> jobs.</p>
+
+<p>This limits us to a few possible solutions:</p>
+
+
+		<p><a href="/2015/12/disabling-recurring-ondemand-webjob/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Strategy for Updating a SQL Server Database Schema via SSDT Delta Script</a></h2>
       <p class="post-date">25 Nov 2015
 
       | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
@@ -354,36 +372,6 @@ at System.Threading.ThreadHelper.ThreadStart()
 
 
 		<p><a href="/2015/05/recording-diagnostics-azure-app-service-website-log4net/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/start-azure-webjobs-on-demand/">Start Azure Web Jobs On Demand</a></h2>
-      <p class="post-date">18 May 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-      | <a href="/category/powershell" title="PowerShell">PowerShell</a>
-      | <a href="/category/rest" title="REST">REST</a>
-</p>
-
-      <p>
-		
-		<p>I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
-The problem with the free tiers is that there's a high possibility that the web job would shut itself down and hibernate if it is <a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">idle for more that 20 mins</a>:</p>
-
-<blockquote>
-  <p>As of March 2014, web apps in Free mode can time out after 20 minutes if there are no requests to the scm (deployment) site and the web app's portal is not open in Azure. Requests to the actual site will not reset this.</p>
-</blockquote>
-
-<p>A little research shows a few possible solutions:</p>
-
-<ol>
-<li>If the job is not time sensitive, then manually start the service remotely using a script or tool. </li>
-<li>Make your code explicitly start the web job just as a new request is being enqueued. This can be done by <a href="https://github.com/projectkudu/kudu/wiki/WebJobs-API">making a REST call</a> to the deployment site.</li>
-<li>And lastly, upgrade to a basic or standard tier and enabling "Always On" keeps the site (and jobs) "warm" and prevent them from hibernating.</li>
-</ol>
-
-
-		<p><a href="/2015/05/start-azure-webjobs-on-demand/">Read more...</a></p>
 	  </p>
     </div>
 </div>
