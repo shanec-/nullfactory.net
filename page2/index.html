@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,41 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/recording-diagnostics-azure-app-service-website-log4net/">Recording Diagnostics on a Azure App Service Hosted Website using Log4Net</a></h2>
+      <p class="post-date">24 May 2015
+
+      | <a href="/category/azure" title="Azure">Azure</a>
+      | <a href="/category/log4net" title="Log4Net">Log4Net</a>
+</p>
+
+      <p>
+		
+		<p>I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.</p>
+
+<p>The <a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/">official documentation states</a> that calls to the <code>System.Diagnostics.Trace</code> methods are all that is required to start capturing diagnostic information. In summary, this is all I needed to do:</p>
+
+<ol>
+<li>Enable diagnostics and configure the storage locations (discussed later down the post).</li>
+<li>From within my code write the <code>Warning</code>, <code>Error</code> and <code>Information</code> messages via their respective trace methods.</li>
+<li>...</li>
+<li>Azure starts capturing the custom diagnostics information - PROFIT! </li>
+</ol>
+
+<p>Sounds simple enough. </p>
+
+<p>So I thought if I just set up a <code>TraceAppender</code> everything would work fine and that would be the end of it. The results were not what I was expecting and this was the output in my table storage:</p>
+
+<p><img src="/images/posts/AzureAppSvcDiag/10_AppServiceTableDiag.png" alt="Table Diagnostics" /></p>
+
+<p>The trace entries are bunched together as a single <code>Verbose</code> entry and the writes appear to be buffered. Not acceptable. I suppose the buffering could be because I had not used the <code>ImmediateFlush</code> option for the <code>TraceAppender</code>, but I need to have each Trace statement to have its own entry in the table.</p>
+
+<p>While there are a lot of posts on the internet on how to setup Log4Net with Azure, most of them appear to be out of date and seem to be compensating for features were not available in the Azure at the time of their implementation. Then there are others that targeted towards integrating with the Cloud Service which is not what I was looking for.</p>
+
+
+		<p><a href="/2015/05/recording-diagnostics-azure-app-service-website-log4net/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/start-azure-webjobs-on-demand/">Start Azure Web Jobs On Demand</a></h2>
       <p class="post-date">18 May 2015
@@ -279,28 +314,6 @@ The problem with the free tiers is that there's a high possibility that the web 
 
 
 		<p><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfs-scheduled-backups-not-working-quiesced/">TFS Tip: Scheduled Backups Do Not Work While the Service Is Quiesced</a></h2>
-      <p class="post-date">10 Jan 2015
-
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-      | <a href="/category/tfs-tips" title="TFS Tips">TFS Tips</a>
-</p>
-
-      <p>
-		
-		<p>Last month I worked on upgrading a Team Foundation Server from 2012.2 to 2013.4. While majority of the process was based on the off of the <a href="http://vsarupgradeguide.codeplex.com/">ALM Rangers upgrade guide</a>, there were a few interesting tidbits that we learned during the upgrade.  </p>
-
-<p>The most important one was that Scheduled Backups feature no longer works if the services are stopped using the <code>TFSServiceControl quiesce</code> command.</p>
-
-<p>While the <a href="http://msdn.microsoft.com/en-us/library/ff470382.aspx">MSDN Article</a> for the command does state that it would take down all the services, it also says that you would normally use this command in order to facilitate backups. 
-As such we assumed, incorrectly, that it would not apply to the scheduled backup service. </p>
-
-
-		<p><a href="/2015/01/tfs-scheduled-backups-not-working-quiesced/">Read more...</a></p>
 	  </p>
     </div>
 </div>

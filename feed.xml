@@ -1,4 +1,150 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2015-12-20T02:01:13+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2015/12/disabling-recurring-ondemand-webjob/</id><title type="text">Disabling Recurring and OnDemand Web Jobs within a Deployment Slot</title><summary type="html">&lt;p&gt;I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned &lt;em&gt;the hard way&lt;/em&gt; that stopping a slotted Web App does &lt;strong&gt;not&lt;/strong&gt; stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-01-22T15:03:15+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/</id><title type="text">Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell</title><summary type="html">&lt;p&gt;I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.&lt;/p&gt;
+
+&lt;p&gt;This implementation at its core revolves around the &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"&gt;&lt;code&gt;Microsoft.Xrm.Data.PowerShell&lt;/code&gt;&lt;/a&gt; module and the &lt;code&gt;Solution Packager&lt;/code&gt; tool provided with the official SDK. I have minimized the use of 3rd party libraries and have intentionally excluded the use of any visual studio extensions or helper tools.&lt;/p&gt;
+
+&lt;h2&gt;Setting up the Tools&lt;/h2&gt;
+
+&lt;h3&gt;Installing Microsoft.CrmSdk.CoreTools&lt;/h3&gt;
+
+&lt;p&gt;Let's start off by creating a "tooling" project that would act as a hosts for the tools and scripts involved in the process.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a class library project to host the tools using for building the packages. I named mine &lt;code&gt;Nullfactory.Crm.Tooling&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Install the &lt;code&gt;Microsoft.CrmSdk.CoreTools&lt;/code&gt; nuget package by running the following command in the package manager console: &lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Install-Package Microsoft.CrmSdk.CoreTools -Project Nullfactory.Crm.Tooling&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;This nuget package includes the &lt;code&gt;SolutionPackager.exe&lt;/code&gt; tool.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/10_InstallCoreTools.png" alt="Install Crm Core Tools" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, clean up the project by removing the default &lt;code&gt;Class1.cs&lt;/code&gt; file as well as the &lt;code&gt;Debug&lt;/code&gt; and &lt;code&gt;Release&lt;/code&gt; within the &lt;code&gt;bin&lt;/code&gt; folder.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Update the solution configurations to not build this project. Do this by navigating to the solution property pages &gt; &lt;code&gt;Configuration Properties&lt;/code&gt; and un-ticking the check box against the build column.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/20_DontBuild.png" alt="Do not Build Project" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+</summary><published>2016-01-20T18:30:00Z</published><updated>2016-01-20T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/" /><content type="html">&lt;p&gt;I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.&lt;/p&gt;
+
+&lt;p&gt;This implementation at its core revolves around the &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"&gt;&lt;code&gt;Microsoft.Xrm.Data.PowerShell&lt;/code&gt;&lt;/a&gt; module and the &lt;code&gt;Solution Packager&lt;/code&gt; tool provided with the official SDK. I have minimized the use of 3rd party libraries and have intentionally excluded the use of any visual studio extensions or helper tools.&lt;/p&gt;
+
+&lt;h2&gt;Setting up the Tools&lt;/h2&gt;
+
+&lt;h3&gt;Installing Microsoft.CrmSdk.CoreTools&lt;/h3&gt;
+
+&lt;p&gt;Let's start off by creating a "tooling" project that would act as a hosts for the tools and scripts involved in the process.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a class library project to host the tools using for building the packages. I named mine &lt;code&gt;Nullfactory.Crm.Tooling&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Install the &lt;code&gt;Microsoft.CrmSdk.CoreTools&lt;/code&gt; nuget package by running the following command in the package manager console: &lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Install-Package Microsoft.CrmSdk.CoreTools -Project Nullfactory.Crm.Tooling&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;This nuget package includes the &lt;code&gt;SolutionPackager.exe&lt;/code&gt; tool.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/10_InstallCoreTools.png" alt="Install Crm Core Tools" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, clean up the project by removing the default &lt;code&gt;Class1.cs&lt;/code&gt; file as well as the &lt;code&gt;Debug&lt;/code&gt; and &lt;code&gt;Release&lt;/code&gt; within the &lt;code&gt;bin&lt;/code&gt; folder.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Update the solution configurations to not build this project. Do this by navigating to the solution property pages &gt; &lt;code&gt;Configuration Properties&lt;/code&gt; and un-ticking the check box against the build column.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/20_DontBuild.png" alt="Do not Build Project" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h3&gt;Install Microsoft.Xrm.Data.PowerShell&lt;/h3&gt;
+
+&lt;p&gt;The &lt;code&gt;Microsoft.Xrm.Data.Powershell&lt;/code&gt; module makes interacting with CRM so much easier - it is used to connect to CRM and export the solutions. &lt;/p&gt;
+
+&lt;p&gt;Follow these steps to install it:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Download the latest release from &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell/releases/"&gt;here&lt;/a&gt;. Detailed installation instructions can be found on their github page. &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure that the zip file is unblocked &lt;em&gt;before extracting the contents&lt;/em&gt;. Once extracted, add them into the bin folder as part of the tooling project.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/30_UnblockZip.png" alt="Unblock Zip Before Extraction" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Since this module would have to be installed on each of the developer machines, I created a helper script that automates it - &lt;code&gt;Install-Microsoft.Xrm.Data.Powershell.ps1&lt;/code&gt;. Add this as part of the project as well. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/40_InstallPowershell.png" alt="Install Microsoft.Xrm.Data.Powershell" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/shanec-/Crm-PowershellBuildDemo/blob/master/src/Nullfactory.Crm.Tooling/bin/Install-Microsoft.Xrm.Data.Powershell.ps1"&gt;Download the install script here&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Setting up the Projects&lt;/h2&gt;
+
+&lt;p&gt;Next, lets create class library projects for each of the CRM Solutions. This makes visualizing and managing the solution from within Visual Studio easier. And more importantly, give us the ability to add a msbuild tasks.&lt;/p&gt;
+
+&lt;p&gt;Edit the &lt;code&gt;csproj&lt;/code&gt; file of the newly created project and add the following ms build task. &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;Target Name="Build"&amp;gt;
+    &amp;lt;Exec Command="$(SolutionDir)\Nullfactory.Crm.Tooling\bin\coretools\SolutionPackager.exe /action:pack /packagetype:both /folder:$(MSBuildProjectDirectory) /zipfile:$(OutDir)$(MSBuildProjectName).zip" /&amp;gt;
+&amp;lt;/Target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This ensures that both unmanaged and managed versions of the CRM solution is packaged anytime the project is built. &lt;/p&gt;
+
+&lt;p&gt;Optionally, remove the &lt;code&gt;properties&lt;/code&gt; folder and &lt;code&gt;AssemblyInfo.cs&lt;/code&gt; file as they will not be required for these projects.&lt;/p&gt;
+
+&lt;h3&gt;Add Solution Export and Synchronization Script&lt;/h3&gt;
+
+&lt;p&gt;Add the &lt;code&gt;Sync-CrmSolution.ps1&lt;/code&gt; and &lt;code&gt;Sync-CrmSolution.Param.ps1&lt;/code&gt; files into the tooling project. These scripts can be downloaded &lt;a href="https://github.com/shanec-/Crm-PowershellBuildDemo/blob/master/src/Nullfactory.Crm.Tooling/bin/Sync-CrmSolution.ps1"&gt;here&lt;/a&gt; and &lt;a href="https://github.com/shanec-/Crm-PowershellBuildDemo/blob/master/src/Nullfactory.Crm.Tooling/bin/Sync-CrmSolution.Param.ps1"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/60_SyncScriptsInstalled.png" alt="Installed Synchronization Scripts" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;Sync-CrmSolution.ps1&lt;/code&gt; script handles the exporting of the solution and performs the following actions:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Deletes all the artifacts from the CRM solution project folder.&lt;/li&gt;
+&lt;li&gt;Connects to the organization and exports both the managed and un-managed versions of the solution.&lt;/li&gt;
+&lt;li&gt;Finally, unpacks them into the previously emptied folder.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The &lt;code&gt;Sync-CrmSolution.Param.ps1&lt;/code&gt; script acts as a controller script with the actual parameters. Each developer would update this script to point to their own development CRM organization.&lt;/p&gt;
+
+&lt;h2&gt;Unpacking and Synchronizing&lt;/h2&gt;
+
+&lt;p&gt;Next, we unpack the initial version of the solution into the project. This is done using the following steps: &lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Ensure that the &lt;code&gt;Sync-CrmSolution.Param.ps1&lt;/code&gt; script is pointing to a valid CRM organization and solution and execute the script.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/50_ExtractingSolution.png" alt="Extracting Solution" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once the solution has been unpacked, add the new artifacts into the project.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/70_SolutionExtracted.png" alt="Crm Solution Extracted" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Check-in all the changes done so far.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now that the initial version is in source control, it raises the problem of figuring out the files that have changes in subsequent extractions. How do you figure out which files have changed so that only those files are check-in?&lt;/p&gt;
+
+&lt;p&gt;One of my colleague introduced me to an interesting technique that hes been using for a while. I like it a lot as its simple, effective and avoids having to do any explicit TFS integration.   &lt;/p&gt;
+
+&lt;p&gt;This method leverages Microsoft Visual Studio Team Foundation Server 2015 Power Tools in order to identify the files changed in the working folder. It requires each developer &lt;a href="https://visualstudiogallery.msdn.microsoft.com/898a828a-af00-42c6-bbb2-530dc7b8f2e1"&gt;install&lt;/a&gt; it on their development box.&lt;/p&gt;
+
+&lt;p&gt;Whenever a developer synchronizes their version of the solution using the &lt;code&gt;Sync-CrmSolution.Param.ps1&lt;/code&gt; script, the power tools would automatically detect and check out the edited files. One would still have to manually include new and deleted files into the project via the detected changes dialog, but that's a minor inconvenience I can live with. &lt;/p&gt;
+
+&lt;p&gt;A positive side effect of this method is that we no longer have to be concerned about the &lt;code&gt;allowDelete&lt;/code&gt; and &lt;code&gt;allowWrite&lt;/code&gt; parameters in the Solution Packager tool.&lt;/p&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;Now any time the class libraries hosting the solutions are built, the output would be packaged zip files for both managed and un-managed CRM solutions. &lt;/p&gt;
+
+&lt;p&gt;Although I did not setup up separate projects for plugins and web resources in this example, it is certainly possible.  &lt;/p&gt;
+
+&lt;p&gt;I might also explore converting the entire &lt;code&gt;Nullfactory.Crm.Tooling&lt;/code&gt; project into a template in a future post. It should make it a lot more easier integrate it into new projects.&lt;/p&gt;
+
+&lt;p&gt;Finally, I feel that the day-to-day operation part of this process is a little bit tedious and does not offer any significant advantage over the convenience of using an Visual Studio extension. I knew this going in, but I wanted to have an understanding of the work involved in setting this up. &lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell/releases/"&gt;Releases · seanmcne/Microsoft.Xrm.Data.PowerShell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/jj602987.aspx"&gt;Use the SolutionPackager tool to compress and extract a solution file&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://technet.microsoft.com/en-us/library/dd878350(v=vs.85).aspx"&gt;Installing Modules&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blogs.msdn.com/b/koteshb/archive/2010/02/13/powershell-creating-a-pscredential-object.aspx"&gt;PowerShell - How to create a PSCredential object - Kotesh Bandhamravuri - Site Home - MSDN Blogs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=65MVXzMAWyg"&gt;Integrating SolutionPackager into Visual Studio - YouTube&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://waelhamze.com/2014/01/12/dynamics-crm-parallel-development-with-solution-packager/"&gt;Dynamics CRM Parallel Development with Solution Packager | Wael Hamze&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://visualstudiogallery.msdn.microsoft.com/898a828a-af00-42c6-bbb2-530dc7b8f2e1"&gt;Microsoft Visual Studio Team Foundation Server 2015 Power Tools extension&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2015/12/disabling-recurring-ondemand-webjob/</id><title type="text">Disabling Recurring and OnDemand Web Jobs within a Deployment Slot</title><summary type="html">&lt;p&gt;I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned &lt;em&gt;the hard way&lt;/em&gt; that stopping a slotted Web App does &lt;strong&gt;not&lt;/strong&gt; stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
 Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a &lt;code&gt;stop&lt;/code&gt; option for &lt;code&gt;continuous&lt;/code&gt; jobs and not for the &lt;code&gt;recurring&lt;/code&gt; and &lt;code&gt;OnDemand&lt;/code&gt; jobs.&lt;/p&gt;
 
 &lt;p&gt;This limits us to a few possible solutions:&lt;/p&gt;
@@ -553,155 +699,5 @@ GO
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend"&gt;StackOverflow.com - sql server - Drop all the tables, stored procedures, triggers, constraints and all the dependencies in one sql statement - Stack Overflow&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/</id><title type="text">Recording Diagnostics on a Azure App Service Hosted Website using Log4Net</title><summary type="html">&lt;p&gt;I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/"&gt;official documentation states&lt;/a&gt; that calls to the &lt;code&gt;System.Diagnostics.Trace&lt;/code&gt; methods are all that is required to start capturing diagnostic information. In summary, this is all I needed to do:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Enable diagnostics and configure the storage locations (discussed later down the post).&lt;/li&gt;
-&lt;li&gt;From within my code write the &lt;code&gt;Warning&lt;/code&gt;, &lt;code&gt;Error&lt;/code&gt; and &lt;code&gt;Information&lt;/code&gt; messages via their respective trace methods.&lt;/li&gt;
-&lt;li&gt;...&lt;/li&gt;
-&lt;li&gt;Azure starts capturing the custom diagnostics information - PROFIT! &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Sounds simple enough. &lt;/p&gt;
-
-&lt;p&gt;So I thought if I just set up a &lt;code&gt;TraceAppender&lt;/code&gt; everything would work fine and that would be the end of it. The results were not what I was expecting and this was the output in my table storage:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/10_AppServiceTableDiag.png" alt="Table Diagnostics" /&gt;&lt;/p&gt;
-
-&lt;p&gt;The trace entries are bunched together as a single &lt;code&gt;Verbose&lt;/code&gt; entry and the writes appear to be buffered. Not acceptable. I suppose the buffering could be because I had not used the &lt;code&gt;ImmediateFlush&lt;/code&gt; option for the &lt;code&gt;TraceAppender&lt;/code&gt;, but I need to have each Trace statement to have its own entry in the table.&lt;/p&gt;
-
-&lt;p&gt;While there are a lot of posts on the internet on how to setup Log4Net with Azure, most of them appear to be out of date and seem to be compensating for features were not available in the Azure at the time of their implementation. Then there are others that targeted towards integrating with the Cloud Service which is not what I was looking for.&lt;/p&gt;
-
-</summary><published>2015-05-23T18:30:00Z</published><updated>2015-05-23T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/05/recording-diagnostics-azure-app-service-website-log4net/" /><content type="html">&lt;p&gt;I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/"&gt;official documentation states&lt;/a&gt; that calls to the &lt;code&gt;System.Diagnostics.Trace&lt;/code&gt; methods are all that is required to start capturing diagnostic information. In summary, this is all I needed to do:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Enable diagnostics and configure the storage locations (discussed later down the post).&lt;/li&gt;
-&lt;li&gt;From within my code write the &lt;code&gt;Warning&lt;/code&gt;, &lt;code&gt;Error&lt;/code&gt; and &lt;code&gt;Information&lt;/code&gt; messages via their respective trace methods.&lt;/li&gt;
-&lt;li&gt;...&lt;/li&gt;
-&lt;li&gt;Azure starts capturing the custom diagnostics information - PROFIT! &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Sounds simple enough. &lt;/p&gt;
-
-&lt;p&gt;So I thought if I just set up a &lt;code&gt;TraceAppender&lt;/code&gt; everything would work fine and that would be the end of it. The results were not what I was expecting and this was the output in my table storage:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/10_AppServiceTableDiag.png" alt="Table Diagnostics" /&gt;&lt;/p&gt;
-
-&lt;p&gt;The trace entries are bunched together as a single &lt;code&gt;Verbose&lt;/code&gt; entry and the writes appear to be buffered. Not acceptable. I suppose the buffering could be because I had not used the &lt;code&gt;ImmediateFlush&lt;/code&gt; option for the &lt;code&gt;TraceAppender&lt;/code&gt;, but I need to have each Trace statement to have its own entry in the table.&lt;/p&gt;
-
-&lt;p&gt;While there are a lot of posts on the internet on how to setup Log4Net with Azure, most of them appear to be out of date and seem to be compensating for features were not available in the Azure at the time of their implementation. Then there are others that targeted towards integrating with the Cloud Service which is not what I was looking for.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;Unable to find any existing implementation, I decided to roll my own appender. I started off by &lt;a href="https://github.com/apache/log4net/blob/trunk/src/log4net/Appender/TraceAppender.cs"&gt;looking at the TraceAppender code&lt;/a&gt; and observed that it just does a &lt;code&gt;Trace.Write&lt;/code&gt;, which I suppose is why Azure categorizes the entries under the &lt;code&gt;Verbose&lt;/code&gt; level. So my implementation would be identical but would make explicit calls to the &lt;code&gt;Trace.TraceWarning&lt;/code&gt;, &lt;code&gt;Trace.TraceError&lt;/code&gt; and &lt;code&gt;Trace.TraceInformation&lt;/code&gt; methods as necessary.&lt;/p&gt;
-
-&lt;p&gt;Its quite simple really, this is the gist of it:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;protected override void Append(LoggingEvent loggingEvent)
-{
-    string logMessage = string.Format(this.RenderLoggingEvent(loggingEvent), ((LayoutSkeleton)this.category).Format(loggingEvent));
-
-    if (loggingEvent.Level == Level.Alert ||
-        loggingEvent.Level == Level.Critical ||
-        loggingEvent.Level == Level.Emergency ||
-        loggingEvent.Level == Level.Error ||
-        loggingEvent.Level == Level.Fatal ||
-        loggingEvent.Level == Level.Log4Net_Debug ||
-        loggingEvent.Level == Level.Severe)
-    {
-        Trace.TraceError(logMessage);
-    }
-    else if (loggingEvent.Level == Level.Warn)
-    {
-        Trace.TraceWarning(logMessage);
-    }
-    else if (loggingEvent.Level == Level.Debug ||
-        loggingEvent.Level == Level.Fine ||
-        loggingEvent.Level == Level.Finer ||
-        loggingEvent.Level == Level.Finest ||
-        loggingEvent.Level == Level.Info ||
-        loggingEvent.Level == Level.Notice ||
-        loggingEvent.Level == Level.Trace ||
-        loggingEvent.Level == Level.Verbose)
-    {
-        Trace.TraceInformation(logMessage);
-    }
-
-    if (!this.ImmediateFlush)
-    {
-        return;
-    }
-
-    Trace.Flush();
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Configure the appender the same as you would the &lt;code&gt;TraceAppender&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;appender name="SimpleTraceAppender" type="Nullfactory.Log4Net.SimpleTraceAppender, Nullfactory.Log4Net"&amp;gt;
-    &amp;lt;layout type="log4net.Layout.PatternLayout"&amp;gt;
-        &amp;lt;conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" /&amp;gt;
-    &amp;lt;/layout&amp;gt;
-&amp;lt;/appender&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And finally for the webjob contained in my solution, I paired my custom appender with a &lt;code&gt;ConsoleAppender&lt;/code&gt; so that it would automatically take advantage of the web job logging architecture without any additional code.&lt;/p&gt;
-
-&lt;p&gt;I've uploaded my &lt;a href="https://github.com/shanec-/Nullfactory-Azure"&gt;full implementation and sample usage here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Enabling Diagnostics on the Azure Portal&lt;/h2&gt;
-
-&lt;p&gt;There are couple of steps that need to be done in order to enable diagnostics on the app service:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Login to the older Azure portal - &lt;a href="https://manage.windowsazure.net"&gt;https://manage.windowsazure.net&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Ensure that you already have a storage account set up. This would house the table that stores the diagnostic entries. &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, navigate to the web app configuration page. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/20_WebAppDiagConfig.png" alt="Web App Configure" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Enable application logging (table storage)
-and select a logging level.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/30_DiagTableStorage.png" alt="Web App, Application Diagnostics" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next click on the &lt;code&gt;manage table storage&lt;/code&gt; button allows to configure the storage account and the table into which the diagnostic information is recorded into.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/40_DiagTableStorage2.png" alt="Web App Application Diagnostics Table Name" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;That's it, the web app should start capturing logging information. &lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;There were a few quirks that I faced attempting to set it up:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;This how-to provides the following instructions on &lt;a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-enable-diagnostic-log/"&gt;enabling diagnostics&lt;/a&gt;:  &lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;When enabling Application Logging you must also select the Logging Level and whether to enable logging to the file system, table storage, or blob storage. While all three storage locations provide the same basic information for logged events, table storage and blob storage log additional information such as the instance ID, thread ID, and a more granular timestamp (tick format) than logging to file system.&lt;/p&gt;
-  
-  &lt;p&gt;When enabling site diagnostics, you must select storage or file system for web server logging. Selecting storage allows you to select a storage account, and then a blob container that the logs will be written to. All other logs for site diagnostics are written to the file system only.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;At the time of writing this post the preview portal does not appear to have the diagnostics feature fully ported. While it does have the switch to enable it, it does not provide the options to select the storage location. That's why it is required to be enabled via the &lt;a href="https://manage.windowsazure.com/"&gt;older portal&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/60_PreviewAppDiagLogs.png" alt="Preview Portal, Web App Logging" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The newer (v2) storage accounts do not seem to be recognized by the older portal. So if you already using them via the preview portal, you would need to create a second set of storage accounts just for the diagnostics. Again, this is something I think this would be sorted out in future releases  &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureAppSvcDiag/50_StorAccV2Diag.png" alt="Web App, Diagnostics Storage Account V2 Missing" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://github.com/apache/log4net/blob/trunk/src/log4net/Appender/TraceAppender.cs"&gt;log4net/TraceAppender.cs at trunk · apache/log4net · GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/"&gt;Enable diagnostics logging for web apps in Azure App Service&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://blog.tylerdoerksen.com/2012/04/15/logging-in-azure-part-1/"&gt;Logging in Azure: Part 1 | Tyler's Azure Blog&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://blog.tylerdoerksen.com/2012/04/17/logging-in-azure-part-2table-storage/"&gt;Logging in Azure: Part 2–Table Storage | Tyler's Azure Blog&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://zacg.github.io/blog/2014/02/05/azure-log4net-appender/"&gt;Azure Log4Net Appender - Zac Gross&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://blog.kloud.com.au/2014/10/22/logging-with-log4net-and-azure-diagnostics-on-web-and-worker-roles/"&gt;Logging with log4net and Azure Diagnostics on Web and Worker Roles | Kloud Blog&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://cloudshaper.wordpress.com/2010/10/30/logging-with-log4net-on-the-azure-platform/"&gt;Logging with Log4Net on the Azure platform | Cloud Shaper&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
