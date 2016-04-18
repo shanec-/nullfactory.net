@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Checklist for Enabling Quick Create from Subgrid 
+title: Checklist for Enabling Quick Create from Sub-grid 
 category: Dynamics CRM, Dynamics CRM Online
 ---
 There have been a few instances where I've wanted to launch a quick create a record directly from a sub-grid add-button. That is, without having an extra step of bringing down the lookup view and then clicking the `+ New` button. 
