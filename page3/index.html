@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,90 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/02/obfuscate-sharepoint-ssrs-datasource/">Obfuscating a SharePoint-Integrated SSRS DataSource's Connection String</a></h2>
+      <p class="post-date">16 Feb 2015
+
+      | <a href="/category/sharepoint" title="SharePoint">SharePoint</a>
+      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
+      | <a href="/category/sql-server-reporting-services" title="SQL Server Reporting Services">SQL Server Reporting Services</a>
+      | <a href="/category/code-access-security" title="Code Access Security">Code Access Security</a>
+</p>
+
+      <p>
+		
+		<p>When SQL Server Reporting Services (SSRS) is deployed as an SharePoint integrated solution, it enables much of its functionality to be managed right from within SharePoint. Starting from the 2013 version, the integration between SharePoint and SQL Server Reporting Services 2012 is more tightly coupled than previous iterations. </p>
+
+<p>One feature in integrated mode is the ability to have the data sources (.rsds) and report files (.rdl) within a document library itself. This means that reports can reference a DataSource within any document library in the SharePoint site. </p>
+
+<p>In order for the report to work the user should have read permission on both the data source as well as the report file. The problem with this is that the same user can now potentially view the settings within the data source file, including the connection string.</p>
+
+<h2>The Solution</h2>
+
+<p>In order to protect the connection string, I came up with a solution to obscure it through encryption. The solution can be broken down to two major steps:</p>
+
+<ol>
+<li>Force the reports to get the connection string by evaluating an expression embedded within itself. </li>
+<li>Within this expression, call some custom code which manages the retrieval and decryption of the connection string. </li>
+</ol>
+
+<p>One of the limitations with this method is that you can no longer use a shared data source and each report has to have its credentials embedded.</p>
+
+<p>In my example below, I will be retrieving the configuration string from a configuration list stored in the same SharePoint server. </p>
+
+
+		<p><a href="/2015/02/obfuscate-sharepoint-ssrs-datasource/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/02/tfs-customizie-build-template-to-exclude-symbols/">Customize a Build Template to Exclude Symbols From Being Published to the Symbol Server</a></h2>
+      <p class="post-date">09 Feb 2015
+
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/team-build" title="Team Build">Team Build</a>
+</p>
+
+      <p>
+		
+		<p>This post was inspired by a feedback provided by one of the commenters on <a href="http://www.edsquared.com/2011/02/12/Source+Server+And+Symbol+Server+Support+In+TFS+2010.aspx">this post</a>. The requirement was to exclude certain third party symbols from being published to the symbol server. I thought I would take upon the challenge to implement this.</p>
+
+<p>As suggested in the same comment thread, my approach would revolve around explicitly setting the <code>FileList</code> property in the <code>PublishSymbols</code> activity. I would set it to a list that includes only the symbols that I want published. And the symbols I want to be excluded would be handled through a wild card filter that is passed as a build template parameter.</p>
+
+<h2>Pre-Requisites</h2>
+
+<ul>
+<li>A properly configured symbol server. Check out my previous on <a href="/2015/01/setting-up-tfs-source-symbol-servers/">automatically publishing debug symbols</a>.</li>
+</ul>
+
+<h2>Customization Steps</h2>
+
+<p>My template is based on the default TFS template <code>TfvcTemplate.12.xaml</code> and customized with the following changes:</p>
+
+
+		<p><a href="/2015/02/tfs-customizie-build-template-to-exclude-symbols/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">TFS Tip: Disable Windows Update Prior TFS Upgrade</a></h2>
+      <p class="post-date">11 Jan 2015
+
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/tfs-tips" title="TFS Tips">TFS Tips</a>
+</p>
+
+      <p>
+		
+		<p>Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.</p>
+
+<p>Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.</p>
+
+<p>Personally I use the <code>net stop "windows update"</code> command as it is only effective until you restart the computer/service.</p>
+
+
+		<p><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfs-scheduled-backups-not-working-quiesced/">TFS Tip: Scheduled Backups Do Not Work While the Service Is Quiesced</a></h2>
       <p class="post-date">10 Jan 2015
@@ -219,59 +303,6 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
 		<p><a href="/2014/09/powershell/">Read more...</a></p>
 	  </p>
     </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/tfs-service-accounts/">Team Foundation Server - Service Accounts</a></h2>
-      <p class="post-date">21 Sep 2014
-
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-</p>
-
-      <p>
-		
-		<p>Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.</p>
-
-<p>In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS.</p>
-
-<h2>Overview</h2>
-
-<p>I created this mind map that graphically illustrates the accounts and required permissions by the different services in order to help me remember all the dependencies.</p>
-
-<p><a href="/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png"><img src="/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png" alt="TFS Accounts Overview" /></a></p>
-
-<p>While the majority of production installations would be deployed in a multi-tiered environment, I would normally assume that all of the accounts listed above are part of the same domain (with the exception of <code>DEPLOY</code> account. I will discuss cross domain considerations in a different post).</p>
-
-<p>While I will go into detail in future posts, but for the initial installation the following accounts are required:</p>
-
-<ul>
-<li><code>TFSInstall</code> - An installation account that would automatically be added as a TFS Administrator</li>
-<li><code>TFSService</code> - Used to run the Team Foundation Service</li>
-<li><code>TFSReports</code> - Used to run the SQL Server Reporting Service (SSRS)</li>
-</ul>
-
-
-		<p><a href="/2014/09/tfs-service-accounts/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/08/bookmarks-organizer-source-published/">Bookmarks Organizer Source Published</a></h2>
-      <p class="post-date">16 Aug 2014
-
-      | <a href="/category/mobile-development" title="Mobile Development">Mobile Development</a>
-      | <a href="/category/windows-phone" title="Windows Phone">Windows Phone</a>
-</p>
-
-      <p>
-		
-		<p>I have been meaning to do this for a while and now finally got around to cleaning up and publishing the source. This was the first Windows Phone app that I actually saw through to completion and was pretty proud of it at the time. You can find the original posts <a href="http://nullfactory.blogspot.com/2012/04/bookmark-organizer-01-for-windows-phone.html">here</a> and <a href="http://nullfactory.blogspot.com/2012/05/bookmark-organizer-02-with-skydrive.html">here</a>  </p>
-
-<p>Although the popularity of the 7.x branch is on the decline, I hope someone would have use for it.</p>
-
-<p>The project is now distributed via <a href="https://github.com/shanec-/Nullfactory.BookmarkSync">Github</a>. Enjoy!</p>
-
-
-		<p><a href="/2014/08/bookmarks-organizer-source-published/">Read more...</a></p>
-	  </p>
-    </div>
 </div>
 
   <div id="post-pagination" class="pagination">
@@ -282,6 +313,9 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
         </p>
 
 
+    <p class="previous">
+      <a href="/page4">Next Page</a>
+    </p>
 
   </div>
 

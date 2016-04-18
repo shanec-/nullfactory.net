@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,78 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/04/checklist-enabling-quick-create-subgrid/">Checklist for Enabling Quick Create from Subgrid</a></h2>
+      <p class="post-date">17 Apr 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>There have been a few instances where I've wanted to launch a quick create a record directly from a sub-grid add-button. That is, without having an extra step of bringing down the lookup view and then clicking the <code>+ New</code> button. </p>
+
+<p><img src="/images/posts/QuickCreateSubGrid/10_ExpectedResult.png" alt="The expected result" /></p>
+
+<p>While the required steps are covered between these two great posts - <a href="http://ledgeviewpartners.com/blog/manage-quick-create-forms-dynamics-crm/">here</a> and <a href="http://www.powerobjects.com/2015/03/10/open-quick-create-sub-grid/">here</a>, I have summarized the checklist here for convenience.</p>
+
+
+		<p><a href="/2016/04/checklist-enabling-quick-create-subgrid/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/04/non-searchable-field-breaks-pre-filtering/">Non-searchable Primary Key Field Breaks Pre-filtering</a></h2>
+      <p class="post-date">16 Apr 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>I recently implemented a custom FetchXml based SSRS report that was designed to be run against a filtered list of accounts. The accounts were to be determined by the user at the time of execution, hence the report was setup to use pre-filtering on the accounts entity.</p>
+
+<p>The report worked fine except in one environment where the user was greeted with the following warning message:</p>
+
+<p><img src="/images/posts/PreFilterNonSearchable/10_FilteringError.png" alt="Filtering error" /></p>
+
+<p>Dismissing the warning opened up the <code>Report Filtering Criteria</code> dialog with the following error:</p>
+
+<pre><code>There was an error in showing this condition
+</code></pre>
+
+<p>And additional information:</p>
+
+<pre><code>The condition was referencing the field accountid. The field has been removed from the system or is not valid for advanced find.
+</code></pre>
+
+<p><img src="/images/posts/PreFilterNonSearchable/20_ReportFilteringCriteria.png" alt="Report filtering criteria" /></p>
+
+
+		<p><a href="/2016/04/non-searchable-field-breaks-pre-filtering/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/04/dynamics-crm-base64-attachment-size/">Base64 and Maximum Attachment Size in Dynamics CRM</a></h2>
+      <p class="post-date">15 Apr 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>Microsoft Dynamics CRM provides out-of-the-box functionality to store and associate small file attachments against an entity record. This is achieved via the <code>annotation</code> entity - it is similar to any other entity except that it stores meta data as well as the <a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx">actual content of the file attachment</a> within it. </p>
+
+<p>As CRM is not designed to be a <a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/">file store</a>, it imposes some limitations on the size of attachments that can be uploaded. Recent versions of the product, including 2016, defaults this size to 5120Kb which can be adjusted to a <a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/">maximum hard limit of 32768Kb</a>. </p>
+
+<p>However, there is one caveat with this limitation - CRM stores the byte stream in a base64 encoded format, this means that there would be an <a href="http://stackoverflow.com/questions/4715415/base64-what-is-the-worst-possible-increase-in-space-usage">increase</a> in the final saved file size. </p>
+
+
+		<p><a href="/2016/04/dynamics-crm-base64-attachment-size/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell</a></h2>
       <p class="post-date">21 Jan 2016
@@ -272,111 +344,6 @@ $publish.GacInstall("c:\temp\publish_dll.dll")
 
 
 		<p><a href="/2015/08/sharing-configuration-between-webjobs/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/enable-ssrs-remote-error-sharepoint-integrated/">Enable SSRS Remote Errors in SharePoint Integrated Mode</a></h2>
-      <p class="post-date">28 Aug 2015
-
-      | <a href="/category/sharepoint" title="SharePoint">SharePoint</a>
-      | <a href="/category/sql-server-reporting-services" title="SQL Server Reporting Services">SQL Server Reporting Services</a>
-</p>
-
-      <p>
-		
-		<p>Any time I have to troubleshoot issues in SQL Server Reporting Services (SSRS) reports in a production environment, I usually end up enabling <code>Remote Errors</code> at some point as part my process. </p>
-
-<p>Remote errors are enabled via the SSRS Service Application:</p>
-
-<ol>
-<li>Navigate to <code>Central Administration &gt; Application Management &gt; Manage Service Applications</code></li>
-<li>Next, click on the appropriate  <code>SQL Server Reporting Services Service Application</code> service application to manage it. </li>
-<li>Click <code>System Settings</code> from the toolbar.</li>
-<li>Finally, enable remote errors by navigating into checking the <code>Enable Remote Errors</code> checkbox. </li>
-</ol>
-
-
-		<p><a href="/2015/08/enable-ssrs-remote-error-sharepoint-integrated/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/entity-framework-multiple-context-namespace-collision/">Entity Framework Namespace Collisions When Working with Multiple Contexts</a></h2>
-      <p class="post-date">03 Jun 2015
-
-      | <a href="/category/entity-framework" title="Entity Framework">Entity Framework</a>
-      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
-</p>
-
-      <p>
-		
-		<p>I came across the following exception whilst attempting working with a solution that contained a <em>couple of</em> Entity Framework (EF) 6 database contexts.</p>
-
-<pre><code>System.Data.Entity.Core.MetadataException
-
-Schema specified is not valid. Errors: 
-The mapping of CLR type to EDM type is ambiguous because multiple CLR types match the EDM type 'Setting'. Previously found CLR type 'SqlHelper.Primary.Setting', newly found CLR type 'SqlHelper.Secondary.Setting'.
-
-at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.LoadAssemblyFromCache(Assembly assembly, Boolean loadReferencedAssemblies, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.ExplicitLoadFromAssembly(Assembly assembly, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.ExplicitLoadFromAssembly(Assembly assembly, ObjectItemCollection collection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly)
-at System.Data.Entity.Internal.InternalContext.TryUpdateEntitySetMappingsForType(Type entityType)
-at System.Data.Entity.Internal.InternalContext.UpdateEntitySetMappingsForType(Type entityType)
-at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
-at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
-at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
-at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
-at System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
-at System.Data.Entity.DbSet`1.Add(TEntity entity)
-at MultiContextConsoleApp.Program.Main(String[] args) in e:\shane\Projects\Orca\Sandbox\MultiContextConsoleApp\MultiContextConsoleApp\Program.cs:line 16
-at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
-at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
-at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
-at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
-at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
-at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
-at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
-at System.Threading.ThreadHelper.ThreadStart()
-</code></pre>
-
-
-		<p><a href="/2015/06/entity-framework-multiple-context-namespace-collision/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Generate a Clean Up Script to Drop All Objects in a SQL Server Database</a></h2>
-      <p class="post-date">02 Jun 2015
-
-      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
-</p>
-
-      <p>
-		
-		<p>I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.</p>
-
-<p>In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.</p>
-
-<p>I saw a few possible solutions and finally settled on using the <a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend">out-of-the-box feature</a> that's already available through SQL Server Management Studio (SSMS).</p>
-
-<ol>
-<li>Open up SQL Server Management Studio.</li>
-<li><p>Select <code>Task  &gt; Generate Script...</code> on on your the database context menu. This would open up the <code>Generate and Publish Scripts</code> dialog.</p>
-
-<p><img src="/images/posts/GenerateDropScript/10_ContextMenu.png" alt="SSMS Context Menu" /></p></li>
-<li><p>First, navigate to the <code>Choose Objects</code> tab and select all the objects that need to be dropped.</p></li>
-<li><p>Next, on the <code>Set Scripting Options</code> tab, select the preferred output location.</p>
-
-<p><img src="/images/posts/GenerateDropScript/20_SetScriptingOptions.png" alt="Set Scripting Options" /></p></li>
-<li><p>Next, click the <code>Advanced</code> button which result in the <code>Advanced Scripting Options</code> dialog.</p>
-
-<p><img src="/images/posts/GenerateDropScript/30_AdvancedScriptingOptions.png" alt="Advanced Scripting Options" /></p></li>
-<li><p>Navigate down towards to and change the <code>General &gt; Script DROP and CREATE</code> option to <code>Script DROP</code>.</p></li>
-<li>Set the default values for the rest of the steps and finally click the <code>Finish</code> button.</li>
-</ol>
-
-
-		<p><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Read more...</a></p>
 	  </p>
     </div>
 </div>

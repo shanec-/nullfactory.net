@@ -1,4 +1,107 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-01-22T15:03:15+05:30</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/</id><title type="text">Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell</title><summary type="html">&lt;p&gt;I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-04-18T22:53:30+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/04/checklist-enabling-quick-create-subgrid/</id><title type="text">Checklist for Enabling Quick Create from Subgrid</title><summary type="html">&lt;p&gt;There have been a few instances where I've wanted to launch a quick create a record directly from a sub-grid add-button. That is, without having an extra step of bringing down the lookup view and then clicking the &lt;code&gt;+ New&lt;/code&gt; button. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/10_ExpectedResult.png" alt="The expected result" /&gt;&lt;/p&gt;
+
+&lt;p&gt;While the required steps are covered between these two great posts - &lt;a href="http://ledgeviewpartners.com/blog/manage-quick-create-forms-dynamics-crm/"&gt;here&lt;/a&gt; and &lt;a href="http://www.powerobjects.com/2015/03/10/open-quick-create-sub-grid/"&gt;here&lt;/a&gt;, I have summarized the checklist here for convenience.&lt;/p&gt;
+
+</summary><published>2016-04-16T14:00:00Z</published><updated>2016-04-16T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/04/checklist-enabling-quick-create-subgrid/" /><content type="html">&lt;p&gt;There have been a few instances where I've wanted to launch a quick create a record directly from a sub-grid add-button. That is, without having an extra step of bringing down the lookup view and then clicking the &lt;code&gt;+ New&lt;/code&gt; button. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/10_ExpectedResult.png" alt="The expected result" /&gt;&lt;/p&gt;
+
+&lt;p&gt;While the required steps are covered between these two great posts - &lt;a href="http://ledgeviewpartners.com/blog/manage-quick-create-forms-dynamics-crm/"&gt;here&lt;/a&gt; and &lt;a href="http://www.powerobjects.com/2015/03/10/open-quick-create-sub-grid/"&gt;here&lt;/a&gt;, I have summarized the checklist here for convenience.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;In order to get the CRM sub-grid to show the quick create dialog, ensure that:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code&gt;Allow quick create&lt;/code&gt; is enabled for the child entity.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/20_AllowQuickCreateOption.png" alt="Enable Quick Create" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A quick create form exists for the entity. If not, create a new one.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/30_EnsureQuickCreateForm.png" alt="Ensure Quick Create form exists" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure that the related foreign key field is &lt;code&gt;Business Required&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/40_BusinessRequired.png" alt="Ensure foreign key is business required" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://ledgeviewpartners.com/blog/manage-quick-create-forms-dynamics-crm/"&gt;How to Manage Quick Create Forms in Dynamics CRM - Ledgeview Partners&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.powerobjects.com/2015/03/10/open-quick-create-sub-grid/"&gt;How to: Open Quick Create from a Sub Grid&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2016/04/non-searchable-field-breaks-pre-filtering/</id><title type="text">Non-searchable Primary Key Field Breaks Pre-filtering</title><summary type="html">&lt;p&gt;I recently implemented a custom FetchXml based SSRS report that was designed to be run against a filtered list of accounts. The accounts were to be determined by the user at the time of execution, hence the report was setup to use pre-filtering on the accounts entity.&lt;/p&gt;
+
+&lt;p&gt;The report worked fine except in one environment where the user was greeted with the following warning message:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/PreFilterNonSearchable/10_FilteringError.png" alt="Filtering error" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Dismissing the warning opened up the &lt;code&gt;Report Filtering Criteria&lt;/code&gt; dialog with the following error:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;There was an error in showing this condition
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And additional information:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;The condition was referencing the field accountid. The field has been removed from the system or is not valid for advanced find.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/PreFilterNonSearchable/20_ReportFilteringCriteria.png" alt="Report filtering criteria" /&gt;&lt;/p&gt;
+
+</summary><published>2016-04-15T14:00:00Z</published><updated>2016-04-15T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/04/non-searchable-field-breaks-pre-filtering/" /><content type="html">&lt;p&gt;I recently implemented a custom FetchXml based SSRS report that was designed to be run against a filtered list of accounts. The accounts were to be determined by the user at the time of execution, hence the report was setup to use pre-filtering on the accounts entity.&lt;/p&gt;
+
+&lt;p&gt;The report worked fine except in one environment where the user was greeted with the following warning message:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/PreFilterNonSearchable/10_FilteringError.png" alt="Filtering error" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Dismissing the warning opened up the &lt;code&gt;Report Filtering Criteria&lt;/code&gt; dialog with the following error:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;There was an error in showing this condition
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And additional information:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;The condition was referencing the field accountid. The field has been removed from the system or is not valid for advanced find.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/PreFilterNonSearchable/20_ReportFilteringCriteria.png" alt="Report filtering criteria" /&gt;&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;A quick bit of investigating revealed that this particular environment had the &lt;code&gt;Searchable&lt;/code&gt; property of the primary key, within the account entity, set to &lt;code&gt;No&lt;/code&gt;.
+This meant that the &lt;code&gt;Account&lt;/code&gt; attribute would not appear on any advanced find dialogs, there by affecting the &lt;code&gt;Reporting Filtering Criteria&lt;/code&gt; dialog. Re-enabling this got the report working as expected.&lt;/p&gt;
+
+&lt;h2&gt;Reference&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.microsoft.com/en-us/dynamics/crm-customer-center/create-or-edit-entity-fields.aspx"&gt;Create or edit entity fields | Microsoft Dynamics CRM&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2016/04/dynamics-crm-base64-attachment-size/</id><title type="text">Base64 and Maximum Attachment Size in Dynamics CRM</title><summary type="html">&lt;p&gt;Microsoft Dynamics CRM provides out-of-the-box functionality to store and associate small file attachments against an entity record. This is achieved via the &lt;code&gt;annotation&lt;/code&gt; entity - it is similar to any other entity except that it stores meta data as well as the &lt;a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx"&gt;actual content of the file attachment&lt;/a&gt; within it. &lt;/p&gt;
+
+&lt;p&gt;As CRM is not designed to be a &lt;a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/"&gt;file store&lt;/a&gt;, it imposes some limitations on the size of attachments that can be uploaded. Recent versions of the product, including 2016, defaults this size to 5120Kb which can be adjusted to a &lt;a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/"&gt;maximum hard limit of 32768Kb&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;However, there is one caveat with this limitation - CRM stores the byte stream in a base64 encoded format, this means that there would be an &lt;a href="http://stackoverflow.com/questions/4715415/base64-what-is-the-worst-possible-increase-in-space-usage"&gt;increase&lt;/a&gt; in the final saved file size. &lt;/p&gt;
+
+</summary><published>2016-04-14T14:00:00Z</published><updated>2016-04-14T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/04/dynamics-crm-base64-attachment-size/" /><content type="html">&lt;p&gt;Microsoft Dynamics CRM provides out-of-the-box functionality to store and associate small file attachments against an entity record. This is achieved via the &lt;code&gt;annotation&lt;/code&gt; entity - it is similar to any other entity except that it stores meta data as well as the &lt;a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx"&gt;actual content of the file attachment&lt;/a&gt; within it. &lt;/p&gt;
+
+&lt;p&gt;As CRM is not designed to be a &lt;a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/"&gt;file store&lt;/a&gt;, it imposes some limitations on the size of attachments that can be uploaded. Recent versions of the product, including 2016, defaults this size to 5120Kb which can be adjusted to a &lt;a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/"&gt;maximum hard limit of 32768Kb&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;However, there is one caveat with this limitation - CRM stores the byte stream in a base64 encoded format, this means that there would be an &lt;a href="http://stackoverflow.com/questions/4715415/base64-what-is-the-worst-possible-increase-in-space-usage"&gt;increase&lt;/a&gt; in the final saved file size. &lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;I recently learned that the upload restriction is done based on the encoded file size and not the original byte stream as I was expecting. I imagine this would be especially important to remember when designing integration components that create &lt;code&gt;annotation&lt;/code&gt; records.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx"&gt;MSDN - Annotation (note) entity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/"&gt;Storage Limit Reached in Microsoft Dynamics CRM Online&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt;&lt;a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/"&gt;Increasing Web Resource and Email / Note Attachment File Size in Microsoft Dynamics CRM 2013 | The Dynamics CRM Herald&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/</id><title type="text">Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell</title><summary type="html">&lt;p&gt;I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.&lt;/p&gt;
 
 &lt;p&gt;This implementation at its core revolves around the &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"&gt;&lt;code&gt;Microsoft.Xrm.Data.PowerShell&lt;/code&gt;&lt;/a&gt; module and the &lt;code&gt;Solution Packager&lt;/code&gt; tool provided with the official SDK. I have minimized the use of 3rd party libraries and have intentionally excluded the use of any visual studio extensions or helper tools.&lt;/p&gt;
 
@@ -23,7 +126,7 @@
 &lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/20_DontBuild.png" alt="Do not Build Project" /&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-</summary><published>2016-01-20T18:30:00Z</published><updated>2016-01-20T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/" /><content type="html">&lt;p&gt;I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.&lt;/p&gt;
+</summary><published>2016-01-20T13:00:00Z</published><updated>2016-01-20T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/" /><content type="html">&lt;p&gt;I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.&lt;/p&gt;
 
 &lt;p&gt;This implementation at its core revolves around the &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"&gt;&lt;code&gt;Microsoft.Xrm.Data.PowerShell&lt;/code&gt;&lt;/a&gt; module and the &lt;code&gt;Solution Packager&lt;/code&gt; tool provided with the official SDK. I have minimized the use of 3rd party libraries and have intentionally excluded the use of any visual studio extensions or helper tools.&lt;/p&gt;
 
@@ -149,7 +252,7 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 
 &lt;p&gt;This limits us to a few possible solutions:&lt;/p&gt;
 
-</summary><published>2015-12-19T18:30:00Z</published><updated>2015-12-19T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/12/disabling-recurring-ondemand-webjob/" /><content type="html">&lt;p&gt;I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned &lt;em&gt;the hard way&lt;/em&gt; that stopping a slotted Web App does &lt;strong&gt;not&lt;/strong&gt; stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
+</summary><published>2015-12-19T13:00:00Z</published><updated>2015-12-19T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/12/disabling-recurring-ondemand-webjob/" /><content type="html">&lt;p&gt;I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned &lt;em&gt;the hard way&lt;/em&gt; that stopping a slotted Web App does &lt;strong&gt;not&lt;/strong&gt; stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
 Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a &lt;code&gt;stop&lt;/code&gt; option for &lt;code&gt;continuous&lt;/code&gt; jobs and not for the &lt;code&gt;recurring&lt;/code&gt; and &lt;code&gt;OnDemand&lt;/code&gt; jobs.&lt;/p&gt;
 
 &lt;p&gt;This limits us to a few possible solutions:&lt;/p&gt;
@@ -171,7 +274,7 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 
 &lt;p&gt;Here are the steps I followed in order to bring the production environment up-to-date: &lt;/p&gt;
 
-</summary><published>2015-11-24T18:30:00Z</published><updated>2015-11-24T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/" /><content type="html">&lt;p&gt;This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. &lt;/p&gt;
+</summary><published>2015-11-24T13:00:00Z</published><updated>2015-11-24T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/" /><content type="html">&lt;p&gt;This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. &lt;/p&gt;
 
 &lt;p&gt;This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.&lt;/p&gt;
 
@@ -226,7 +329,7 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
     Console.WriteLine(properties.DefaultServiceVersion);
 &lt;/code&gt;&lt;/pre&gt;
 
-</summary><published>2015-10-10T18:30:00Z</published><updated>2015-10-10T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/" /><content type="html">&lt;p&gt;I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.&lt;/p&gt;
+</summary><published>2015-10-10T13:00:00Z</published><updated>2015-10-10T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/" /><content type="html">&lt;p&gt;I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.&lt;/p&gt;
 
 &lt;h2&gt;Create the Storage Account&lt;/h2&gt;
 
@@ -335,7 +438,7 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-</summary><published>2015-10-09T18:30:00Z</published><updated>2015-10-09T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/" /><content type="html">&lt;p&gt;I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a &lt;code&gt;Microsoft.ClassicStorage/StorageAccounts&lt;/code&gt; using the Azure Resource Manager(ARM) API.&lt;/p&gt;
+</summary><published>2015-10-09T13:00:00Z</published><updated>2015-10-09T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/" /><content type="html">&lt;p&gt;I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a &lt;code&gt;Microsoft.ClassicStorage/StorageAccounts&lt;/code&gt; using the Azure Resource Manager(ARM) API.&lt;/p&gt;
 
 &lt;p&gt;The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully &lt;a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager"&gt;this&lt;/a&gt; post pointed me in the right direction. And after a little bit of fiddling I find that &lt;code&gt;2015-06-01&lt;/code&gt; appears to be last supported &lt;code&gt;apiVersion&lt;/code&gt; that works with classic storage.&lt;/p&gt;
 
@@ -406,7 +509,7 @@ $publish = New-Object System.EnterpriseServices.Internal.Publish
 $publish.GacInstall("c:\temp\publish_dll.dll")
 &lt;/code&gt;&lt;/pre&gt;
 
-</summary><published>2015-08-30T18:30:00Z</published><updated>2015-08-30T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/" /><content type="html">&lt;p&gt;I constantly find myself googling this code snippet - its nice to keep handy: &lt;/p&gt;
+</summary><published>2015-08-30T14:00:00Z</published><updated>2015-08-30T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/" /><content type="html">&lt;p&gt;I constantly find myself googling this code snippet - its nice to keep handy: &lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
 $publish = New-Object System.EnterpriseServices.Internal.Publish
@@ -434,7 +537,7 @@ $publish.GacInstall("c:\temp\publish_dll.dll")
 
 &lt;p&gt;This works well enough, but for one caveat - which prompted me to write this post in the first place. The problem is that the &lt;code&gt;Web Deploy Package&lt;/code&gt; publishing process does not appear to honor folder structures for the config files. That means that if you've separated the configuration into sub folders (like shown below), the publishing process would flatten it out.&lt;/p&gt;
 
-</summary><published>2015-08-28T18:30:00Z</published><updated>2015-08-28T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/08/sharing-configuration-between-webjobs/" /><content type="html">&lt;p&gt;The project I am working on started out with the single webjob and has since grown to multiple jobs running in parallel. They are all hosted within a dedicated web app, which allows us to scale the jobs independent of the rest of the application. And because they share a single container there is the added side effect of the jobs sharing all the Application Settings and connection strings too.&lt;/p&gt;
+</summary><published>2015-08-28T14:00:00Z</published><updated>2015-08-28T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/08/sharing-configuration-between-webjobs/" /><content type="html">&lt;p&gt;The project I am working on started out with the single webjob and has since grown to multiple jobs running in parallel. They are all hosted within a dedicated web app, which allows us to scale the jobs independent of the rest of the application. And because they share a single container there is the added side effect of the jobs sharing all the Application Settings and connection strings too.&lt;/p&gt;
 
 &lt;p&gt;While each webjob had its own class library, I didn't want to maintain multiple copies of  the &lt;code&gt;App.Config&lt;/code&gt; file. I decided to share the the common bits (&lt;code&gt;AppSettings&lt;/code&gt; and &lt;code&gt;ConnectionString&lt;/code&gt; sections) in their own files:&lt;/p&gt;
 
@@ -466,238 +569,5 @@ $publish.GacInstall("c:\temp\publish_dll.dll")
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/7417062/how-to-use-partial-config-files"&gt;c# - How to use partial config files - Stack Overflow&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/08/enable-ssrs-remote-error-sharepoint-integrated/</id><title type="text">Enable SSRS Remote Errors in SharePoint Integrated Mode</title><summary type="html">&lt;p&gt;Any time I have to troubleshoot issues in SQL Server Reporting Services (SSRS) reports in a production environment, I usually end up enabling &lt;code&gt;Remote Errors&lt;/code&gt; at some point as part my process. &lt;/p&gt;
-
-&lt;p&gt;Remote errors are enabled via the SSRS Service Application:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to &lt;code&gt;Central Administration &amp;gt; Application Management &amp;gt; Manage Service Applications&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Next, click on the appropriate  &lt;code&gt;SQL Server Reporting Services Service Application&lt;/code&gt; service application to manage it. &lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;System Settings&lt;/code&gt; from the toolbar.&lt;/li&gt;
-&lt;li&gt;Finally, enable remote errors by navigating into checking the &lt;code&gt;Enable Remote Errors&lt;/code&gt; checkbox. &lt;/li&gt;
-&lt;/ol&gt;
-
-</summary><published>2015-08-27T18:30:00Z</published><updated>2015-08-27T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/08/enable-ssrs-remote-error-sharepoint-integrated/" /><content type="html">&lt;p&gt;Any time I have to troubleshoot issues in SQL Server Reporting Services (SSRS) reports in a production environment, I usually end up enabling &lt;code&gt;Remote Errors&lt;/code&gt; at some point as part my process. &lt;/p&gt;
-
-&lt;p&gt;Remote errors are enabled via the SSRS Service Application:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to &lt;code&gt;Central Administration &amp;gt; Application Management &amp;gt; Manage Service Applications&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Next, click on the appropriate  &lt;code&gt;SQL Server Reporting Services Service Application&lt;/code&gt; service application to manage it. &lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;System Settings&lt;/code&gt; from the toolbar.&lt;/li&gt;
-&lt;li&gt;Finally, enable remote errors by navigating into checking the &lt;code&gt;Enable Remote Errors&lt;/code&gt; checkbox. &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;Although the &lt;a href="https://msdn.microsoft.com/en-us/library/aa337165.aspx"&gt;MSDN documentation&lt;/a&gt; states that this is all that is required, I've found that I need to enable it on the individual site's settings in order to get it working:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to &lt;code&gt;Site Settings &amp;gt; Reporting Services &amp;gt; Reporting Services Site Settings&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Ensure that the &lt;code&gt;Enable Local Mode Error Messages&lt;/code&gt; is checked.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Once the troubleshooting session is over, follow the same steps in reverse order to disable remote errors.  &lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/aa337165.aspx"&gt;Enable Remote Errors (Reporting Services)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/4850346/ssrs-remote-errors-enabled-but-not-working"&gt;StackOverflow - SSRS Remote Errors Enabled but NOT Working&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/</id><title type="text">Entity Framework Namespace Collisions When Working with Multiple Contexts</title><summary type="html">&lt;p&gt;I came across the following exception whilst attempting working with a solution that contained a &lt;em&gt;couple of&lt;/em&gt; Entity Framework (EF) 6 database contexts.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;System.Data.Entity.Core.MetadataException
-
-Schema specified is not valid. Errors: 
-The mapping of CLR type to EDM type is ambiguous because multiple CLR types match the EDM type 'Setting'. Previously found CLR type 'SqlHelper.Primary.Setting', newly found CLR type 'SqlHelper.Secondary.Setting'.
-
-at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.LoadAssemblyFromCache(Assembly assembly, Boolean loadReferencedAssemblies, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.ExplicitLoadFromAssembly(Assembly assembly, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.ExplicitLoadFromAssembly(Assembly assembly, ObjectItemCollection collection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly)
-at System.Data.Entity.Internal.InternalContext.TryUpdateEntitySetMappingsForType(Type entityType)
-at System.Data.Entity.Internal.InternalContext.UpdateEntitySetMappingsForType(Type entityType)
-at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
-at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
-at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
-at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
-at System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
-at System.Data.Entity.DbSet`1.Add(TEntity entity)
-at MultiContextConsoleApp.Program.Main(String[] args) in e:\shane\Projects\Orca\Sandbox\MultiContextConsoleApp\MultiContextConsoleApp\Program.cs:line 16
-at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
-at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
-at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
-at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
-at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
-at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
-at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
-at System.Threading.ThreadHelper.ThreadStart()
-&lt;/code&gt;&lt;/pre&gt;
-
-</summary><published>2015-06-02T18:30:00Z</published><updated>2015-06-02T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/06/entity-framework-multiple-context-namespace-collision/" /><content type="html">&lt;p&gt;I came across the following exception whilst attempting working with a solution that contained a &lt;em&gt;couple of&lt;/em&gt; Entity Framework (EF) 6 database contexts.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;System.Data.Entity.Core.MetadataException
-
-Schema specified is not valid. Errors: 
-The mapping of CLR type to EDM type is ambiguous because multiple CLR types match the EDM type 'Setting'. Previously found CLR type 'SqlHelper.Primary.Setting', newly found CLR type 'SqlHelper.Secondary.Setting'.
-
-at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.LoadAssemblyFromCache(Assembly assembly, Boolean loadReferencedAssemblies, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.ObjectItemCollection.ExplicitLoadFromAssembly(Assembly assembly, EdmItemCollection edmItemCollection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.ExplicitLoadFromAssembly(Assembly assembly, ObjectItemCollection collection, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly, Action`1 logLoadMessage)
-at System.Data.Entity.Core.Metadata.Edm.MetadataWorkspace.LoadFromAssembly(Assembly assembly)
-at System.Data.Entity.Internal.InternalContext.TryUpdateEntitySetMappingsForType(Type entityType)
-at System.Data.Entity.Internal.InternalContext.UpdateEntitySetMappingsForType(Type entityType)
-at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
-at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
-at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
-at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
-at System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
-at System.Data.Entity.DbSet`1.Add(TEntity entity)
-at MultiContextConsoleApp.Program.Main(String[] args) in e:\shane\Projects\Orca\Sandbox\MultiContextConsoleApp\MultiContextConsoleApp\Program.cs:line 16
-at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
-at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
-at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
-at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
-at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
-at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
-at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
-at System.Threading.ThreadHelper.ThreadStart()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;Reproducing the Problem&lt;/h2&gt;
-
-&lt;p&gt;Here's a quick run down of the steps required to reproduce the scenario:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Start off by creating two databases.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Create a new table with the same name on each of them.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/10_DatabaseSchema.png" alt="Database Schema" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, open up Visual Studio and create a Class Library project to host both EF database contexts.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Within the same project, create two EF (&lt;em&gt;ADO.NET Entity Data Model&lt;/em&gt;) contexts; one for each database. Ensure that each context is under its own namespace.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/15_InitialProjectStructure.png" alt="Project Structure" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/20_PrimaryContext.png" alt="Primary Context" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/30_SecondaryContext.png" alt="Secondary Context" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/40_PrimarySetting.png" alt="Primary Context Settings File" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/50_SecondarySetting.png" alt="Secondary Context Settings File" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, let's create a simple console application that would act as the client and invoke operations on the contexts. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Run the application - an exception is thrown the moment there is any kind of interaction with either of the contexts. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/60_Exception.png" alt="SSMS Context Menu" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;This issue is only reproducible when working with multiple database contexts that have tables with the same name and share the same assembly. It does not even matter that the contexts are across different namespaces. &lt;/p&gt;
-
-&lt;p&gt;The problem appears to be how Entity Framework resolves namespaces, &lt;a href="http://entityframework.codeplex.com/workitem/483"&gt;this ticket goes into more detail&lt;/a&gt;. I was able to reproduce this with the latest version of EF and a fix does not appear to be on the immediate schedule. &lt;/p&gt;
-
-&lt;p&gt;Luckily there are couple of workarounds which are pretty straightforward:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Make sure that that both contexts don't share tables with the same name - &lt;em&gt;not the most practical approach&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Restructure the solution by isolating the database contexts within their own assemblies.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/EFNamespaceConflict/70_NewProjectStructure.png" alt="SSMS Context Menu" /&gt;   &lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://entityframework.codeplex.com/workitem/483"&gt;CodePlex - Entity Framework - View Issue #483: Can't map two classes with same name from different namespace&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/14927391/the-mapping-of-clr-type-to-edm-type-is-ambiguous-with-ef-6-5"&gt;StackOverflow.com - c# - The mapping of CLR type to EDM type is ambiguous with EF 6 &amp;amp; 5?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/en-US/5a8ea003-c6bc-4fc6-ad2a-634f09447c49/ef4-mapping-of-clr-type-to-edm-type-is-ambiguous-error?forum=adodotnetentityframework"&gt;MSDN Forum - EF4 Mapping of CLR type to EDM type is ambiguous error.&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/</id><title type="text">Generate a Clean Up Script to Drop All Objects in a SQL Server Database</title><summary type="html">&lt;p&gt;I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.&lt;/p&gt;
-
-&lt;p&gt;In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.&lt;/p&gt;
-
-&lt;p&gt;I saw a few possible solutions and finally settled on using the &lt;a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend"&gt;out-of-the-box feature&lt;/a&gt; that's already available through SQL Server Management Studio (SSMS).&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Open up SQL Server Management Studio.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select &lt;code&gt;Task  &amp;gt; Generate Script...&lt;/code&gt; on on your the database context menu. This would open up the &lt;code&gt;Generate and Publish Scripts&lt;/code&gt; dialog.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/10_ContextMenu.png" alt="SSMS Context Menu" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;First, navigate to the &lt;code&gt;Choose Objects&lt;/code&gt; tab and select all the objects that need to be dropped.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, on the &lt;code&gt;Set Scripting Options&lt;/code&gt; tab, select the preferred output location.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/20_SetScriptingOptions.png" alt="Set Scripting Options" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, click the &lt;code&gt;Advanced&lt;/code&gt; button which result in the &lt;code&gt;Advanced Scripting Options&lt;/code&gt; dialog.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/30_AdvancedScriptingOptions.png" alt="Advanced Scripting Options" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Navigate down towards to and change the &lt;code&gt;General &amp;gt; Script DROP and CREATE&lt;/code&gt; option to &lt;code&gt;Script DROP&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Set the default values for the rest of the steps and finally click the &lt;code&gt;Finish&lt;/code&gt; button.&lt;/li&gt;
-&lt;/ol&gt;
-
-</summary><published>2015-06-01T18:30:00Z</published><updated>2015-06-01T18:30:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/06/generate-clean-up-script-drop-objects-sql-database/" /><content type="html">&lt;p&gt;I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.&lt;/p&gt;
-
-&lt;p&gt;In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.&lt;/p&gt;
-
-&lt;p&gt;I saw a few possible solutions and finally settled on using the &lt;a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend"&gt;out-of-the-box feature&lt;/a&gt; that's already available through SQL Server Management Studio (SSMS).&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Open up SQL Server Management Studio.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select &lt;code&gt;Task  &amp;gt; Generate Script...&lt;/code&gt; on on your the database context menu. This would open up the &lt;code&gt;Generate and Publish Scripts&lt;/code&gt; dialog.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/10_ContextMenu.png" alt="SSMS Context Menu" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;First, navigate to the &lt;code&gt;Choose Objects&lt;/code&gt; tab and select all the objects that need to be dropped.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, on the &lt;code&gt;Set Scripting Options&lt;/code&gt; tab, select the preferred output location.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/20_SetScriptingOptions.png" alt="Set Scripting Options" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, click the &lt;code&gt;Advanced&lt;/code&gt; button which result in the &lt;code&gt;Advanced Scripting Options&lt;/code&gt; dialog.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GenerateDropScript/30_AdvancedScriptingOptions.png" alt="Advanced Scripting Options" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Navigate down towards to and change the &lt;code&gt;General &amp;gt; Script DROP and CREATE&lt;/code&gt; option to &lt;code&gt;Script DROP&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Set the default values for the rest of the steps and finally click the &lt;code&gt;Finish&lt;/code&gt; button.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;SSMS sorts out the dependencies and generates a script similar to the one below. Note that the statements are in the required sequence.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;USE [test]
-GO
-ALTER TABLE [dbo].[Contact] DROP CONSTRAINT [FK_Contact_Company]
-GO
-/****** Object:  Table [dbo].[Contact]Script Date: 6/2/2015 9:33:36 AM ******/
-DROP TABLE [dbo].[Contact]
-GO
-/****** Object:  Table [dbo].[Company]Script Date: 6/2/2015 9:33:36 AM ******/
-DROP TABLE [dbo].[Company]
-GO
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;I finally made the following tweaks to convert the script to a &lt;code&gt;SQLCMD&lt;/code&gt; script and parameterize the schema:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;:setvar TenantSchemaName "scm"
-
-ALTER TABLE [$(TenantSchemaName)].[Contact] DROP CONSTRAINT [FK_Contact_Company]
-GO
-/****** Object:  Table [$(TenantSchemaName)].[Contact]    Script Date: 6/2/2015 9:33:36 AM ******/
-DROP TABLE [$(TenantSchemaName)].[Contact]
-GO
-/****** Object:  Table [$(TenantSchemaName)].[Company]    Script Date: 6/2/2015 9:33:36 AM ******/
-DROP TABLE [$(TenantSchemaName)].[Company]
-GO
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Although, I was not really focused on automation, it should not be too difficult to integrate it with existing automated processes.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend"&gt;StackOverflow.com - sql server - Drop all the tables, stored procedures, triggers, constraints and all the dependencies in one sql statement - Stack Overflow&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
