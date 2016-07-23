@@ -1,4 +1,27 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-04-18T22:58:13+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/04/checklist-enabling-quick-create-subgrid/</id><title type="text">Checklist for Enabling Quick Create from Sub-grid</title><summary type="html">&lt;p&gt;There have been a few instances where I've wanted to launch a quick create a record directly from a sub-grid add-button. That is, without having an extra step of bringing down the lookup view and then clicking the &lt;code&gt;+ New&lt;/code&gt; button. &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-07-23T14:55:45+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/07/unable-to-qualify-lead/</id><title type="text">Unable to Qualify Lead</title><summary type="html">&lt;p&gt;I was investigating an issue in a customized Dynamics CRM environment where the "Qualify" ribbon button on the Lead record had mysteriously stopped working. &lt;/p&gt;
+
+&lt;p&gt;Qualification from the grid and the organization service API appeared to work as expected, and this only seemed limited to the ribbon button. Given that the page was not even posting back to the server on clicking the button, I suspected it was failing at the front end. I fired up the chrome developer tools and sure enough was greeted with the following error on the console:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/UnableToQualifyLead/10_error-message.png" alt="Developer Tools Error Message" /&gt;&lt;/p&gt;
+
+</summary><published>2016-07-22T14:00:00Z</published><updated>2016-07-22T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/07/unable-to-qualify-lead/" /><content type="html">&lt;p&gt;I was investigating an issue in a customized Dynamics CRM environment where the "Qualify" ribbon button on the Lead record had mysteriously stopped working. &lt;/p&gt;
+
+&lt;p&gt;Qualification from the grid and the organization service API appeared to work as expected, and this only seemed limited to the ribbon button. Given that the page was not even posting back to the server on clicking the button, I suspected it was failing at the front end. I fired up the chrome developer tools and sure enough was greeted with the following error on the console:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/UnableToQualifyLead/10_error-message.png" alt="Developer Tools Error Message" /&gt;&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;I eventually found &lt;a href="https://community.dynamics.com/crm/f/117/t/156598"&gt;this forum post&lt;/a&gt; that gave me the solution. It turns out that the out of the box JavaScript appears dependent upon two fields having to exist on the form - the &lt;code&gt;companyname&lt;/code&gt; and &lt;code&gt;transactioncurrencyid&lt;/code&gt; fields. They don't necessarily have to visible on the form, but added somewhere on the form.&lt;/p&gt;
+
+&lt;p&gt;This particular environment was running Dynamics CRM 2015 OnPremise with update &lt;code&gt;0.1&lt;/code&gt;. My attempts at trying to replicate the issue on a CRM Online 2016 instance (version &lt;code&gt;8.1.0.367&lt;/code&gt; at the time of writing) were unsuccessful. The qualification process worked fine even without the fields on the form. This leads me to believe that this dependency might have been removed post 0.1.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://community.dynamics.com/crm/f/117/t/156598"&gt;Unable to Qualify Leads After 2015 Upgrade - Microsoft Dynamics CRM Community Forum&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2016/04/checklist-enabling-quick-create-subgrid/</id><title type="text">Checklist for Enabling Quick Create from Sub-grid</title><summary type="html">&lt;p&gt;There have been a few instances where I've wanted to launch a quick create a record directly from a sub-grid add-button. That is, without having an extra step of bringing down the lookup view and then clicking the &lt;code&gt;+ New&lt;/code&gt; button. &lt;/p&gt;
 
 &lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/10_ExpectedResult.png" alt="The expected result" /&gt;&lt;/p&gt;
 
@@ -524,50 +547,5 @@ $publish.GacInstall("c:\temp\publish_dll.dll")
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/system.enterpriseservices.internal.publish.gacinstall.aspx"&gt;MSDN - Publish.GacInstall Method (System.EnterpriseServices.Internal)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://weblogs.asp.net/adweigert/powershell-install-gac-gacutil-for-powershell"&gt;The Technical Adventures of Adam Weigert - PowerShell: Install-Gac (GACUTIL for PowerShell)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/24950268/deploy-multiple-dll-files-into-gac-without-gacutil"&gt;StackOverflow.com - Deploy multiple dll files into gac without gacutil&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/08/sharing-configuration-between-webjobs/</id><title type="text">Sharing Configuration Between WebJobs</title><summary type="html">&lt;p&gt;The project I am working on started out with the single webjob and has since grown to multiple jobs running in parallel. They are all hosted within a dedicated web app, which allows us to scale the jobs independent of the rest of the application. And because they share a single container there is the added side effect of the jobs sharing all the Application Settings and connection strings too.&lt;/p&gt;
-
-&lt;p&gt;While each webjob had its own class library, I didn't want to maintain multiple copies of  the &lt;code&gt;App.Config&lt;/code&gt; file. I decided to share the the common bits (&lt;code&gt;AppSettings&lt;/code&gt; and &lt;code&gt;ConnectionString&lt;/code&gt; sections) in their own files:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;In one of the webjob projects, I moved the &lt;code&gt;AppSettings&lt;/code&gt; and &lt;code&gt;ConnectionStrings&lt;/code&gt; into their own &lt;code&gt;.config&lt;/code&gt; files - &lt;code&gt;appSettings.config&lt;/code&gt; and &lt;code&gt;connectionStrings.config&lt;/code&gt; respectively.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, I referenced them back to the &lt;code&gt;App.config&lt;/code&gt; using the &lt;code&gt;configSource&lt;/code&gt; attribute.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Finally, I added the same files as linked files to the otherweb jobs and set their &lt;code&gt;Copy to Output Directory&lt;/code&gt; file property to &lt;code&gt;Copy Always&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;This works well enough, but for one caveat - which prompted me to write this post in the first place. The problem is that the &lt;code&gt;Web Deploy Package&lt;/code&gt; publishing process does not appear to honor folder structures for the config files. That means that if you've separated the configuration into sub folders (like shown below), the publishing process would flatten it out.&lt;/p&gt;
-
-</summary><published>2015-08-28T14:00:00Z</published><updated>2015-08-28T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/08/sharing-configuration-between-webjobs/" /><content type="html">&lt;p&gt;The project I am working on started out with the single webjob and has since grown to multiple jobs running in parallel. They are all hosted within a dedicated web app, which allows us to scale the jobs independent of the rest of the application. And because they share a single container there is the added side effect of the jobs sharing all the Application Settings and connection strings too.&lt;/p&gt;
-
-&lt;p&gt;While each webjob had its own class library, I didn't want to maintain multiple copies of  the &lt;code&gt;App.Config&lt;/code&gt; file. I decided to share the the common bits (&lt;code&gt;AppSettings&lt;/code&gt; and &lt;code&gt;ConnectionString&lt;/code&gt; sections) in their own files:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;In one of the webjob projects, I moved the &lt;code&gt;AppSettings&lt;/code&gt; and &lt;code&gt;ConnectionStrings&lt;/code&gt; into their own &lt;code&gt;.config&lt;/code&gt; files - &lt;code&gt;appSettings.config&lt;/code&gt; and &lt;code&gt;connectionStrings.config&lt;/code&gt; respectively.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, I referenced them back to the &lt;code&gt;App.config&lt;/code&gt; using the &lt;code&gt;configSource&lt;/code&gt; attribute.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Finally, I added the same files as linked files to the otherweb jobs and set their &lt;code&gt;Copy to Output Directory&lt;/code&gt; file property to &lt;code&gt;Copy Always&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;This works well enough, but for one caveat - which prompted me to write this post in the first place. The problem is that the &lt;code&gt;Web Deploy Package&lt;/code&gt; publishing process does not appear to honor folder structures for the config files. That means that if you've separated the configuration into sub folders (like shown below), the publishing process would flatten it out.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;appSettings configSource="CommonConfig/appSettings.config" /&amp;gt;
-&amp;lt;connectionStrings configSource="CommonConfig/connectionString.config" /&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ShareConfigWebJob/10_SolutionStructure.png" alt="Solution Structure" /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is the new structure created when published:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ShareConfigWebJob/20_PackageStructure.png" alt="Package Structure" /&gt;&lt;/p&gt;
-
-&lt;p&gt;I suppose we could possibly make it work if we create the webjob folder structure manually in the App_Data folder in your web project, but I don't think its worth the additional complexity for such a trivial issue.&lt;/p&gt;
-
-&lt;p&gt;I guess the work around/best practice would be use a simple flat configuration folder structure.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/7417062/how-to-use-partial-config-files"&gt;c# - How to use partial config files - Stack Overflow&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
