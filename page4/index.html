@@ -42,6 +42,43 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/create-an-isolated-hyper-v-environment/">Create An Isolated Hyper-V Environment</a></h2>
+      <p class="post-date">22 Sep 2014
+
+      | <a href="/category/virtualization" title="Virtualization">Virtualization</a>
+      | <a href="/category/hyper-v" title="Hyper-V">Hyper-V</a>
+</p>
+
+      <p>
+		
+		<p><em>Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.</em></p>
+
+<p>This post focuses on building a self-contained, isolated virtual environment with internet connectivity.</p>
+
+<p>My colleague, Chaminda has a <a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html">detailed post</a> on how to setup and isolated environment using virtual box. Go check it out if you would like to implement it via virtual box.  While virtual box is a good virtualization platform on its own right, I have grown accustomed to using Hyper-V in my day-job and has become a personal preference.</p>
+
+<h2>Hyper-V</h2>
+
+<p>My own environment is built around this <a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">excellent post</a>. It details the entire process involved. While my own setup is identical to the above, I have taken into account the following caveats:</p>
+
+<ol>
+<li>As mentioned by one of the comments on the post, it is important to explicitly set the port to <code>eth0</code> soon after flashing the image.</li>
+<li><p>Port Forwarding - Even simple tasks like setting up share folders require that certain ports be accessible. Therefore this it is an important consideration when planning an isolated environment. Here are some of the services and ports I've used for my TFS environment:</p>
+
+<p><img src="/images/posts/IsolatedEnvironment/1_PortForwarding.png" alt="Port Forwarding" /></p></li>
+</ol>
+
+<h3>Setting up Routing</h3>
+
+<p>Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.</p>
+
+<p>This involves setting up routes on both out internal router as well as the external router under which the external resources exists.</p>
+
+
+		<p><a href="/2014/09/create-an-isolated-hyper-v-environment/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/powershell/">Extract YouTube direct video url via Powershell</a></h2>
       <p class="post-date">21 Sep 2014
 

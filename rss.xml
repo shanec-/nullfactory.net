@@ -1,4 +1,116 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2016/07/unable-to-qualify-lead/</guid><link>http://nullfactory.net/2016/07/unable-to-qualify-lead/</link><title>Unable to Qualify Lead</title><description>&lt;p&gt;I was investigating an issue in a customized Dynamics CRM environment where the "Qualify" ribbon button on the Lead record had mysteriously stopped working. &lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/</guid><link>http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/</link><title>Yeoman Generator For Dynamics CRM Solutions</title><description>&lt;p&gt;I've previously experimented on creating a simplified way of &lt;a href="http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/"&gt;maintaining CRM solutions in source control&lt;/a&gt;. While I was quite happy with the end result, the process of setting up the projects, scripts and post-build steps was a little bit tedious. &lt;/p&gt;
+
+&lt;p&gt;This is where Yeoman code generator comes in. Yeoman is a very popular javascript based scaffolding engine that enables setting up new projects a breeze. I created my own custom generator that would help me to kick start new CRM solutions quickly. You can find the end product here: &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;https://www.npmjs.com/package/generator-nullfactory-xrm&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;First, install &lt;a href="http://yeoman.io"&gt;Yeoman&lt;/a&gt; and generator-nullfactory-xrm using &lt;a href="https://www.npmjs.com/"&gt;npm&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install -g yo
+npm install -g generator-nullfactory-xrm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then generate your new project:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yo nullfactory-xrm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Execution&lt;/h2&gt;
+
+&lt;p&gt;Template questions and their purpose:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Visual Studio solution file name?  &lt;code&gt;The visual studio solution filename.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Visual Studio project prefix?  &lt;code&gt;The prefix for the projects generated. This can be an organization name or preferred convention.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Source CRM server url? &lt;code&gt;This is the source CRM server url. Example:[https://sndbx.crm6.dynamics.com](https://sndbx.crm6.dynamics.com)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Source CRM Username? &lt;code&gt;The username used to connect to the source CRM server.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Source CRM Password? &lt;code&gt;The password for the above account.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Source CRM Solution Name? &lt;code&gt;The name of the CRM solution to be extracted.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Add *.WebResource project? &lt;code&gt;Specifies if a new project should be created to manage the web resouces.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Add *.Plugin project? &lt;code&gt;Specifies if a new plugin project should be created.&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+</description><pubDate>Wed, 14 Sep 2016 14:00:00 Z</pubDate><a10:updated>2016-09-14T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;I've previously experimented on creating a simplified way of &lt;a href="http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/"&gt;maintaining CRM solutions in source control&lt;/a&gt;. While I was quite happy with the end result, the process of setting up the projects, scripts and post-build steps was a little bit tedious. &lt;/p&gt;
+
+&lt;p&gt;This is where Yeoman code generator comes in. Yeoman is a very popular javascript based scaffolding engine that enables setting up new projects a breeze. I created my own custom generator that would help me to kick start new CRM solutions quickly. You can find the end product here: &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;https://www.npmjs.com/package/generator-nullfactory-xrm&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;First, install &lt;a href="http://yeoman.io"&gt;Yeoman&lt;/a&gt; and generator-nullfactory-xrm using &lt;a href="https://www.npmjs.com/"&gt;npm&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install -g yo
+npm install -g generator-nullfactory-xrm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then generate your new project:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yo nullfactory-xrm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Execution&lt;/h2&gt;
+
+&lt;p&gt;Template questions and their purpose:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Visual Studio solution file name?  &lt;code&gt;The visual studio solution filename.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Visual Studio project prefix?  &lt;code&gt;The prefix for the projects generated. This can be an organization name or preferred convention.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Source CRM server url? &lt;code&gt;This is the source CRM server url. Example:[https://sndbx.crm6.dynamics.com](https://sndbx.crm6.dynamics.com)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Source CRM Username? &lt;code&gt;The username used to connect to the source CRM server.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Source CRM Password? &lt;code&gt;The password for the above account.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Source CRM Solution Name? &lt;code&gt;The name of the CRM solution to be extracted.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Add *.WebResource project? &lt;code&gt;Specifies if a new project should be created to manage the web resouces.&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Add *.Plugin project? &lt;code&gt;Specifies if a new plugin project should be created.&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Post Installation Setup&lt;/h2&gt;
+
+&lt;p&gt;Start off by updating the packages for the &lt;code&gt;Nullfactory.Xrm.Tooling&lt;/code&gt; project. Open up the &lt;code&gt;Package Manager Console&lt;/code&gt; in Visual Studio and execute the following command:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Update-Package -reinstall -Project Nullfactory.Xrm.Tooling
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Next, install the &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"&gt;&lt;code&gt;Microsoft.Xrm.Data.PowerShell&lt;/code&gt;&lt;/a&gt; powershell module. On a Windows 10 or later, do this by executing the included powershell script &lt;code&gt;Nullfactory.Xrm.Tooling\_Install\Install-Microsoft.Xrm.Data.PowerShell.ps1&lt;/code&gt; or manually running the following command:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Install-Module -Name Microsoft.Xrm.Data.PowerShell -Scope CurrentUser
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;Syncing a Solution to the Project&lt;/h2&gt;
+
+&lt;p&gt;Anytime the CRM solution needs to be synchronized back to the project, execute the script located at &lt;code&gt;Nullfactory.Xrm.Tooling\Scripts\Sync-CrmSolution.Param.ps1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Resource Mapping&lt;/h3&gt;
+
+&lt;p&gt;Edit the mapping file to map to the appropriate resource project. They are located in the &lt;code&gt;Nullfactory.Xrm.Tooling\Mapping&lt;/code&gt; folder. 
+More information on the structure of the mapping file can be found &lt;a href="https://msdn.microsoft.com/en-us/library/jj602987.aspx#use_command"&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Building the CRM Solution&lt;/h2&gt;
+
+&lt;p&gt;The repackaging the extracted solution is integrated as a post-build step of the solution class library. Simply build it to output both a managed as well as unmanaged  CRM solution package. &lt;/p&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;I think I did pretty good for my first generator and hope to continue to evolve it as I learn more about the templating engine.&lt;/p&gt;
+
+&lt;p&gt;Here are some ideas that I have floating around:
+* The ability to add multiple CRM solutions in one go.
+* The ability to rename the Plugin and WebResources Project
+* Add new projects after the initial project structure has been generated.
+* Refactor the script to better re-use components.&lt;/p&gt;
+
+&lt;p&gt;The generator is &lt;a href="https://github.com/shanec-/generator-nullfactory-xrm"&gt;hosted in GitHub&lt;/a&gt;. Please feel free to fork and hack away at it. I would also appreciate any feedback you might have. &lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/"&gt;Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://yeoman.io/authoring/"&gt;Writing Your Own Yeoman Generator | Yeoman&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://scotch.io/tutorials/create-a-custom-yeoman-generator-in-4-easy-steps"&gt;Create A Custom Yeoman Generator in 4 Easy Steps | Scotch&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2016/07/unable-to-qualify-lead/</guid><link>http://nullfactory.net/2016/07/unable-to-qualify-lead/</link><title>Unable to Qualify Lead</title><description>&lt;p&gt;I was investigating an issue in a customized Dynamics CRM environment where the "Qualify" ribbon button on the Lead record had mysteriously stopped working. &lt;/p&gt;
 
 &lt;p&gt;Qualification from the grid and the organization service API appeared to work as expected, and this only seemed limited to the ribbon button. Given that the page was not even posting back to the server on clicking the button, I suspected it was failing at the front end. I fired up the chrome developer tools and sure enough was greeted with the following error on the console:&lt;/p&gt;
 
@@ -524,28 +636,5 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 &lt;li&gt;&lt;a href="https://azure.microsoft.com/en-us/documentation/articles/resource-manager-deployment-model/"&gt;Microsoft Azure - Understand differences between Resource Manager and classic deployment models&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager"&gt;Stack Overflow - Add storage to Azure resource manager&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://stackoverflow.com/questions/31886601/how-to-force-azure-storage-account-as-classic"&gt;Stack Overflow - powershell - How to force Azure Storage Account as classic&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/</guid><link>http://nullfactory.net/2015/08/publishing-assemblies-without-gacutil/</link><title>Publishing Assemblies into the GAC without GacUtil</title><description>&lt;p&gt;I constantly find myself googling this code snippet - its nice to keep handy: &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
-$publish = New-Object System.EnterpriseServices.Internal.Publish
-$publish.GacInstall("c:\temp\publish_dll.dll")
-&lt;/code&gt;&lt;/pre&gt;
-
-</description><pubDate>Sun, 30 Aug 2015 14:00:00 Z</pubDate><a10:updated>2015-08-30T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;I constantly find myself googling this code snippet - its nice to keep handy: &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
-$publish = New-Object System.EnterpriseServices.Internal.Publish
-$publish.GacInstall("c:\temp\publish_dll.dll")
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/system.enterpriseservices.internal.publish.gacinstall.aspx"&gt;MSDN - Publish.GacInstall Method (System.EnterpriseServices.Internal)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://weblogs.asp.net/adweigert/powershell-install-gac-gacutil-for-powershell"&gt;The Technical Adventures of Adam Weigert - PowerShell: Install-Gac (GACUTIL for PowerShell)&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/24950268/deploy-multiple-dll-files-into-gac-without-gacutil"&gt;StackOverflow.com - Deploy multiple dll files into gac without gacutil&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>

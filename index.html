@@ -42,6 +42,52 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/09/yeoman-generator-for-dynamics-crm-solutions/">Yeoman Generator For Dynamics CRM Solutions</a></h2>
+      <p class="post-date">15 Sep 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>I've previously experimented on creating a simplified way of <a href="/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">maintaining CRM solutions in source control</a>. While I was quite happy with the end result, the process of setting up the projects, scripts and post-build steps was a little bit tedious. </p>
+
+<p>This is where Yeoman code generator comes in. Yeoman is a very popular javascript based scaffolding engine that enables setting up new projects a breeze. I created my own custom generator that would help me to kick start new CRM solutions quickly. You can find the end product here: <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">https://www.npmjs.com/package/generator-nullfactory-xrm</a></p>
+
+<h2>Installation</h2>
+
+<p>First, install <a href="http://yeoman.io">Yeoman</a> and generator-nullfactory-xrm using <a href="https://www.npmjs.com/">npm</a>.</p>
+
+<pre><code>npm install -g yo
+npm install -g generator-nullfactory-xrm
+</code></pre>
+
+<p>Then generate your new project:</p>
+
+<pre><code>yo nullfactory-xrm
+</code></pre>
+
+<h2>Execution</h2>
+
+<p>Template questions and their purpose:</p>
+
+<ol>
+<li>Visual Studio solution file name?  <code>The visual studio solution filename.</code></li>
+<li>Visual Studio project prefix?  <code>The prefix for the projects generated. This can be an organization name or preferred convention.</code></li>
+<li>Source CRM server url? <code>This is the source CRM server url. Example:[https://sndbx.crm6.dynamics.com](https://sndbx.crm6.dynamics.com)</code></li>
+<li>Source CRM Username? <code>The username used to connect to the source CRM server.</code></li>
+<li>Source CRM Password? <code>The password for the above account.</code></li>
+<li>Source CRM Solution Name? <code>The name of the CRM solution to be extracted.</code></li>
+<li>Add *.WebResource project? <code>Specifies if a new project should be created to manage the web resouces.</code></li>
+<li>Add *.Plugin project? <code>Specifies if a new plugin project should be created.</code></li>
+</ol>
+
+
+		<p><a href="/2016/09/yeoman-generator-for-dynamics-crm-solutions/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/07/unable-to-qualify-lead/">Unable to Qualify Lead</a></h2>
       <p class="post-date">23 Jul 2016
 
@@ -319,26 +365,6 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 
 
 		<p><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/publishing-assemblies-without-gacutil/">Publishing Assemblies into the GAC without GacUtil</a></h2>
-      <p class="post-date">31 Aug 2015
-
-      | <a href="/category/deployment" title="Deployment">Deployment</a>
-</p>
-
-      <p>
-		
-		<p>I constantly find myself googling this code snippet - its nice to keep handy: </p>
-
-<pre><code>[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
-$publish = New-Object System.EnterpriseServices.Internal.Publish
-$publish.GacInstall("c:\temp\publish_dll.dll")
-</code></pre>
-
-
-		<p><a href="/2015/08/publishing-assemblies-without-gacutil/">Read more...</a></p>
 	  </p>
     </div>
 </div>

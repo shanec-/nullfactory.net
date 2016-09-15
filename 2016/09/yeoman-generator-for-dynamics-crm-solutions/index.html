@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/09/yeoman-generator-for-dynamics-crm-solutions/">Yeoman Generator For Dynamics CRM Solutions</a></h2>
+		<p class="post-date">15 Sep 2016
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+	  </p>
+
+		
+
+		<p>I've previously experimented on creating a simplified way of <a href="/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">maintaining CRM solutions in source control</a>. While I was quite happy with the end result, the process of setting up the projects, scripts and post-build steps was a little bit tedious. </p>
+
+<p>This is where Yeoman code generator comes in. Yeoman is a very popular javascript based scaffolding engine that enables setting up new projects a breeze. I created my own custom generator that would help me to kick start new CRM solutions quickly. You can find the end product here: <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">https://www.npmjs.com/package/generator-nullfactory-xrm</a></p>
+
+<h2>Installation</h2>
+
+<p>First, install <a href="http://yeoman.io">Yeoman</a> and generator-nullfactory-xrm using <a href="https://www.npmjs.com/">npm</a>.</p>
+
+<pre><code>npm install -g yo
+npm install -g generator-nullfactory-xrm
+</code></pre>
+
+<p>Then generate your new project:</p>
+
+<pre><code>yo nullfactory-xrm
+</code></pre>
+
+<h2>Execution</h2>
+
+<p>Template questions and their purpose:</p>
+
+<ol>
+<li>Visual Studio solution file name?  <code>The visual studio solution filename.</code></li>
+<li>Visual Studio project prefix?  <code>The prefix for the projects generated. This can be an organization name or preferred convention.</code></li>
+<li>Source CRM server url? <code>This is the source CRM server url. Example:[https://sndbx.crm6.dynamics.com](https://sndbx.crm6.dynamics.com)</code></li>
+<li>Source CRM Username? <code>The username used to connect to the source CRM server.</code></li>
+<li>Source CRM Password? <code>The password for the above account.</code></li>
+<li>Source CRM Solution Name? <code>The name of the CRM solution to be extracted.</code></li>
+<li>Add *.WebResource project? <code>Specifies if a new project should be created to manage the web resouces.</code></li>
+<li>Add *.Plugin project? <code>Specifies if a new plugin project should be created.</code></li>
+</ol>
+
+<!--excerpt-->
+
+<h2>Post Installation Setup</h2>
+
+<p>Start off by updating the packages for the <code>Nullfactory.Xrm.Tooling</code> project. Open up the <code>Package Manager Console</code> in Visual Studio and execute the following command:</p>
+
+<p><code>
+Update-Package -reinstall -Project Nullfactory.Xrm.Tooling
+</code></p>
+
+<p>Next, install the <a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"><code>Microsoft.Xrm.Data.PowerShell</code></a> powershell module. On a Windows 10 or later, do this by executing the included powershell script <code>Nullfactory.Xrm.Tooling\_Install\Install-Microsoft.Xrm.Data.PowerShell.ps1</code> or manually running the following command:</p>
+
+<p><code>
+Install-Module -Name Microsoft.Xrm.Data.PowerShell -Scope CurrentUser
+</code></p>
+
+<h2>Syncing a Solution to the Project</h2>
+
+<p>Anytime the CRM solution needs to be synchronized back to the project, execute the script located at <code>Nullfactory.Xrm.Tooling\Scripts\Sync-CrmSolution.Param.ps1</code>.</p>
+
+<h3>Resource Mapping</h3>
+
+<p>Edit the mapping file to map to the appropriate resource project. They are located in the <code>Nullfactory.Xrm.Tooling\Mapping</code> folder. 
+More information on the structure of the mapping file can be found <a href="https://msdn.microsoft.com/en-us/library/jj602987.aspx#use_command">here</a></p>
+
+<h2>Building the CRM Solution</h2>
+
+<p>The repackaging the extracted solution is integrated as a post-build step of the solution class library. Simply build it to output both a managed as well as unmanaged  CRM solution package. </p>
+
+<h2>Final Thoughts</h2>
+
+<p>I think I did pretty good for my first generator and hope to continue to evolve it as I learn more about the templating engine.</p>
+
+<p>Here are some ideas that I have floating around:
+* The ability to add multiple CRM solutions in one go.
+* The ability to rename the Plugin and WebResources Project
+* Add new projects after the initial project structure has been generated.
+* Refactor the script to better re-use components.</p>
+
+<p>The generator is <a href="https://github.com/shanec-/generator-nullfactory-xrm">hosted in GitHub</a>. Please feel free to fork and hack away at it. I would also appreciate any feedback you might have. </p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://www.nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell</a></li>
+<li><a href="http://yeoman.io/authoring/">Writing Your Own Yeoman Generator | Yeoman</a></li>
+<li><a href="https://scotch.io/tutorials/create-a-custom-yeoman-generator-in-4-easy-steps">Create A Custom Yeoman Generator in 4 Easy Steps | Scotch</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

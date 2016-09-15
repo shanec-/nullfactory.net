@@ -42,6 +42,26 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/publishing-assemblies-without-gacutil/">Publishing Assemblies into the GAC without GacUtil</a></h2>
+      <p class="post-date">31 Aug 2015
+
+      | <a href="/category/deployment" title="Deployment">Deployment</a>
+</p>
+
+      <p>
+		
+		<p>I constantly find myself googling this code snippet - its nice to keep handy: </p>
+
+<pre><code>[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
+$publish = New-Object System.EnterpriseServices.Internal.Publish
+$publish.GacInstall("c:\temp\publish_dll.dll")
+</code></pre>
+
+
+		<p><a href="/2015/08/publishing-assemblies-without-gacutil/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/sharing-configuration-between-webjobs/">Sharing Configuration Between WebJobs</a></h2>
       <p class="post-date">29 Aug 2015
 
@@ -308,39 +328,6 @@ The problem with the free tiers is that there's a high possibility that the web 
 
 
 		<p><a href="/2015/03/create-elevated-command-prompt-different-user-context/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Creating a Self-Signed Wild Card SSL Certificate for Your Development Environment</a></h2>
-      <p class="post-date">05 Mar 2015
-
-      | <a href="/category/security" title="Security">Security</a>
-</p>
-
-      <p>
-		
-		<p>Secure Socket Layer (SSL) is a security standard used to ensure secure communication between a web server and browser and used in most modern web application. As a developer it is prudent to setup your development environment to closely resemble production as much as possible, including security concerns. However, getting a full fledged CA SSL certificate for you development environment might not be the most cost-effective solution. Therefore post summarizes the steps I take to create a self signed wild card certificate to be used in the internal environments. My guide is based on this <a href="https://www.macaw.nl/weblog/2013/6/configuring-an-asp-net-project-for-development-with-ssl">excellent post</a>.</p>
-
-<h2>Create the Certificate</h2>
-
-<p>In order to create the certificate we would be using the <code>MakeCert.exe</code> tool which can be found at <code>C:\Program Files (x86)\Windows Kits\8.1\bin\x64\</code>. This command creates the certificate and adds it to the logged in user's personal certificate store:</p>
-
-<pre><code>makecert -r -pe -e 01/01/2099 -eku 1.3.6.1.5.5.7.3.1 -ss My -n CN="*.wunder.local" -sky exchange -sp "Microsoft RSA SChannel Cryptographic Provider" -sy 12 -len 2048 
-</code></pre>
-
-<p>Some of the notable flags:</p>
-
-<ul>
-<li><strong>-r</strong> - Indicates that we're creating a self-signed certificate.</li>
-<li><strong>-pe</strong> - Includes the private key in the certificate and makes it exportable.</li>
-<li><strong>-e</strong> - The validity period of the certificate.</li>
-<li><p><strong>-n</strong> - The subject's certificate name - specify the wildcard url. </p>
-
-<p><img src="/images/posts/SSWildCardSSL/1_CreateCertificate.png" alt="Create Certificate" /></p></li>
-</ul>
-
-
-		<p><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Read more...</a></p>
 	  </p>
     </div>
 </div>
