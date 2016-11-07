@@ -64,7 +64,7 @@ While in this particular demo I use a VSTS team project running on top of Git so
 
 	`git commit -m "initial commit"`
 
-	![Install-Module Error](/images/posts/CrmReleasePt1/50_InstallModuleError.png)
+	![Install-Module Error](/images/posts/CrmReleasePt1/60_GitCommit.png)
 
 In the next post I will go into setting up a team build for this project.
 

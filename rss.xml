@@ -80,7 +80,7 @@
 
 &lt;p&gt;&lt;code&gt;git commit -m "initial commit"&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/50_InstallModuleError.png" alt="Install-Module Error" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/60_GitCommit.png" alt="Install-Module Error" /&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;In the next post I will go into setting up a team build for this project.&lt;/p&gt;
