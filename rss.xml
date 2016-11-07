@@ -16,7 +16,7 @@
 &lt;ol&gt;
 &lt;li&gt;Create a Team Project and select &lt;code&gt;Git&lt;/code&gt; as the version control.&lt;/li&gt;
 &lt;li&gt;Clone a working copy onto a local machine. &lt;/li&gt;
-&lt;li&gt;Create a .gitignore file that excludes build output - Let's use &lt;a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore"&gt;GitHub's definitions for Visual Studio&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Create a .gitignore file that excludes build output - let's use &lt;a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore"&gt;GitHub's definitions for Visual Studio&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Run the &lt;code&gt;nullfactory-xrm&lt;/code&gt; yeoman generator in order to scaffold the project structure. More detailed instructions on running the generator can be found &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/10_YoGenerator.png" alt="nullfactory-xrm yo generator" /&gt;&lt;/p&gt;&lt;/li&gt;
@@ -40,7 +40,7 @@
 &lt;ol&gt;
 &lt;li&gt;Create a Team Project and select &lt;code&gt;Git&lt;/code&gt; as the version control.&lt;/li&gt;
 &lt;li&gt;Clone a working copy onto a local machine. &lt;/li&gt;
-&lt;li&gt;Create a .gitignore file that excludes build output - Let's use &lt;a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore"&gt;GitHub's definitions for Visual Studio&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Create a .gitignore file that excludes build output - let's use &lt;a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore"&gt;GitHub's definitions for Visual Studio&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Run the &lt;code&gt;nullfactory-xrm&lt;/code&gt; yeoman generator in order to scaffold the project structure. More detailed instructions on running the generator can be found &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/10_YoGenerator.png" alt="nullfactory-xrm yo generator" /&gt;&lt;/p&gt;&lt;/li&gt;
