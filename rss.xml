@@ -1,4 +1,99 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/</guid><link>http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/</link><title>Yeoman Generator For Dynamics CRM Solutions</title><description>&lt;p&gt;I've previously experimented on creating a simplified way of &lt;a href="http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/"&gt;maintaining CRM solutions in source control&lt;/a&gt;. While I was quite happy with the end result, the process of setting up the projects, scripts and post-build steps was a little bit tedious. &lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/</guid><link>http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/</link><title>Release Strategy for Dynamics CRM - Part 1 - Preparation</title><description>&lt;p&gt;Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. &lt;/p&gt;
+
+&lt;p&gt;In order to automate the process we first need to make sure that the solution is maintained in source control. &lt;/p&gt;
+
+&lt;h2&gt;Prerequistes&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Visual Studio Team System (VSTS) source control.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Yeoman&lt;/code&gt; code generator with the &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt; installed globally. Installation instructions can be found &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;While in this particular demo I use a VSTS team project running on top of Git source control along with VSTS Release Management for the deployment, the same steps can be adapted to be used with any other build and release system.&lt;/p&gt;
+
+&lt;h2&gt;Prepping the Solution&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a Team Project and select &lt;code&gt;Git&lt;/code&gt; as the version control.&lt;/li&gt;
+&lt;li&gt;Clone a working copy onto a local machine. &lt;/li&gt;
+&lt;li&gt;Create a .gitignore file that excludes build output - Let's use &lt;a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore"&gt;GitHub's definitions for Visual Studio&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Run the &lt;code&gt;nullfactory-xrm&lt;/code&gt; yeoman generator in order to scaffold the project structure. More detailed instructions on running the generator can be found &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/10_YoGenerator.png" alt="nullfactory-xrm yo generator" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+</description><pubDate>Sat, 29 Oct 2016 13:00:00 Z</pubDate><a10:updated>2016-10-29T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. &lt;/p&gt;
+
+&lt;p&gt;In order to automate the process we first need to make sure that the solution is maintained in source control. &lt;/p&gt;
+
+&lt;h2&gt;Prerequistes&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Visual Studio Team System (VSTS) source control.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Yeoman&lt;/code&gt; code generator with the &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt; installed globally. Installation instructions can be found &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;While in this particular demo I use a VSTS team project running on top of Git source control along with VSTS Release Management for the deployment, the same steps can be adapted to be used with any other build and release system.&lt;/p&gt;
+
+&lt;h2&gt;Prepping the Solution&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a Team Project and select &lt;code&gt;Git&lt;/code&gt; as the version control.&lt;/li&gt;
+&lt;li&gt;Clone a working copy onto a local machine. &lt;/li&gt;
+&lt;li&gt;Create a .gitignore file that excludes build output - Let's use &lt;a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore"&gt;GitHub's definitions for Visual Studio&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Run the &lt;code&gt;nullfactory-xrm&lt;/code&gt; yeoman generator in order to scaffold the project structure. More detailed instructions on running the generator can be found &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/10_YoGenerator.png" alt="nullfactory-xrm yo generator" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt;  
+
+&lt;ol&gt;
+&lt;li&gt;Open up the generated solution in Visual Studio.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Force re-install the &lt;code&gt;Microsoft.CrmSdk.CoreTools&lt;/code&gt; package into the &lt;code&gt;Nullfactory.Xrm.Tooling&lt;/code&gt; project. Do this by running the following command in the Package Manager Console.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Update-Package -reinstall -project "Nullfactory.Xrm.Tooling"&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/20_UpdatePackage.png" alt="Update-Package -reinstall" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, sign the the plugins and workflows projects with a new strong key. Use the following command to generate a new key pair.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;sn -k key.snk&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/30_SignAssembly.png" alt="Sign Assembly" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, let's sync up the CRM solution by running the synchronize script located in the &lt;code&gt;Scripts&lt;/code&gt; folder in the &lt;code&gt;Nullfactory.Xrm.Tooling&lt;/code&gt; project. This script downloads the CRM solution from the remote server and then expand it using the &lt;code&gt;SolutionPackager.exe&lt;/code&gt; tool.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;.\Sync-CrmSolution.Param.ps1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/40_SyncScript.png" alt="Sync-CrmSolution" /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you encounter the following error when executing the script - it means that you have both PsGet and OneGet installed and its conflicting with each other. &lt;a href="https://til.secretgeek.net/powershell/psget_conflicts_with_PowerShellGet.html"&gt;Simply uninstalling PsGet in order to resolve the conflict&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/50_InstallModuleError.png" alt="Install-Module Error" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Before proceeding any further, let's verify that the crm solution project can be built and solution zip file is the output.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Stage all the generated files into source control.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;git add .&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, let's force stage the &lt;code&gt;coretools&lt;/code&gt; folder. Due to the way the CoreTools package installs itself it is necessary to explicitly include these files into source control for the team build to work.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;git add --force Nullfactory.Xrm.Tooling/bin/coretools/*.*&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Finally commit the changes.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;git commit -m "initial commit"&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt1/50_InstallModuleError.png" alt="Install-Module Error" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In the next post I will go into setting up a team build for this project.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://til.secretgeek.net/powershell/psget_conflicts_with_PowerShellGet.html"&gt;psget conflicts with PowerShellGet · Today I Learned (secretGeek)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://superuser.com/questions/996417/what-is-install-module-command-in-powershell"&gt;StackOverflow - What is Install-Module command in Powershell? - Super User&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/dd878350(v=vs.85).aspx"&gt;Installing a PowerShell Module&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator-nullfactory-xrm&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/</guid><link>http://nullfactory.net/2016/09/yeoman-generator-for-dynamics-crm-solutions/</link><title>Yeoman Generator For Dynamics CRM Solutions</title><description>&lt;p&gt;I've previously experimented on creating a simplified way of &lt;a href="http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/"&gt;maintaining CRM solutions in source control&lt;/a&gt;. While I was quite happy with the end result, the process of setting up the projects, scripts and post-build steps was a little bit tedious. &lt;/p&gt;
 
 &lt;p&gt;This is where Yeoman code generator comes in. Yeoman is a very popular javascript based scaffolding engine that enables setting up new projects a breeze. I created my own custom generator that would help me to kick start new CRM solutions quickly. You can find the end product here: &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;https://www.npmjs.com/package/generator-nullfactory-xrm&lt;/a&gt;&lt;/p&gt;
 
@@ -517,124 +612,5 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 &lt;li&gt;&lt;a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/"&gt;Streaming MP4 video in Azure Storage containers (Blob Storage) | thoughtstuff | Tom Morgan&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/library/azure/dd894041.aspx"&gt;MSDN - Versioning for the Azure Storage Services&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://azurestorageexplorer.codeplex.com/"&gt;Azure Storage Explorer - Home&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/</guid><link>http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/</link><title>Deploying a Azure Classic Storage Account using Azure Resource Manager</title><description>&lt;p&gt;I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a &lt;code&gt;Microsoft.ClassicStorage/StorageAccounts&lt;/code&gt; using the Azure Resource Manager(ARM) API.&lt;/p&gt;
-
-&lt;p&gt;The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully &lt;a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager"&gt;this&lt;/a&gt; post pointed me in the right direction. And after a little bit of fiddling I find that &lt;code&gt;2015-06-01&lt;/code&gt; appears to be last supported &lt;code&gt;apiVersion&lt;/code&gt; that works with classic storage.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/DeployClassicStorageArm/10_SupportedVersion.png"&gt;&lt;img src="http://nullfactory.net/images/posts/DeployClassicStorageArm/10_SupportedVersion.png" alt="Azure PowerShell Unsupported" /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Here's the final script I used to create a classic storage container: &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "PrimaryStorageName": {
-            "type": "string"
-        },
-        "PrimaryStorageType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_ZRS"
-            ]
-        },
-        "PrimaryStorageLocation": {
-        "type": "string",
-        "defaultValue": "East US",
-        "allowedValues": [
-            "East US",
-            "West US",
-            "West Europe",
-            "East Asia",
-            "South East Asia"
-            ]
-        }
-    },
-    "variables": {
-    },
-    "resources": [
-        {
-            "name": "[parameters('PrimaryStorageName')]",
-            "type": "Microsoft.ClassicStorage/StorageAccounts",
-            "location": "[parameters('PrimaryStorageLocation')]",
-            "apiVersion":  "2015-06-01",
-            "dependsOn": [ ],
-            "properties": {
-                "accountType": "[parameters('PrimaryStorageType')]"
-            }
-        }
-    ],
-    "outputs": {
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-</description><pubDate>Fri, 09 Oct 2015 13:00:00 Z</pubDate><a10:updated>2015-10-09T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a &lt;code&gt;Microsoft.ClassicStorage/StorageAccounts&lt;/code&gt; using the Azure Resource Manager(ARM) API.&lt;/p&gt;
-
-&lt;p&gt;The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully &lt;a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager"&gt;this&lt;/a&gt; post pointed me in the right direction. And after a little bit of fiddling I find that &lt;code&gt;2015-06-01&lt;/code&gt; appears to be last supported &lt;code&gt;apiVersion&lt;/code&gt; that works with classic storage.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/DeployClassicStorageArm/10_SupportedVersion.png"&gt;&lt;img src="http://nullfactory.net/images/posts/DeployClassicStorageArm/10_SupportedVersion.png" alt="Azure PowerShell Unsupported" /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Here's the final script I used to create a classic storage container: &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "PrimaryStorageName": {
-            "type": "string"
-        },
-        "PrimaryStorageType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_ZRS"
-            ]
-        },
-        "PrimaryStorageLocation": {
-        "type": "string",
-        "defaultValue": "East US",
-        "allowedValues": [
-            "East US",
-            "West US",
-            "West Europe",
-            "East Asia",
-            "South East Asia"
-            ]
-        }
-    },
-    "variables": {
-    },
-    "resources": [
-        {
-            "name": "[parameters('PrimaryStorageName')]",
-            "type": "Microsoft.ClassicStorage/StorageAccounts",
-            "location": "[parameters('PrimaryStorageLocation')]",
-            "apiVersion":  "2015-06-01",
-            "dependsOn": [ ],
-            "properties": {
-                "accountType": "[parameters('PrimaryStorageType')]"
-            }
-        }
-    ],
-    "outputs": {
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://azure.microsoft.com/en-us/documentation/articles/resource-manager-deployment-model/"&gt;Microsoft Azure - Understand differences between Resource Manager and classic deployment models&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager"&gt;Stack Overflow - Add storage to Azure resource manager&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/31886601/how-to-force-azure-storage-account-as-classic"&gt;Stack Overflow - powershell - How to force Azure Storage Account as classic&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Yeoman Generator For Dynamics CRM Solutions
-category: Dynamics CRM, Dynamics CRM Online
+category: Dynamics CRM, Dynamics CRM Online, Yeoman, npm, nodejs, generator-nullfactory-xrm
 ---
 
 I've previously experimented on creating a simplified way of [maintaining CRM solutions in source control](/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/). While I was quite happy with the end result, the process of setting up the projects, scripts and post-build steps was a little bit tedious. 

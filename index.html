@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Windows,Windows Phone" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,nodejs,npm,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -42,11 +42,56 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></h2>
+      <p class="post-date">30 Oct 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/git" title="Git">Git</a>
+</p>
+
+      <p>
+		
+		<p>Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. </p>
+
+<p>In order to automate the process we first need to make sure that the solution is maintained in source control. </p>
+
+<h2>Prerequistes</h2>
+
+<ul>
+<li>Visual Studio Team System (VSTS) source control.</li>
+<li><code>Yeoman</code> code generator with the <code>generator-nullfactory-xrm</code> installed globally. Installation instructions can be found <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">here</a>.</li>
+</ul>
+
+<p>While in this particular demo I use a VSTS team project running on top of Git source control along with VSTS Release Management for the deployment, the same steps can be adapted to be used with any other build and release system.</p>
+
+<h2>Prepping the Solution</h2>
+
+<ol>
+<li>Create a Team Project and select <code>Git</code> as the version control.</li>
+<li>Clone a working copy onto a local machine. </li>
+<li>Create a .gitignore file that excludes build output - Let's use <a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore">GitHub's definitions for Visual Studio</a>.</li>
+<li><p>Run the <code>nullfactory-xrm</code> yeoman generator in order to scaffold the project structure. More detailed instructions on running the generator can be found <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">here</a>.</p>
+
+<p><img src="/images/posts/CrmReleasePt1/10_YoGenerator.png" alt="nullfactory-xrm yo generator" /></p></li>
+</ol>
+
+
+		<p><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/09/yeoman-generator-for-dynamics-crm-solutions/">Yeoman Generator For Dynamics CRM Solutions</a></h2>
       <p class="post-date">15 Sep 2016
 
       | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
       | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/yeoman" title="Yeoman">Yeoman</a>
+      | <a href="/category/npm" title="npm">npm</a>
+      | <a href="/category/nodejs" title="nodejs">nodejs</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
 </p>
 
       <p>
@@ -295,76 +340,6 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 
 
 		<p><a href="/2015/10/cdn-streaming-video-azure-storage/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Deploying a Azure Classic Storage Account using Azure Resource Manager</a></h2>
-      <p class="post-date">10 Oct 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-      | <a href="/category/deployment" title="Deployment">Deployment</a>
-      | <a href="/category/azure-storage-accounts" title="Azure Storage Accounts">Azure Storage Accounts</a>
-</p>
-
-      <p>
-		
-		<p>I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a <code>Microsoft.ClassicStorage/StorageAccounts</code> using the Azure Resource Manager(ARM) API.</p>
-
-<p>The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully <a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager">this</a> post pointed me in the right direction. And after a little bit of fiddling I find that <code>2015-06-01</code> appears to be last supported <code>apiVersion</code> that works with classic storage.</p>
-
-<p><a href="/images/posts/DeployClassicStorageArm/10_SupportedVersion.png"><img src="/images/posts/DeployClassicStorageArm/10_SupportedVersion.png" alt="Azure PowerShell Unsupported" /></a></p>
-
-<p>Here's the final script I used to create a classic storage container: </p>
-
-<pre><code>{
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "PrimaryStorageName": {
-            "type": "string"
-        },
-        "PrimaryStorageType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_ZRS"
-            ]
-        },
-        "PrimaryStorageLocation": {
-        "type": "string",
-        "defaultValue": "East US",
-        "allowedValues": [
-            "East US",
-            "West US",
-            "West Europe",
-            "East Asia",
-            "South East Asia"
-            ]
-        }
-    },
-    "variables": {
-    },
-    "resources": [
-        {
-            "name": "[parameters('PrimaryStorageName')]",
-            "type": "Microsoft.ClassicStorage/StorageAccounts",
-            "location": "[parameters('PrimaryStorageLocation')]",
-            "apiVersion":  "2015-06-01",
-            "dependsOn": [ ],
-            "properties": {
-                "accountType": "[parameters('PrimaryStorageType')]"
-            }
-        }
-    ],
-    "outputs": {
-    }
-}
-</code></pre>
-
-
-		<p><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Read more...</a></p>
 	  </p>
     </div>
 </div>

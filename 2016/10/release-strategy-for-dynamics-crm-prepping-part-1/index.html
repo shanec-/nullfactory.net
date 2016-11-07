@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online,generator-nullfactory-xrm,Visual Studio Team Services,Git" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></h2>
+		<p class="post-date">30 Oct 2016
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/git">Git</a>
+	  </p>
+
+		
+
+		<p>Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. </p>
+
+<p>In order to automate the process we first need to make sure that the solution is maintained in source control. </p>
+
+<h2>Prerequistes</h2>
+
+<ul>
+<li>Visual Studio Team System (VSTS) source control.</li>
+<li><code>Yeoman</code> code generator with the <code>generator-nullfactory-xrm</code> installed globally. Installation instructions can be found <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">here</a>.</li>
+</ul>
+
+<p>While in this particular demo I use a VSTS team project running on top of Git source control along with VSTS Release Management for the deployment, the same steps can be adapted to be used with any other build and release system.</p>
+
+<h2>Prepping the Solution</h2>
+
+<ol>
+<li>Create a Team Project and select <code>Git</code> as the version control.</li>
+<li>Clone a working copy onto a local machine. </li>
+<li>Create a .gitignore file that excludes build output - Let's use <a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore">GitHub's definitions for Visual Studio</a>.</li>
+<li><p>Run the <code>nullfactory-xrm</code> yeoman generator in order to scaffold the project structure. More detailed instructions on running the generator can be found <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">here</a>.</p>
+
+<p><img src="/images/posts/CrmReleasePt1/10_YoGenerator.png" alt="nullfactory-xrm yo generator" /></p></li>
+</ol>
+
+<!--excerpt-->  
+
+<ol>
+<li>Open up the generated solution in Visual Studio.</li>
+<li><p>Force re-install the <code>Microsoft.CrmSdk.CoreTools</code> package into the <code>Nullfactory.Xrm.Tooling</code> project. Do this by running the following command in the Package Manager Console.</p>
+
+<p><code>Update-Package -reinstall -project "Nullfactory.Xrm.Tooling"</code></p>
+
+<p><img src="/images/posts/CrmReleasePt1/20_UpdatePackage.png" alt="Update-Package -reinstall" /></p></li>
+<li><p>Next, sign the the plugins and workflows projects with a new strong key. Use the following command to generate a new key pair.</p>
+
+<p><code>sn -k key.snk</code></p>
+
+<p><img src="/images/posts/CrmReleasePt1/30_SignAssembly.png" alt="Sign Assembly" /></p></li>
+<li><p>Next, let's sync up the CRM solution by running the synchronize script located in the <code>Scripts</code> folder in the <code>Nullfactory.Xrm.Tooling</code> project. This script downloads the CRM solution from the remote server and then expand it using the <code>SolutionPackager.exe</code> tool.</p>
+
+<p><code>.\Sync-CrmSolution.Param.ps1</code></p>
+
+<p><img src="/images/posts/CrmReleasePt1/40_SyncScript.png" alt="Sync-CrmSolution" /></p>
+
+<p>If you encounter the following error when executing the script - it means that you have both PsGet and OneGet installed and its conflicting with each other. <a href="https://til.secretgeek.net/powershell/psget_conflicts_with_PowerShellGet.html">Simply uninstalling PsGet in order to resolve the conflict</a>.</p>
+
+<p><img src="/images/posts/CrmReleasePt1/50_InstallModuleError.png" alt="Install-Module Error" /></p></li>
+<li><p>Before proceeding any further, let's verify that the crm solution project can be built and solution zip file is the output.</p></li>
+<li><p>Stage all the generated files into source control.</p>
+
+<p><code>git add .</code></p></li>
+<li><p>Next, let's force stage the <code>coretools</code> folder. Due to the way the CoreTools package installs itself it is necessary to explicitly include these files into source control for the team build to work.</p>
+
+<p><code>git add --force Nullfactory.Xrm.Tooling/bin/coretools/*.*</code></p></li>
+<li><p>Finally commit the changes.</p>
+
+<p><code>git commit -m "initial commit"</code></p>
+
+<p><img src="/images/posts/CrmReleasePt1/50_InstallModuleError.png" alt="Install-Module Error" /></p></li>
+</ol>
+
+<p>In the next post I will go into setting up a team build for this project.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://til.secretgeek.net/powershell/psget_conflicts_with_PowerShellGet.html">psget conflicts with PowerShellGet · Today I Learned (secretGeek)</a></li>
+<li><a href="http://superuser.com/questions/996417/what-is-install-module-command-in-powershell">StackOverflow - What is Install-Module command in Powershell? - Super User</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/dd878350(v=vs.85).aspx">Installing a PowerShell Module</a></li>
+<li><a href="https://www.npmjs.com/package/generator-nullfactory-xrm">generator-nullfactory-xrm</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

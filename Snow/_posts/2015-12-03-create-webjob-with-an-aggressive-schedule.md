@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Create a WebJob with an Aggressive Schedule within the free and basic Pricing Tier 
+title: Create a WebJob with an Aggressive Schedule within the Free and Basic Pricing Tier
 category: Azure, Webjobs
 published: draft
 ---
