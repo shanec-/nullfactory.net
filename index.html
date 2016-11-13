@@ -42,6 +42,51 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</a></h2>
+      <p class="post-date">12 Nov 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+</p>
+
+      <p>
+		
+		<p>This is the second of a three part series in which I walk through setting up a release management strategy for Dynamics CRM.</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li>Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</li>
+<li>Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release</li>
+</ul>
+
+<p>In first part of the series accomplished the following:</p>
+
+<ol>
+<li>Setup the project structure using the <code>nullfactory-xrm</code> yeoman generator.    </li>
+<li>Download the CRM solution from the remote server and unpacked it using the solution packager tool.</li>
+<li>Checked-in all the artifacts back into Visual Studio Team Services (VSTS) source control.</li>
+</ol>
+
+<p>In this post I describe the steps required for setting up a team build. One of the goals with the generated project structure was to have it work with team builds with the least amount configuration. </p>
+
+<h2>Setting Up the Team Build</h2>
+
+<ol>
+<li><p>Navigate to the <code>Build and Release &gt; Builds</code> from within the VSTS team project.</p>
+
+<p><img src="/images/posts/CrmReleasePt2/10_NewDefintion.png" alt="Build and Release Menue" /></p></li>
+<li><p>Create a new build definition using a vanilla <code>Visual Studio</code> template.</p>
+
+<p><img src="/images/posts/CrmReleasePt2/20_SelectBuildTemplate.png" alt="Visual Studio Template" /></p></li>
+</ol>
+
+
+		<p><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></h2>
       <p class="post-date">30 Oct 2016
 
@@ -55,6 +100,12 @@
       <p>
 		
 		<p>Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. </p>
+
+<ul>
+<li>Release Strategy for Dynamics CRM - Part 1 - Preparation</li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</a></li>
+<li>Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release</li>
+</ul>
 
 <p>In order to automate the process we first need to make sure that the solution is maintained in source control. </p>
 
@@ -300,46 +351,6 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 
 
 		<p><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/cdn-streaming-video-azure-storage/">Setting up a CDN to Stream Video via Azure Storage</a></h2>
-      <p class="post-date">11 Oct 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-      | <a href="/category/cdn" title="CDN">CDN</a>
-      | <a href="/category/azure-storage-accounts" title="Azure Storage Accounts">Azure Storage Accounts</a>
-</p>
-
-      <p>
-		
-		<p>I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.</p>
-
-<h2>Create the Storage Account</h2>
-
-<p>Something I found out after the fact was that CDN endpoints <a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts">currently only support classic storage accounts</a>. So the first order of business is to create a classic storage account either via old portal or using a <a href="/2015/10/deploy-classic-storage-azure-resource-manager/">resource group manager template</a>. </p>
-
-<p>Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.</p>
-
-<p>Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to <code>Public Blob</code>.</p>
-
-<h2>Upgrade the Storage Account to a Newer Service Version</h2>
-
-<p>The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. <a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/">Read more here</a>, <a href="https://msdn.microsoft.com/library/azure/dd894041.aspx">and here</a>.</p>
-
-<p>So the next step is update the storage account to the latest version in order to take advantage of the improvements. This can be done using the following code:</p>
-
-<pre><code>    var credentials = new StorageCredentials("accountname", "accountkey");
-    var account = new CloudStorageAccount(credentials, true);
-    var client = account.CreateCloudBlobClient();
-    var properties = client.GetServiceProperties();
-    properties.DefaultServiceVersion = "2013-08-15";
-    client.SetServiceProperties(properties);
-    Console.WriteLine(properties.DefaultServiceVersion);
-</code></pre>
-
-
-		<p><a href="/2015/10/cdn-streaming-video-azure-storage/">Read more...</a></p>
 	  </p>
     </div>
 </div>

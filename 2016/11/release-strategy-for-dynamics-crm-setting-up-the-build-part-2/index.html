@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online,generator-nullfactory-xrm,Visual Studio Team Services" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</a></h2>
+		<p class="post-date">12 Nov 2016
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+	  </p>
+
+		
+
+		<p>This is the second of a three part series in which I walk through setting up a release management strategy for Dynamics CRM.</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li>Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</li>
+<li>Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release</li>
+</ul>
+
+<p>In first part of the series accomplished the following:</p>
+
+<ol>
+<li>Setup the project structure using the <code>nullfactory-xrm</code> yeoman generator.    </li>
+<li>Download the CRM solution from the remote server and unpacked it using the solution packager tool.</li>
+<li>Checked-in all the artifacts back into Visual Studio Team Services (VSTS) source control.</li>
+</ol>
+
+<p>In this post I describe the steps required for setting up a team build. One of the goals with the generated project structure was to have it work with team builds with the least amount configuration. </p>
+
+<h2>Setting Up the Team Build</h2>
+
+<ol>
+<li><p>Navigate to the <code>Build and Release &gt; Builds</code> from within the VSTS team project.</p>
+
+<p><img src="/images/posts/CrmReleasePt2/10_NewDefintion.png" alt="Build and Release Menue" /></p></li>
+<li><p>Create a new build definition using a vanilla <code>Visual Studio</code> template.</p>
+
+<p><img src="/images/posts/CrmReleasePt2/20_SelectBuildTemplate.png" alt="Visual Studio Template" /></p></li>
+</ol>
+
+<!--excerpt-->  
+
+<ol>
+<li><p>If you want to use the artifact from this build as part a release deployment, then we need to explicitly copy the deploy scripts into the artifact staging folder. Let's do this by clicking on the <code>Add Task</code> and selecting <code>Copy Files</code> task and licking the <code>add</code> button. </p>
+
+<p><img src="/images/posts/CrmReleasePt2/30_CopyTask.png" alt="Copy Task" /></p>
+
+<p>This explicit copy is required because the <code>Nullfactory.Xrm.Tooling</code> is not designated to build as part of the solution.</p></li>
+<li><p>Next let's configure the task with the following parameters:</p>
+
+<ul>
+<li>Source Folder -  <code>$(build.sourcesdirectory)</code></li>
+<li>Contents - <code>**/Deploy-*.ps1</code></li>
+<li>Target Folder - <code>$(build.artifactstagingdirectory)</code></li>
+<li>Change the name of the task into something more meaningful - <code>Copy Deploy Scripts to: $(build.artifactstagingdirectory)</code></li>
+</ul>
+
+<p><img src="/images/posts/CrmReleasePt2/40_CopyTaskParameters.png" alt="Copy Task" /></p></li>
+<li><p>Make sure that the newly added task is set to execute before the <code>Publish Artifact: drop</code> task.</p></li>
+<li><p>Save and provide the new build a name.</p>
+
+<p><img src="/images/posts/CrmReleasePt2/50_BuildName.png" alt="Build Name" /></p></li>
+<li><p>Now let's test it out by queuing a new build.</p></li>
+<li><p>Once the build is complete, navigate to the artifacts and explore the drop folder to verify that all the required file have been copied .</p>
+
+<p><img src="/images/posts/CrmReleasePt2/60_BuildArtifacts.png" alt="Build Artifacts" /></p></li>
+</ol>
+
+<p>Congratulations! Now you have team build that builds and packages the Dynamics CRM solution. Go forth and extend the definitions to suit your particular development workflow.</p>
+
+<p>In the next post I will show you how to setup a release management definition and automate deployment to Dynamics CRM environments.</p>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

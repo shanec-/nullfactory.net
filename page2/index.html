@@ -42,6 +42,46 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/cdn-streaming-video-azure-storage/">Setting up a CDN to Stream Video via Azure Storage</a></h2>
+      <p class="post-date">11 Oct 2015
+
+      | <a href="/category/azure" title="Azure">Azure</a>
+      | <a href="/category/cdn" title="CDN">CDN</a>
+      | <a href="/category/azure-storage-accounts" title="Azure Storage Accounts">Azure Storage Accounts</a>
+</p>
+
+      <p>
+		
+		<p>I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.</p>
+
+<h2>Create the Storage Account</h2>
+
+<p>Something I found out after the fact was that CDN endpoints <a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts">currently only support classic storage accounts</a>. So the first order of business is to create a classic storage account either via old portal or using a <a href="/2015/10/deploy-classic-storage-azure-resource-manager/">resource group manager template</a>. </p>
+
+<p>Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.</p>
+
+<p>Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to <code>Public Blob</code>.</p>
+
+<h2>Upgrade the Storage Account to a Newer Service Version</h2>
+
+<p>The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. <a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/">Read more here</a>, <a href="https://msdn.microsoft.com/library/azure/dd894041.aspx">and here</a>.</p>
+
+<p>So the next step is update the storage account to the latest version in order to take advantage of the improvements. This can be done using the following code:</p>
+
+<pre><code>    var credentials = new StorageCredentials("accountname", "accountkey");
+    var account = new CloudStorageAccount(credentials, true);
+    var client = account.CreateCloudBlobClient();
+    var properties = client.GetServiceProperties();
+    properties.DefaultServiceVersion = "2013-08-15";
+    client.SetServiceProperties(properties);
+    Console.WriteLine(properties.DefaultServiceVersion);
+</code></pre>
+
+
+		<p><a href="/2015/10/cdn-streaming-video-azure-storage/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Deploying a Azure Classic Storage Account using Azure Resource Manager</a></h2>
       <p class="post-date">10 Oct 2015
 
@@ -356,26 +396,6 @@ The problem with the free tiers is that there's a high possibility that the web 
 
 
 		<p><a href="/2015/05/ssdt-deployment-plan-modifer/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/disabling-sharepoint-search-service/">Disabling the SharePoint Search Service</a></h2>
-      <p class="post-date">11 Mar 2015
-
-      | <a href="/category/sharepoint" title="SharePoint">SharePoint</a>
-      | <a href="/category/windows" title="Windows">Windows</a>
-</p>
-
-      <p>
-		
-		<p>If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.</p>
-
-<p><a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182">This seems to be most effective</a> way to completely disable the service. Although changing the password to an invalid one works as expected, it is important to replace the user account from a domain to a local user account as well. If not, the constant invalid login attempts could trigger your account lock out threshold policy in the domain.</p>
-
-<p>So for convenience sake I created two batch files - one to disable the service and another to bring it back up.  </p>
-
-
-		<p><a href="/2015/03/disabling-sharepoint-search-service/">Read more...</a></p>
 	  </p>
     </div>
 </div>

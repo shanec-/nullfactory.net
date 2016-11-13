@@ -1,4 +1,99 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/</guid><link>http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/</link><title>Release Strategy for Dynamics CRM - Part 1 - Preparation</title><description>&lt;p&gt;Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. &lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/</guid><link>http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/</link><title>Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</title><description>&lt;p&gt;This is the second of a three part series in which I walk through setting up a release management strategy for Dynamics CRM.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In first part of the series accomplished the following:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Setup the project structure using the &lt;code&gt;nullfactory-xrm&lt;/code&gt; yeoman generator.    &lt;/li&gt;
+&lt;li&gt;Download the CRM solution from the remote server and unpacked it using the solution packager tool.&lt;/li&gt;
+&lt;li&gt;Checked-in all the artifacts back into Visual Studio Team Services (VSTS) source control.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In this post I describe the steps required for setting up a team build. One of the goals with the generated project structure was to have it work with team builds with the least amount configuration. &lt;/p&gt;
+
+&lt;h2&gt;Setting Up the Team Build&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Navigate to the &lt;code&gt;Build and Release &amp;gt; Builds&lt;/code&gt; from within the VSTS team project.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt2/10_NewDefintion.png" alt="Build and Release Menue" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Create a new build definition using a vanilla &lt;code&gt;Visual Studio&lt;/code&gt; template.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt2/20_SelectBuildTemplate.png" alt="Visual Studio Template" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+</description><pubDate>Fri, 11 Nov 2016 13:00:00 Z</pubDate><a10:updated>2016-11-11T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;This is the second of a three part series in which I walk through setting up a release management strategy for Dynamics CRM.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In first part of the series accomplished the following:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Setup the project structure using the &lt;code&gt;nullfactory-xrm&lt;/code&gt; yeoman generator.    &lt;/li&gt;
+&lt;li&gt;Download the CRM solution from the remote server and unpacked it using the solution packager tool.&lt;/li&gt;
+&lt;li&gt;Checked-in all the artifacts back into Visual Studio Team Services (VSTS) source control.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In this post I describe the steps required for setting up a team build. One of the goals with the generated project structure was to have it work with team builds with the least amount configuration. &lt;/p&gt;
+
+&lt;h2&gt;Setting Up the Team Build&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Navigate to the &lt;code&gt;Build and Release &amp;gt; Builds&lt;/code&gt; from within the VSTS team project.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt2/10_NewDefintion.png" alt="Build and Release Menue" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Create a new build definition using a vanilla &lt;code&gt;Visual Studio&lt;/code&gt; template.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt2/20_SelectBuildTemplate.png" alt="Visual Studio Template" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt;  
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;If you want to use the artifact from this build as part a release deployment, then we need to explicitly copy the deploy scripts into the artifact staging folder. Let's do this by clicking on the &lt;code&gt;Add Task&lt;/code&gt; and selecting &lt;code&gt;Copy Files&lt;/code&gt; task and licking the &lt;code&gt;add&lt;/code&gt; button. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt2/30_CopyTask.png" alt="Copy Task" /&gt;&lt;/p&gt;
+
+&lt;p&gt;This explicit copy is required because the &lt;code&gt;Nullfactory.Xrm.Tooling&lt;/code&gt; is not designated to build as part of the solution.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next let's configure the task with the following parameters:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Source Folder -  &lt;code&gt;$(build.sourcesdirectory)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Contents - &lt;code&gt;**/Deploy-*.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Target Folder - &lt;code&gt;$(build.artifactstagingdirectory)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Change the name of the task into something more meaningful - &lt;code&gt;Copy Deploy Scripts to: $(build.artifactstagingdirectory)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt2/40_CopyTaskParameters.png" alt="Copy Task" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Make sure that the newly added task is set to execute before the &lt;code&gt;Publish Artifact: drop&lt;/code&gt; task.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Save and provide the new build a name.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt2/50_BuildName.png" alt="Build Name" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now let's test it out by queuing a new build.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once the build is complete, navigate to the artifacts and explore the drop folder to verify that all the required file have been copied .&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt2/60_BuildArtifacts.png" alt="Build Artifacts" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Congratulations! Now you have team build that builds and packages the Dynamics CRM solution. Go forth and extend the definitions to suit your particular development workflow.&lt;/p&gt;
+
+&lt;p&gt;In the next post I will show you how to setup a release management definition and automate deployment to Dynamics CRM environments.&lt;/p&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/</guid><link>http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/</link><title>Release Strategy for Dynamics CRM - Part 1 - Preparation</title><description>&lt;p&gt;Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;In order to automate the process we first need to make sure that the solution is maintained in source control. &lt;/p&gt;
 
@@ -23,6 +118,12 @@
 &lt;/ol&gt;
 
 </description><pubDate>Sat, 29 Oct 2016 13:00:00 Z</pubDate><a10:updated>2016-10-29T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;In order to automate the process we first need to make sure that the solution is maintained in source control. &lt;/p&gt;
 
@@ -533,84 +634,5 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/hh550080(v=vs.103).aspx"&gt;MSDN - SqlPackage.exe&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://phoebix.com/2013/09/19/extract-dacpac-using-command-line/"&gt;Extract DacPac Using Command Line | phoebix&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://github.com/rusanu/DbUtilSqlCmd"&gt;rusanu/DbUtilSqlCmd · GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/</guid><link>http://nullfactory.net/2015/10/cdn-streaming-video-azure-storage/</link><title>Setting up a CDN to Stream Video via Azure Storage</title><description>&lt;p&gt;I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.&lt;/p&gt;
-
-&lt;h2&gt;Create the Storage Account&lt;/h2&gt;
-
-&lt;p&gt;Something I found out after the fact was that CDN endpoints &lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;currently only support classic storage accounts&lt;/a&gt;. So the first order of business is to create a classic storage account either via old portal or using a &lt;a href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/"&gt;resource group manager template&lt;/a&gt;. &lt;/p&gt;
-
-&lt;p&gt;Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
-
-&lt;p&gt;Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to &lt;code&gt;Public Blob&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Upgrade the Storage Account to a Newer Service Version&lt;/h2&gt;
-
-&lt;p&gt;The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. &lt;a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/"&gt;Read more here&lt;/a&gt;, &lt;a href="https://msdn.microsoft.com/library/azure/dd894041.aspx"&gt;and here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;So the next step is update the storage account to the latest version in order to take advantage of the improvements. This can be done using the following code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    var credentials = new StorageCredentials("accountname", "accountkey");
-    var account = new CloudStorageAccount(credentials, true);
-    var client = account.CreateCloudBlobClient();
-    var properties = client.GetServiceProperties();
-    properties.DefaultServiceVersion = "2013-08-15";
-    client.SetServiceProperties(properties);
-    Console.WriteLine(properties.DefaultServiceVersion);
-&lt;/code&gt;&lt;/pre&gt;
-
-</description><pubDate>Sat, 10 Oct 2015 13:00:00 Z</pubDate><a10:updated>2015-10-10T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.&lt;/p&gt;
-
-&lt;h2&gt;Create the Storage Account&lt;/h2&gt;
-
-&lt;p&gt;Something I found out after the fact was that CDN endpoints &lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;currently only support classic storage accounts&lt;/a&gt;. So the first order of business is to create a classic storage account either via old portal or using a &lt;a href="http://nullfactory.net/2015/10/deploy-classic-storage-azure-resource-manager/"&gt;resource group manager template&lt;/a&gt;. &lt;/p&gt;
-
-&lt;p&gt;Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.&lt;/p&gt;
-
-&lt;p&gt;Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to &lt;code&gt;Public Blob&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Upgrade the Storage Account to a Newer Service Version&lt;/h2&gt;
-
-&lt;p&gt;The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. &lt;a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/"&gt;Read more here&lt;/a&gt;, &lt;a href="https://msdn.microsoft.com/library/azure/dd894041.aspx"&gt;and here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;So the next step is update the storage account to the latest version in order to take advantage of the improvements. This can be done using the following code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;    var credentials = new StorageCredentials("accountname", "accountkey");
-    var account = new CloudStorageAccount(credentials, true);
-    var client = account.CreateCloudBlobClient();
-    var properties = client.GetServiceProperties();
-    properties.DefaultServiceVersion = "2013-08-15";
-    client.SetServiceProperties(properties);
-    Console.WriteLine(properties.DefaultServiceVersion);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;Create the CDN Endpoint&lt;/h2&gt;
-
-&lt;p&gt;Setting up the CDN itself it pretty straight forward:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a new CDN through the old portal by selecting &lt;code&gt;New &amp;gt; CDN &amp;gt; Quick Create&lt;/code&gt;. &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select your subscription and set the origin type as &lt;code&gt;Storage Account&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/AzureCDNStream/10_CreateCDN.png"&gt;&lt;img src="http://nullfactory.net/images/posts/AzureCDNStream/10_CreateCDN.png" alt="Azure Create CDN" /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select one of the classic storage accounts from the &lt;code&gt;Origin Url&lt;/code&gt; drop down and hit the create button.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="http://nullfactory.net/images/posts/AzureCDNStream/20_CDNCreated.png"&gt;&lt;img src="http://nullfactory.net/images/posts/AzureCDNStream/20_CDNCreated.png" alt="Azure CDN Created" /&gt;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Upload Content&lt;/h2&gt;
-
-&lt;p&gt;Now that everything is setup, go ahead and upload the content into blob storage using Visual Studio or &lt;a href="https://azurestorageexplorer.codeplex.com/"&gt;Azure Storage Explorer&lt;/a&gt;. Once the content is propagated, video streaming should be smooth and working as expected.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts"&gt;Stack Overflow - Azure Resource Manager Deployment vs Classic Deployment of Storage Accounts&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/7235082/is-microsoft-azure-cdn-a-real-cdn-or-something-else-entirely"&gt;Stack Overflow - Is Microsoft Azure CDN A Real CDN Or Something Else Entirely?&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/"&gt;Streaming MP4 video in Azure Storage containers (Blob Storage) | thoughtstuff | Tom Morgan&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/library/azure/dd894041.aspx"&gt;MSDN - Versioning for the Azure Storage Services&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://azurestorageexplorer.codeplex.com/"&gt;Azure Storage Explorer - Home&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>
