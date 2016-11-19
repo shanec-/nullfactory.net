@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release
-category: Dynamics CRM, Dynamics CRM Online, generator-nullfactory-xrm, Visual Studio Team Services
+category: Dynamics CRM, Dynamics CRM Online, generator-nullfactory-xrm, Visual Studio Team Services, Team Foundation Server, ALM
 ---
 
 This is the final installment of the a three part series. Use to following links to access part 1 and 2:
