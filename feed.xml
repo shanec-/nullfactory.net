@@ -1,9 +1,126 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-11-14T01:27:03+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/</id><title type="text">Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</title><summary type="html">&lt;p&gt;This is the second of a three part series in which I walk through setting up a release management strategy for Dynamics CRM.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-11-19T22:33:15+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/</id><title type="text">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</title><summary type="html">&lt;p&gt;This is the final installment of the a three part series. Use to following links to access part 1 and 2:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build&lt;/li&gt;
-&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the previous two posts I show you how to create the project structure and create a basic team build for your CRM solution artifacts. In this final installment I go about setting up a release definition for the build that we created.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Let's start off by creating a new release by navigating to the &lt;code&gt;Build and Release &amp;gt; Release&lt;/code&gt; in your team project.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select the &lt;code&gt;Empty&lt;/code&gt; template option and click the next button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/10_ReleaseDefinition.png" alt="Empty release template" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;On the next step, choose the source for this release - we'll be using the &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;build definition that we created in part 2&lt;/a&gt;. Once ready click the &lt;code&gt;Create&lt;/code&gt; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/20_SelectBuildDefinition.png" alt="Select build defintion" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now lets declare the variables that would be used later in the process. Navigate to the &lt;code&gt;Variables&lt;/code&gt; tab and define the following variables:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;DevDeployLogin&lt;/code&gt; - The username that used to deploy the solution.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DevDeployPassword&lt;/code&gt; - The password for the same account.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Make sure to define the &lt;code&gt;DevDeployPassword&lt;/code&gt; as a secret by clicking the padlock icon next to the field.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/100_SetupVariables.png" alt="Release Variables" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Read more about &lt;a href="https://www.visualstudio.com/en-us/docs/build/define/variables"&gt;build and release variables here&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+</summary><published>2016-11-17T13:00:00Z</published><updated>2016-11-17T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/" /><content type="html">&lt;p&gt;This is the final installment of the a three part series. Use to following links to access part 1 and 2:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the previous two posts I show you how to create the project structure and create a basic team build for your CRM solution artifacts. In this final installment I go about setting up a release definition for the build that we created.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Let's start off by creating a new release by navigating to the &lt;code&gt;Build and Release &amp;gt; Release&lt;/code&gt; in your team project.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select the &lt;code&gt;Empty&lt;/code&gt; template option and click the next button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/10_ReleaseDefinition.png" alt="Empty release template" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;On the next step, choose the source for this release - we'll be using the &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;build definition that we created in part 2&lt;/a&gt;. Once ready click the &lt;code&gt;Create&lt;/code&gt; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/20_SelectBuildDefinition.png" alt="Select build defintion" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now lets declare the variables that would be used later in the process. Navigate to the &lt;code&gt;Variables&lt;/code&gt; tab and define the following variables:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;DevDeployLogin&lt;/code&gt; - The username that used to deploy the solution.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DevDeployPassword&lt;/code&gt; - The password for the same account.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Make sure to define the &lt;code&gt;DevDeployPassword&lt;/code&gt; as a secret by clicking the padlock icon next to the field.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/100_SetupVariables.png" alt="Release Variables" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Read more about &lt;a href="https://www.visualstudio.com/en-us/docs/build/define/variables"&gt;build and release variables here&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt; 
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Next, create a new agent step by clicking the &lt;code&gt;Add tasks&lt;/code&gt; and selecting &lt;code&gt;Add an agent phase&lt;/code&gt; in the context menu.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/30_AddAgentPhase.png" alt="Add agent phase task" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select a &lt;code&gt;PowerShell&lt;/code&gt; in the task catalog and click the &lt;code&gt;Add&lt;/code&gt; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/40_AgentPhasePowerShell.png" alt="Add agent phase powershell" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once the task is added, set the type to &lt;code&gt;Inline Script&lt;/code&gt; and add the following script in the &lt;code&gt;Inline Script&lt;/code&gt; field:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The purpose of this script is to install the NuGet provider on the agent. This is a prerequisite of the &lt;code&gt;Install-Module&lt;/code&gt; command that will be used by the &lt;code&gt;Deploy-CrmSolution&lt;/code&gt; script.&lt;/p&gt;
+
+&lt;p&gt;And while we're here, let's rename the task to a more appropriate one. This would help us to distinguish it better.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/50_SetupEnvironmentPreReqStep.png" alt="Configure environment prerequisite powershell" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now, add a second PoweShell script. This time set the type as &lt;code&gt;File Path&lt;/code&gt; and rename the task to &lt;code&gt;Deploy CRM Solution&lt;/code&gt;. This task would be performing the actual deployment to CRM.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/60_CrmDeployStep.png" alt="Add CRM deploy step" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click the ellipsis on the &lt;code&gt;Script Path&lt;/code&gt; field to browse and find the &lt;code&gt;Deploy-CrmSolution.ps1&lt;/code&gt; script. &lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$(System.DefaultWorkingDirectory)/DevBuild/drop/Nullfactory.Xrm.Tooling/Scripts/Deploy-CrmSolution.ps1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/70_CrmDeployStepScript.png" alt="Configure CRM deploy step script" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Set the following arguments for the script - notice that the previously defined variables &lt;code&gt;DevDeployLogin&lt;/code&gt; and &lt;code&gt;DevDeployPassword&lt;/code&gt; being used as part of the script.
+&lt;code&gt;-serverUrl "https://servername.crm6.dynamics.com" -username "$(DevDeployLogin)" -password "$(DevDeployPassword)" -solutionName "Demo.AlphaSolution" -publishChanges -activatePlugins&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/90_FinalCrmDeployStep.png" alt="CRM deploy step final" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Expand the &lt;code&gt;Advanced&lt;/code&gt; tab and click the ellipsis button on the &lt;code&gt;Working Folder&lt;/code&gt; field. Set the working folder to the &lt;code&gt;Nullfactory.Xrm.Tooling\Scripts&lt;/code&gt; folder on the resulting dialog. I do this in order to minimize the chance of encountering any long file path issues.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/80_CrmDeployStepTarget.png" alt="Configure CRM deploy step target" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now that everything is setup, time to test out our new release definition. Let's queue a new release.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/110_CreateRelease.png" alt="Create new release" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure that the release is being deployed and that it completed successfully.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/120_ReleaseStatusInProgress.png" alt="Verify release status" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt3/130_ReleaseStatusComplete.png" alt="Verify release status complete" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;That's it folks. That's the end of the three part series showing how to setup a project structure, configure a build and finally release a source-controlled CRM solution.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/sl-si/docs/release/managing-releases/create-release"&gt;Create a release in Microsoft Release Management for Visual Studio Team Services and Team Foundation Server 2015&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/define/variables"&gt;Use build variables&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/scripts/"&gt;Use a PowerShell script to customize your build process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/release/author-release-definition/understanding-tasks"&gt;How to deploy? Microsoft Release Management Tasks for Visual Studio Team Services and Team Foundation Server 2015&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/</id><title type="text">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</title><summary type="html">&lt;p&gt;This is the second of a three part series in which I walk through setting up a release management strategy for Dynamics CRM.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In first part of the series accomplished the following:&lt;/p&gt;
@@ -31,8 +148,8 @@
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build&lt;/li&gt;
-&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In first part of the series accomplished the following:&lt;/p&gt;
@@ -91,8 +208,8 @@
 
 &lt;ul&gt;
 &lt;li&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In order to automate the process we first need to make sure that the solution is maintained in source control. &lt;/p&gt;
@@ -121,8 +238,8 @@
 
 &lt;ul&gt;
 &lt;li&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;In order to automate the process we first need to make sure that the solution is maintained in source control. &lt;/p&gt;
@@ -599,40 +716,4 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 &lt;/blockquote&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;The nuke option - entirely delete the web job entries in each of the slots (not recommended).&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/</id><title type="text">Strategy for Updating a SQL Server Database Schema via SSDT Delta Script</title><summary type="html">&lt;p&gt;This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. &lt;/p&gt;
-
-&lt;p&gt;This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.&lt;/p&gt;
-
-&lt;p&gt;Here are the steps I followed in order to bring the production environment up-to-date: &lt;/p&gt;
-
-</summary><published>2015-11-24T13:00:00Z</published><updated>2015-11-24T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/" /><content type="html">&lt;p&gt;This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. &lt;/p&gt;
-
-&lt;p&gt;This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.&lt;/p&gt;
-
-&lt;p&gt;Here are the steps I followed in order to bring the production environment up-to-date: &lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a baseline DACPAC and move it into source control - this represents the schema currently in production.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, ensure that every time the SSDT project is built a post event would generate a differential delta script between the baseline and latest DACPAC. I tried to simplify the following command by wrapping it up within a powershell script:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;amp;"C:\Program Files (x86)\Microsoft SQL Server\110\DAC\bin\sqlpackage" /a:Script /sf:$SourceDacpac  /tf:$TargetDacpac /op:$OutputDeltaFile /tdn:$DBName /p:IncludeTransactionalScripts=True /p:IncludeCompositeObjects=True /p:ScriptDatabaseOptions=False /p:BlockOnPossibleDataLoss=True /v:TenantSchemaName=dbo
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Note that one of the parameters (&lt;code&gt;p:IncludeTransactionalScripts=True&lt;/code&gt;) was to ensure that the script would be generated as a transaction.  &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;(optional) Perform any post processing on the generated delta script - In my specific use-case I had to tinker the script to work within a multi-tenant scenario. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Deploy the generated delta script against the target environment. This can be done using a tools &lt;code&gt;SqlCmd&lt;/code&gt; or a custom tool such as &lt;a href="https://github.com/rusanu/DbUtilSqlCmd"&gt;https://github.com/rusanu/DbUtilSqlCmd&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Upon successful release, update the baseline to the latest DACPAC file.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/22352298/sqlpackage-with-script-action-does-not-produce-any-copy-always-scripts"&gt;Stack Overflow - ssdt - SQLPackage with Script Action does not produce any Copy Always scripts&lt;/a&gt; &lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/15502659/what-is-the-syntax-for-adding-multiple-arguments-onto-the-variables-parameter"&gt;Stack Overflow - ssdt - What is the syntax for adding multiple arguments onto the "Variables" parameter in sqlpackage.exe?&lt;/a&gt; &lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/hh550080(v=vs.103).aspx"&gt;MSDN - SqlPackage.exe&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://phoebix.com/2013/09/19/extract-dacpac-using-command-line/"&gt;Extract DacPac Using Command Line | phoebix&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/rusanu/DbUtilSqlCmd"&gt;rusanu/DbUtilSqlCmd · GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </content></entry></feed>

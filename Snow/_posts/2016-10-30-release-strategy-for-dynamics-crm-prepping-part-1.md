@@ -7,8 +7,8 @@ category: Dynamics CRM, Dynamics CRM Online, generator-nullfactory-xrm, Visual S
 Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. 
 
 - Release Strategy for Dynamics CRM - Part 1 - Preparation
-- [Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build](/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2)
-- Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release
+- [Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build](/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2)
+- [Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release](/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/)
 
 In order to automate the process we first need to make sure that the solution is maintained in source control. 
 

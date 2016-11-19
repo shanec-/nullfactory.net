@@ -42,7 +42,55 @@
 </header>
  <div class="listing">
     <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</a></h2>
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></h2>
+      <p class="post-date">18 Nov 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+</p>
+
+      <p>
+		
+		<p>This is the final installment of the a three part series. Use to following links to access part 1 and 2:</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+<li>Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</li>
+</ul>
+
+<p>In the previous two posts I show you how to create the project structure and create a basic team build for your CRM solution artifacts. In this final installment I go about setting up a release definition for the build that we created.</p>
+
+<ol>
+<li>Let's start off by creating a new release by navigating to the <code>Build and Release &gt; Release</code> in your team project.</li>
+<li><p>Select the <code>Empty</code> template option and click the next button.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/10_ReleaseDefinition.png" alt="Empty release template" /></p></li>
+<li><p>On the next step, choose the source for this release - we'll be using the <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">build definition that we created in part 2</a>. Once ready click the <code>Create</code> button.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/20_SelectBuildDefinition.png" alt="Select build defintion" /></p></li>
+<li><p>Now lets declare the variables that would be used later in the process. Navigate to the <code>Variables</code> tab and define the following variables:</p>
+
+<ul>
+<li><code>DevDeployLogin</code> - The username that used to deploy the solution.</li>
+<li><code>DevDeployPassword</code> - The password for the same account.</li>
+</ul>
+
+<p>Make sure to define the <code>DevDeployPassword</code> as a secret by clicking the padlock icon next to the field.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/100_SetupVariables.png" alt="Release Variables" /></p>
+
+<p>Read more about <a href="https://www.visualstudio.com/en-us/docs/build/define/variables">build and release variables here</a>.</p></li>
+</ol>
+
+
+		<p><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></h2>
       <p class="post-date">12 Nov 2016
 
       | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
@@ -57,8 +105,8 @@
 
 <ul>
 <li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
-<li>Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</li>
-<li>Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release</li>
+<li>Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
 </ul>
 
 <p>In first part of the series accomplished the following:</p>
@@ -103,8 +151,8 @@
 
 <ul>
 <li>Release Strategy for Dynamics CRM - Part 1 - Preparation</li>
-<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 -Setting Up the Build</a></li>
-<li>Release Strategy for Dynamics CRM - Part 3 -Setting Up the Release</li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
 </ul>
 
 <p>In order to automate the process we first need to make sure that the solution is maintained in source control. </p>
@@ -331,26 +379,6 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 
 
 		<p><a href="/2015/12/disabling-recurring-ondemand-webjob/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Strategy for Updating a SQL Server Database Schema via SSDT Delta Script</a></h2>
-      <p class="post-date">25 Nov 2015
-
-      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
-      | <a href="/category/sql-server-data-tools" title="SQL Server Data Tools">SQL Server Data Tools</a>
-</p>
-
-      <p>
-		
-		<p>This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. </p>
-
-<p>This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.</p>
-
-<p>Here are the steps I followed in order to bring the production environment up-to-date: </p>
-
-
-		<p><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Read more...</a></p>
 	  </p>
     </div>
 </div>

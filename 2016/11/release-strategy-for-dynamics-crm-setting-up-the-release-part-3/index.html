@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online,generator-nullfactory-xrm,Visual Studio Team Services" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></h2>
+		<p class="post-date">18 Nov 2016
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+	  </p>
+
+		
+
+		<p>This is the final installment of the a three part series. Use to following links to access part 1 and 2:</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+<li>Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</li>
+</ul>
+
+<p>In the previous two posts I show you how to create the project structure and create a basic team build for your CRM solution artifacts. In this final installment I go about setting up a release definition for the build that we created.</p>
+
+<ol>
+<li>Let's start off by creating a new release by navigating to the <code>Build and Release &gt; Release</code> in your team project.</li>
+<li><p>Select the <code>Empty</code> template option and click the next button.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/10_ReleaseDefinition.png" alt="Empty release template" /></p></li>
+<li><p>On the next step, choose the source for this release - we'll be using the <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">build definition that we created in part 2</a>. Once ready click the <code>Create</code> button.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/20_SelectBuildDefinition.png" alt="Select build defintion" /></p></li>
+<li><p>Now lets declare the variables that would be used later in the process. Navigate to the <code>Variables</code> tab and define the following variables:</p>
+
+<ul>
+<li><code>DevDeployLogin</code> - The username that used to deploy the solution.</li>
+<li><code>DevDeployPassword</code> - The password for the same account.</li>
+</ul>
+
+<p>Make sure to define the <code>DevDeployPassword</code> as a secret by clicking the padlock icon next to the field.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/100_SetupVariables.png" alt="Release Variables" /></p>
+
+<p>Read more about <a href="https://www.visualstudio.com/en-us/docs/build/define/variables">build and release variables here</a>.</p></li>
+</ol>
+
+<!--excerpt--> 
+
+<ol>
+<li><p>Next, create a new agent step by clicking the <code>Add tasks</code> and selecting <code>Add an agent phase</code> in the context menu.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/30_AddAgentPhase.png" alt="Add agent phase task" /></p></li>
+<li><p>Select a <code>PowerShell</code> in the task catalog and click the <code>Add</code> button.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/40_AgentPhasePowerShell.png" alt="Add agent phase powershell" /></p></li>
+<li><p>Once the task is added, set the type to <code>Inline Script</code> and add the following script in the <code>Inline Script</code> field:</p>
+
+<p><code>Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser</code></p>
+
+<p>The purpose of this script is to install the NuGet provider on the agent. This is a prerequisite of the <code>Install-Module</code> command that will be used by the <code>Deploy-CrmSolution</code> script.</p>
+
+<p>And while we're here, let's rename the task to a more appropriate one. This would help us to distinguish it better.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/50_SetupEnvironmentPreReqStep.png" alt="Configure environment prerequisite powershell" /></p></li>
+<li><p>Now, add a second PoweShell script. This time set the type as <code>File Path</code> and rename the task to <code>Deploy CRM Solution</code>. This task would be performing the actual deployment to CRM.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/60_CrmDeployStep.png" alt="Add CRM deploy step" /></p></li>
+<li><p>Click the ellipsis on the <code>Script Path</code> field to browse and find the <code>Deploy-CrmSolution.ps1</code> script. </p>
+
+<p><code>$(System.DefaultWorkingDirectory)/DevBuild/drop/Nullfactory.Xrm.Tooling/Scripts/Deploy-CrmSolution.ps1</code></p>
+
+<p><img src="/images/posts/CrmReleasePt3/70_CrmDeployStepScript.png" alt="Configure CRM deploy step script" /></p></li>
+<li><p>Set the following arguments for the script - notice that the previously defined variables <code>DevDeployLogin</code> and <code>DevDeployPassword</code> being used as part of the script.
+<code>-serverUrl "https://servername.crm6.dynamics.com" -username "$(DevDeployLogin)" -password "$(DevDeployPassword)" -solutionName "Demo.AlphaSolution" -publishChanges -activatePlugins</code></p>
+
+<p><img src="/images/posts/CrmReleasePt3/90_FinalCrmDeployStep.png" alt="CRM deploy step final" /></p></li>
+<li><p>Expand the <code>Advanced</code> tab and click the ellipsis button on the <code>Working Folder</code> field. Set the working folder to the <code>Nullfactory.Xrm.Tooling\Scripts</code> folder on the resulting dialog. I do this in order to minimize the chance of encountering any long file path issues.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/80_CrmDeployStepTarget.png" alt="Configure CRM deploy step target" /></p></li>
+<li><p>Now that everything is setup, time to test out our new release definition. Let's queue a new release.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/110_CreateRelease.png" alt="Create new release" /></p></li>
+<li><p>Ensure that the release is being deployed and that it completed successfully.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/120_ReleaseStatusInProgress.png" alt="Verify release status" /></p>
+
+<p><img src="/images/posts/CrmReleasePt3/130_ReleaseStatusComplete.png" alt="Verify release status complete" /></p></li>
+</ol>
+
+<p>That's it folks. That's the end of the three part series showing how to setup a project structure, configure a build and finally release a source-controlled CRM solution.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.visualstudio.com/sl-si/docs/release/managing-releases/create-release">Create a release in Microsoft Release Management for Visual Studio Team Services and Team Foundation Server 2015</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/build/define/variables">Use build variables</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/build/scripts/">Use a PowerShell script to customize your build process</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/release/author-release-definition/understanding-tasks">How to deploy? Microsoft Release Management Tasks for Visual Studio Team Services and Team Foundation Server 2015</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
