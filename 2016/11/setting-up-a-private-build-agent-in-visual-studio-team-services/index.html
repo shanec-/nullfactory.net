@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Visual Studio Team Services,Team Build,ALM,Azure" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/">Setting up a Private Build Agent in Visual Studio Team Services</a></h2>
+		<p class="post-date">26 Nov 2016
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/team-build">Team Build</a>
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/azure">Azure</a>
+	  </p>
+
+		
+
+		<p>I've started working on a new hobby project hosted in Visual Studio Team Services (VSTS) and was keen to follow mature build and release practices on it. Given that I am essentially a one man team, I decided to make due with the free tiers. One of the limitations in this tier is the number of CPU cycles available for hosted builds and releases. This means that if I setup all - continuous integration (CI) build, standard build and release definition I am surely going to use up all the available minutes.</p>
+
+<p>The goal was to keep the overall costs low without sacrificing any build and release related automation. Luckily, VSTS allows us to host our own agents on a <a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-private-pipelines">private pipeline</a>. This seemed the ideal a minimalist setup for me, this looked to be cheaper than having additional <a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-hosted-pipelines">hosted pipelines</a>. Also worth noting that VSTS currently provides one private pipeline in the free tier with the ability to purchase more private agents (which is slightly cheaper than the hosted).</p>
+
+<p>In this post I go about setting up a virtual machine and then install and configure a build/release agent that can be used by the team builds and releases. </p>
+
+<h2>Provisioning the Virtual Machine</h2>
+
+<ol>
+<li>Start off by creating a new resource group dedicated for the build server(s). This is so that we can tie the scheduler to shutdown all agents in a resource group without having to shutdown individual servers.</li>
+<li>Next, let's provision a new Windows virtual machine, customize this as you see fit - I used a standard Windows 10 machine. In order to make life easier, I chose a higher tier during your setup with the intention of scaling it down to a lower one once everything is setup.</li>
+<li>For this to be a viable build server, I installed the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=42637">.NET 4.5.2 targeting pack</a>. Alternatively, you could install Visual Studio Community Edition or any other dependencies that your particular build might require.</li>
+</ol>
+
+<h2>Installing the Agent</h2>
+
+<ol>
+<li>Log into the newly provisioned virtual machine.</li>
+<li>Next, open a browser and log in to your VSTS instance from within it and navigate to settings page by clicking on the cog icon. Then click the <code>Agent pools</code> sub menu in order to view the list of available agent pools.</li>
+<li><p>Click on the <code>Download Agent</code> button and follow the instructions to install the agent.</p>
+
+<p><img src="/images/posts/VstsOnPremAgent/10_DownloadAgent.png" alt="Download agent" /></p>
+
+<!--excerpt--></li>
+<li><p>While the agent's downloading, let's <a href="https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate">setup the Personal Access Token</a> (PAT) that the agent would use to access VSTS. To do this navigate to the <code>Security</code> tab under your profile context menu.</p>
+
+<p><img src="/images/posts/VstsOnPremAgent/20_PatSecurity.png" alt="PAT security link" /></p></li>
+<li><p>On the <code>Personal access tokens</code> tab, click the <code>Add</code> button to create a new one.</p>
+
+<p><img src="/images/posts/VstsOnPremAgent/30_AddPatToken.png" alt="Add PAT token" /></p></li>
+<li><p>Provide <code>description</code>, <code>Expires in</code> and <code>Accounts</code> information as appropriate. As for the scopes, provide the <code>Agent Pools (read, manage)</code> scope. Read more about roles and scopes <a href="https://github.com/Microsoft/vsts-agent/blob/master/docs/start/roles.md">here</a>.</p>
+
+<p><img src="/images/posts/VstsOnPremAgent/40_PatScope.png" alt="Set PAT scope" /></p></li>
+<li><p>Click on the <code>Create Token</code> button in order to generate a token. Copy the newly generated token, we would be using this when configuring the build agent.</p></li>
+<li><p>Optionally create a new agent pool dedicated for your on-premises agent. 
+<img src="/images/posts/VstsOnPremAgent/50_CreateAgentPool.png" alt="Create agent pool" /></p></li>
+</ol>
+
+<h2>Configure and Running the Agent</h2>
+
+<ol>
+<li><p>Run the <code>config.cmd</code> batch file in order to start the agent configuration. </p>
+
+<p><img src="/images/posts/VstsOnPremAgent/70_ConfigAgent2.png" alt="Configure Agent" /></p>
+
+<p>Enter the details for the following notable settings:</p>
+
+<ul>
+<li><code>Enter server URL</code> - this is the VSTS server url.</li>
+<li><code>Enter personal access token</code> - The token that we generated previously.</li>
+<li><code>Enter remote agent pool</code> - If you previously created a dedicated agent pool, then provide its name.</li>
+<li><code>Enter agent name</code> - The name of the agent</li>
+</ul></li>
+<li><p>If you did not opt-in to run the agent as as a service, manually start the agent using the <code>run.cmd</code> batch file.</p>
+
+<p><img src="/images/posts/VstsOnPremAgent/90_RunAgent.png" alt="Run agent" /></p></li>
+<li><p>Now that the new agent is running all we have to do is to let our build know about it. Do this by editing the build definition and setting the <code>Default agent queue</code> located in the <code>General</code> tab.</p>
+
+<p><img src="/images/posts/VstsOnPremAgent/80_SetAgentPoolBuild.png" alt="Set build agent pool" /></p></li>
+</ol>
+
+<p>Stay tuned for the next post where I schedule the uptime of the virtual machine.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate">Authenticate access with personal access tokens | Visual Studio Team Services &amp; TFS</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/build/admin/agents/v2-windows">Deploy an agent on Windows</a></li>
+<li><a href="https://github.com/Microsoft/vsts-agent/blob/master/docs/start/roles.md">Configure Account and Roles vsts-agent/roles.md at master · Microsoft/vsts-agent</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-private-pipelines">Private Pipelines - Visual Studio Marketplace</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-hosted-pipelines">Hosted Pipelines - Visual Studio Marketplace</a></li>
+<li><a href="http://www.microsoft.com/en-us/download/details.aspx?id=42637">Download Microsoft .NET Framework 4.5.2 Developer Pack for Windows Vista SP2, Windows 7 SP1, Windows 8, Windows 8.1, Windows Server 2008 SP2 Windows Server 2008 R2 SP1, Windows Server 2012 and Windows Server 2012 R2 from Official Microsoft Download Center</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

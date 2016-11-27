@@ -1,4 +1,100 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-11-19T22:43:27+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/</id><title type="text">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</title><summary type="html">&lt;p&gt;This is the final installment of the a three part series. Use to following links to access part 1 and 2:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-11-27T12:48:58+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/</id><title type="text">Setting up a Private Build Agent in Visual Studio Team Services</title><summary type="html">&lt;p&gt;I've started working on a new hobby project hosted in Visual Studio Team Services (VSTS) and was keen to follow mature build and release practices on it. Given that I am essentially a one man team, I decided to make due with the free tiers. One of the limitations in this tier is the number of CPU cycles available for hosted builds and releases. This means that if I setup all - continuous integration (CI) build, standard build and release definition I am surely going to use up all the available minutes.&lt;/p&gt;
+
+&lt;p&gt;The goal was to keep the overall costs low without sacrificing any build and release related automation. Luckily, VSTS allows us to host our own agents on a &lt;a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-private-pipelines"&gt;private pipeline&lt;/a&gt;. This seemed the ideal a minimalist setup for me, this looked to be cheaper than having additional &lt;a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-hosted-pipelines"&gt;hosted pipelines&lt;/a&gt;. Also worth noting that VSTS currently provides one private pipeline in the free tier with the ability to purchase more private agents (which is slightly cheaper than the hosted).&lt;/p&gt;
+
+&lt;p&gt;In this post I go about setting up a virtual machine and then install and configure a build/release agent that can be used by the team builds and releases. &lt;/p&gt;
+
+&lt;h2&gt;Provisioning the Virtual Machine&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Start off by creating a new resource group dedicated for the build server(s). This is so that we can tie the scheduler to shutdown all agents in a resource group without having to shutdown individual servers.&lt;/li&gt;
+&lt;li&gt;Next, let's provision a new Windows virtual machine, customize this as you see fit - I used a standard Windows 10 machine. In order to make life easier, I chose a higher tier during your setup with the intention of scaling it down to a lower one once everything is setup.&lt;/li&gt;
+&lt;li&gt;For this to be a viable build server, I installed the &lt;a href="http://www.microsoft.com/en-us/download/details.aspx?id=42637"&gt;.NET 4.5.2 targeting pack&lt;/a&gt;. Alternatively, you could install Visual Studio Community Edition or any other dependencies that your particular build might require.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Installing the Agent&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Log into the newly provisioned virtual machine.&lt;/li&gt;
+&lt;li&gt;Next, open a browser and log in to your VSTS instance from within it and navigate to settings page by clicking on the cog icon. Then click the &lt;code&gt;Agent pools&lt;/code&gt; sub menu in order to view the list of available agent pools.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on the &lt;code&gt;Download Agent&lt;/code&gt; button and follow the instructions to install the agent.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/10_DownloadAgent.png" alt="Download agent" /&gt;&lt;/p&gt;
+
+</summary><published>2016-11-25T13:00:00Z</published><updated>2016-11-25T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/" /><content type="html">&lt;p&gt;I've started working on a new hobby project hosted in Visual Studio Team Services (VSTS) and was keen to follow mature build and release practices on it. Given that I am essentially a one man team, I decided to make due with the free tiers. One of the limitations in this tier is the number of CPU cycles available for hosted builds and releases. This means that if I setup all - continuous integration (CI) build, standard build and release definition I am surely going to use up all the available minutes.&lt;/p&gt;
+
+&lt;p&gt;The goal was to keep the overall costs low without sacrificing any build and release related automation. Luckily, VSTS allows us to host our own agents on a &lt;a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-private-pipelines"&gt;private pipeline&lt;/a&gt;. This seemed the ideal a minimalist setup for me, this looked to be cheaper than having additional &lt;a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-hosted-pipelines"&gt;hosted pipelines&lt;/a&gt;. Also worth noting that VSTS currently provides one private pipeline in the free tier with the ability to purchase more private agents (which is slightly cheaper than the hosted).&lt;/p&gt;
+
+&lt;p&gt;In this post I go about setting up a virtual machine and then install and configure a build/release agent that can be used by the team builds and releases. &lt;/p&gt;
+
+&lt;h2&gt;Provisioning the Virtual Machine&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Start off by creating a new resource group dedicated for the build server(s). This is so that we can tie the scheduler to shutdown all agents in a resource group without having to shutdown individual servers.&lt;/li&gt;
+&lt;li&gt;Next, let's provision a new Windows virtual machine, customize this as you see fit - I used a standard Windows 10 machine. In order to make life easier, I chose a higher tier during your setup with the intention of scaling it down to a lower one once everything is setup.&lt;/li&gt;
+&lt;li&gt;For this to be a viable build server, I installed the &lt;a href="http://www.microsoft.com/en-us/download/details.aspx?id=42637"&gt;.NET 4.5.2 targeting pack&lt;/a&gt;. Alternatively, you could install Visual Studio Community Edition or any other dependencies that your particular build might require.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Installing the Agent&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Log into the newly provisioned virtual machine.&lt;/li&gt;
+&lt;li&gt;Next, open a browser and log in to your VSTS instance from within it and navigate to settings page by clicking on the cog icon. Then click the &lt;code&gt;Agent pools&lt;/code&gt; sub menu in order to view the list of available agent pools.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on the &lt;code&gt;Download Agent&lt;/code&gt; button and follow the instructions to install the agent.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/10_DownloadAgent.png" alt="Download agent" /&gt;&lt;/p&gt;
+
+&lt;!--excerpt--&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;While the agent's downloading, let's &lt;a href="https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate"&gt;setup the Personal Access Token&lt;/a&gt; (PAT) that the agent would use to access VSTS. To do this navigate to the &lt;code&gt;Security&lt;/code&gt; tab under your profile context menu.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/20_PatSecurity.png" alt="PAT security link" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;On the &lt;code&gt;Personal access tokens&lt;/code&gt; tab, click the &lt;code&gt;Add&lt;/code&gt; button to create a new one.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/30_AddPatToken.png" alt="Add PAT token" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Provide &lt;code&gt;description&lt;/code&gt;, &lt;code&gt;Expires in&lt;/code&gt; and &lt;code&gt;Accounts&lt;/code&gt; information as appropriate. As for the scopes, provide the &lt;code&gt;Agent Pools (read, manage)&lt;/code&gt; scope. Read more about roles and scopes &lt;a href="https://github.com/Microsoft/vsts-agent/blob/master/docs/start/roles.md"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/40_PatScope.png" alt="Set PAT scope" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on the &lt;code&gt;Create Token&lt;/code&gt; button in order to generate a token. Copy the newly generated token, we would be using this when configuring the build agent.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Optionally create a new agent pool dedicated for your on-premises agent. 
+&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/50_CreateAgentPool.png" alt="Create agent pool" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Configure and Running the Agent&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Run the &lt;code&gt;config.cmd&lt;/code&gt; batch file in order to start the agent configuration. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/70_ConfigAgent2.png" alt="Configure Agent" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Enter the details for the following notable settings:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Enter server URL&lt;/code&gt; - this is the VSTS server url.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Enter personal access token&lt;/code&gt; - The token that we generated previously.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Enter remote agent pool&lt;/code&gt; - If you previously created a dedicated agent pool, then provide its name.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Enter agent name&lt;/code&gt; - The name of the agent&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you did not opt-in to run the agent as as a service, manually start the agent using the &lt;code&gt;run.cmd&lt;/code&gt; batch file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/90_RunAgent.png" alt="Run agent" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now that the new agent is running all we have to do is to let our build know about it. Do this by editing the build definition and setting the &lt;code&gt;Default agent queue&lt;/code&gt; located in the &lt;code&gt;General&lt;/code&gt; tab.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/VstsOnPremAgent/80_SetAgentPoolBuild.png" alt="Set build agent pool" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Stay tuned for the next post where I schedule the uptime of the virtual machine.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate"&gt;Authenticate access with personal access tokens | Visual Studio Team Services &amp;amp; TFS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/admin/agents/v2-windows"&gt;Deploy an agent on Windows&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/Microsoft/vsts-agent/blob/master/docs/start/roles.md"&gt;Configure Account and Roles vsts-agent/roles.md at master · Microsoft/vsts-agent&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-private-pipelines"&gt;Private Pipelines - Visual Studio Marketplace&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-hosted-pipelines"&gt;Hosted Pipelines - Visual Studio Marketplace&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.microsoft.com/en-us/download/details.aspx?id=42637"&gt;Download Microsoft .NET Framework 4.5.2 Developer Pack for Windows Vista SP2, Windows 7 SP1, Windows 8, Windows 8.1, Windows Server 2008 SP2 Windows Server 2008 R2 SP1, Windows Server 2012 and Windows Server 2012 R2 from Official Microsoft Download Center&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/</id><title type="text">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</title><summary type="html">&lt;p&gt;This is the final installment of the a three part series. Use to following links to access part 1 and 2:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
@@ -695,25 +791,4 @@ This meant that the &lt;code&gt;Account&lt;/code&gt; attribute would not appear 
 &lt;li&gt;&lt;a href="http://waelhamze.com/2014/01/12/dynamics-crm-parallel-development-with-solution-packager/"&gt;Dynamics CRM Parallel Development with Solution Packager | Wael Hamze&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://visualstudiogallery.msdn.microsoft.com/898a828a-af00-42c6-bbb2-530dc7b8f2e1"&gt;Microsoft Visual Studio Team Foundation Server 2015 Power Tools extension&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2015/12/disabling-recurring-ondemand-webjob/</id><title type="text">Disabling Recurring and OnDemand Web Jobs within a Deployment Slot</title><summary type="html">&lt;p&gt;I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned &lt;em&gt;the hard way&lt;/em&gt; that stopping a slotted Web App does &lt;strong&gt;not&lt;/strong&gt; stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
-Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a &lt;code&gt;stop&lt;/code&gt; option for &lt;code&gt;continuous&lt;/code&gt; jobs and not for the &lt;code&gt;recurring&lt;/code&gt; and &lt;code&gt;OnDemand&lt;/code&gt; jobs.&lt;/p&gt;
-
-&lt;p&gt;This limits us to a few possible solutions:&lt;/p&gt;
-
-</summary><published>2015-12-19T13:00:00Z</published><updated>2015-12-19T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2015/12/disabling-recurring-ondemand-webjob/" /><content type="html">&lt;p&gt;I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned &lt;em&gt;the hard way&lt;/em&gt; that stopping a slotted Web App does &lt;strong&gt;not&lt;/strong&gt; stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
-Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a &lt;code&gt;stop&lt;/code&gt; option for &lt;code&gt;continuous&lt;/code&gt; jobs and not for the &lt;code&gt;recurring&lt;/code&gt; and &lt;code&gt;OnDemand&lt;/code&gt; jobs.&lt;/p&gt;
-
-&lt;p&gt;This limits us to a few possible solutions:&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Make sure that all the resources accessed by the slotted web app / jobs are isolated from each other - Ensure that the necessary appsettings are defined as slot settings and point to different values. This is done so as to ensure that you do not inadvertently run a scheduled job multiple times (once via the production slot and one time for each of the slots). &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Baking-in custom disabling logic right into your job - For example, a web job could skip its operation based on a custom appsetting value. Once again, this appsetting would be defined as a slot setting. &lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;A word of caution - be weary when implementing the "skipping" logic on continous jobs as "skipping" can be considered a successful run which would in turn pop the last message in the tiggered queue.&lt;/p&gt;
-&lt;/blockquote&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The nuke option - entirely delete the web job entries in each of the slots (not recommended).&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
 </content></entry></feed>
