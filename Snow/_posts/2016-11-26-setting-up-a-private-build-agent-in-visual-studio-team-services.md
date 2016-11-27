@@ -66,6 +66,7 @@ Stay tuned for the next post where I schedule the uptime of the virtual machine.
 
 ## References
 
+- [Configure agents for Microsoft Release Management in Visual Studio Team Services and Team Foundation Server 2015](https://www.visualstudio.com/en-us/docs/release/getting-started/configure-agents)
 - [Authenticate access with personal access tokens | Visual Studio Team Services & TFS](https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate)
 - [Deploy an agent on Windows](https://www.visualstudio.com/en-us/docs/build/admin/agents/v2-windows)
 - [Configure Account and Roles vsts-agent/roles.md at master · Microsoft/vsts-agent](https://github.com/Microsoft/vsts-agent/blob/master/docs/start/roles.md)

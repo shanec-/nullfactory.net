@@ -87,6 +87,7 @@
 &lt;h2&gt;References&lt;/h2&gt;
 
 &lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/release/getting-started/configure-agents"&gt;Configure agents for Microsoft Release Management in Visual Studio Team Services and Team Foundation Server 2015&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/setup-admin/team-services/use-personal-access-tokens-to-authenticate"&gt;Authenticate access with personal access tokens | Visual Studio Team Services &amp;amp; TFS&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/admin/agents/v2-windows"&gt;Deploy an agent on Windows&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://github.com/Microsoft/vsts-agent/blob/master/docs/start/roles.md"&gt;Configure Account and Roles vsts-agent/roles.md at master · Microsoft/vsts-agent&lt;/a&gt;&lt;/li&gt;
