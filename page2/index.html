@@ -42,6 +42,46 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell</a></h2>
+      <p class="post-date">21 Jan 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+</p>
+
+      <p>
+		
+		<p>I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.</p>
+
+<p>This implementation at its core revolves around the <a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"><code>Microsoft.Xrm.Data.PowerShell</code></a> module and the <code>Solution Packager</code> tool provided with the official SDK. I have minimized the use of 3rd party libraries and have intentionally excluded the use of any visual studio extensions or helper tools.</p>
+
+<h2>Setting up the Tools</h2>
+
+<h3>Installing Microsoft.CrmSdk.CoreTools</h3>
+
+<p>Let's start off by creating a "tooling" project that would act as a hosts for the tools and scripts involved in the process.</p>
+
+<ol>
+<li>Create a class library project to host the tools using for building the packages. I named mine <code>Nullfactory.Crm.Tooling</code>.</li>
+<li><p>Install the <code>Microsoft.CrmSdk.CoreTools</code> nuget package by running the following command in the package manager console: </p>
+
+<p><code>Install-Package Microsoft.CrmSdk.CoreTools -Project Nullfactory.Crm.Tooling</code></p>
+
+<p>This nuget package includes the <code>SolutionPackager.exe</code> tool.</p>
+
+<p><img src="/images/posts/CrmDataPowershell/10_InstallCoreTools.png" alt="Install Crm Core Tools" /></p></li>
+<li><p>Next, clean up the project by removing the default <code>Class1.cs</code> file as well as the <code>Debug</code> and <code>Release</code> within the <code>bin</code> folder.</p></li>
+<li><p>Update the solution configurations to not build this project. Do this by navigating to the solution property pages > <code>Configuration Properties</code> and un-ticking the check box against the build column.</p>
+
+<p><img src="/images/posts/CrmDataPowershell/20_DontBuild.png" alt="Do not Build Project" /></p></li>
+</ol>
+
+
+		<p><a href="/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/12/disabling-recurring-ondemand-webjob/">Disabling Recurring and OnDemand Web Jobs within a Deployment Slot</a></h2>
       <p class="post-date">20 Dec 2015
 
@@ -337,41 +377,6 @@ at System.Threading.ThreadHelper.ThreadStart()
 
 
 		<p><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/recording-diagnostics-azure-app-service-website-log4net/">Recording Diagnostics on a Azure App Service Hosted Website using Log4Net</a></h2>
-      <p class="post-date">24 May 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-      | <a href="/category/log4net" title="Log4Net">Log4Net</a>
-</p>
-
-      <p>
-		
-		<p>I've been working on moving an existing web based software solution into the Azure cloud ecosystem. The solution is tightly integrated with and uses Log4Net as it logging framework. My primary goal, in terms of logging, was to keep as much of my original architecture intact and at the same time make maximum use of the diagnostics infrastructure that is available in Azure.</p>
-
-<p>The <a href="http://azure.microsoft.com/en-in/documentation/articles/web-sites-enable-diagnostic-log/">official documentation states</a> that calls to the <code>System.Diagnostics.Trace</code> methods are all that is required to start capturing diagnostic information. In summary, this is all I needed to do:</p>
-
-<ol>
-<li>Enable diagnostics and configure the storage locations (discussed later down the post).</li>
-<li>From within my code write the <code>Warning</code>, <code>Error</code> and <code>Information</code> messages via their respective trace methods.</li>
-<li>...</li>
-<li>Azure starts capturing the custom diagnostics information - PROFIT! </li>
-</ol>
-
-<p>Sounds simple enough. </p>
-
-<p>So I thought if I just set up a <code>TraceAppender</code> everything would work fine and that would be the end of it. The results were not what I was expecting and this was the output in my table storage:</p>
-
-<p><img src="/images/posts/AzureAppSvcDiag/10_AppServiceTableDiag.png" alt="Table Diagnostics" /></p>
-
-<p>The trace entries are bunched together as a single <code>Verbose</code> entry and the writes appear to be buffered. Not acceptable. I suppose the buffering could be because I had not used the <code>ImmediateFlush</code> option for the <code>TraceAppender</code>, but I need to have each Trace statement to have its own entry in the table.</p>
-
-<p>While there are a lot of posts on the internet on how to setup Log4Net with Azure, most of them appear to be out of date and seem to be compensating for features were not available in the Azure at the time of their implementation. Then there are others that targeted towards integrating with the Cloud Service which is not what I was looking for.</p>
-
-
-		<p><a href="/2015/05/recording-diagnostics-azure-app-service-website-log4net/">Read more...</a></p>
 	  </p>
     </div>
 </div>

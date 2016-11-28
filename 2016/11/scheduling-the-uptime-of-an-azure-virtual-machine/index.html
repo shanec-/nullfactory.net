@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Azure" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/">Scheduling the Uptime of an Azure Virtual Machine</a></h2>
+		<p class="post-date">28 Nov 2016
+				| <a href="/category/azure">Azure</a>
+	  </p>
+
+		
+
+		<p>In a previous post I setup a <a href="/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/">build agent in a private pipeline</a> - hosted within a Azure Virtual Machine (VM). In this one, I try to minimize the uptime of the VM by making it run only during work hours - I require it to start automatically first thing in the morning and then turn itself off at the close of business. In order to achieve this I make use of the <a href="https://azure.microsoft.com/en-au/services/automation/">Azure Automation</a> feature.</p>
+
+<ol>
+<li><p>Let's start off by logging into our Azure account and creating a new <code>Automation Account</code> entry. </p>
+
+<p><img src="/images/posts/AzureVmSchedule/10_Automation.png" alt="Search Automation Account" /></p>
+
+<p><img src="/images/posts/AzureVmSchedule/20_CreateAutomation.png" alt="Create Automation Account" /></p></li>
+<li><p>Provide the required details:</p>
+
+<ul>
+<li><code>Name</code> - Name for the automation account.</li>
+<li><code>Subscription</code> - Azure subscription for this account.</li>
+<li><code>Resource Group</code> - Create or select an existing resource group from the list. </li>
+<li><code>Location</code> - Select an available region from the list.</li>
+<li><code>Create Azure Run As account</code> - Select <code>Yes</code>.</li>
+</ul>
+
+<p><img src="/images/posts/AzureVmSchedule/30_AddAutomationInfo.png" alt="Add Automation Account" /></p></li>
+<li><p>Click the <code>Create</code> button to start provisioning the automation account.</p></li>
+<li><p>Once done, navigate to it's blade via the resource groups and click on the <code>Runbooks</code> widget.</p>
+
+<p><img src="/images/posts/AzureVmSchedule/40_CreateRunbook.png" alt="Create runbook" /></p>
+
+<!--excerpt--></li>
+<li><p>The runbook gallery had a couple of really good graphical runbooks that suited my purposes - the <code>Start Azure V2 VMs</code> and <code>Stop Azure V2 VMs</code>. </p>
+
+<p>Click on the <code>Browse Gallery</code> button, select the <code>Start Azure V2 VMs</code> graphical runbook and then click <code>OK</code> to confirm the selection.</p>
+
+<p><img src="/images/posts/AzureVmSchedule/50_ChooseRecipe.png" alt="Choose Graphical Runbook" /></p></li>
+<li><p>Inspect the flow and click the <code>Import</code> button when ready.</p>
+
+<p><img src="/images/posts/AzureVmSchedule/60_ImportRecipe.png" alt="Import Graphical Runbook" /></p></li>
+<li><p>Navigate into the newly added runbook and click the <code>Edit</code> button. Make any alterations if required and click the <code>Publish</code> button.</p>
+
+<p><img src="/images/posts/AzureVmSchedule/70_PublishRunbook.png" alt="Publish Runbook" /></p></li>
+<li><p>Back on the runbook blade, click on <code>Schedules</code> widget and then click on the <code>Add a schedule</code> button.</p>
+
+<p><img src="/images/posts/AzureVmSchedule/80_AddSchedule.png" alt="Add Schedule" /></p></li>
+<li><p>Click on the <code>Link a schedule to your runbook</code> and then create a new schedule. Provide the time and recurrence for the script execution. <a href="https://docs.microsoft.com/en-au/azure/automation/automation-scheduling-a-runbook">Read more about scheduling here</a>.</p>
+
+<p><img src="/images/posts/AzureVmSchedule/90_FinalizeSchedule.png" alt="Finalize Schedule" /></p></li>
+<li><p>Next, select <code>Configure parameters and run settings</code> and provide a virtual machine name or resource group which would start on execution.</p>
+
+<p><img src="/images/posts/AzureVmSchedule/100_Parameters.png" alt="Schedule parameters" /></p></li>
+<li><p>Click the <code>ok</code> button once done. You should get a confirmation that the schedule is linked to a runbook. </p>
+
+<p>That's it. The runbook would execute at the pre-defined time.</p></li>
+<li><p>Repeat the above steps again to create a stop script using the <code>Stop Azure V2 VMs</code> graphical runbook. </p></li>
+</ol>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://azure.microsoft.com/en-au/services/automation/">Automation – Cloud process &amp; workflow automation | Microsoft Azure</a></li>
+<li><a href="https://docs.microsoft.com/en-au/azure/automation/automation-scheduling-a-runbook">Scheduling a runbook in Azure Automation | Microsoft Docs</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

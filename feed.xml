@@ -1,4 +1,85 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-11-27T14:36:38+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/</id><title type="text">Setting up a Private Build Agent in Visual Studio Team Services</title><summary type="html">&lt;p&gt;I've started working on a new hobby project hosted in Visual Studio Team Services (VSTS) and was keen to follow mature build and release practices on it. Given that I am essentially a one man team, I decided to make due with the free tiers. One of the limitations in this tier is the number of CPU cycles available for hosted builds and releases. This means that if I setup all - continuous integration (CI) build, standard build and release definition I am surely going to use up all the available minutes.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2016-11-29T01:31:40+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/</id><title type="text">Scheduling the Uptime of an Azure Virtual Machine</title><summary type="html">&lt;p&gt;In a previous post I setup a &lt;a href="http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/"&gt;build agent in a private pipeline&lt;/a&gt; - hosted within a Azure Virtual Machine (VM). In this one, I try to minimize the uptime of the VM by making it run only during work hours - I require it to start automatically first thing in the morning and then turn itself off at the close of business. In order to achieve this I make use of the &lt;a href="https://azure.microsoft.com/en-au/services/automation/"&gt;Azure Automation&lt;/a&gt; feature.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Let's start off by logging into our Azure account and creating a new &lt;code&gt;Automation Account&lt;/code&gt; entry. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/10_Automation.png" alt="Search Automation Account" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/20_CreateAutomation.png" alt="Create Automation Account" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Provide the required details:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Name&lt;/code&gt; - Name for the automation account.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Subscription&lt;/code&gt; - Azure subscription for this account.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Resource Group&lt;/code&gt; - Create or select an existing resource group from the list. &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Location&lt;/code&gt; - Select an available region from the list.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Create Azure Run As account&lt;/code&gt; - Select &lt;code&gt;Yes&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/30_AddAutomationInfo.png" alt="Add Automation Account" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Create&lt;/code&gt; button to start provisioning the automation account.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once done, navigate to it's blade via the resource groups and click on the &lt;code&gt;Runbooks&lt;/code&gt; widget.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/40_CreateRunbook.png" alt="Create runbook" /&gt;&lt;/p&gt;
+
+</summary><published>2016-11-27T13:00:00Z</published><updated>2016-11-27T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/" /><content type="html">&lt;p&gt;In a previous post I setup a &lt;a href="http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/"&gt;build agent in a private pipeline&lt;/a&gt; - hosted within a Azure Virtual Machine (VM). In this one, I try to minimize the uptime of the VM by making it run only during work hours - I require it to start automatically first thing in the morning and then turn itself off at the close of business. In order to achieve this I make use of the &lt;a href="https://azure.microsoft.com/en-au/services/automation/"&gt;Azure Automation&lt;/a&gt; feature.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Let's start off by logging into our Azure account and creating a new &lt;code&gt;Automation Account&lt;/code&gt; entry. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/10_Automation.png" alt="Search Automation Account" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/20_CreateAutomation.png" alt="Create Automation Account" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Provide the required details:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Name&lt;/code&gt; - Name for the automation account.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Subscription&lt;/code&gt; - Azure subscription for this account.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Resource Group&lt;/code&gt; - Create or select an existing resource group from the list. &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Location&lt;/code&gt; - Select an available region from the list.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Create Azure Run As account&lt;/code&gt; - Select &lt;code&gt;Yes&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/30_AddAutomationInfo.png" alt="Add Automation Account" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Create&lt;/code&gt; button to start provisioning the automation account.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once done, navigate to it's blade via the resource groups and click on the &lt;code&gt;Runbooks&lt;/code&gt; widget.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/40_CreateRunbook.png" alt="Create runbook" /&gt;&lt;/p&gt;
+
+&lt;!--excerpt--&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The runbook gallery had a couple of really good graphical runbooks that suited my purposes - the &lt;code&gt;Start Azure V2 VMs&lt;/code&gt; and &lt;code&gt;Stop Azure V2 VMs&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;Click on the &lt;code&gt;Browse Gallery&lt;/code&gt; button, select the &lt;code&gt;Start Azure V2 VMs&lt;/code&gt; graphical runbook and then click &lt;code&gt;OK&lt;/code&gt; to confirm the selection.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/50_ChooseRecipe.png" alt="Choose Graphical Runbook" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Inspect the flow and click the &lt;code&gt;Import&lt;/code&gt; button when ready.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/60_ImportRecipe.png" alt="Import Graphical Runbook" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Navigate into the newly added runbook and click the &lt;code&gt;Edit&lt;/code&gt; button. Make any alterations if required and click the &lt;code&gt;Publish&lt;/code&gt; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/70_PublishRunbook.png" alt="Publish Runbook" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Back on the runbook blade, click on &lt;code&gt;Schedules&lt;/code&gt; widget and then click on the &lt;code&gt;Add a schedule&lt;/code&gt; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/80_AddSchedule.png" alt="Add Schedule" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on the &lt;code&gt;Link a schedule to your runbook&lt;/code&gt; and then create a new schedule. Provide the time and recurrence for the script execution. &lt;a href="https://docs.microsoft.com/en-au/azure/automation/automation-scheduling-a-runbook"&gt;Read more about scheduling here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/90_FinalizeSchedule.png" alt="Finalize Schedule" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, select &lt;code&gt;Configure parameters and run settings&lt;/code&gt; and provide a virtual machine name or resource group which would start on execution.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AzureVmSchedule/100_Parameters.png" alt="Schedule parameters" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;ok&lt;/code&gt; button once done. You should get a confirmation that the schedule is linked to a runbook. &lt;/p&gt;
+
+&lt;p&gt;That's it. The runbook would execute at the pre-defined time.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Repeat the above steps again to create a stop script using the &lt;code&gt;Stop Azure V2 VMs&lt;/code&gt; graphical runbook. &lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://azure.microsoft.com/en-au/services/automation/"&gt;Automation – Cloud process &amp;amp; workflow automation | Microsoft Azure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-au/azure/automation/automation-scheduling-a-runbook"&gt;Scheduling a runbook in Azure Automation | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/</id><title type="text">Setting up a Private Build Agent in Visual Studio Team Services</title><summary type="html">&lt;p&gt;I've started working on a new hobby project hosted in Visual Studio Team Services (VSTS) and was keen to follow mature build and release practices on it. Given that I am essentially a one man team, I decided to make due with the free tiers. One of the limitations in this tier is the number of CPU cycles available for hosted builds and releases. This means that if I setup all - continuous integration (CI) build, standard build and release definition I am surely going to use up all the available minutes.&lt;/p&gt;
 
 &lt;p&gt;The goal was to keep the overall costs low without sacrificing any build and release related automation. Luckily, VSTS allows us to host our own agents on a &lt;a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-private-pipelines"&gt;private pipeline&lt;/a&gt;. This seemed the ideal a minimalist setup for me, this looked to be cheaper than having additional &lt;a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-hosted-pipelines"&gt;hosted pipelines&lt;/a&gt;. Also worth noting that VSTS currently provides one private pipeline in the free tier with the ability to purchase more private agents (which is slightly cheaper than the hosted).&lt;/p&gt;
 
@@ -645,151 +726,5 @@ This meant that the &lt;code&gt;Account&lt;/code&gt; attribute would not appear 
 &lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx"&gt;MSDN - Annotation (note) entity&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/"&gt;Storage Limit Reached in Microsoft Dynamics CRM Online&lt;/a&gt; &lt;/li&gt;
 &lt;li&gt;&lt;a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/"&gt;Increasing Web Resource and Email / Note Attachment File Size in Microsoft Dynamics CRM 2013 | The Dynamics CRM Herald&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/</id><title type="text">Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell</title><summary type="html">&lt;p&gt;I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.&lt;/p&gt;
-
-&lt;p&gt;This implementation at its core revolves around the &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"&gt;&lt;code&gt;Microsoft.Xrm.Data.PowerShell&lt;/code&gt;&lt;/a&gt; module and the &lt;code&gt;Solution Packager&lt;/code&gt; tool provided with the official SDK. I have minimized the use of 3rd party libraries and have intentionally excluded the use of any visual studio extensions or helper tools.&lt;/p&gt;
-
-&lt;h2&gt;Setting up the Tools&lt;/h2&gt;
-
-&lt;h3&gt;Installing Microsoft.CrmSdk.CoreTools&lt;/h3&gt;
-
-&lt;p&gt;Let's start off by creating a "tooling" project that would act as a hosts for the tools and scripts involved in the process.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a class library project to host the tools using for building the packages. I named mine &lt;code&gt;Nullfactory.Crm.Tooling&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Install the &lt;code&gt;Microsoft.CrmSdk.CoreTools&lt;/code&gt; nuget package by running the following command in the package manager console: &lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Install-Package Microsoft.CrmSdk.CoreTools -Project Nullfactory.Crm.Tooling&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;This nuget package includes the &lt;code&gt;SolutionPackager.exe&lt;/code&gt; tool.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/10_InstallCoreTools.png" alt="Install Crm Core Tools" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, clean up the project by removing the default &lt;code&gt;Class1.cs&lt;/code&gt; file as well as the &lt;code&gt;Debug&lt;/code&gt; and &lt;code&gt;Release&lt;/code&gt; within the &lt;code&gt;bin&lt;/code&gt; folder.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Update the solution configurations to not build this project. Do this by navigating to the solution property pages &gt; &lt;code&gt;Configuration Properties&lt;/code&gt; and un-ticking the check box against the build column.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/20_DontBuild.png" alt="Do not Build Project" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-</summary><published>2016-01-20T13:00:00Z</published><updated>2016-01-20T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/" /><content type="html">&lt;p&gt;I've come across a few strategies on the internet on achieving this goal, with each one having its pros and cons. This post describes my own attempt at setting up a development workflow that can be integrated with the team builds.&lt;/p&gt;
-
-&lt;p&gt;This implementation at its core revolves around the &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell"&gt;&lt;code&gt;Microsoft.Xrm.Data.PowerShell&lt;/code&gt;&lt;/a&gt; module and the &lt;code&gt;Solution Packager&lt;/code&gt; tool provided with the official SDK. I have minimized the use of 3rd party libraries and have intentionally excluded the use of any visual studio extensions or helper tools.&lt;/p&gt;
-
-&lt;h2&gt;Setting up the Tools&lt;/h2&gt;
-
-&lt;h3&gt;Installing Microsoft.CrmSdk.CoreTools&lt;/h3&gt;
-
-&lt;p&gt;Let's start off by creating a "tooling" project that would act as a hosts for the tools and scripts involved in the process.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a class library project to host the tools using for building the packages. I named mine &lt;code&gt;Nullfactory.Crm.Tooling&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Install the &lt;code&gt;Microsoft.CrmSdk.CoreTools&lt;/code&gt; nuget package by running the following command in the package manager console: &lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Install-Package Microsoft.CrmSdk.CoreTools -Project Nullfactory.Crm.Tooling&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;This nuget package includes the &lt;code&gt;SolutionPackager.exe&lt;/code&gt; tool.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/10_InstallCoreTools.png" alt="Install Crm Core Tools" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, clean up the project by removing the default &lt;code&gt;Class1.cs&lt;/code&gt; file as well as the &lt;code&gt;Debug&lt;/code&gt; and &lt;code&gt;Release&lt;/code&gt; within the &lt;code&gt;bin&lt;/code&gt; folder.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Update the solution configurations to not build this project. Do this by navigating to the solution property pages &gt; &lt;code&gt;Configuration Properties&lt;/code&gt; and un-ticking the check box against the build column.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/20_DontBuild.png" alt="Do not Build Project" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h3&gt;Install Microsoft.Xrm.Data.PowerShell&lt;/h3&gt;
-
-&lt;p&gt;The &lt;code&gt;Microsoft.Xrm.Data.Powershell&lt;/code&gt; module makes interacting with CRM so much easier - it is used to connect to CRM and export the solutions. &lt;/p&gt;
-
-&lt;p&gt;Follow these steps to install it:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Download the latest release from &lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell/releases/"&gt;here&lt;/a&gt;. Detailed installation instructions can be found on their github page. &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ensure that the zip file is unblocked &lt;em&gt;before extracting the contents&lt;/em&gt;. Once extracted, add them into the bin folder as part of the tooling project.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/30_UnblockZip.png" alt="Unblock Zip Before Extraction" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Since this module would have to be installed on each of the developer machines, I created a helper script that automates it - &lt;code&gt;Install-Microsoft.Xrm.Data.Powershell.ps1&lt;/code&gt;. Add this as part of the project as well. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/40_InstallPowershell.png" alt="Install Microsoft.Xrm.Data.Powershell" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href="https://github.com/shanec-/Crm-PowershellBuildDemo/blob/master/src/Nullfactory.Crm.Tooling/bin/Install-Microsoft.Xrm.Data.Powershell.ps1"&gt;Download the install script here&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Setting up the Projects&lt;/h2&gt;
-
-&lt;p&gt;Next, lets create class library projects for each of the CRM Solutions. This makes visualizing and managing the solution from within Visual Studio easier. And more importantly, give us the ability to add a msbuild tasks.&lt;/p&gt;
-
-&lt;p&gt;Edit the &lt;code&gt;csproj&lt;/code&gt; file of the newly created project and add the following ms build task. &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;Target Name="Build"&amp;gt;
-    &amp;lt;Exec Command="$(SolutionDir)\Nullfactory.Crm.Tooling\bin\coretools\SolutionPackager.exe /action:pack /packagetype:both /folder:$(MSBuildProjectDirectory) /zipfile:$(OutDir)$(MSBuildProjectName).zip" /&amp;gt;
-&amp;lt;/Target&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This ensures that both unmanaged and managed versions of the CRM solution is packaged anytime the project is built. &lt;/p&gt;
-
-&lt;p&gt;Optionally, remove the &lt;code&gt;properties&lt;/code&gt; folder and &lt;code&gt;AssemblyInfo.cs&lt;/code&gt; file as they will not be required for these projects.&lt;/p&gt;
-
-&lt;h3&gt;Add Solution Export and Synchronization Script&lt;/h3&gt;
-
-&lt;p&gt;Add the &lt;code&gt;Sync-CrmSolution.ps1&lt;/code&gt; and &lt;code&gt;Sync-CrmSolution.Param.ps1&lt;/code&gt; files into the tooling project. These scripts can be downloaded &lt;a href="https://github.com/shanec-/Crm-PowershellBuildDemo/blob/master/src/Nullfactory.Crm.Tooling/bin/Sync-CrmSolution.ps1"&gt;here&lt;/a&gt; and &lt;a href="https://github.com/shanec-/Crm-PowershellBuildDemo/blob/master/src/Nullfactory.Crm.Tooling/bin/Sync-CrmSolution.Param.ps1"&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/60_SyncScriptsInstalled.png" alt="Installed Synchronization Scripts" /&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;Sync-CrmSolution.ps1&lt;/code&gt; script handles the exporting of the solution and performs the following actions:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Deletes all the artifacts from the CRM solution project folder.&lt;/li&gt;
-&lt;li&gt;Connects to the organization and exports both the managed and un-managed versions of the solution.&lt;/li&gt;
-&lt;li&gt;Finally, unpacks them into the previously emptied folder.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The &lt;code&gt;Sync-CrmSolution.Param.ps1&lt;/code&gt; script acts as a controller script with the actual parameters. Each developer would update this script to point to their own development CRM organization.&lt;/p&gt;
-
-&lt;h2&gt;Unpacking and Synchronizing&lt;/h2&gt;
-
-&lt;p&gt;Next, we unpack the initial version of the solution into the project. This is done using the following steps: &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Ensure that the &lt;code&gt;Sync-CrmSolution.Param.ps1&lt;/code&gt; script is pointing to a valid CRM organization and solution and execute the script.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/50_ExtractingSolution.png" alt="Extracting Solution" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Once the solution has been unpacked, add the new artifacts into the project.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmDataPowershell/70_SolutionExtracted.png" alt="Crm Solution Extracted" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Check-in all the changes done so far.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now that the initial version is in source control, it raises the problem of figuring out the files that have changes in subsequent extractions. How do you figure out which files have changed so that only those files are check-in?&lt;/p&gt;
-
-&lt;p&gt;One of my colleague introduced me to an interesting technique that hes been using for a while. I like it a lot as its simple, effective and avoids having to do any explicit TFS integration.   &lt;/p&gt;
-
-&lt;p&gt;This method leverages Microsoft Visual Studio Team Foundation Server 2015 Power Tools in order to identify the files changed in the working folder. It requires each developer &lt;a href="https://visualstudiogallery.msdn.microsoft.com/898a828a-af00-42c6-bbb2-530dc7b8f2e1"&gt;install&lt;/a&gt; it on their development box.&lt;/p&gt;
-
-&lt;p&gt;Whenever a developer synchronizes their version of the solution using the &lt;code&gt;Sync-CrmSolution.Param.ps1&lt;/code&gt; script, the power tools would automatically detect and check out the edited files. One would still have to manually include new and deleted files into the project via the detected changes dialog, but that's a minor inconvenience I can live with. &lt;/p&gt;
-
-&lt;p&gt;A positive side effect of this method is that we no longer have to be concerned about the &lt;code&gt;allowDelete&lt;/code&gt; and &lt;code&gt;allowWrite&lt;/code&gt; parameters in the Solution Packager tool.&lt;/p&gt;
-
-&lt;h2&gt;Final Thoughts&lt;/h2&gt;
-
-&lt;p&gt;Now any time the class libraries hosting the solutions are built, the output would be packaged zip files for both managed and un-managed CRM solutions. &lt;/p&gt;
-
-&lt;p&gt;Although I did not setup up separate projects for plugins and web resources in this example, it is certainly possible.  &lt;/p&gt;
-
-&lt;p&gt;I might also explore converting the entire &lt;code&gt;Nullfactory.Crm.Tooling&lt;/code&gt; project into a template in a future post. It should make it a lot more easier integrate it into new projects.&lt;/p&gt;
-
-&lt;p&gt;Finally, I feel that the day-to-day operation part of this process is a little bit tedious and does not offer any significant advantage over the convenience of using an Visual Studio extension. I knew this going in, but I wanted to have an understanding of the work involved in setting this up. &lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://github.com/seanmcne/Microsoft.Xrm.Data.PowerShell/releases/"&gt;Releases · seanmcne/Microsoft.Xrm.Data.PowerShell&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/jj602987.aspx"&gt;Use the SolutionPackager tool to compress and extract a solution file&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://technet.microsoft.com/en-us/library/dd878350(v=vs.85).aspx"&gt;Installing Modules&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://blogs.msdn.com/b/koteshb/archive/2010/02/13/powershell-creating-a-pscredential-object.aspx"&gt;PowerShell - How to create a PSCredential object - Kotesh Bandhamravuri - Site Home - MSDN Blogs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=65MVXzMAWyg"&gt;Integrating SolutionPackager into Visual Studio - YouTube&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://waelhamze.com/2014/01/12/dynamics-crm-parallel-development-with-solution-packager/"&gt;Dynamics CRM Parallel Development with Solution Packager | Wael Hamze&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://visualstudiogallery.msdn.microsoft.com/898a828a-af00-42c6-bbb2-530dc7b8f2e1"&gt;Microsoft Visual Studio Team Foundation Server 2015 Power Tools extension&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
