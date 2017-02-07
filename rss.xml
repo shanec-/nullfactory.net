@@ -1,4 +1,107 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/</guid><link>http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/</link><title>Scheduling the Uptime of an Azure Virtual Machine</title><description>&lt;p&gt;In a previous post I setup a &lt;a href="http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/"&gt;build agent in a private pipeline&lt;/a&gt; - hosted within a Azure Virtual Machine (VM). In this one, I try to minimize the uptime of the VM by making it run only during work hours - I require it to start automatically first thing in the morning and then turn itself off at the close of business. In order to achieve this I make use of the &lt;a href="https://azure.microsoft.com/en-au/services/automation/"&gt;Azure Automation&lt;/a&gt; feature.&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/</guid><link>http://nullfactory.net/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/</link><title>Release Strategy for Dynamics CRM - Part 4 - Versioning</title><description>&lt;p&gt;In this post I detail my approach to implement an automated versioning strategy in CRM solutions and its custom assemblies with the help of Visual Studio Team Services.&lt;/p&gt;
+
+&lt;p&gt;Although I originally only intended it to be a 3 part series I think I will continue to add to it as I keep making improvements. To recap, I previously prepared the project structure to host a CRM solution with the aid of the &lt;code&gt;nullfactory-xrm&lt;/code&gt; &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator&lt;/a&gt; and created a build and release definitions for it. You can find the previous posts here:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 4 - Versioning&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There were two aspects of versioning that I wanted to automatically increment with each release. Firstly the CRM Solution itself and then the custom assemblies included as part of the solution. I also wanted the flexibility to version the two independently of each other (I don't think its a very common scenario, but I would still like to have it as an available option).&lt;/p&gt;
+
+&lt;p&gt;As with my previous posts, the instructions in this are specific to Visual Studio Team Services (VSTS), but can be adapted to work with other build and release systems. &lt;/p&gt;
+
+</description><pubDate>Mon, 06 Feb 2017 13:00:00 Z</pubDate><a10:updated>2017-02-06T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;In this post I detail my approach to implement an automated versioning strategy in CRM solutions and its custom assemblies with the help of Visual Studio Team Services.&lt;/p&gt;
+
+&lt;p&gt;Although I originally only intended it to be a 3 part series I think I will continue to add to it as I keep making improvements. To recap, I previously prepared the project structure to host a CRM solution with the aid of the &lt;code&gt;nullfactory-xrm&lt;/code&gt; &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator&lt;/a&gt; and created a build and release definitions for it. You can find the previous posts here:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Release Strategy for Dynamics CRM - Part 4 - Versioning&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There were two aspects of versioning that I wanted to automatically increment with each release. Firstly the CRM Solution itself and then the custom assemblies included as part of the solution. I also wanted the flexibility to version the two independently of each other (I don't think its a very common scenario, but I would still like to have it as an available option).&lt;/p&gt;
+
+&lt;p&gt;As with my previous posts, the instructions in this are specific to Visual Studio Team Services (VSTS), but can be adapted to work with other build and release systems. &lt;/p&gt;
+
+&lt;!--excerpt--&gt; 
+
+&lt;h2&gt;Pre-requisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ideally, a solution structure generated using version 1.3 (or better) of the &lt;code&gt;nullfactory-xrm&lt;/code&gt; generator as the template includes the versioning script as part of it - for the sake of simplicity, the post assumes that this is true. &lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;More Info.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;All solution and custom code artifacts and checked-in into source control in VSTS. &lt;/li&gt;
+&lt;li&gt;Basic build definition that builds the artifacts and generates a CRM solution using the &lt;code&gt;SolutionPackager.exe&lt;/code&gt;. &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;More info&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Integrating with the Team Build&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Start off by creating a standard build definition for the solution as described in &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Part 2&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt4/10_BuildDefinition.png" alt="Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next we need to define a pair of variables for each set of version numbers we want to maintain. In this scenario I only want one version number to be shared between the custom assemblies and CRM solution. Let's do this by navigating to the &lt;code&gt;Variables&lt;/code&gt; tab and creating the &lt;code&gt;SuperSolutionMajorVersion&lt;/code&gt; and &lt;code&gt;SuperSolutionMinorVersion&lt;/code&gt; variables.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt4/20_DefineBuildVariables.png" alt="Define Build Variables" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I want to keep the artifact build number consistent with the name of the actual build, so navigate to the &lt;code&gt;General&lt;/code&gt; tab and set the &lt;code&gt;Build number format&lt;/code&gt; to &lt;code&gt;$(SuperSolutionMajorVersion).$(SuperSolutionMinorVersion).$(Build.BuildId).0&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;Notice that I intentionally hard coded the release version to &lt;code&gt;0&lt;/code&gt;. Tweak this format to suit your own needs, but ensure that the number generated is compatible with the versioning scheme used by CRM - &lt;em&gt;major.minor.build.release&lt;/em&gt; or &lt;em&gt;year.month.day.revision&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt4/30_SetBuildNumberFormat.png" alt="Set Build Number Format" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Create a PowerShell task which invokes the &lt;code&gt;ApplyVersionToArtifact.ps1&lt;/code&gt; against the assemblies.&lt;/p&gt;
+
+&lt;p&gt;.\Nullfactory.Xrm.Tooling\scripts\ApplyVersionToArtifact.ps1&lt;/p&gt;
+
+&lt;p&gt;ApplyVersionToAssemblies -BuildSourcePath $(Build.SourcesDirectory) -BuildBuildNumber "$(SuperSolutionMajorVersion).$(SuperSolutionMinorVersion).$(Build.BuildId).0"&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt4/40_AssemblyPowerShell.png" alt="Apply Assembly Version PowerShell" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Similarly create a second PowerShell task that applies the version number to the CRM Solution.&lt;/p&gt;
+
+&lt;p&gt;. .\Nullfactory.Xrm.Tooling\Scripts\ApplyVersionToArtifact.ps1&lt;/p&gt;
+
+&lt;p&gt;ApplyVersionToCrmSolution -BuildSourcePath $(Build.SourcesDirectory) -BuildBuildNumber "$(SuperSolutionMajorVersion).$(SuperSolutionMinorVersion).$(Build.BuildId).0"&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt4/50_SolutionPowerShell.png" alt="Apply Crm Solution Version PowerShell" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Finally, lets queue a new build to make sure that everything works as expected. In the Queue build dialog, manually provide a Major and Minor version for the new release. The Major and Minor versions would act as the "public product" number, were as the build number would be the actual iteration.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt4/55_QueueBuild.png" alt="Queue New Build" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Verify that the build completed successfully - notice that it created using new build number formatting.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt4/60_BuildResult.png" alt="Build Results" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open up the packaged solution and verify that the &lt;code&gt;Solution.xml&lt;/code&gt; has the updated version number. Also ensure that the assembly within the solution has been updated as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt4/70_SolutionXml.png" alt="Empty release template" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;While there were many implementations on the web I based mine off this one &lt;a href="https://github.com/cilerler/rupen/blob/dea035c6e6158abc7a6e449b931ae316c0ef2eb8/build.vso/ApplyVersionToAssemblies.ps1"&gt;https://github.com/cilerler/rupen/blob/dea035c6e6158abc7a6e449b931ae316c0ef2eb8/build.vso/ApplyVersionToAssemblies.ps1&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;If the project structure was not generated using the &lt;code&gt;nullfactory-xrm&lt;/code&gt; generator, then &lt;a href="https://github.com/shanec-/generator-nullfactory-xrm/blob/master/generators/app/templates/Nullfactory.Xrm.Tooling/Scripts/ApplyVersionToArtifact.ps1"&gt;download the latest version&lt;/a&gt; of the &lt;code&gt;ApplyVersionToAssemblies.ps1&lt;/code&gt;script into your own project structure. &lt;/p&gt;
+
+&lt;p&gt;The versioning script can be run manually on developers machine, but its most effective when used together with an automated build and release suite like VSTS. &lt;/p&gt;
+
+&lt;p&gt;I had considered using a tokenization as a possible approach to replacing the version numbers, but the problem with that is that &lt;code&gt;solution packager&lt;/code&gt; does not like tokens embedded in the &lt;code&gt;solution.xml&lt;/code&gt; file. This means that a developer cannot build the solution in their own development environment.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/cilerler/rupen/blob/dea035c6e6158abc7a6e449b931ae316c0ef2eb8/build.vso/ApplyVersionToAssemblies.ps1"&gt;rupen/ApplyVersionToAssemblies.ps1 at dea035c6e6158abc7a6e449b931ae316c0ef2eb8 · cilerler/rupen&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/mt593040.aspx"&gt;Create patches to simplify solution updates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://community.dynamics.com/crm/f/117/t/151258"&gt;Solution versioning best practice - Microsoft Dynamics CRM Community Forum&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://journeyintocrm.com/archives/1092"&gt;Hardcore CRM: Do a major upgrade of a plugin version! | Journey into CRM&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://crmbusiness.wordpress.com/2014/03/31/crm-2013-overview-of-solutions/"&gt;CRM 2013 – Understanding Solutions and how they work – Hosk's Dynamic CRM Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://chamindac.blogspot.com.au/2015/12/apply-build-number-to-assembly-version.html"&gt;Chaminda's Blog: Apply Build Number to Assembly Version with New TFS Builds (Build vNext)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://intovsts.net/2015/08/24/tfs-build-2015-and-versioning/"&gt;TFS Build 2015 … and versioning! | Into ALM with TFS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://gist.github.com/pietergheysens/14d7d98547fe35470d0e"&gt;GitHub Gist - Update-AssemblyInfoVersionFiles.ps1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/tfsbuildextensions/CustomActivities/blob/master/Source/Scripts/ApplyVersionToAssemblies.ps1"&gt;CustomActivities/ApplyVersionToAssemblies.ps1 at master · tfsbuildextensions/CustomActivities&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://marketplace.visualstudio.com/items?itemName=ms-devlabs.utilitytasks"&gt;Release Management Utility tasks - Visual Studio Marketplace&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/</guid><link>http://nullfactory.net/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/</link><title>Scheduling the Uptime of an Azure Virtual Machine</title><description>&lt;p&gt;In a previous post I setup a &lt;a href="http://nullfactory.net/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/"&gt;build agent in a private pipeline&lt;/a&gt; - hosted within a Azure Virtual Machine (VM). In this one, I try to minimize the uptime of the VM by making it run only during work hours - I require it to start automatically first thing in the morning and then turn itself off at the close of business. In order to achieve this I make use of the &lt;a href="https://azure.microsoft.com/en-au/services/automation/"&gt;Azure Automation&lt;/a&gt; feature.&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;Let's start off by logging into our Azure account and creating a new &lt;code&gt;Automation Account&lt;/code&gt; entry. &lt;/p&gt;
@@ -703,28 +806,5 @@ This meant that the &lt;code&gt;Account&lt;/code&gt; attribute would not appear 
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://www.microsoft.com/en-us/dynamics/crm-customer-center/create-or-edit-entity-fields.aspx"&gt;Create or edit entity fields | Microsoft Dynamics CRM&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2016/04/dynamics-crm-base64-attachment-size/</guid><link>http://nullfactory.net/2016/04/dynamics-crm-base64-attachment-size/</link><title>Base64 and Maximum Attachment Size in Dynamics CRM</title><description>&lt;p&gt;Microsoft Dynamics CRM provides out-of-the-box functionality to store and associate small file attachments against an entity record. This is achieved via the &lt;code&gt;annotation&lt;/code&gt; entity - it is similar to any other entity except that it stores meta data as well as the &lt;a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx"&gt;actual content of the file attachment&lt;/a&gt; within it. &lt;/p&gt;
-
-&lt;p&gt;As CRM is not designed to be a &lt;a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/"&gt;file store&lt;/a&gt;, it imposes some limitations on the size of attachments that can be uploaded. Recent versions of the product, including 2016, defaults this size to 5120Kb which can be adjusted to a &lt;a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/"&gt;maximum hard limit of 32768Kb&lt;/a&gt;. &lt;/p&gt;
-
-&lt;p&gt;However, there is one caveat with this limitation - CRM stores the byte stream in a base64 encoded format, this means that there would be an &lt;a href="http://stackoverflow.com/questions/4715415/base64-what-is-the-worst-possible-increase-in-space-usage"&gt;increase&lt;/a&gt; in the final saved file size. &lt;/p&gt;
-
-</description><pubDate>Thu, 14 Apr 2016 14:00:00 Z</pubDate><a10:updated>2016-04-14T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;Microsoft Dynamics CRM provides out-of-the-box functionality to store and associate small file attachments against an entity record. This is achieved via the &lt;code&gt;annotation&lt;/code&gt; entity - it is similar to any other entity except that it stores meta data as well as the &lt;a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx"&gt;actual content of the file attachment&lt;/a&gt; within it. &lt;/p&gt;
-
-&lt;p&gt;As CRM is not designed to be a &lt;a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/"&gt;file store&lt;/a&gt;, it imposes some limitations on the size of attachments that can be uploaded. Recent versions of the product, including 2016, defaults this size to 5120Kb which can be adjusted to a &lt;a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/"&gt;maximum hard limit of 32768Kb&lt;/a&gt;. &lt;/p&gt;
-
-&lt;p&gt;However, there is one caveat with this limitation - CRM stores the byte stream in a base64 encoded format, this means that there would be an &lt;a href="http://stackoverflow.com/questions/4715415/base64-what-is-the-worst-possible-increase-in-space-usage"&gt;increase&lt;/a&gt; in the final saved file size. &lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;I recently learned that the upload restriction is done based on the encoded file size and not the original byte stream as I was expecting. I imagine this would be especially important to remember when designing integration components that create &lt;code&gt;annotation&lt;/code&gt; records.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx"&gt;MSDN - Annotation (note) entity&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/"&gt;Storage Limit Reached in Microsoft Dynamics CRM Online&lt;/a&gt; &lt;/li&gt;
-&lt;li&gt;&lt;a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/"&gt;Increasing Web Resource and Email / Note Attachment File Size in Microsoft Dynamics CRM 2013 | The Dynamics CRM Herald&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>

@@ -42,6 +42,40 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Release Strategy for Dynamics CRM - Part 4 - Versioning</a></h2>
+      <p class="post-date">07 Feb 2017
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/git" title="Git">Git</a>
+</p>
+
+      <p>
+		
+		<p>In this post I detail my approach to implement an automated versioning strategy in CRM solutions and its custom assemblies with the help of Visual Studio Team Services.</p>
+
+<p>Although I originally only intended it to be a 3 part series I think I will continue to add to it as I keep making improvements. To recap, I previously prepared the project structure to host a CRM solution with the aid of the <code>nullfactory-xrm</code> <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">generator</a> and created a build and release definitions for it. You can find the previous posts here:</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
+<li>Release Strategy for Dynamics CRM - Part 4 - Versioning</li>
+</ul>
+
+<p>There were two aspects of versioning that I wanted to automatically increment with each release. Firstly the CRM Solution itself and then the custom assemblies included as part of the solution. I also wanted the flexibility to version the two independently of each other (I don't think its a very common scenario, but I would still like to have it as an available option).</p>
+
+<p>As with my previous posts, the instructions in this are specific to Visual Studio Team Services (VSTS), but can be adapted to work with other build and release systems. </p>
+
+
+		<p><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/">Scheduling the Uptime of an Azure Virtual Machine</a></h2>
       <p class="post-date">28 Nov 2016
 
@@ -383,26 +417,6 @@ npm install -g generator-nullfactory-xrm
 
 
 		<p><a href="/2016/04/non-searchable-field-breaks-pre-filtering/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/04/dynamics-crm-base64-attachment-size/">Base64 and Maximum Attachment Size in Dynamics CRM</a></h2>
-      <p class="post-date">15 Apr 2016
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-</p>
-
-      <p>
-		
-		<p>Microsoft Dynamics CRM provides out-of-the-box functionality to store and associate small file attachments against an entity record. This is achieved via the <code>annotation</code> entity - it is similar to any other entity except that it stores meta data as well as the <a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx">actual content of the file attachment</a> within it. </p>
-
-<p>As CRM is not designed to be a <a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/">file store</a>, it imposes some limitations on the size of attachments that can be uploaded. Recent versions of the product, including 2016, defaults this size to 5120Kb which can be adjusted to a <a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/">maximum hard limit of 32768Kb</a>. </p>
-
-<p>However, there is one caveat with this limitation - CRM stores the byte stream in a base64 encoded format, this means that there would be an <a href="http://stackoverflow.com/questions/4715415/base64-what-is-the-worst-possible-increase-in-space-usage">increase</a> in the final saved file size. </p>
-
-
-		<p><a href="/2016/04/dynamics-crm-base64-attachment-size/">Read more...</a></p>
 	  </p>
     </div>
 </div>

@@ -42,6 +42,41 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Generate a Clean Up Script to Drop All Objects in a SQL Server Database</a></h2>
+      <p class="post-date">02 Jun 2015
+
+      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
+</p>
+
+      <p>
+		
+		<p>I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.</p>
+
+<p>In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.</p>
+
+<p>I saw a few possible solutions and finally settled on using the <a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend">out-of-the-box feature</a> that's already available through SQL Server Management Studio (SSMS).</p>
+
+<ol>
+<li>Open up SQL Server Management Studio.</li>
+<li><p>Select <code>Task  &gt; Generate Script...</code> on on your the database context menu. This would open up the <code>Generate and Publish Scripts</code> dialog.</p>
+
+<p><img src="/images/posts/GenerateDropScript/10_ContextMenu.png" alt="SSMS Context Menu" /></p></li>
+<li><p>First, navigate to the <code>Choose Objects</code> tab and select all the objects that need to be dropped.</p></li>
+<li><p>Next, on the <code>Set Scripting Options</code> tab, select the preferred output location.</p>
+
+<p><img src="/images/posts/GenerateDropScript/20_SetScriptingOptions.png" alt="Set Scripting Options" /></p></li>
+<li><p>Next, click the <code>Advanced</code> button which result in the <code>Advanced Scripting Options</code> dialog.</p>
+
+<p><img src="/images/posts/GenerateDropScript/30_AdvancedScriptingOptions.png" alt="Advanced Scripting Options" /></p></li>
+<li><p>Navigate down towards to and change the <code>General &gt; Script DROP and CREATE</code> option to <code>Script DROP</code>.</p></li>
+<li>Set the default values for the rest of the steps and finally click the <code>Finish</code> button.</li>
+</ol>
+
+
+		<p><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/recording-diagnostics-azure-app-service-website-log4net/">Recording Diagnostics on a Azure App Service Hosted Website using Log4Net</a></h2>
       <p class="post-date">24 May 2015
 
@@ -293,27 +328,6 @@ The problem with the free tiers is that there's a high possibility that the web 
 
 
 		<p><a href="/2015/02/tfs-customizie-build-template-to-exclude-symbols/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">TFS Tip: Disable Windows Update Prior TFS Upgrade</a></h2>
-      <p class="post-date">11 Jan 2015
-
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-      | <a href="/category/tfs-tips" title="TFS Tips">TFS Tips</a>
-</p>
-
-      <p>
-		
-		<p>Always make sure to disable the windows update services before starting any significant software upgrade. We found out the hard way that process such as a long running database backup does not handle kindly to spontaneous server restarts.</p>
-
-<p>Its one of those thing that can easily slip through the cracks but have a large impact in your deployment. So always make sure to add this to part of your per-requisite checklist.</p>
-
-<p>Personally I use the <code>net stop "windows update"</code> command as it is only effective until you restart the computer/service.</p>
-
-
-		<p><a href="/2015/01/tfstip-disable-windows-update-prior-upgrade/">Read more...</a></p>
 	  </p>
     </div>
 </div>
