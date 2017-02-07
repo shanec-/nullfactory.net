@@ -9,6 +9,8 @@ Earlier this year I demonstrated the strategy I use for maintaining CRM solution
 - Release Strategy for Dynamics CRM - Part 1 - Preparation
 - [Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build](/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2)
 - [Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release](/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/)
+- [Release Strategy for Dynamics CRM - Part 4 - Versioning](/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/)
+
 
 In order to automate the process we first need to make sure that the solution is maintained in source control. 
 

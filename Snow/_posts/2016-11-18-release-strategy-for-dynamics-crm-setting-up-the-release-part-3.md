@@ -9,6 +9,7 @@ This is the final installment of the a three part series. Use to following links
 - [Release Strategy for Dynamics CRM - Part 1 - Preparation](/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/)
 - [Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build](/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2)
 - Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release
+- [Release Strategy for Dynamics CRM - Part 4 - Versioning](/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/)
 
 
 In the previous two posts I show you how to create the project structure and create a basic team build for your CRM solution artifacts. In this final installment I go about setting up a release definition for the build that we created.

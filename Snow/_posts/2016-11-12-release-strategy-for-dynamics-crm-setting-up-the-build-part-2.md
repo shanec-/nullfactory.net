@@ -9,6 +9,8 @@ This is the second of a three part series in which I walk through setting up a r
 - [Release Strategy for Dynamics CRM - Part 1 - Preparation](/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/)
 - Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build
 - [Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release](/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/)
+- [Release Strategy for Dynamics CRM - Part 4 - Versioning](/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/)
+
 
 In first part of the series accomplished the following:
 	
