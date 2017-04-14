@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/">Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</a></h2>
+		<p class="post-date">14 Apr 2017
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+	  </p>
+
+		
+
+		<p>My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:</p>
+
+<blockquote>
+  <p>An error has occurred. </p>
+  
+  <p>Try this action again. If the problem continues, check the Microsoft Dynamics 365 Community for solutions or contact your organization's Microsoft Dynamics 365 Administrator. Finally, you can contact Microsoft Support.</p>
+</blockquote>
+
+<p><img src="/images/posts/BrokenSharePointInteg/10_error_dialog.png" alt="Upload Error Dialog" /></p>
+
+<!--excerpt-->
+
+<p>When I navigated to the physical location on the SharePoint server, I can see that a folder record was created successfully in the Document Library and that the logged user has permission to make changes to the folder and its contents. </p>
+
+<p>Next, I tried manually uploading a document through the SharePoint server and in order to verify that the document was reflected back in the CRM integration component. This too was successful and I verified that it has the ability to perform CRUD operations as expected. </p>
+
+<p>None of these seemed to get me closer to identifying the issue - the upload control in CRM was still broken for the record.</p>
+
+<p><img src="/images/posts/BrokenSharePointInteg/20_sharepointfolder.png" alt="SharePoint Folder" /></p>
+
+<h2>The Solution</h2>
+
+<p>With a little bit of trial and error we were finally able to narrow down the issue - it turned out to be the value of the primary field of the record. </p>
+
+<p>By default, the integration component uses the value of the primary field in order to generate a unique folder name in SharePoint, it takes parts of the name and then appends a unique salt to the end. </p>
+
+<p>So the problem in our broken record set was that the primary field value contained special characters. While the folder creation itself appears to have cleaned out the these characters, the upload control still did not like it. </p>
+
+<p><img src="/images/posts/BrokenSharePointInteg/30_folder_invalid_chars.png" alt="SharePoint folder invalid characters" /></p>
+
+<p>Therefore, the fix itself pretty simple - remove the invalid characters from the primary field and the upload control started working as expected.</p>
+
+<p><img src="/images/posts/BrokenSharePointInteg/40_validfolder.png" alt="valid SharePoint Folder" /></p>
+
+<p>This issue appears to exists as of <code>Microsoft Dynamics 365 Version 1612 (8.2.1.164) (DB 8.2.1.164) online</code>.</p>
+
+<p>I can think of two ways we can avoid this in the future:</p>
+
+<ul>
+<li>Add validation on the primary field to explicitly filter out the special characters - this is the most sensible approach until Microsoft fixes the upload control.</li>
+<li>Handle the creation of the SharePointLocation record and the physical SharePoint folder yourself - this is obviously more work, but provides you more granular control.</li>
+</ul>
+
+<p>I hope this helps anyone else who might encounter this issue.</p>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

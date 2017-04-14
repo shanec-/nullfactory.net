@@ -42,6 +42,30 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/">Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</a></h2>
+      <p class="post-date">14 Apr 2017
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:</p>
+
+<blockquote>
+  <p>An error has occurred. </p>
+  
+  <p>Try this action again. If the problem continues, check the Microsoft Dynamics 365 Community for solutions or contact your organization's Microsoft Dynamics 365 Administrator. Finally, you can contact Microsoft Support.</p>
+</blockquote>
+
+<p><img src="/images/posts/BrokenSharePointInteg/10_error_dialog.png" alt="Upload Error Dialog" /></p>
+
+
+		<p><a href="/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Release Strategy for Dynamics CRM - Part 4 - Versioning</a></h2>
       <p class="post-date">07 Feb 2017
 
@@ -388,38 +412,6 @@ npm install -g generator-nullfactory-xrm
 
 
 		<p><a href="/2016/04/checklist-enabling-quick-create-subgrid/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/04/non-searchable-field-breaks-pre-filtering/">Non-searchable Primary Key Field Breaks Pre-filtering</a></h2>
-      <p class="post-date">16 Apr 2016
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-</p>
-
-      <p>
-		
-		<p>I recently implemented a custom FetchXml based SSRS report that was designed to be run against a filtered list of accounts. The accounts were to be determined by the user at the time of execution, hence the report was setup to use pre-filtering on the accounts entity.</p>
-
-<p>The report worked fine except in one environment where the user was greeted with the following warning message:</p>
-
-<p><img src="/images/posts/PreFilterNonSearchable/10_FilteringError.png" alt="Filtering error" /></p>
-
-<p>Dismissing the warning opened up the <code>Report Filtering Criteria</code> dialog with the following error:</p>
-
-<pre><code>There was an error in showing this condition
-</code></pre>
-
-<p>And additional information:</p>
-
-<pre><code>The condition was referencing the field accountid. The field has been removed from the system or is not valid for advanced find.
-</code></pre>
-
-<p><img src="/images/posts/PreFilterNonSearchable/20_ReportFilteringCriteria.png" alt="Report filtering criteria" /></p>
-
-
-		<p><a href="/2016/04/non-searchable-field-breaks-pre-filtering/">Read more...</a></p>
 	  </p>
     </div>
 </div>

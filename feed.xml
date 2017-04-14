@@ -1,4 +1,58 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2017-02-07T23:46:24+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/</id><title type="text">Release Strategy for Dynamics CRM - Part 4 - Versioning</title><summary type="html">&lt;p&gt;In this post I detail my approach to implement an automated versioning strategy in CRM solutions and its custom assemblies with the help of Visual Studio Team Services.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2017-04-14T21:34:16+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/</id><title type="text">Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</title><summary type="html">&lt;p&gt;My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;An error has occurred. &lt;/p&gt;
+  
+  &lt;p&gt;Try this action again. If the problem continues, check the Microsoft Dynamics 365 Community for solutions or contact your organization's Microsoft Dynamics 365 Administrator. Finally, you can contact Microsoft Support.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/10_error_dialog.png" alt="Upload Error Dialog" /&gt;&lt;/p&gt;
+
+</summary><published>2017-04-13T14:00:00Z</published><updated>2017-04-13T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/" /><content type="html">&lt;p&gt;My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;An error has occurred. &lt;/p&gt;
+  
+  &lt;p&gt;Try this action again. If the problem continues, check the Microsoft Dynamics 365 Community for solutions or contact your organization's Microsoft Dynamics 365 Administrator. Finally, you can contact Microsoft Support.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/10_error_dialog.png" alt="Upload Error Dialog" /&gt;&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;When I navigated to the physical location on the SharePoint server, I can see that a folder record was created successfully in the Document Library and that the logged user has permission to make changes to the folder and its contents. &lt;/p&gt;
+
+&lt;p&gt;Next, I tried manually uploading a document through the SharePoint server and in order to verify that the document was reflected back in the CRM integration component. This too was successful and I verified that it has the ability to perform CRUD operations as expected. &lt;/p&gt;
+
+&lt;p&gt;None of these seemed to get me closer to identifying the issue - the upload control in CRM was still broken for the record.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/20_sharepointfolder.png" alt="SharePoint Folder" /&gt;&lt;/p&gt;
+
+&lt;h2&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;With a little bit of trial and error we were finally able to narrow down the issue - it turned out to be the value of the primary field of the record. &lt;/p&gt;
+
+&lt;p&gt;By default, the integration component uses the value of the primary field in order to generate a unique folder name in SharePoint, it takes parts of the name and then appends a unique salt to the end. &lt;/p&gt;
+
+&lt;p&gt;So the problem in our broken record set was that the primary field value contained special characters. While the folder creation itself appears to have cleaned out the these characters, the upload control still did not like it. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/30_folder_invalid_chars.png" alt="SharePoint folder invalid characters" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Therefore, the fix itself pretty simple - remove the invalid characters from the primary field and the upload control started working as expected.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/40_validfolder.png" alt="valid SharePoint Folder" /&gt;&lt;/p&gt;
+
+&lt;p&gt;This issue appears to exists as of &lt;code&gt;Microsoft Dynamics 365 Version 1612 (8.2.1.164) (DB 8.2.1.164) online&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;I can think of two ways we can avoid this in the future:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add validation on the primary field to explicitly filter out the special characters - this is the most sensible approach until Microsoft fixes the upload control.&lt;/li&gt;
+&lt;li&gt;Handle the creation of the SharePointLocation record and the physical SharePoint folder yourself - this is obviously more work, but provides you more granular control.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I hope this helps anyone else who might encounter this issue.&lt;/p&gt;
+</content></entry><entry><id>http://nullfactory.net/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/</id><title type="text">Release Strategy for Dynamics CRM - Part 4 - Versioning</title><summary type="html">&lt;p&gt;In this post I detail my approach to implement an automated versioning strategy in CRM solutions and its custom assemblies with the help of Visual Studio Team Services.&lt;/p&gt;
 
 &lt;p&gt;Although I originally only intended it to be a 3 part series I think I will continue to add to it as I keep making improvements. To recap, I previously prepared the project structure to host a CRM solution with the aid of the &lt;code&gt;nullfactory-xrm&lt;/code&gt; &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator&lt;/a&gt; and created a build and release definitions for it. You can find the previous posts here:&lt;/p&gt;
 
@@ -766,51 +820,5 @@ More information on the structure of the mapping file can be found &lt;a href="h
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="http://ledgeviewpartners.com/blog/manage-quick-create-forms-dynamics-crm/"&gt;How to Manage Quick Create Forms in Dynamics CRM - Ledgeview Partners&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.powerobjects.com/2015/03/10/open-quick-create-sub-grid/"&gt;How to: Open Quick Create from a Sub Grid&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2016/04/non-searchable-field-breaks-pre-filtering/</id><title type="text">Non-searchable Primary Key Field Breaks Pre-filtering</title><summary type="html">&lt;p&gt;I recently implemented a custom FetchXml based SSRS report that was designed to be run against a filtered list of accounts. The accounts were to be determined by the user at the time of execution, hence the report was setup to use pre-filtering on the accounts entity.&lt;/p&gt;
-
-&lt;p&gt;The report worked fine except in one environment where the user was greeted with the following warning message:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/PreFilterNonSearchable/10_FilteringError.png" alt="Filtering error" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Dismissing the warning opened up the &lt;code&gt;Report Filtering Criteria&lt;/code&gt; dialog with the following error:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;There was an error in showing this condition
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And additional information:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;The condition was referencing the field accountid. The field has been removed from the system or is not valid for advanced find.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/PreFilterNonSearchable/20_ReportFilteringCriteria.png" alt="Report filtering criteria" /&gt;&lt;/p&gt;
-
-</summary><published>2016-04-15T14:00:00Z</published><updated>2016-04-15T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/04/non-searchable-field-breaks-pre-filtering/" /><content type="html">&lt;p&gt;I recently implemented a custom FetchXml based SSRS report that was designed to be run against a filtered list of accounts. The accounts were to be determined by the user at the time of execution, hence the report was setup to use pre-filtering on the accounts entity.&lt;/p&gt;
-
-&lt;p&gt;The report worked fine except in one environment where the user was greeted with the following warning message:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/PreFilterNonSearchable/10_FilteringError.png" alt="Filtering error" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Dismissing the warning opened up the &lt;code&gt;Report Filtering Criteria&lt;/code&gt; dialog with the following error:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;There was an error in showing this condition
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And additional information:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;The condition was referencing the field accountid. The field has been removed from the system or is not valid for advanced find.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/PreFilterNonSearchable/20_ReportFilteringCriteria.png" alt="Report filtering criteria" /&gt;&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;A quick bit of investigating revealed that this particular environment had the &lt;code&gt;Searchable&lt;/code&gt; property of the primary key, within the account entity, set to &lt;code&gt;No&lt;/code&gt;.
-This meant that the &lt;code&gt;Account&lt;/code&gt; attribute would not appear on any advanced find dialogs, there by affecting the &lt;code&gt;Reporting Filtering Criteria&lt;/code&gt; dialog. Re-enabling this got the report working as expected.&lt;/p&gt;
-
-&lt;h2&gt;Reference&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://www.microsoft.com/en-us/dynamics/crm-customer-center/create-or-edit-entity-fields.aspx"&gt;Create or edit entity fields | Microsoft Dynamics CRM&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
