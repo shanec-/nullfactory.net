@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Mobile Development,nodejs,npm,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,39 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/tfs-service-accounts/">Team Foundation Server - Service Accounts</a></h2>
+      <p class="post-date">21 Sep 2014
+
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+</p>
+
+      <p>
+		
+		<p>Application Lifecycle Management is an area that I have been wanting to improve for a while now. And what better way to do it than getting my self certified in the Microsoft ALM exams. I have decided to create a series of posts dedicated to ALM and sort of my "Road to Certification" posts.</p>
+
+<p>In this post, I provide an overview of the different accounts that are required for the installation and smooth operation of TFS.</p>
+
+<h2>Overview</h2>
+
+<p>I created this mind map that graphically illustrates the accounts and required permissions by the different services in order to help me remember all the dependencies.</p>
+
+<p><a href="/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png"><img src="/images/posts/TFSServiceAccounts/0_TFSAccountsOveriew.png" alt="TFS Accounts Overview" /></a></p>
+
+<p>While the majority of production installations would be deployed in a multi-tiered environment, I would normally assume that all of the accounts listed above are part of the same domain (with the exception of <code>DEPLOY</code> account. I will discuss cross domain considerations in a different post).</p>
+
+<p>While I will go into detail in future posts, but for the initial installation the following accounts are required:</p>
+
+<ul>
+<li><code>TFSInstall</code> - An installation account that would automatically be added as a TFS Administrator</li>
+<li><code>TFSService</code> - Used to run the Team Foundation Service</li>
+<li><code>TFSReports</code> - Used to run the SQL Server Reporting Service (SSRS)</li>
+</ul>
+
+
+		<p><a href="/2014/09/tfs-service-accounts/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/08/bookmarks-organizer-source-published/">Bookmarks Organizer Source Published</a></h2>
       <p class="post-date">16 Aug 2014

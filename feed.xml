@@ -1,4 +1,4 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2017-04-14T21:34:16+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/</id><title type="text">Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</title><summary type="html">&lt;p&gt;My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2017-04-15T10:08:27+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/</id><title type="text">Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</title><summary type="html">&lt;p&gt;My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;An error has occurred. &lt;/p&gt;
@@ -52,6 +52,15 @@
 &lt;/ul&gt;
 
 &lt;p&gt;I hope this helps anyone else who might encounter this issue.&lt;/p&gt;
+</content></entry><entry><id>http://nullfactory.net/2017/04/slide-deck-melbourne-ug/</id><title type="text">Source Control and Release Management - Presentation Slide Deck</title><summary type="html">&lt;p&gt;A few weeks back, I did a presentation on &lt;code&gt;Source Control and Release Management Strategy for Dynamics 365 Solutions&lt;/code&gt; at the Melbourne Dynamics 365 User Group. Here is the slide deck for that presentation:&lt;/p&gt;
+
+</summary><published>2017-04-11T14:00:00Z</published><updated>2017-04-11T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/04/slide-deck-melbourne-ug/" /><content type="html">&lt;p&gt;A few weeks back, I did a presentation on &lt;code&gt;Source Control and Release Management Strategy for Dynamics 365 Solutions&lt;/code&gt; at the Melbourne Dynamics 365 User Group. Here is the slide deck for that presentation:&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;&lt;a href="https://www.slideshare.net/shanec_/source-control-and-release-strategy-for-dynamics-365-solutions"&gt;https://www.slideshare.net/shanec_/source-control-and-release-strategy-for-dynamics-365-solutions&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;As always, feel free to reach me through social media if you have any questions.&lt;/p&gt;
 </content></entry><entry><id>http://nullfactory.net/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/</id><title type="text">Release Strategy for Dynamics CRM - Part 4 - Versioning</title><summary type="html">&lt;p&gt;In this post I detail my approach to implement an automated versioning strategy in CRM solutions and its custom assemblies with the help of Visual Studio Team Services.&lt;/p&gt;
 
 &lt;p&gt;Although I originally only intended it to be a 3 part series I think I will continue to add to it as I keep making improvements. To recap, I previously prepared the project structure to host a CRM solution with the aid of the &lt;code&gt;nullfactory-xrm&lt;/code&gt; &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator&lt;/a&gt; and created a build and release definitions for it. You can find the previous posts here:&lt;/p&gt;
@@ -786,39 +795,5 @@ More information on the structure of the mapping file can be found &lt;a href="h
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://community.dynamics.com/crm/f/117/t/156598"&gt;Unable to Qualify Leads After 2015 Upgrade - Microsoft Dynamics CRM Community Forum&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2016/04/checklist-enabling-quick-create-subgrid/</id><title type="text">Checklist for Enabling Quick Create from Sub-grid</title><summary type="html">&lt;p&gt;There have been a few instances where I've wanted to launch a quick create a record directly from a sub-grid add-button. That is, without having an extra step of bringing down the lookup view and then clicking the &lt;code&gt;+ New&lt;/code&gt; button. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/10_ExpectedResult.png" alt="The expected result" /&gt;&lt;/p&gt;
-
-&lt;p&gt;While the required steps are covered between these two great posts - &lt;a href="http://ledgeviewpartners.com/blog/manage-quick-create-forms-dynamics-crm/"&gt;here&lt;/a&gt; and &lt;a href="http://www.powerobjects.com/2015/03/10/open-quick-create-sub-grid/"&gt;here&lt;/a&gt;, I have summarized the checklist here for convenience.&lt;/p&gt;
-
-</summary><published>2016-04-16T14:00:00Z</published><updated>2016-04-16T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/04/checklist-enabling-quick-create-subgrid/" /><content type="html">&lt;p&gt;There have been a few instances where I've wanted to launch a quick create a record directly from a sub-grid add-button. That is, without having an extra step of bringing down the lookup view and then clicking the &lt;code&gt;+ New&lt;/code&gt; button. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/10_ExpectedResult.png" alt="The expected result" /&gt;&lt;/p&gt;
-
-&lt;p&gt;While the required steps are covered between these two great posts - &lt;a href="http://ledgeviewpartners.com/blog/manage-quick-create-forms-dynamics-crm/"&gt;here&lt;/a&gt; and &lt;a href="http://www.powerobjects.com/2015/03/10/open-quick-create-sub-grid/"&gt;here&lt;/a&gt;, I have summarized the checklist here for convenience.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;In order to get the CRM sub-grid to show the quick create dialog, ensure that:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;The &lt;code&gt;Allow quick create&lt;/code&gt; is enabled for the child entity.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/20_AllowQuickCreateOption.png" alt="Enable Quick Create" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;A quick create form exists for the entity. If not, create a new one.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/30_EnsureQuickCreateForm.png" alt="Ensure Quick Create form exists" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ensure that the related foreign key field is &lt;code&gt;Business Required&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/QuickCreateSubGrid/40_BusinessRequired.png" alt="Ensure foreign key is business required" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://ledgeviewpartners.com/blog/manage-quick-create-forms-dynamics-crm/"&gt;How to Manage Quick Create Forms in Dynamics CRM - Ledgeview Partners&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://www.powerobjects.com/2015/03/10/open-quick-create-sub-grid/"&gt;How to: Open Quick Create from a Sub Grid&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
