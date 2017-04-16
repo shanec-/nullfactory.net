@@ -42,6 +42,26 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/07/unable-to-qualify-lead/">Unable to Qualify Lead</a></h2>
+      <p class="post-date">23 Jul 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>I was investigating an issue in a customized Dynamics CRM environment where the "Qualify" ribbon button on the Lead record had mysteriously stopped working. </p>
+
+<p>Qualification from the grid and the organization service API appeared to work as expected, and this only seemed limited to the ribbon button. Given that the page was not even posting back to the server on clicking the button, I suspected it was failing at the front end. I fired up the chrome developer tools and sure enough was greeted with the following error on the console:</p>
+
+<p><img src="/images/posts/UnableToQualifyLead/10_error-message.png" alt="Developer Tools Error Message" /></p>
+
+
+		<p><a href="/2016/07/unable-to-qualify-lead/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/04/checklist-enabling-quick-create-subgrid/">Checklist for Enabling Quick Create from Sub-grid</a></h2>
       <p class="post-date">17 Apr 2016
 
@@ -319,31 +339,6 @@ $publish.GacInstall("c:\temp\publish_dll.dll")
 
 
 		<p><a href="/2015/08/publishing-assemblies-without-gacutil/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/sharing-configuration-between-webjobs/">Sharing Configuration Between WebJobs</a></h2>
-      <p class="post-date">29 Aug 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-</p>
-
-      <p>
-		
-		<p>The project I am working on started out with the single webjob and has since grown to multiple jobs running in parallel. They are all hosted within a dedicated web app, which allows us to scale the jobs independent of the rest of the application. And because they share a single container there is the added side effect of the jobs sharing all the Application Settings and connection strings too.</p>
-
-<p>While each webjob had its own class library, I didn't want to maintain multiple copies of  the <code>App.Config</code> file. I decided to share the the common bits (<code>AppSettings</code> and <code>ConnectionString</code> sections) in their own files:</p>
-
-<ol>
-<li><p>In one of the webjob projects, I moved the <code>AppSettings</code> and <code>ConnectionStrings</code> into their own <code>.config</code> files - <code>appSettings.config</code> and <code>connectionStrings.config</code> respectively.</p></li>
-<li><p>Next, I referenced them back to the <code>App.config</code> using the <code>configSource</code> attribute.</p></li>
-<li><p>Finally, I added the same files as linked files to the otherweb jobs and set their <code>Copy to Output Directory</code> file property to <code>Copy Always</code>.</p></li>
-</ol>
-
-<p>This works well enough, but for one caveat - which prompted me to write this post in the first place. The problem is that the <code>Web Deploy Package</code> publishing process does not appear to honor folder structures for the config files. That means that if you've separated the configuration into sub folders (like shown below), the publishing process would flatten it out.</p>
-
-
-		<p><a href="/2015/08/sharing-configuration-between-webjobs/">Read more...</a></p>
 	  </p>
     </div>
 </div>

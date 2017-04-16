@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online,generator-nullfactory-xrm,Visual Studio Team Services,Team Foundation Server,ALM,Git" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/">Release Strategy for Dynamics CRM - Part 5 - Deploy Third-Party Solutions</a></h2>
+		<p class="post-date">16 Apr 2017
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/team-foundation-server">Team Foundation Server</a>
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/git">Git</a>
+	  </p>
+
+		
+
+		<p>More often than not the custom Dynamics 365 solutions I develop depend on third party solutions to provide additional functionality. Therefore these solutions become a pre-requisite to the successful deployment of my own solution. </p>
+
+<p>In this post I go about updating the <a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">previously setup project</a>, <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">build</a> and <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">release</a> definitions in Visual Studio Team Services (VSTS) in order to enable deployment of third party CRM solutions.</p>
+
+<h2>Pre-requisites</h2>
+
+<ul>
+<li>Project structure and deployment scripts based on <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">generator-nullfactory-xrm</a> (with a minimum version of at least 1.4.0).</li>
+<li>A working build and release definitions already setup.</li>
+</ul>
+
+<p>Read more about setting up the project structure and build here:</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
+</ul>
+
+<h2>Project Structure</h2>
+
+<p>I start off by adding a solution level folder to hold third party solutions and  check-in the changes into source control.</p>
+
+<p><img src="/images/posts/CrmReleasePt5/10_structure.png" alt="Project structure" /></p>
+
+<!--excerpt-->
+
+<h2>Build</h2>
+
+<p>Next, we update the build to ensure that the solutions are included as part of the build drop. I add a <code>Copy Files</code> task with the following parameters:</p>
+
+<ul>
+<li><code>Source Folder</code>: <code>$(build.sourcesdirectory)</code></li>
+<li><code>Contents</code>: <code>**/_prereq-solutions/*.zip</code></li>
+<li><code>Target Folder</code>:  <code>$(build.artifactstagingdirectory)</code></li>
+</ul>
+
+<p><img src="/images/posts/CrmReleasePt5/20_build.png" alt="Updated build definition" /></p>
+
+<p>I trigger a new build to make sure that the solutions are copied over as part of the build artifacts.</p>
+
+<h2>Release</h2>
+
+<p>Now that our third-party solutions are included as part of the build drop, its time to deploy them. In this scenario I deploy all the solutions contained within the <code>_prereq-solutions</code> folder. </p>
+
+<p>I added a new PowerShell task as a precursor to the main solution deployment. I set it as an <code>inline script</code> with the following body:</p>
+
+<pre><code>Get-ChildItem "..\..\_prereq-solutions\" -Filter *.zip | 
+Foreach-Object {
+    .\Deploy-CrmSolution.ps1 -serverUrl "$(sndbxservername)" -username "$(sndbxusername)" -password "$(sndbxpassword)" -externalSolutionFileName $_.FullName -publishChanges -activatePlugins -importAsHoldingSolution:$false
+}
+</code></pre>
+
+<p>I also set the working folder to the <code>Nullfactory.Xrm.Tooling/Scripts</code> folder.</p>
+
+<p>This script iterates through all the solutions in the folder and attempts to deploy them. </p>
+
+<p><img src="/images/posts/CrmReleasePt5/30_release.png" alt="Updated release definition" /></p>
+
+<p>If you have multiple inter-dependent third-party solutions and require them to deployed in particular sequence you can either: </p>
+
+<ul>
+<li>Add additional PowerShell tasks for each of the solutions.</li>
+<li>Rename the solutions with a ranking number so that the GetChild function orders and execute them implicitly. </li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

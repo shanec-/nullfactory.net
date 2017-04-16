@@ -1,4 +1,94 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2017-04-15T10:48:59+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/</id><title type="text">Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</title><summary type="html">&lt;p&gt;My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2017-04-17T03:01:24+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/</id><title type="text">Release Strategy for Dynamics CRM - Part 5 - Deploy Third-Party Solutions</title><summary type="html">&lt;p&gt;More often than not the custom Dynamics 365 solutions I develop depend on third party solutions to provide additional functionality. Therefore these solutions become a pre-requisite to the successful deployment of my own solution. &lt;/p&gt;
+
+&lt;p&gt;In this post I go about updating the &lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;previously setup project&lt;/a&gt;, &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;build&lt;/a&gt; and &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;release&lt;/a&gt; definitions in Visual Studio Team Services (VSTS) in order to enable deployment of third party CRM solutions.&lt;/p&gt;
+
+&lt;h2&gt;Pre-requisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Project structure and deployment scripts based on &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator-nullfactory-xrm&lt;/a&gt; (with a minimum version of at least 1.4.0).&lt;/li&gt;
+&lt;li&gt;A working build and release definitions already setup.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Read more about setting up the project structure and build here:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Project Structure&lt;/h2&gt;
+
+&lt;p&gt;I start off by adding a solution level folder to hold third party solutions and  check-in the changes into source control.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt5/10_structure.png" alt="Project structure" /&gt;&lt;/p&gt;
+
+</summary><published>2017-04-15T14:00:00Z</published><updated>2017-04-15T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/" /><content type="html">&lt;p&gt;More often than not the custom Dynamics 365 solutions I develop depend on third party solutions to provide additional functionality. Therefore these solutions become a pre-requisite to the successful deployment of my own solution. &lt;/p&gt;
+
+&lt;p&gt;In this post I go about updating the &lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;previously setup project&lt;/a&gt;, &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;build&lt;/a&gt; and &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;release&lt;/a&gt; definitions in Visual Studio Team Services (VSTS) in order to enable deployment of third party CRM solutions.&lt;/p&gt;
+
+&lt;h2&gt;Pre-requisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Project structure and deployment scripts based on &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator-nullfactory-xrm&lt;/a&gt; (with a minimum version of at least 1.4.0).&lt;/li&gt;
+&lt;li&gt;A working build and release definitions already setup.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Read more about setting up the project structure and build here:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Project Structure&lt;/h2&gt;
+
+&lt;p&gt;I start off by adding a solution level folder to hold third party solutions and  check-in the changes into source control.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt5/10_structure.png" alt="Project structure" /&gt;&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Build&lt;/h2&gt;
+
+&lt;p&gt;Next, we update the build to ensure that the solutions are included as part of the build drop. I add a &lt;code&gt;Copy Files&lt;/code&gt; task with the following parameters:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Source Folder&lt;/code&gt;: &lt;code&gt;$(build.sourcesdirectory)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Contents&lt;/code&gt;: &lt;code&gt;**/_prereq-solutions/*.zip&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Target Folder&lt;/code&gt;:  &lt;code&gt;$(build.artifactstagingdirectory)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt5/20_build.png" alt="Updated build definition" /&gt;&lt;/p&gt;
+
+&lt;p&gt;I trigger a new build to make sure that the solutions are copied over as part of the build artifacts.&lt;/p&gt;
+
+&lt;h2&gt;Release&lt;/h2&gt;
+
+&lt;p&gt;Now that our third-party solutions are included as part of the build drop, its time to deploy them. In this scenario I deploy all the solutions contained within the &lt;code&gt;_prereq-solutions&lt;/code&gt; folder. &lt;/p&gt;
+
+&lt;p&gt;I added a new PowerShell task as a precursor to the main solution deployment. I set it as an &lt;code&gt;inline script&lt;/code&gt; with the following body:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Get-ChildItem "..\..\_prereq-solutions\" -Filter *.zip | 
+Foreach-Object {
+    .\Deploy-CrmSolution.ps1 -serverUrl "$(sndbxservername)" -username "$(sndbxusername)" -password "$(sndbxpassword)" -externalSolutionFileName $_.FullName -publishChanges -activatePlugins -importAsHoldingSolution:$false
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I also set the working folder to the &lt;code&gt;Nullfactory.Xrm.Tooling/Scripts&lt;/code&gt; folder.&lt;/p&gt;
+
+&lt;p&gt;This script iterates through all the solutions in the folder and attempts to deploy them. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt5/30_release.png" alt="Updated release definition" /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you have multiple inter-dependent third-party solutions and require them to deployed in particular sequence you can either: &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Add additional PowerShell tasks for each of the solutions.&lt;/li&gt;
+&lt;li&gt;Rename the solutions with a ranking number so that the GetChild function orders and execute them implicitly. &lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/</id><title type="text">Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</title><summary type="html">&lt;p&gt;My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;An error has occurred. &lt;/p&gt;
@@ -776,28 +866,5 @@ More information on the structure of the mapping file can be found &lt;a href="h
 &lt;li&gt;&lt;a href="http://www.nullfactory.net/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/"&gt;Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://yeoman.io/authoring/"&gt;Writing Your Own Yeoman Generator | Yeoman&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://scotch.io/tutorials/create-a-custom-yeoman-generator-in-4-easy-steps"&gt;Create A Custom Yeoman Generator in 4 Easy Steps | Scotch&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2016/07/unable-to-qualify-lead/</id><title type="text">Unable to Qualify Lead</title><summary type="html">&lt;p&gt;I was investigating an issue in a customized Dynamics CRM environment where the "Qualify" ribbon button on the Lead record had mysteriously stopped working. &lt;/p&gt;
-
-&lt;p&gt;Qualification from the grid and the organization service API appeared to work as expected, and this only seemed limited to the ribbon button. Given that the page was not even posting back to the server on clicking the button, I suspected it was failing at the front end. I fired up the chrome developer tools and sure enough was greeted with the following error on the console:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/UnableToQualifyLead/10_error-message.png" alt="Developer Tools Error Message" /&gt;&lt;/p&gt;
-
-</summary><published>2016-07-22T14:00:00Z</published><updated>2016-07-22T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2016/07/unable-to-qualify-lead/" /><content type="html">&lt;p&gt;I was investigating an issue in a customized Dynamics CRM environment where the "Qualify" ribbon button on the Lead record had mysteriously stopped working. &lt;/p&gt;
-
-&lt;p&gt;Qualification from the grid and the organization service API appeared to work as expected, and this only seemed limited to the ribbon button. Given that the page was not even posting back to the server on clicking the button, I suspected it was failing at the front end. I fired up the chrome developer tools and sure enough was greeted with the following error on the console:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/UnableToQualifyLead/10_error-message.png" alt="Developer Tools Error Message" /&gt;&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;I eventually found &lt;a href="https://community.dynamics.com/crm/f/117/t/156598"&gt;this forum post&lt;/a&gt; that gave me the solution. It turns out that the out of the box JavaScript appears dependent upon two fields having to exist on the form - the &lt;code&gt;companyname&lt;/code&gt; and &lt;code&gt;transactioncurrencyid&lt;/code&gt; fields. They don't necessarily have to visible on the form, but added somewhere on the form.&lt;/p&gt;
-
-&lt;p&gt;This particular environment was running Dynamics CRM 2015 OnPremise with update &lt;code&gt;0.1&lt;/code&gt;. My attempts at trying to replicate the issue on a CRM Online 2016 instance (version &lt;code&gt;8.1.0.367&lt;/code&gt; at the time of writing) were unsuccessful. The qualification process worked fine even without the fields on the form. This leads me to believe that this dependency might have been removed post 0.1.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://community.dynamics.com/crm/f/117/t/156598"&gt;Unable to Qualify Leads After 2015 Upgrade - Microsoft Dynamics CRM Community Forum&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>
