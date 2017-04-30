@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Octopus Deploy,Dynamics CRM,Dynamics CRM Online,generator-nullfactory-xrm,Visual Studio Team Services,ALM,Git" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup</a></h2>
+		<p class="post-date">23 Apr 2017
+				| <a href="/category/octopus-deploy">Octopus Deploy</a>
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/git">Git</a>
+	  </p>
+
+		
+
+		<p>I have seen <a href="https://octopus.com/">Octopus Deploy (OD)</a> being mentioned frequently in the community but haven't had a chance to play around with it myself. Therefore, I think that attempting to deploy a Dynamics 365/CRM solution using Octopus Deploy seemed like the perfect exercise to learn more about the platform and its features.</p>
+
+<p>I was curious if there were other developers who have released Dynamics CRM using Octopus Deploy and sure enough there was some one who had <a href="https://www.youtube.com/watch?v=--9u5azwSb4">already thought of that</a>.</p>
+
+<p>In this series of posts I try to cover everything from setting up integration with Visual Studio Team Services(VSTS), updating a build definition to automatically publish itself and then finally setting up a simple release and deployment pipeline.</p>
+
+<p>Related posts from the series:</p>
+
+<ul>
+<li>Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup </li>
+<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</a></li>
+<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</a></li>
+</ul>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Project structure and deployment scripts based on <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">generator-nullfactory-xrm</a> (with a minimum version of at least 1.4.0). <a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Read More</a></li>
+<li>The project checked into Visual Studio Team Services (VSTS) using either <code>git</code> or <code>tfsvc</code> with a working team build already setup. <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Read More</a>.</li>
+<li>Installation of Octopus Deploy and ensure sure that it is publicly accessible. <a href="https://www.youtube.com/watch?v=T0BQvMDXPNQ">Read More</a>.</li>
+</ul>
+
+<h2>The Strategy</h2>
+
+<p>When I saw the integration tasks provided by the OD extensions for VSTS, my first reaction was to divide the tasks between the build and the release in VSTS. I wanted to the the build definition to build and package the solution and pass it on to release management. Release management would then publishing the release-artifact to OD and explicitly remote trigger the OD deployment.</p>
+
+<p>While it was certainly possible to set this up, its did not make sense to have two deployment services for the same pipeline. Therefore the strategy is going to be very similar to the one that I had done previously - VSTS would continue to act as the version control and build server but this time Octopus deploy would act as the release component.</p>
+
+<p>The build server would handle creating compatible package and uploading it to the OD package repository. And OD takes over the management of the environment, release and deployment complexities.</p>
+
+<p><img src="/images/posts/OctoDeployPt1/05_overview.png" alt="Release Strategy Overview" /></p>
+
+<!--excerpt-->
+
+<h2>Integrate Octopus Deploy with VSTS</h2>
+
+<p>Let's start of by integrating OD with VSTS.</p>
+
+<ol>
+<li><p>Log into the Octopus Deploy admin panel with an user account that has enough permission to generate an API key.</p>
+
+<p><img src="/images/posts/OctoDeployPt1/10_od_api_profile.png" alt="API Profile" /></p></li>
+<li><p>Click on the <code>Profile</code> and navigate to the <code>API keys</code> tab and generate a new API key.</p>
+
+<p><img src="/images/posts/OctoDeployPt1/20_generate_new_api_key.png" alt="Generate New API Key" /></p></li>
+<li><p>Copy the newly generated API key. </p>
+
+<p><img src="/images/posts/OctoDeployPt1/30_api_key.png" alt="API Key" /></p></li>
+<li><p>Next, log into VSTS using the project collection administrator account.</p></li>
+<li><p>Install the <a href="https://marketplace.visualstudio.com/items?itemName=octopusdeploy.octopus-deploy-build-release-tasks">Octopus Deploy Integration</a> extension.</p>
+
+<p><img src="/images/posts/OctoDeployPt1/40_od_integ.png" alt="OD VSTS Integration" /></p>
+
+<p><img src="/images/posts/OctoDeployPt1/50_od_integ_install_complete.png" alt="Integration Installation Complete" /></p></li>
+<li><p>Next, we create a OD connected service that would expose the build tasks required by the team build. Let's start off by navigating to the <code>Settings &gt; Services</code> tab.</p></li>
+<li>Clicking on the <code>New Service Endpoint</code> under the <code>Endpoints</code> tab.</li>
+<li>Select <code>Octopus Deploy</code> from the list.</li>
+</ol>
+
+<p><img src="/images/posts/OctoDeployPt1/60_service_endpoint.png" alt="Project structure" /></p>
+
+<ol>
+<li>Provide the details of your OD environment and previously generated API key.</li>
+</ol>
+
+<p><img src="/images/posts/OctoDeployPt1/70_service_endpoint2.png" alt="Project structure" /></p>
+
+<p>Now that the VSTS environment is connected with OD, we move onto working on the build definition. In my <a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">next post</a> I will go about updating a previously setup build definition to automatically package the solution and publish it to Octopus Deploy. </p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.youtube.com/watch?v=--9u5azwSb4">July 2016 Meeting - Automated Deployment in CRM Using Octopus Deploy - YouTube</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/marketplace/get-vsts-extensions">Get extensions for Visual Studio Team Services | Visual Studio Team Services</a></li>
+<li><a href="https://octopus.com/docs/guides/use-the-team-foundation-build-custom-task">Using the Team Foundation Build Custom Tasks - Octopus Deploy</a></li>
+<li><a href="https://octopus.com/docs/how-to/how-to-create-an-api-key">How to create an API key - Octopus Deploy</a></li>
+<li><a href="https://www.youtube.com/watch?v=FOxqnle2bCc">Octopus 3.0 part 1: Introduction - YouTube</a></li>
+<li><a href="https://www.youtube.com/watch?v=T0BQvMDXPNQ">Octopus 3.0 part 2: Installing the Octopus Deploy Server - YouTube</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

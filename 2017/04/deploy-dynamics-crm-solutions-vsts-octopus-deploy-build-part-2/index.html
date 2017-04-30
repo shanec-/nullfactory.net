@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Octopus Deploy,Dynamics CRM,Dynamics CRM Online,generator-nullfactory-xrm,Visual Studio Team Services,ALM,Git" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</a></h2>
+		<p class="post-date">24 Apr 2017
+				| <a href="/category/octopus-deploy">Octopus Deploy</a>
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/git">Git</a>
+	  </p>
+
+		
+
+		<p>This is the second part of a series of posts where I attempt to deploy a Dynamics 365/CRM solution using Visual Studio Team Services (VSTS) and Octopus Deploy (OD). Previously, I setup an OD server and integrated it with VSTS - the steps describe in that post act as a prerequisite for this one. In this post we go about modifying an existing Dynamics CRM build definition to automatically package the release-artifact and upload it to the OD server for deployment. </p>
+
+<p>Related posts from the series:</p>
+
+<ul>
+<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup</a> </li>
+<li>Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</li>
+<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</a></li>
+</ul>
+
+<h2>Publishing Packages</h2>
+
+<p>There are a few different ways of getting a package into Octopus Deploy:</p>
+
+<ul>
+<li>Remotely upload a package to Octopus Deploy's built-in repository.</li>
+<li>Make octopus deploy pull packages from an external feed. Find more information <a href="https://www.visualstudio.com/en-us/docs/package/overview">here</a> on setting up VSTS to publish an package feed.</li>
+<li>Manually upload the package into the built-in repository.</li>
+</ul>
+
+<p>And the method of publishing the package has no bearing on the end deployment -I chose to explicitly push to the remote octopus deploy server. </p>
+
+<!--excerpt-->
+
+<h2>Updating the Build Definition</h2>
+
+<p>A quick summary of the notable steps in the existing build definition:</p>
+
+<p><img src="/images/posts/OctoDeployPt2/10_starting_build_def.png" alt="Existing Build Definition" /></p>
+
+<ol>
+<li>The actual <code>msbuild</code> command that is being used to build the solution.</li>
+<li>Copy the built artifacts to the staging folder.</li>
+<li>Explicitly Copy Deployment Scripts into the staging folder.</li>
+<li>Delete binaries (such as plugins and workflows) that have already been packaged as part of the solution package. As these serve no purpose in the final drop, I explicitly delete them to reduce the file size.</li>
+<li>Publish the files in the staging folder into the final drop artifact.</li>
+</ol>
+
+<p>Review my previous post on setting up the build definition <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">here</a>.</p>
+
+<p>Now let's start implementing the changes to the definition:</p>
+
+<ol>
+<li><p>Add the <code>Package Application</code> task.</p>
+
+<p><img src="/images/posts/OctoDeployPt2/20_add_package_app.png" alt="Add Package Application Task" /></p></li>
+<li><p>Configure the task by providing the following details:</p>
+
+<ul>
+<li><code>Package ID</code> : This is unique identification for the package. I provided <code>gnxdemo.crm</code>.</li>
+<li><code>Package Format</code> : Choose between NuGet and Zip. I chose NuGet. </li>
+<li><code>Package Version</code> : Configure this as appropriate. The generated package version should follow a valid SemVer versioning strategy.</li>
+<li><code>Source Path</code> : Set this to the <code>$(build.artifactstagingdirectory)</code></li>
+<li><code>Output Path</code> : Set it to a dedicated folder within the staging directory. I used <code>$(build.artifactstagingdirectory)\OctopusDeploy</code></li>
+</ul>
+
+<p><img src="/images/posts/OctoDeployPt2/30_config_package_app.png" alt="Configure Package Application Task" /></p></li>
+<li><p>Next, add the <code>Push Package</code> task.</p>
+
+<p><img src="/images/posts/OctoDeployPt2/40_add_push_package.png" alt="Add Push Package Task" /></p></li>
+<li><p>Configure the task by providing the following details:</p>
+
+<ul>
+<li><code>Octopus Deploy Server</code> : Choose the available server.</li>
+<li><code>Package</code>: This is the location of the package file. Since I am only creating a single package I setup the path resolution using a wildcard <code>$(build.artifactstagingdirectory)\OctopusDeploy\*.nupkg</code></li>
+</ul>
+
+<p><img src="/images/posts/OctoDeployPt2/50_config_package.png" alt="Configure Push Package Task" /></p></li>
+<li><p>Remove the <code>Publish Artifact: drop</code> task as it is no longer necessary.</p>
+
+<p><img src="/images/posts/OctoDeployPt2/60_remove_pushlish_artifacts.png" alt="Remove Publish Artifact Task" /></p></li>
+<li><p>Queue a new build to make sure that everything is in order.</p>
+
+<p><img src="/images/posts/OctoDeployPt2/70_queued_build.png" alt="Queue New Build" /></p></li>
+<li><p>Log into the Octopus Deploy admin panel. Navigate to the <code>Library &gt; Packages</code> and ensure that the package has successfully uploaded.</p>
+
+<p><img src="/images/posts/OctoDeployPt2/80_published_package.png" alt="Available Packages" /></p></li>
+</ol>
+
+<p>That completes the changes to the build definition. In the <a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/">next post</a> I will go about configuring the environments, project definition and the deployment process within Octopus Deploy.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://octopus.com/docs/guides/use-the-team-foundation-build-custom-task">Using the Team Foundation Build Custom Tasks - Octopus Deploy</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/package/overview">Package Management in Team Services and TFS</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

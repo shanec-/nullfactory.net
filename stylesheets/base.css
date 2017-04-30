@@ -392,6 +392,7 @@ p.note {
 
 img {
   max-width: 100%;
+  border: 1px dotted #DCDCDC;
 }
 
 p > a > img {

@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,git,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,142 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Setting up Source and Symbol Servers in Team Foundation Server</a></h2>
+      <p class="post-date">01 Jan 2015
+
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+</p>
+
+      <p>
+		
+		<h2>What are debug symbols?</h2>
+
+<p>Debug symbols are artifacts that a debugger can use in order to better debug an application. Within the.NET ecosystem these are managed through PDB files. The PDB files contain information about the source file name, line numbers as well as local variable names.</p>
+
+<p>As a software solution evolves, it is likely that multiple versions of it gets deployed into different production systems. And once the software is out in the wild, it becomes important that the developers can react to issues discovered by debugging specific versions. In order to do this effectively, it is important that the debug symbols themselves be treated as an first class artifact of the build and that it is readily accessible. Team Foundation Server (TFS) achieves this via a Source Server and Symbol Server.</p>
+
+<h2>The Source Server and Symbol Server</h2>
+
+<p>A Source Server component is essentially letting TFS know that we would be retrieving specific versions of source files and that it should be indexed. And a Symbol Server is a fancy name for a networked file share location containing the multiple versions of symbols <a href="http://blogs.msdn.com/b/jimlamb/archive/2009/06/15/symbol-and-source-server-in-tfs-2010.aspx">[read more]</a>.</p>
+
+<p>A TFS build definition will be configured in order to automatically index sources and publish symbols <a href="http://blogs.msdn.com/b/adamroot/archive/2009/06/17/source-server-and-symbol-server-features-in-team-foundation-server-2010-beta-1.aspx">[read more]</a>.</p>
+
+
+		<p><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">TFS 2013 - Enabling Reporting, Warehouse and Analysis Services</a></h2>
+      <p class="post-date">27 Dec 2014
+
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+</p>
+
+      <p>
+		
+		<p>Suppose you already have an Team Foundation Server (TFS) environment where you have opted-out from configuring the Reporting Services and Analysis Services during the installation. The following steps would help you to configure the warehouse and reporting functionality.</p>
+
+<h2>Pre-Requisites</h2>
+
+<ol>
+<li><p>Ensure that the SQL Server client tools are installed on the Application Tier.</p>
+
+<p>If this is not already done, you would most likely receive a <code>TF400465</code> error when attempting to edit the configuration. <code>TF400465</code> states that client tool are needed to be installed on the application tier in order for the analysis services to function properly.</p>
+
+<p>This can be fixed by re-running the SQL Server setup and adding the <code>Client Tools Connectivity</code> feature <a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx">[Read More]</a>.</p>
+
+<p>Once installed, make sure to restart the TFS administration console.</p></li>
+<li><p>Ensure that <code>Management Tools - Complete</code> is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.</p></li>
+<li>Ensure that the Analysis Services have been installed and is up and running.</li>
+<li>Ensure SQL Server Reporting Services is installed and configured in native mode <a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx">[Read More]</a>.</li>
+<li>This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.</li>
+</ol>
+
+
+		<p><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Get a list of files changed between changesets in Visual Studio Online using PowerShell</a></h2>
+      <p class="post-date">14 Dec 2014
+
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/powershell" title="PowerShell">PowerShell</a>
+</p>
+
+      <p>
+		
+		<p>So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.</p>
+
+<p>I modified the code posted <a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">here</a> in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.</p>
+
+<h2>Overview</h2>
+
+<p>The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.</p>
+
+
+		<p><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Improved Performance by Hosting Virtual Hard Disk External USB Drives</a></h2>
+      <p class="post-date">24 Sep 2014
+
+      | <a href="/category/virtualization" title="Virtualization">Virtualization</a>
+      | <a href="/category/hyper-v" title="Hyper-V">Hyper-V</a>
+</p>
+
+      <p>
+		
+		<p>I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.</p>
+
+<h2>Moving the Virtual Drive Images</h2>
+
+<p>The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.</p>
+
+
+		<p><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/create-an-isolated-hyper-v-environment/">Create An Isolated Hyper-V Environment</a></h2>
+      <p class="post-date">22 Sep 2014
+
+      | <a href="/category/virtualization" title="Virtualization">Virtualization</a>
+      | <a href="/category/hyper-v" title="Hyper-V">Hyper-V</a>
+</p>
+
+      <p>
+		
+		<p><em>Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.</em></p>
+
+<p>This post focuses on building a self-contained, isolated virtual environment with internet connectivity.</p>
+
+<p>My colleague, Chaminda has a <a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html">detailed post</a> on how to setup and isolated environment using virtual box. Go check it out if you would like to implement it via virtual box.  While virtual box is a good virtualization platform on its own right, I have grown accustomed to using Hyper-V in my day-job and has become a personal preference.</p>
+
+<h2>Hyper-V</h2>
+
+<p>My own environment is built around this <a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">excellent post</a>. It details the entire process involved. While my own setup is identical to the above, I have taken into account the following caveats:</p>
+
+<ol>
+<li>As mentioned by one of the comments on the post, it is important to explicitly set the port to <code>eth0</code> soon after flashing the image.</li>
+<li><p>Port Forwarding - Even simple tasks like setting up share folders require that certain ports be accessible. Therefore this it is an important consideration when planning an isolated environment. Here are some of the services and ports I've used for my TFS environment:</p>
+
+<p><img src="/images/posts/IsolatedEnvironment/1_PortForwarding.png" alt="Port Forwarding" /></p></li>
+</ol>
+
+<h3>Setting up Routing</h3>
+
+<p>Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.</p>
+
+<p>This involves setting up routes on both out internal router as well as the external router under which the external resources exists.</p>
+
+
+		<p><a href="/2014/09/create-an-isolated-hyper-v-environment/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/powershell/">Extract YouTube direct video url via Powershell</a></h2>
       <p class="post-date">21 Sep 2014

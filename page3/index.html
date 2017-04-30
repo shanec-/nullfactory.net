@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,git,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,174 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/12/disabling-recurring-ondemand-webjob/">Disabling Recurring and OnDemand Web Jobs within a Deployment Slot</a></h2>
+      <p class="post-date">20 Dec 2015
+
+      | <a href="/category/azure" title="Azure">Azure</a>
+</p>
+
+      <p>
+		
+		<p>I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned <em>the hard way</em> that stopping a slotted Web App does <strong>not</strong> stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
+Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a <code>stop</code> option for <code>continuous</code> jobs and not for the <code>recurring</code> and <code>OnDemand</code> jobs.</p>
+
+<p>This limits us to a few possible solutions:</p>
+
+
+		<p><a href="/2015/12/disabling-recurring-ondemand-webjob/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Strategy for Updating a SQL Server Database Schema via SSDT Delta Script</a></h2>
+      <p class="post-date">25 Nov 2015
+
+      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
+      | <a href="/category/sql-server-data-tools" title="SQL Server Data Tools">SQL Server Data Tools</a>
+</p>
+
+      <p>
+		
+		<p>This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. </p>
+
+<p>This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.</p>
+
+<p>Here are the steps I followed in order to bring the production environment up-to-date: </p>
+
+
+		<p><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/cdn-streaming-video-azure-storage/">Setting up a CDN to Stream Video via Azure Storage</a></h2>
+      <p class="post-date">11 Oct 2015
+
+      | <a href="/category/azure" title="Azure">Azure</a>
+      | <a href="/category/cdn" title="CDN">CDN</a>
+      | <a href="/category/azure-storage-accounts" title="Azure Storage Accounts">Azure Storage Accounts</a>
+</p>
+
+      <p>
+		
+		<p>I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.</p>
+
+<h2>Create the Storage Account</h2>
+
+<p>Something I found out after the fact was that CDN endpoints <a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts">currently only support classic storage accounts</a>. So the first order of business is to create a classic storage account either via old portal or using a <a href="/2015/10/deploy-classic-storage-azure-resource-manager/">resource group manager template</a>. </p>
+
+<p>Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.</p>
+
+<p>Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to <code>Public Blob</code>.</p>
+
+<h2>Upgrade the Storage Account to a Newer Service Version</h2>
+
+<p>The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. <a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/">Read more here</a>, <a href="https://msdn.microsoft.com/library/azure/dd894041.aspx">and here</a>.</p>
+
+<p>So the next step is update the storage account to the latest version in order to take advantage of the improvements. This can be done using the following code:</p>
+
+<pre><code>    var credentials = new StorageCredentials("accountname", "accountkey");
+    var account = new CloudStorageAccount(credentials, true);
+    var client = account.CreateCloudBlobClient();
+    var properties = client.GetServiceProperties();
+    properties.DefaultServiceVersion = "2013-08-15";
+    client.SetServiceProperties(properties);
+    Console.WriteLine(properties.DefaultServiceVersion);
+</code></pre>
+
+
+		<p><a href="/2015/10/cdn-streaming-video-azure-storage/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Deploying a Azure Classic Storage Account using Azure Resource Manager</a></h2>
+      <p class="post-date">10 Oct 2015
+
+      | <a href="/category/azure" title="Azure">Azure</a>
+      | <a href="/category/deployment" title="Deployment">Deployment</a>
+      | <a href="/category/azure-storage-accounts" title="Azure Storage Accounts">Azure Storage Accounts</a>
+</p>
+
+      <p>
+		
+		<p>I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a <code>Microsoft.ClassicStorage/StorageAccounts</code> using the Azure Resource Manager(ARM) API.</p>
+
+<p>The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully <a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager">this</a> post pointed me in the right direction. And after a little bit of fiddling I find that <code>2015-06-01</code> appears to be last supported <code>apiVersion</code> that works with classic storage.</p>
+
+<p><a href="/images/posts/DeployClassicStorageArm/10_SupportedVersion.png"><img src="/images/posts/DeployClassicStorageArm/10_SupportedVersion.png" alt="Azure PowerShell Unsupported" /></a></p>
+
+<p>Here's the final script I used to create a classic storage container: </p>
+
+<pre><code>{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "PrimaryStorageName": {
+            "type": "string"
+        },
+        "PrimaryStorageType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_ZRS"
+            ]
+        },
+        "PrimaryStorageLocation": {
+        "type": "string",
+        "defaultValue": "East US",
+        "allowedValues": [
+            "East US",
+            "West US",
+            "West Europe",
+            "East Asia",
+            "South East Asia"
+            ]
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('PrimaryStorageName')]",
+            "type": "Microsoft.ClassicStorage/StorageAccounts",
+            "location": "[parameters('PrimaryStorageLocation')]",
+            "apiVersion":  "2015-06-01",
+            "dependsOn": [ ],
+            "properties": {
+                "accountType": "[parameters('PrimaryStorageType')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
+</code></pre>
+
+
+		<p><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/publishing-assemblies-without-gacutil/">Publishing Assemblies into the GAC without GacUtil</a></h2>
+      <p class="post-date">31 Aug 2015
+
+      | <a href="/category/deployment" title="Deployment">Deployment</a>
+</p>
+
+      <p>
+		
+		<p>I constantly find myself googling this code snippet - its nice to keep handy: </p>
+
+<pre><code>[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
+$publish = New-Object System.EnterpriseServices.Internal.Publish
+$publish.GacInstall("c:\temp\publish_dll.dll")
+</code></pre>
+
+
+		<p><a href="/2015/08/publishing-assemblies-without-gacutil/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/sharing-configuration-between-webjobs/">Sharing Configuration Between WebJobs</a></h2>
       <p class="post-date">29 Aug 2015
@@ -204,143 +372,6 @@ at System.Threading.ThreadHelper.ThreadStart()
 
 
 		<p><a href="/2015/05/recording-diagnostics-azure-app-service-website-log4net/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/start-azure-webjobs-on-demand/">Start Azure Web Jobs On Demand</a></h2>
-      <p class="post-date">18 May 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-      | <a href="/category/powershell" title="PowerShell">PowerShell</a>
-      | <a href="/category/rest" title="REST">REST</a>
-</p>
-
-      <p>
-		
-		<p>I've been working on an Azure based solution recently and have been using the free tiers to quickly get the solution up and running and to perform the first few QA cycles. The core solution is based around single app service website and then a second website that acts as the host for a continuous web job which is triggered via a queue.
-The problem with the free tiers is that there's a high possibility that the web job would shut itself down and hibernate if it is <a href="http://azure.microsoft.com/en-us/documentation/articles/web-sites-create-web-jobs/">idle for more that 20 mins</a>:</p>
-
-<blockquote>
-  <p>As of March 2014, web apps in Free mode can time out after 20 minutes if there are no requests to the scm (deployment) site and the web app's portal is not open in Azure. Requests to the actual site will not reset this.</p>
-</blockquote>
-
-<p>A little research shows a few possible solutions:</p>
-
-<ol>
-<li>If the job is not time sensitive, then manually start the service remotely using a script or tool. </li>
-<li>Make your code explicitly start the web job just as a new request is being enqueued. This can be done by <a href="https://github.com/projectkudu/kudu/wiki/WebJobs-API">making a REST call</a> to the deployment site.</li>
-<li>And lastly, upgrade to a basic or standard tier and enabling "Always On" keeps the site (and jobs) "warm" and prevent them from hibernating.</li>
-</ol>
-
-
-		<p><a href="/2015/05/start-azure-webjobs-on-demand/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/ssdt-deployment-plan-modifer/">Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions</a></h2>
-      <p class="post-date">09 May 2015
-
-      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
-      | <a href="/category/sql-server-data-tools" title="SQL Server Data Tools">SQL Server Data Tools</a>
-</p>
-
-      <p>
-		
-		<p>I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.</p>
-
-<p>I first parameterized the the schema name as a SQLCMD variable - <code>$TenantName</code>: </p>
-
-<p><img src="/images/posts/DeploymentPlanModifer/10_varcmd.png" alt="SqlCmd Variable" /></p>
-
-<p>Next I tried to replace the schema name with the new variable, but this did not work as trying to build the solution now returns with a 71502 error as the project is no longer able to resolve and validate schema objects.</p>
-
-<p><img src="/images/posts/DeploymentPlanModifer/20_SchemaValidation.png" alt="Schema Validation" /></p>
-
-<p>SQLCMD does not have any complaints if I replace the <code>[dbo].</code> with <code>[$TenantName]</code> in the generated script so its the SSDT project that is attempting to maintain the integrity of database. </p>
-
-<p>One possible way to overcome this is to <a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt">suppress the 71502</a> by turning them into <a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt">warnings</a>. The disadvantage in this approach is that you loose the rich validation in exchange for something that is essentially a deployment convenience.</p>
-
-<p>Another duct tape and bubble gum approach would be to just have some kind of post deployment operation that does a find and replace on the schema name. Sure it would work, but that's not going to be reliable in the long run. </p>
-
-<p>A little bit of research reveals that the proper way to alter the creation of deployment script process is to create a deployment plan modifier. A deployment plan modifier is essentially a class that inherits <code>DeploymentPlanModifier</code> and allows you to inject custom actions when deploying a SQL project. There does not seem to be much formal documentation on the process, so I relied a lot on <a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx">this article in MSDN</a>, the sample <a href="https://github.com/Microsoft/DACExtensions">DACExtensions</a> and what forum posts I could find. So with a lot of trial and error I wrote my own plan modifier that would replace the schema identifiers when the database project is published.</p>
-
-
-		<p><a href="/2015/05/ssdt-deployment-plan-modifer/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/disabling-sharepoint-search-service/">Disabling the SharePoint Search Service</a></h2>
-      <p class="post-date">11 Mar 2015
-
-      | <a href="/category/sharepoint" title="SharePoint">SharePoint</a>
-      | <a href="/category/windows" title="Windows">Windows</a>
-</p>
-
-      <p>
-		
-		<p>If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.</p>
-
-<p><a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182">This seems to be most effective</a> way to completely disable the service. Although changing the password to an invalid one works as expected, it is important to replace the user account from a domain to a local user account as well. If not, the constant invalid login attempts could trigger your account lock out threshold policy in the domain.</p>
-
-<p>So for convenience sake I created two batch files - one to disable the service and another to bring it back up.  </p>
-
-
-		<p><a href="/2015/03/disabling-sharepoint-search-service/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/create-elevated-command-prompt-different-user-context/">Create an Elevated Command Prompt Running Under a Different User Context</a></h2>
-      <p class="post-date">07 Mar 2015
-
-      | <a href="/category/security" title="Security">Security</a>
-</p>
-
-      <p>
-		
-		<p>User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. </p>
-
-<p>This is achieved by using the <code>runas</code> command with the <code>/noprofile</code> flag. The command below creates an elevated command line running under the <code>wunder\admin</code> user:</p>
-
-<pre><code>runas /noprofile /user:wunder\admin cmd 
-</code></pre>
-
-<p>Now, all commands executed within this new command prompt would be in the same elevated status.</p>
-
-
-		<p><a href="/2015/03/create-elevated-command-prompt-different-user-context/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Creating a Self-Signed Wild Card SSL Certificate for Your Development Environment</a></h2>
-      <p class="post-date">05 Mar 2015
-
-      | <a href="/category/security" title="Security">Security</a>
-</p>
-
-      <p>
-		
-		<p>Secure Socket Layer (SSL) is a security standard used to ensure secure communication between a web server and browser and used in most modern web application. As a developer it is prudent to setup your development environment to closely resemble production as much as possible, including security concerns. However, getting a full fledged CA SSL certificate for you development environment might not be the most cost-effective solution. Therefore post summarizes the steps I take to create a self signed wild card certificate to be used in the internal environments. My guide is based on this <a href="https://www.macaw.nl/weblog/2013/6/configuring-an-asp-net-project-for-development-with-ssl">excellent post</a>.</p>
-
-<h2>Create the Certificate</h2>
-
-<p>In order to create the certificate we would be using the <code>MakeCert.exe</code> tool which can be found at <code>C:\Program Files (x86)\Windows Kits\8.1\bin\x64\</code>. This command creates the certificate and adds it to the logged in user's personal certificate store:</p>
-
-<pre><code>makecert -r -pe -e 01/01/2099 -eku 1.3.6.1.5.5.7.3.1 -ss My -n CN="*.wunder.local" -sky exchange -sp "Microsoft RSA SChannel Cryptographic Provider" -sy 12 -len 2048 
-</code></pre>
-
-<p>Some of the notable flags:</p>
-
-<ul>
-<li><strong>-r</strong> - Indicates that we're creating a self-signed certificate.</li>
-<li><strong>-pe</strong> - Includes the private key in the certificate and makes it exportable.</li>
-<li><strong>-e</strong> - The validity period of the certificate.</li>
-<li><p><strong>-n</strong> - The subject's certificate name - specify the wildcard url. </p>
-
-<p><img src="/images/posts/SSWildCardSSL/1_CreateCertificate.png" alt="Create Certificate" /></p></li>
-</ul>
-
-
-		<p><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Read more...</a></p>
 	  </p>
     </div>
 </div>

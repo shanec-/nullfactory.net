@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Octopus Deploy,Dynamics CRM,Dynamics CRM Online,generator-nullfactory-xrm,Visual Studio Team Services,ALM,Git" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</a></h2>
+		<p class="post-date">25 Apr 2017
+				| <a href="/category/octopus-deploy">Octopus Deploy</a>
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/git">Git</a>
+	  </p>
+
+		
+
+		<p>In this third and final installment I cover the steps involved in setting up the minimum release and deployment steps required for a successful Dynamics CRM/365 deployment. The steps and actions performed in the previous posts acts as prerequisites for this one.</p>
+
+<p>Related posts from the series:</p>
+
+<ul>
+<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup</a></li>
+<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</a></li>
+<li>Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</li>
+</ul>
+
+<h2>The Packages</h2>
+
+<p>In the <a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">previous post</a>, I setup the team build to automatically publish packages into the Octopus Deploy package repository. </p>
+
+<p>We can verify that they have indeed been published by navigating to the <code>Library &gt; Packages</code> tab for a list of available packages.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/05_published_package.png" alt="Available Packages" /> </p>
+
+<h2>Defining the Environment</h2>
+
+<p>Environments are a logical grouping of targets / machines used by deployments. For the purpose of this post, I will create one environment - <code>Testing</code> and it would contain a single CRM deployment target - the CRM Server). </p>
+
+<ol>
+<li>Let's start off by clicking on the <code>Environments</code> from the main menu to navigate to the environment configuration page.</li>
+<li>Click on <code>Add environment</code> in the resulting page.</li>
+<li><p>Set <code>Testing</code> as the name of the environment .</p>
+
+<p><img src="/images/posts/OctoDeployPt3/10_create_environment.png" alt="Existing Build Definition" /></p></li>
+<li>Click on <code>Save</code> to confirm selection.</li>
+</ol>
+
+<!--excerpt-->
+
+<p>Next, define the deployment target for this environment:</p>
+
+<ol>
+<li>Navigate to the Environments summary page and click the <code>Add deployment target</code> button.</li>
+<li><p>Select <code>Cloud Region</code> as the deployment target.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/20_deployment_target.png" alt="Existing Build Definition" /></p></li>
+<li><p>Set <code>Test CRM Server</code> as the <code>Display name</code>.</p></li>
+<li>Select the previously created <code>Testing</code> as one of the <code>Environments</code>.</li>
+<li><p>Create a new role called <code>crm instance</code>.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/30_deployment_target2.png" alt="Existing Build Definition" /></p></li>
+<li><p>Click on <code>Save</code> button to confirm.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/40_deployment_target3.png" alt="Existing Build Definition" /></p></li>
+</ol>
+
+<h3>Variable Sets</h3>
+
+<p>I will be creating a variable set to host all settings required to connect to the CRM Server. It makes configuration easier and also provides us with the ability to reuse the same server in multiple projects.</p>
+
+<ol>
+<li>From the main menu navigate to <code>Library &gt; Variable Sets</code></li>
+<li><p>Click on <code>Add variable set</code></p>
+
+<p><img src="/images/posts/OctoDeployPt3/50_variables.png" alt="Existing Build Definition" /></p></li>
+<li><p>Define three new variables:</p>
+
+<ul>
+<li><code>#{TestCRM-servername}</code>: The CRM Server Url.  </li>
+<li><code>#{TestCRM-username}</code>: The deployment username.</li>
+<li><code>#{TestCRM-password}</code>: The deployment password. On this one, set the <code>variable type</code> as <code>Sensitive</code>.</li>
+</ul>
+
+<p><img src="/images/posts/OctoDeployPt3/60_variables_created.png" alt="Existing Build Definition" /></p></li>
+<li><p>Click the <code>Save</code> button.</p></li>
+</ol>
+
+<h3>Define the Project</h3>
+
+<p>Projects allow to define a proper release lifecyle by bringing together the different environments and deployment steps. </p>
+
+<p>Let's define a new project:</p>
+
+<ol>
+<li>Navigate to <code>Projects</code> menu.</li>
+<li>Click on the <code>Add project</code>.</li>
+<li>Provide a name and description. Leave the other options to default.</li>
+<li><p>Click on <code>Save</code> to confirm selection.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/70_create_project.png" alt="Existing Build Definition" /></p></li>
+</ol>
+
+<p>Now associate our previously created variable set as part of our project:</p>
+
+<ol>
+<li>Navigate to the <code>Variable &gt; Library Variable Sets</code> tab within the project.</li>
+<li>Click the <code>Include variable sets from the Library</code> button.</li>
+<li><p>Choose the previously created variable set.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/80_include_variable_project.png" alt="Existing Build Definition" /></p></li>
+<li><p>Click the <code>Apply</code> and then <code>Save</code> buttons to confirm selection.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/90_include_variable_project2.png" alt="Existing Build Definition" /></p></li>
+</ol>
+
+<h2>Setup the Deployment Process</h2>
+
+<p>The deployment steps are pretty simple and consists of two PowerShell scripts; the first one is an inline script that sets up the prerequisites while the second one does the actual deployment. </p>
+
+<h3>Prerequisite script</h3>
+
+<ol>
+<li>Navigate to the <code>Process</code> tab within the project.</li>
+<li>Click on <code>Add your first step</code></li>
+<li><p>Select a <code>Run a Script</code> template.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/100_step_template.png" alt="Existing Build Definition" /></p></li>
+<li><p>Update the following parameters while accepting the default selections for the others:</p>
+
+<ul>
+<li><code>Step name</code>: <code>Setup Prerequisites</code></li>
+<li><code>Run on</code> : <code>Deployment targets</code></li>
+<li><code>Runs on targets in roles</code> : <code>crm instance</code></li>
+<li><code>Script source</code> : <code>Source code</code></li>
+<li><code>Script</code>: <code>Powershell</code></li>
+</ul></li>
+<li><p>Provide the following for the body of the script:</p>
+
+<pre><code>Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
+</code></pre>
+
+<p><img src="/images/posts/OctoDeployPt3/110_step_1.png" alt="Existing Build Definition" /></p></li>
+<li><p>Click <code>Save</code> to apply changes.</p></li>
+</ol>
+
+<h3>Deployment Script</h3>
+
+<p>The steps are very similar to the previous one, but this time we want to execute a script that is already part of the package. </p>
+
+<ol>
+<li>Once again,click on <code>Add step</code> and select a <code>Run a Script</code> template:</li>
+<li><p>Update the following parameters while accepting the default selections for the others:</p>
+
+<ul>
+<li><code>Step name</code>: <code>Deploy CRM Solution</code></li>
+<li><code>Run on</code> : <code>Deployment targets</code></li>
+<li><code>Runs on targets in roles</code> : <code>crm instance</code></li>
+<li><code>Script source</code> : <code>Script file inside a package</code></li>
+</ul></li>
+<li><p>Keep the <code>Package Feed</code> on <code>Octopus Server (built-in)</code> as we've already published our package into OD.</p></li>
+<li>Set <code>Package ID</code> to <code>gnxdemo.crm</code>. This is the name that the build published.</li>
+<li><p>Set the <code>Script file name</code> value to:</p>
+
+<pre><code>Nullfactory.Xrm.Tooling\Scripts\Deploy-CrmSolution.ps1
+</code></pre></li>
+<li><p>Set the <code>Script parameters</code> value to by integrating the variables that we created earlier:</p>
+
+<pre><code>-serverUrl "#{TestCRM-servername}" -username "#{TestCRM-username}" -password "#{TestCRM-password}" -solutionName "gnxdemo.crm" -publishChanges -activatePlugins
+</code></pre>
+
+<p><img src="/images/posts/OctoDeployPt3/120_step_2.png" alt="Existing Build Definition" /></p></li>
+<li><p>Click the <code>Save</code> button.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/130_step_summary.png" alt="Existing Build Definition" /></p></li>
+</ol>
+
+<h2>Release and Deployment</h2>
+
+<p>Now that we have everything setup let's create a new release and then deploy the same to the <code>Testing environment</code>.</p>
+
+<ol>
+<li>Navigate to the Project page.</li>
+<li>Click on the <code>Create Release</code>.</li>
+<li>Provide a version number for the new release. I gave it <code>0.0.1</code>.</li>
+<li>Ensure that the <code>Deploy CRM Solution</code> step is referencing the latest version of the solution.</li>
+<li>Click on the <code>Save</code> button the confirm the release. The release page shows an overview of the release including the its lifecyle path and as well as the packages being deployed.</li>
+<li>Click on the <code>Deploy to Testing</code> in order to deploy the solution to the testing environment.</li>
+<li><p>Click the <code>Deploy now</code> button in the resulting page to kick off the deployment.</p>
+
+<p><img src="/images/posts/OctoDeployPt3/140_deploy_release.png" alt="Existing Build Definition" /></p></li>
+<li><p>The page would redirect to a summary page showing the progress of the deployment. </p>
+
+<p><img src="/images/posts/OctoDeployPt3/150_deploy_task_progress.png" alt="Existing Build Definition" /></p></li>
+<li><p>Click on the <code>Task Log</code> to view a more verbose view of the solution being deployed.  </p>
+
+<p><img src="/images/posts/OctoDeployPt3/160_deploy_task_log.png" alt="Existing Build Definition" /></p></li>
+</ol>
+
+<h2>Final Thoughts</h2>
+
+<p>While I think I have barely scratched the surface of the features provided by Octopus Deploy, the process of writing this series of posts made me appreciate the intuitive structure of key concepts as well as the myriad of options available to support even the most complex of release life cycles. This series also gave me the opportunity to validate the flexibility of the project structure generated using the <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">generator-nullfactory-xrm</a> - with its ability to work with different DevOps tools.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://octopus.com/docs/key-concepts/environments">Environments - Octopus Deploy</a></li>
+<li><a href="https://octopus.com/docs/key-concepts/projects">Projects - Octopus Deploy</a></li>
+<li><a href="https://octopus.com/docs/key-concepts/machine-roles">Machine Roles - Octopus Deploy</a></li>
+<li><a href="https://octopus.com/docs/deployment-targets">Deployment targets - Octopus Deploy</a></li>
+<li><a href="https://octopus.com/docs/deployment-targets/azure-cloud-service-target">Azure Cloud Service Deployment Targets - Octopus Deploy</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
