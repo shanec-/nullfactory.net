@@ -330,6 +330,7 @@ blockquote {
   padding: 0 0 0 15px;
   font-size: 16px;
   border-left: 2px solid #aaa;
+  font-style: italic;
 }
 blockquote p {
   margin: 12px 0;
@@ -446,8 +447,8 @@ pre {
   margin: 16px 0;
   padding: 10px;
   color: #444;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid #eee;
   border-radius: 4px;
   overflow: auto;
   -webkit-font-smoothing: subpixel-antialiased;
@@ -458,12 +459,15 @@ code{
   font-size: 0.9em;
   color: #556270;
   background: rgba(0,0,0,.04);
+  border: 1px dashed rgba(0, 0, 0, 0.18);
+  border-radius: 3px;
 }
 pre code {
   padding: 0;
   color: inherit;
-  background: inherit;
+  background: none;
   border-radius: 0;
+  border: none;
 }
 code span.global {
   color: #3388DD;
