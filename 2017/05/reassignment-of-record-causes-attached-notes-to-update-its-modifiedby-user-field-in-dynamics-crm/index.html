@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/">Reassignment of Record Causes Attached Notes to Update its ModifiedBy User Field in Dynamics CRM</a></h2>
+		<p class="post-date">04 May 2017
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+	  </p>
+
+		
+
+		<p>My colleagues and I ran into a interesting problem the other day; we noticed that on some records all the notes attached to it were being updated seemingly randomly being updated. At first glance I was confused as to why this was happening, but we eventually found the steps to reproduce it: </p>
+
+<ol>
+<li>Prepare a record - <code>Record 1</code> that can wither be a custom entity or out of the box entity with notes and attachments enabled. </li>
+<li>Update it such that it has several notes that are created by different users.</li>
+<li>Ensure <code>Record 1</code> is owned by <code>User A</code>.</li>
+<li>Login as <code>User B</code> and reassign the <code>Record 1</code> to <code>User C</code>.</li>
+</ol>
+
+<p>Now, if we observe the notes control it shows <code>User B</code>'s name along side the date and time stamp. </p>
+
+<p>I was initially thrown off as to why the above actions changed the <code>Created By</code> of the notes, but what I failed to realize was that the annotation control shows the <code>Modified By</code> user and not the <code>Created By</code>.</p>
+
+<!--excerpt-->
+
+<p>The relationship between the custom entity and the <code>annotation</code> entity is parental with <code>cascade all</code> set on assignment, therefore when the parent record is reassigned, it automatically reassigns all the notes associated with it. The reassignment itself is considered an update and thus shows the the user who initiated the reassign as the <code>Modified By</code> user.  And if you think about it you would see that CRM is behaving exactly as it should - the parent record and the notes are assigned to <code>User C</code> while the last modified is set to <code>User B</code>.</p>
+
+<p>In this particular custom solution I was working on, the notes were being treated as immutable - that is once created it should not be modified. The reassignment logic is done by an external process executed under an service account. So the reassignment and subsequent change of the <code>Modified By</code> to the service account was confusing the users. </p>
+
+<p>I found that there are two potential workarounds for this, but each with its own caveats.</p>
+
+<h2>Workaround 1</h2>
+
+<p>The first approach is to alter the parental relationship of the record. Change the relationship behavior from <code>Parental</code> to <code>Configurable Cascading</code> and then the <code>Assign</code> option from <code>Cascade All</code> to <code>Cascade None</code>.</p>
+
+<p><img src="/images/posts/ReassignChildNotes/10_updated_relationship.png" alt="Updated Parental Relationship" /></p>
+
+<p>One caveat of this approach is that if the parent record is reassigned from a user in a higher business unit hierarchy to one in a lower business unit, the notes would not be visible to other users in the lower business unit. This is of course subject to the way the security permissions have been configured - your mileage may vary.</p>
+
+<h2>Workaround 2</h2>
+
+<p>Write a <code>pre-operation</code> plugin that runs on the update of the annotation entity. Have it configured to run on the same service account as the one used by the external process. This way when the record is reassigned by the external process the last modified by user is still retained. </p>
+
+<p>Read more this approach <a href="http://missdynamicscrm.blogspot.com.au/2014/06/crm-2011-2013-modify-createdon-createdby-modifiedon-modifiedby-using-SDK-CSharp.html">here</a>.</p>
+
+<pre><code>public class RetainModifiedByUserPlugin : IPlugin
+{
+    public void Execute(IServiceProvider serviceProvider)
+    {
+        IPluginExecutionContext context =
+            (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
+
+        #warning todo: defensive programming!
+
+        var preImage = context.PreEntityImages["Image"];
+        var previousUser = (EntityReference)preImage["modifiedby"];
+
+        var updateRequest = new UpdateRequest() { Parameters = context.InputParameters };
+        var modifiedBy = (EntityReference)updateRequest.Target["modifiedby"];
+
+        // if record is modified by the service account
+        if (modifiedBy.Id == context.UserId)
+        {
+            updateRequest.Target["modifiedby"] = previousUser;
+        }
+    }
+}
+</code></pre>
+
+<p>The downside to this approach is that updating user has to be the designated "service account". I also think that changing the expected behaviour of the update functionality is not the best user experience - once again, that being said your mileage may vary. </p>
+
+<p>I can also confirm that this solution still works even with the latest version of Dynamics 365 online (<code>Version 1612 (8.2.1.176) (DB 8.2.1.176) online</code> as of writing this post).</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="http://missdynamicscrm.blogspot.com.au/2014/06/crm-2011-2013-modify-createdon-createdby-modifiedon-modifiedby-using-SDK-CSharp.html">CRM 2011/ 2013 Modify CreatedOn, CreatedBy, ModifiedOn, and ModifiedBy Using SDK C# ~ Ms. Dynamics CRM</a></li>
+<li><a href="https://blogs.msdn.microsoft.com/emeadcrmsupport/2012/08/01/the-truth-about-override-created-on-or-created-by-for-records-during-data-import/">The truth about ‘Override Created on or Created by for records during data import’ – EMEA Dynamics CRM Support</a></li>
+<li><a href="https://blogs.msdn.microsoft.com/emeadcrmsupport/2012/08/01/the-truth-about-override-created-on-or-created-by-for-records-during-data-import/">The truth about ‘Override Created on or Created by for records during data import’ – EMEA Dynamics CRM Support</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
