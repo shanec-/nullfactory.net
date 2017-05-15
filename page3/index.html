@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,git,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,git,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,26 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/04/dynamics-crm-base64-attachment-size/">Base64 and Maximum Attachment Size in Dynamics CRM</a></h2>
+      <p class="post-date">15 Apr 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>Microsoft Dynamics CRM provides out-of-the-box functionality to store and associate small file attachments against an entity record. This is achieved via the <code>annotation</code> entity - it is similar to any other entity except that it stores meta data as well as the <a href="https://msdn.microsoft.com/en-us/library/gg334398.aspx">actual content of the file attachment</a> within it. </p>
+
+<p>As CRM is not designed to be a <a href="http://www.optimalcrm.co.uk/storage-limit-reached-in-microsoft-dynamics-crm-online/">file store</a>, it imposes some limitations on the size of attachments that can be uploaded. Recent versions of the product, including 2016, defaults this size to 5120Kb which can be adjusted to a <a href="https://dynamicscrmherald.wordpress.com/2014/01/03/increasing-web-resource-and-email-note-attachment-file-size-in-microsoft-dynamics-crm-2013/">maximum hard limit of 32768Kb</a>. </p>
+
+<p>However, there is one caveat with this limitation - CRM stores the byte stream in a base64 encoded format, this means that there would be an <a href="http://stackoverflow.com/questions/4715415/base64-what-is-the-worst-possible-increase-in-space-usage">increase</a> in the final saved file size. </p>
+
+
+		<p><a href="/2016/04/dynamics-crm-base64-attachment-size/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">Strategy for Maintaining CRM Solutions in Team Foundation Server using Microsoft.Xrm.Data.PowerShell</a></h2>
       <p class="post-date">21 Jan 2016
@@ -342,41 +362,6 @@ at System.Threading.ThreadHelper.ThreadStart()
 
 
 		<p><a href="/2015/06/entity-framework-multiple-context-namespace-collision/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Generate a Clean Up Script to Drop All Objects in a SQL Server Database</a></h2>
-      <p class="post-date">02 Jun 2015
-
-      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
-</p>
-
-      <p>
-		
-		<p>I needed a quick and reusable way to drop all SQL server objects from an Azure database. The objective was to have some kind of process to clean up and prep the database before the main deployment is kicked off. And given that I am particularly biased towards using a sql script my search for a solution focused around it.</p>
-
-<p>In addition to actually dropping the artifacts, the script should be aware of the order in which it should do it - that is to drop the most dependent objects first and work its way towards the least dependent ones. And my nice-to-have feature is to be able to parameterize the schema name so that it could be used with a multi-tenant database schema.</p>
-
-<p>I saw a few possible solutions and finally settled on using the <a href="http://stackoverflow.com/questions/536350/drop-all-the-tables-stored-procedures-triggers-constraints-and-all-the-depend">out-of-the-box feature</a> that's already available through SQL Server Management Studio (SSMS).</p>
-
-<ol>
-<li>Open up SQL Server Management Studio.</li>
-<li><p>Select <code>Task  &gt; Generate Script...</code> on on your the database context menu. This would open up the <code>Generate and Publish Scripts</code> dialog.</p>
-
-<p><img src="/images/posts/GenerateDropScript/10_ContextMenu.png" alt="SSMS Context Menu" /></p></li>
-<li><p>First, navigate to the <code>Choose Objects</code> tab and select all the objects that need to be dropped.</p></li>
-<li><p>Next, on the <code>Set Scripting Options</code> tab, select the preferred output location.</p>
-
-<p><img src="/images/posts/GenerateDropScript/20_SetScriptingOptions.png" alt="Set Scripting Options" /></p></li>
-<li><p>Next, click the <code>Advanced</code> button which result in the <code>Advanced Scripting Options</code> dialog.</p>
-
-<p><img src="/images/posts/GenerateDropScript/30_AdvancedScriptingOptions.png" alt="Advanced Scripting Options" /></p></li>
-<li><p>Navigate down towards to and change the <code>General &gt; Script DROP and CREATE</code> option to <code>Script DROP</code>.</p></li>
-<li>Set the default values for the rest of the steps and finally click the <code>Finish</code> button.</li>
-</ol>
-
-
-		<p><a href="/2015/06/generate-clean-up-script-drop-objects-sql-database/">Read more...</a></p>
 	  </p>
     </div>
 </div>

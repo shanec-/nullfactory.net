@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,git,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,git,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -42,6 +42,44 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/">Gated Check-ins in Visual Studio Team Services using TFSVC and Git</a></h2>
+      <p class="post-date">15 May 2017
+
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/tfsvc" title="TFSVC">TFSVC</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+</p>
+
+      <p>
+		
+		<p>A continuous integration build ensures that the code within a source control repository can be compiled successfully after a commit. <a href="https://www.thoughtworks.com/continuous-integration">It is defined as</a>:</p>
+
+<blockquote>
+  <p>Continuous Integration (CI) is a development practice that requires developers to integrate code into a shared repository several times a day. Each check-in is then verified by an automated build, allowing teams to detect problems early. </p>
+</blockquote>
+
+<p>Where as CI builds occur after a commit has been merged into the repository, a gated check-in is a "pessimistic" process that would treat a commit as completed <strong>only</strong> if the result of it being merged with the repository is a successful build.</p>
+
+<p>In this post I will try my hand in setting up a gated check-in using Visual Studio Team Services (VSTS). I will start off with TFSVC as the underlying version control system and then replicate the same functionality using Git.</p>
+
+<h2>Configuring a Gated Check-In Using TFSVC</h2>
+
+<p><em>Prerequisite: A repository already exists in the remote server with project code checked-in. I will be using one of my demo CRM projects.</em></p>
+
+<ol>
+<li><p>Define the steps for the build that would act as the verification build.</p>
+
+<p><img src="/images/posts/TfsvcGatedCheckIns/10_CIBuild.png" alt="Verification Build" /></p></li>
+<li><p>Navigate to the <code>Triggers</code> tab within the build definition and enabling the <code>Gated Check-In</code> trigger.</p>
+
+<p><img src="/images/posts/TfsvcGatedCheckIns/20_GatedCheckIn.png" alt="Gated Check-In" /></p></li>
+</ol>
+
+
+		<p><a href="/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/">Reassignment of Record Causes Attached Notes to Update its ModifiedBy User Field in Dynamics CRM</a></h2>
       <p class="post-date">04 May 2017
 
@@ -54,9 +92,10 @@
 		<p>My colleagues and I ran into a interesting problem the other day; we noticed that on some records all the notes attached to it were being updated seemingly randomly being updated. At first glance I was confused as to why this was happening, but we eventually found the steps to reproduce it: </p>
 
 <ol>
-<li>Prepare a record - <code>Record 1</code> that can wither be a custom entity or out of the box entity with notes and attachments enabled. </li>
-<li>Update it such that it has several notes that are created by different users.</li>
-<li>Ensure <code>Record 1</code> is owned by <code>User A</code>.</li>
+<li>Create a record <code>Record 1</code> in an entity. This can either be a custom entity or out-of-the-box entity with notes and attachments enabled. </li>
+<li>If the notes control has not been added onto the form, do that now.</li>
+<li>Update it such that it has several notes created by different users.</li>
+<li>Next make sure that <code>Record 1</code> is owned by <code>User A</code>.</li>
 <li>Login as <code>User B</code> and reassign the <code>Record 1</code> to <code>User C</code>.</li>
 </ol>
 
@@ -384,40 +423,6 @@
 
 
 		<p><a href="/2017/04/slide-deck-melbourne-ug/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Release Strategy for Dynamics CRM - Part 4 - Versioning</a></h2>
-      <p class="post-date">07 Feb 2017
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
-      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/git" title="Git">Git</a>
-</p>
-
-      <p>
-		
-		<p>In this post I detail my approach to implement an automated versioning strategy in CRM solutions and its custom assemblies with the help of Visual Studio Team Services.</p>
-
-<p>Although I originally only intended it to be a 3 part series I think I will continue to add to it as I keep making improvements. To recap, I previously prepared the project structure to host a CRM solution with the aid of the <code>nullfactory-xrm</code> <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">generator</a> and created a build and release definitions for it. You can find the previous posts here:</p>
-
-<ul>
-<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
-<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
-<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
-<li>Release Strategy for Dynamics CRM - Part 4 - Versioning</li>
-</ul>
-
-<p>There were two aspects of versioning that I wanted to automatically increment with each release. Firstly the CRM Solution itself and then the custom assemblies included as part of the solution. I also wanted the flexibility to version the two independently of each other (I don't think its a very common scenario, but I would still like to have it as an available option).</p>
-
-<p>As with my previous posts, the instructions in this are specific to Visual Studio Team Services (VSTS), but can be adapted to work with other build and release systems. </p>
-
-
-		<p><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Read more...</a></p>
 	  </p>
     </div>
 </div>
