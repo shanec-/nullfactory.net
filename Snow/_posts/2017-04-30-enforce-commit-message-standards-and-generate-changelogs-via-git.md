@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Enforce Commit Message Standards and Generate Changelogs via Git
-category: git, ALM, npm, nodejs, commitizen, conventional-changelog
+category: Git, ALM, npm, nodejs, commitizen, conventional-changelog
 ---
 In past projects my release note strategy has been a combination of custom scripts (to pull the changesets between releases) and good old fashioned elbow grease to manually create the notes. I was curious to know ways about the ways to achieve the same in git and learning about the techniques used in popular open source projects.  
 

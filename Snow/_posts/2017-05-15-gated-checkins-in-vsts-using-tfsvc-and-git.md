@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Gated Check-ins in Visual Studio Team Services using TFSVC and Git
-category: Visual Studio Team Services, TFSVC, ALM
+category: Visual Studio Team Services, TFSVC, ALM, Git
 ---
 
 A continuous integration build ensures that the code within a source control repository can be compiled successfully after a commit. [It is defined as](https://www.thoughtworks.com/continuous-integration):
