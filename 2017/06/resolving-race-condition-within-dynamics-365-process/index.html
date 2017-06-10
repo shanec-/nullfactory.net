@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/resolving-race-condition-within-dynamics-365-process/">Resolving a Race Condition Within a Dynamics 365 Process</a></h2>
+		<p class="post-date">09 Jun 2017
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+	  </p>
+
+		
+
+		<p>I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.</p>
+
+<p><img src="/images/posts/AsyncWorkflow/10_singleworkflow.png" alt="Single Workflow" /> </p>
+
+<p><img src="/images/posts/AsyncWorkflow/20_singleworkflow_trigger.png" alt="Workflow Triggger" /></p>
+
+<p>If we take the above example, it can be replicated easily:</p>
+
+<ol>
+<li>Create a new record where <code>Delivery Status</code> is <code>Current</code>.</li>
+<li>Immediately update the record to <code>Pending</code>.</li>
+</ol>
+
+<p>Navigate to the background processes and ensure that the workflow was executed twice, once on the create and then again on the update. If you performed the update soon enough, you notice that both instances satisfied the citieria and the custom activity invoked.</p>
+
+<p>This behaviour is by design - when an async workflow is triggered it neither guarantees the immediate execution of the process nor the state of the record at the time it was queued. This means that the workflow would work against the latest version of the record at the time of execution.</p>
+
+<!--excerpt-->
+
+<h2>The Solution</h2>
+
+<p>The solution was to break the workflow process into two different parent-child workflows. The parent workflow evaluates the critiera and execute the child workflow, and the child workflow invokes the custom workflow activity. In order to avoid the same race condition we encountered earlier, the parent workflow is set to run <code>synchronously</code>. The child workflow will continue to be executed asynchronously.  </p>
+
+<p>The new structure of the workflow:</p>
+
+<p><img src="/images/posts/AsyncWorkflow/30_SplitSyncParent.png" alt="Split Synchronized Parent" /> </p>
+
+<p><img src="/images/posts/AsyncWorkflow/40_SplitAsyncChild.png" alt="Split Asynchronized Child" /> </p>
+
+<h2>Final Thoughts</h2>
+
+<p>I think the lesson learned here is that even though the benifits of going asynchronous are numerous, it is important to evaluate and implement one that works well with the particular business secenario. </p>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

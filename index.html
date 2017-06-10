@@ -42,6 +42,37 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/resolving-race-condition-within-dynamics-365-process/">Resolving a Race Condition Within a Dynamics 365 Process</a></h2>
+      <p class="post-date">09 Jun 2017
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.</p>
+
+<p><img src="/images/posts/AsyncWorkflow/10_singleworkflow.png" alt="Single Workflow" /> </p>
+
+<p><img src="/images/posts/AsyncWorkflow/20_singleworkflow_trigger.png" alt="Workflow Triggger" /></p>
+
+<p>If we take the above example, it can be replicated easily:</p>
+
+<ol>
+<li>Create a new record where <code>Delivery Status</code> is <code>Current</code>.</li>
+<li>Immediately update the record to <code>Pending</code>.</li>
+</ol>
+
+<p>Navigate to the background processes and ensure that the workflow was executed twice, once on the create and then again on the update. If you performed the update soon enough, you notice that both instances satisfied the citieria and the custom activity invoked.</p>
+
+<p>This behaviour is by design - when an async workflow is triggered it neither guarantees the immediate execution of the process nor the state of the record at the time it was queued. This means that the workflow would work against the latest version of the record at the time of execution.</p>
+
+
+		<p><a href="/2017/06/resolving-race-condition-within-dynamics-365-process/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/">Gated Check-ins in Visual Studio Team Services using TFSVC and Git</a></h2>
       <p class="post-date">15 May 2017
 
@@ -405,25 +436,6 @@
 
 
 		<p><a href="/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/slide-deck-melbourne-ug/">Source Control and Release Management - Presentation Slide Deck</a></h2>
-      <p class="post-date">12 Apr 2017
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
-      | <a href="/category/miscellaneous" title="Miscellaneous">Miscellaneous</a>
-</p>
-
-      <p>
-		
-		<p><img src="/images/posts/MelbUGSlideDeck/10_TypicalLifeCycle.png" alt="Typical Life Cylce Slide" /></p>
-
-<p>A few weeks back, I did a presentation on <code>Source Control and Release Management Strategy for Dynamics 365 Solutions</code> at the Melbourne Dynamics 365 User Group. Here is the slide deck for that presentation:</p>
-
-
-		<p><a href="/2017/04/slide-deck-melbourne-ug/">Read more...</a></p>
 	  </p>
     </div>
 </div>

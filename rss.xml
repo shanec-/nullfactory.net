@@ -1,4 +1,53 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/</guid><link>http://nullfactory.net/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/</link><title>Gated Check-ins in Visual Studio Team Services using TFSVC and Git</title><description>&lt;p&gt;A continuous integration build ensures that the code within a source control repository can be compiled successfully after a commit. &lt;a href="https://www.thoughtworks.com/continuous-integration"&gt;It is defined as&lt;/a&gt;:&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/</guid><link>http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/</link><title>Resolving a Race Condition Within a Dynamics 365 Process</title><description>&lt;p&gt;I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/10_singleworkflow.png" alt="Single Workflow" /&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/20_singleworkflow_trigger.png" alt="Workflow Triggger" /&gt;&lt;/p&gt;
+
+&lt;p&gt;If we take the above example, it can be replicated easily:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a new record where &lt;code&gt;Delivery Status&lt;/code&gt; is &lt;code&gt;Current&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Immediately update the record to &lt;code&gt;Pending&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Navigate to the background processes and ensure that the workflow was executed twice, once on the create and then again on the update. If you performed the update soon enough, you notice that both instances satisfied the citieria and the custom activity invoked.&lt;/p&gt;
+
+&lt;p&gt;This behaviour is by design - when an async workflow is triggered it neither guarantees the immediate execution of the process nor the state of the record at the time it was queued. This means that the workflow would work against the latest version of the record at the time of execution.&lt;/p&gt;
+
+</description><pubDate>Thu, 08 Jun 2017 14:00:00 Z</pubDate><a10:updated>2017-06-08T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/10_singleworkflow.png" alt="Single Workflow" /&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/20_singleworkflow_trigger.png" alt="Workflow Triggger" /&gt;&lt;/p&gt;
+
+&lt;p&gt;If we take the above example, it can be replicated easily:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a new record where &lt;code&gt;Delivery Status&lt;/code&gt; is &lt;code&gt;Current&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Immediately update the record to &lt;code&gt;Pending&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Navigate to the background processes and ensure that the workflow was executed twice, once on the create and then again on the update. If you performed the update soon enough, you notice that both instances satisfied the citieria and the custom activity invoked.&lt;/p&gt;
+
+&lt;p&gt;This behaviour is by design - when an async workflow is triggered it neither guarantees the immediate execution of the process nor the state of the record at the time it was queued. This means that the workflow would work against the latest version of the record at the time of execution.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;The solution was to break the workflow process into two different parent-child workflows. The parent workflow evaluates the critiera and execute the child workflow, and the child workflow invokes the custom workflow activity. In order to avoid the same race condition we encountered earlier, the parent workflow is set to run &lt;code&gt;synchronously&lt;/code&gt;. The child workflow will continue to be executed asynchronously.  &lt;/p&gt;
+
+&lt;p&gt;The new structure of the workflow:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/30_SplitSyncParent.png" alt="Split Synchronized Parent" /&gt; &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/40_SplitAsyncChild.png" alt="Split Asynchronized Child" /&gt; &lt;/p&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;I think the lesson learned here is that even though the benifits of going asynchronous are numerous, it is important to evaluate and implement one that works well with the particular business secenario. &lt;/p&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/</guid><link>http://nullfactory.net/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/</link><title>Gated Check-ins in Visual Studio Team Services using TFSVC and Git</title><description>&lt;p&gt;A continuous integration build ensures that the code within a source control repository can be compiled successfully after a commit. &lt;a href="https://www.thoughtworks.com/continuous-integration"&gt;It is defined as&lt;/a&gt;:&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;Continuous Integration (CI) is a development practice that requires developers to integrate code into a shared repository several times a day. Each check-in is then verified by an automated build, allowing teams to detect problems early. &lt;/p&gt;
@@ -1071,17 +1120,4 @@ Foreach-Object {
 &lt;/ul&gt;
 
 &lt;p&gt;I hope this helps anyone else who might encounter this issue.&lt;/p&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/04/slide-deck-melbourne-ug/</guid><link>http://nullfactory.net/2017/04/slide-deck-melbourne-ug/</link><title>Source Control and Release Management - Presentation Slide Deck</title><description>&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MelbUGSlideDeck/10_TypicalLifeCycle.png" alt="Typical Life Cylce Slide" /&gt;&lt;/p&gt;
-
-&lt;p&gt;A few weeks back, I did a presentation on &lt;code&gt;Source Control and Release Management Strategy for Dynamics 365 Solutions&lt;/code&gt; at the Melbourne Dynamics 365 User Group. Here is the slide deck for that presentation:&lt;/p&gt;
-
-</description><pubDate>Tue, 11 Apr 2017 14:00:00 Z</pubDate><a10:updated>2017-04-11T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MelbUGSlideDeck/10_TypicalLifeCycle.png" alt="Typical Life Cylce Slide" /&gt;&lt;/p&gt;
-
-&lt;p&gt;A few weeks back, I did a presentation on &lt;code&gt;Source Control and Release Management Strategy for Dynamics 365 Solutions&lt;/code&gt; at the Melbourne Dynamics 365 User Group. Here is the slide deck for that presentation:&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;&lt;a href="https://www.slideshare.net/shanec_/source-control-and-release-strategy-for-dynamics-365-solutions"&gt;https://www.slideshare.net/shanec_/source-control-and-release-strategy-for-dynamics-365-solutions&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;As always, feel free to reach me through social media if you have any questions.&lt;/p&gt;
 </a10:content></item></channel></rss>
