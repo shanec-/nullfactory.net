@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,31 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/enable-ssrs-remote-error-sharepoint-integrated/">Enable SSRS Remote Errors in SharePoint Integrated Mode</a></h2>
+      <p class="post-date">28 Aug 2015
+
+      | <a href="/category/sharepoint" title="SharePoint">SharePoint</a>
+      | <a href="/category/sql-server-reporting-services" title="SQL Server Reporting Services">SQL Server Reporting Services</a>
+</p>
+
+      <p>
+		
+		<p>Any time I have to troubleshoot issues in SQL Server Reporting Services (SSRS) reports in a production environment, I usually end up enabling <code>Remote Errors</code> at some point as part my process. </p>
+
+<p>Remote errors are enabled via the SSRS Service Application:</p>
+
+<ol>
+<li>Navigate to <code>Central Administration &gt; Application Management &gt; Manage Service Applications</code></li>
+<li>Next, click on the appropriate  <code>SQL Server Reporting Services Service Application</code> service application to manage it. </li>
+<li>Click <code>System Settings</code> from the toolbar.</li>
+<li>Finally, enable remote errors by navigating into checking the <code>Enable Remote Errors</code> checkbox. </li>
+</ol>
+
+
+		<p><a href="/2015/08/enable-ssrs-remote-error-sharepoint-integrated/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/06/entity-framework-multiple-context-namespace-collision/">Entity Framework Namespace Collisions When Working with Multiple Contexts</a></h2>
       <p class="post-date">03 Jun 2015
@@ -310,41 +335,6 @@ The problem with the free tiers is that there's a high possibility that the web 
 
 
 		<p><a href="/2015/03/could-not-establish-trust-relationship-ssl-tls/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/02/obfuscate-sharepoint-ssrs-datasource/">Obfuscating a SharePoint-Integrated SSRS DataSource's Connection String</a></h2>
-      <p class="post-date">16 Feb 2015
-
-      | <a href="/category/sharepoint" title="SharePoint">SharePoint</a>
-      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
-      | <a href="/category/sql-server-reporting-services" title="SQL Server Reporting Services">SQL Server Reporting Services</a>
-      | <a href="/category/code-access-security" title="Code Access Security">Code Access Security</a>
-</p>
-
-      <p>
-		
-		<p>When SQL Server Reporting Services (SSRS) is deployed as an SharePoint integrated solution, it enables much of its functionality to be managed right from within SharePoint. Starting from the 2013 version, the integration between SharePoint and SQL Server Reporting Services 2012 is more tightly coupled than previous iterations. </p>
-
-<p>One feature in integrated mode is the ability to have the data sources (.rsds) and report files (.rdl) within a document library itself. This means that reports can reference a DataSource within any document library in the SharePoint site. </p>
-
-<p>In order for the report to work the user should have read permission on both the data source as well as the report file. The problem with this is that the same user can now potentially view the settings within the data source file, including the connection string.</p>
-
-<h2>The Solution</h2>
-
-<p>In order to protect the connection string, I came up with a solution to obscure it through encryption. The solution can be broken down to two major steps:</p>
-
-<ol>
-<li>Force the reports to get the connection string by evaluating an expression embedded within itself. </li>
-<li>Within this expression, call some custom code which manages the retrieval and decryption of the connection string. </li>
-</ol>
-
-<p>One of the limitations with this method is that you can no longer use a shared data source and each report has to have its credentials embedded.</p>
-
-<p>In my example below, I will be retrieving the configuration string from a configuration list stored in the same SharePoint server. </p>
-
-
-		<p><a href="/2015/02/obfuscate-sharepoint-ssrs-datasource/">Read more...</a></p>
 	  </p>
     </div>
 </div>

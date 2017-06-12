@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="ALM,StyleCop" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/">Enforce Code Standards by Integrating StyleCop Validations</a></h2>
+		<p class="post-date">11 Jun 2017
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/stylecop">StyleCop</a>
+	  </p>
+
+		
+
+		<p>StyleCop is a configurable analysis library that ensures code produced conforms to it's coding standard. While the benefits of a consistent coding standard is clear, each team has there own strong opinions how it should be enforced. </p>
+
+<p>In my previous projects I've used the <code>StyleCop.MsBuild</code> package and have been eager to try out the code analyzer version of the tool. In this post, I will start off with a quick run down of my attempt at integrating it into a solution.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Visual Studio Professional 2015 or higher. Its not really necessary, but makes for an easier setup and nicer integration with the Roslyn base analyzer. </li>
+<li>If integrating with an SCM or Automated build -  Visual Studio Team Services (VSTS) using git. The steps are not limited to VSTS, but its just my personal preference.</li>
+</ul>
+
+<h2>Installation</h2>
+
+<p>Installation itself is pretty simple - just install the <code>StyleCop.Analyzers</code> nuget package by running the following command in the package manager console witihin Visual Studio:</p>
+
+<pre><code>Install-Package StyleCop.Analyzers
+</code></pre>
+
+<p>That's it. That all we need to do to get started.</p>
+
+<h2>Warning Vs. Error</h2>
+
+<p>By default StyleCop treats suggestions as warnings, but I prefer to go strict mode and treat all style cop validations as errors. This means that build actually fails if the code does not adhere to the style validations. My justification is that its always cheaper to fix these issues early in the development cycle as well as minimizing <a href="https://blog.codinghorror.com/the-broken-window-theory/">"broken windows syndrome"</a>.</p>
+
+<p>When using the older <code>StyleCop.MSBuild</code> package, I could just set the <code>StyleCopTreatErrorsAsWarnings</code> environmental variable in the development machine or the team build and it will ensure that the the scope is limited to the StyleCop errors only. Unfortunately, with the Analyzers project it does not seem to be that simple. There exists an <code>TreatWarningsAsErrors</code> environmental variable, but this is global and treats any warnings as errors - not what I want.</p>
+
+<!--excerpt-->
+
+<p>So my plan is to create two rule sets and tie them down to two individual configurations. I will create one rule set used in the debug configuration and then a stricter one for the release configuration.</p>
+
+<p>Now let's configure the rules:</p>
+
+<ol>
+<li>Let's create a very simple console application called <code>AnalyzersDemo</code>and open it up in Visual Studio.</li>
+<li>Install the <code>StyleCop.Analyzers</code> package into the project.</li>
+<li><p>Next, navigate to the <code>Analyze &gt; Configure Code Analysis &gt; For AnalyzersDemo]</code> menu option.</p>
+
+<p><img src="/images/posts/StyleCopInteg/10_configureanalysis.png" alt="Code Analysis" /></p></li>
+<li><p>In the resulting dialog, accept the default values by clicking the <code>Open</code> button. This will open a dialog that allows us to configure the behaviour of the rule sets.</p>
+
+<p><img src="/images/posts/StyleCopInteg/20_opencustomize.png" alt="Code Analysis Customize" /></p></li>
+<li><p>Select all the warnings related to <code>StyleCop.Analyzers</code> and update the Action to <code>Error</code>. Notice that a new rule set file has been created.</p>
+
+<p><img src="/images/posts/StyleCopInteg/30_customizerules.png" alt="Code Analysis Customize Rules" /></p></li>
+<li><p>Duplicate the rule set file and rename them <code>BaseRuleset.ruleset</code> to <code>StrictRuleset.ruleset</code>. </p></li>
+<li>Move them them up as solution items. This is so that we can share the same rule sets against all the projects.</li>
+<li>Edit the files and give the name and descriptions more meaningful values.</li>
+<li>Remove all nodes except for the <code>&lt;RuleSet&gt;</code> root node from the <code>BaseRuleset</code> file so that it will revert the default action level.</li>
+<li><p>Next, associate the two rule sets with the different configurations; the <code>BaseRuleset</code> and <code>StrictRuleset</code> to the <code>debug</code> and <code>release</code> configuration respectively.</p>
+
+<p><img src="/images/posts/StyleCopInteg/40_debugrules.png" alt="Debug RuleSet" /></p>
+
+<p><img src="/images/posts/StyleCopInteg/50_releaserules.png" alt="Release RuleSet" /></p></li>
+<li><p>This is the final project structure:</p>
+
+<p><img src="/images/posts/StyleCopInteg/60_projectstructure.png" alt="Project Structure" /></p></li>
+</ol>
+
+<p>Now the strict validation is performed only when a <code>release</code> build is performed.</p>
+
+<h2>Final Thoughts</h2>
+
+<p>One may argue that the "draconian mode" of enforcing styles is not worth the potential disruption it causes.  So let's try to compromise - If your source control strategy uses multiple branches (which you should always do, by the way), the strict mode can be enforced as a gated check-in. This means that the rules are enforced only when a pull-request is made into the <code>master</code> branch. Refer my <a href="/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/">previous post</a> on setting up a gated branch policy.</p>
+
+<p>More information on customization of the StyleCop rules can be found <a href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md">here</a>. </p>
+
+<p>And finally, here is a build manually executed with an explicit configuration:</p>
+
+<p><img src="/images/posts/StyleCopInteg/65_queuebuild.png" alt="Queue Build" /></p>
+
+<p>The failure in a <code>release</code> configuration:</p>
+
+<p><img src="/images/posts/StyleCopInteg/70_releasebuild.png" alt="Release Build" /></p>
+
+<p>And warnings in <code>debug</code>:</p>
+
+<p><img src="/images/posts/StyleCopInteg/80_debugbuild.png" alt="Debug Build" /></p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://stylecop.codeplex.com/wikipage?title=Setting%20Up%20StyleCop%20MSBuild%20Integration">StyleCop - Documentation</a></li>
+<li><a href="http://tech.marketinvoice.com/2015/09/06/using-roslyn-analysers/">Using, configuring and distributing Roslyn analysers in teams</a></li>
+<li><a href="https://www.nuget.org/packages/StyleCop.MSBuild/">NuGet Gallery | StyleCop.MSBuild 4.7.55</a></li>
+<li><a href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers">GitHub - DotNetAnalyzers/StyleCopAnalyzers: An implementation of StyleCop rules using the .NET Compiler Platform</a></li>
+<li><a href="https://blog.codinghorror.com/the-broken-window-theory/">The Broken Window Theory</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

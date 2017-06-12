@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,46 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/">Enforce Code Standards by Integrating StyleCop Validations</a></h2>
+      <p class="post-date">11 Jun 2017
+
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/stylecop" title="StyleCop">StyleCop</a>
+</p>
+
+      <p>
+		
+		<p>StyleCop is a configurable analysis library that ensures code produced conforms to it's coding standard. While the benefits of a consistent coding standard is clear, each team has there own strong opinions how it should be enforced. </p>
+
+<p>In my previous projects I've used the <code>StyleCop.MsBuild</code> package and have been eager to try out the code analyzer version of the tool. In this post, I will start off with a quick run down of my attempt at integrating it into a solution.</p>
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Visual Studio Professional 2015 or higher. Its not really necessary, but makes for an easier setup and nicer integration with the Roslyn base analyzer. </li>
+<li>If integrating with an SCM or Automated build -  Visual Studio Team Services (VSTS) using git. The steps are not limited to VSTS, but its just my personal preference.</li>
+</ul>
+
+<h2>Installation</h2>
+
+<p>Installation itself is pretty simple - just install the <code>StyleCop.Analyzers</code> nuget package by running the following command in the package manager console witihin Visual Studio:</p>
+
+<pre><code>Install-Package StyleCop.Analyzers
+</code></pre>
+
+<p>That's it. That all we need to do to get started.</p>
+
+<h2>Warning Vs. Error</h2>
+
+<p>By default StyleCop treats suggestions as warnings, but I prefer to go strict mode and treat all style cop validations as errors. This means that build actually fails if the code does not adhere to the style validations. My justification is that its always cheaper to fix these issues early in the development cycle as well as minimizing <a href="https://blog.codinghorror.com/the-broken-window-theory/">"broken windows syndrome"</a>.</p>
+
+<p>When using the older <code>StyleCop.MSBuild</code> package, I could just set the <code>StyleCopTreatErrorsAsWarnings</code> environmental variable in the development machine or the team build and it will ensure that the the scope is limited to the StyleCop errors only. Unfortunately, with the Analyzers project it does not seem to be that simple. There exists an <code>TreatWarningsAsErrors</code> environmental variable, but this is global and treats any warnings as errors - not what I want.</p>
+
+
+		<p><a href="/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/resolving-race-condition-within-dynamics-365-process/">Resolving a Race Condition Within a Dynamics 365 Process</a></h2>
       <p class="post-date">09 Jun 2017
@@ -412,30 +452,6 @@
 
 
 		<p><a href="/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/">Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</a></h2>
-      <p class="post-date">14 Apr 2017
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-</p>
-
-      <p>
-		
-		<p>My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:</p>
-
-<blockquote>
-  <p>An error has occurred. </p>
-  
-  <p>Try this action again. If the problem continues, check the Microsoft Dynamics 365 Community for solutions or contact your organization's Microsoft Dynamics 365 Administrator. Finally, you can contact Microsoft Support.</p>
-</blockquote>
-
-<p><img src="/images/posts/BrokenSharePointInteg/10_error_dialog.png" alt="Upload Error Dialog" /></p>
-
-
-		<p><a href="/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/">Read more...</a></p>
 	  </p>
     </div>
 </div>

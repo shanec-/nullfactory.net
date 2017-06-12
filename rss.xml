@@ -1,4 +1,117 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/</guid><link>http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/</link><title>Resolving a Race Condition Within a Dynamics 365 Process</title><description>&lt;p&gt;I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/</guid><link>http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/</link><title>Enforce Code Standards by Integrating StyleCop Validations</title><description>&lt;p&gt;StyleCop is a configurable analysis library that ensures code produced conforms to it's coding standard. While the benefits of a consistent coding standard is clear, each team has there own strong opinions how it should be enforced. &lt;/p&gt;
+
+&lt;p&gt;In my previous projects I've used the &lt;code&gt;StyleCop.MsBuild&lt;/code&gt; package and have been eager to try out the code analyzer version of the tool. In this post, I will start off with a quick run down of my attempt at integrating it into a solution.&lt;/p&gt;
+
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Visual Studio Professional 2015 or higher. Its not really necessary, but makes for an easier setup and nicer integration with the Roslyn base analyzer. &lt;/li&gt;
+&lt;li&gt;If integrating with an SCM or Automated build -  Visual Studio Team Services (VSTS) using git. The steps are not limited to VSTS, but its just my personal preference.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Installation itself is pretty simple - just install the &lt;code&gt;StyleCop.Analyzers&lt;/code&gt; nuget package by running the following command in the package manager console witihin Visual Studio:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Install-Package StyleCop.Analyzers
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That's it. That all we need to do to get started.&lt;/p&gt;
+
+&lt;h2&gt;Warning Vs. Error&lt;/h2&gt;
+
+&lt;p&gt;By default StyleCop treats suggestions as warnings, but I prefer to go strict mode and treat all style cop validations as errors. This means that build actually fails if the code does not adhere to the style validations. My justification is that its always cheaper to fix these issues early in the development cycle as well as minimizing &lt;a href="https://blog.codinghorror.com/the-broken-window-theory/"&gt;"broken windows syndrome"&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;When using the older &lt;code&gt;StyleCop.MSBuild&lt;/code&gt; package, I could just set the &lt;code&gt;StyleCopTreatErrorsAsWarnings&lt;/code&gt; environmental variable in the development machine or the team build and it will ensure that the the scope is limited to the StyleCop errors only. Unfortunately, with the Analyzers project it does not seem to be that simple. There exists an &lt;code&gt;TreatWarningsAsErrors&lt;/code&gt; environmental variable, but this is global and treats any warnings as errors - not what I want.&lt;/p&gt;
+
+</description><pubDate>Sat, 10 Jun 2017 14:00:00 Z</pubDate><a10:updated>2017-06-10T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;StyleCop is a configurable analysis library that ensures code produced conforms to it's coding standard. While the benefits of a consistent coding standard is clear, each team has there own strong opinions how it should be enforced. &lt;/p&gt;
+
+&lt;p&gt;In my previous projects I've used the &lt;code&gt;StyleCop.MsBuild&lt;/code&gt; package and have been eager to try out the code analyzer version of the tool. In this post, I will start off with a quick run down of my attempt at integrating it into a solution.&lt;/p&gt;
+
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Visual Studio Professional 2015 or higher. Its not really necessary, but makes for an easier setup and nicer integration with the Roslyn base analyzer. &lt;/li&gt;
+&lt;li&gt;If integrating with an SCM or Automated build -  Visual Studio Team Services (VSTS) using git. The steps are not limited to VSTS, but its just my personal preference.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Installation itself is pretty simple - just install the &lt;code&gt;StyleCop.Analyzers&lt;/code&gt; nuget package by running the following command in the package manager console witihin Visual Studio:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Install-Package StyleCop.Analyzers
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That's it. That all we need to do to get started.&lt;/p&gt;
+
+&lt;h2&gt;Warning Vs. Error&lt;/h2&gt;
+
+&lt;p&gt;By default StyleCop treats suggestions as warnings, but I prefer to go strict mode and treat all style cop validations as errors. This means that build actually fails if the code does not adhere to the style validations. My justification is that its always cheaper to fix these issues early in the development cycle as well as minimizing &lt;a href="https://blog.codinghorror.com/the-broken-window-theory/"&gt;"broken windows syndrome"&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;When using the older &lt;code&gt;StyleCop.MSBuild&lt;/code&gt; package, I could just set the &lt;code&gt;StyleCopTreatErrorsAsWarnings&lt;/code&gt; environmental variable in the development machine or the team build and it will ensure that the the scope is limited to the StyleCop errors only. Unfortunately, with the Analyzers project it does not seem to be that simple. There exists an &lt;code&gt;TreatWarningsAsErrors&lt;/code&gt; environmental variable, but this is global and treats any warnings as errors - not what I want.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;So my plan is to create two rule sets and tie them down to two individual configurations. I will create one rule set used in the debug configuration and then a stricter one for the release configuration.&lt;/p&gt;
+
+&lt;p&gt;Now let's configure the rules:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Let's create a very simple console application called &lt;code&gt;AnalyzersDemo&lt;/code&gt;and open it up in Visual Studio.&lt;/li&gt;
+&lt;li&gt;Install the &lt;code&gt;StyleCop.Analyzers&lt;/code&gt; package into the project.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, navigate to the &lt;code&gt;Analyze &amp;gt; Configure Code Analysis &amp;gt; For AnalyzersDemo]&lt;/code&gt; menu option.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/10_configureanalysis.png" alt="Code Analysis" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In the resulting dialog, accept the default values by clicking the &lt;code&gt;Open&lt;/code&gt; button. This will open a dialog that allows us to configure the behaviour of the rule sets.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/20_opencustomize.png" alt="Code Analysis Customize" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select all the warnings related to &lt;code&gt;StyleCop.Analyzers&lt;/code&gt; and update the Action to &lt;code&gt;Error&lt;/code&gt;. Notice that a new rule set file has been created.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/30_customizerules.png" alt="Code Analysis Customize Rules" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Duplicate the rule set file and rename them &lt;code&gt;BaseRuleset.ruleset&lt;/code&gt; to &lt;code&gt;StrictRuleset.ruleset&lt;/code&gt;. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Move them them up as solution items. This is so that we can share the same rule sets against all the projects.&lt;/li&gt;
+&lt;li&gt;Edit the files and give the name and descriptions more meaningful values.&lt;/li&gt;
+&lt;li&gt;Remove all nodes except for the &lt;code&gt;&amp;lt;RuleSet&amp;gt;&lt;/code&gt; root node from the &lt;code&gt;BaseRuleset&lt;/code&gt; file so that it will revert the default action level.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, associate the two rule sets with the different configurations; the &lt;code&gt;BaseRuleset&lt;/code&gt; and &lt;code&gt;StrictRuleset&lt;/code&gt; to the &lt;code&gt;debug&lt;/code&gt; and &lt;code&gt;release&lt;/code&gt; configuration respectively.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/40_debugrules.png" alt="Debug RuleSet" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/50_releaserules.png" alt="Release RuleSet" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;This is the final project structure:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/60_projectstructure.png" alt="Project Structure" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now the strict validation is performed only when a &lt;code&gt;release&lt;/code&gt; build is performed.&lt;/p&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;One may argue that the "draconian mode" of enforcing styles is not worth the potential disruption it causes.  So let's try to compromise - If your source control strategy uses multiple branches (which you should always do, by the way), the strict mode can be enforced as a gated check-in. This means that the rules are enforced only when a pull-request is made into the &lt;code&gt;master&lt;/code&gt; branch. Refer my &lt;a href="http://nullfactory.net/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/"&gt;previous post&lt;/a&gt; on setting up a gated branch policy.&lt;/p&gt;
+
+&lt;p&gt;More information on customization of the StyleCop rules can be found &lt;a href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md"&gt;here&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;And finally, here is a build manually executed with an explicit configuration:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/65_queuebuild.png" alt="Queue Build" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The failure in a &lt;code&gt;release&lt;/code&gt; configuration:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/70_releasebuild.png" alt="Release Build" /&gt;&lt;/p&gt;
+
+&lt;p&gt;And warnings in &lt;code&gt;debug&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/80_debugbuild.png" alt="Debug Build" /&gt;&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://stylecop.codeplex.com/wikipage?title=Setting%20Up%20StyleCop%20MSBuild%20Integration"&gt;StyleCop - Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://tech.marketinvoice.com/2015/09/06/using-roslyn-analysers/"&gt;Using, configuring and distributing Roslyn analysers in teams&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.nuget.org/packages/StyleCop.MSBuild/"&gt;NuGet Gallery | StyleCop.MSBuild 4.7.55&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers"&gt;GitHub - DotNetAnalyzers/StyleCopAnalyzers: An implementation of StyleCop rules using the .NET Compiler Platform&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://blog.codinghorror.com/the-broken-window-theory/"&gt;The Broken Window Theory&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/</guid><link>http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/</link><title>Resolving a Race Condition Within a Dynamics 365 Process</title><description>&lt;p&gt;I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/10_singleworkflow.png" alt="Single Workflow" /&gt; &lt;/p&gt;
 
@@ -1066,58 +1179,4 @@ Foreach-Object {
 &lt;li&gt;Add additional PowerShell tasks for each of the solutions.&lt;/li&gt;
 &lt;li&gt;Rename the solutions with a ranking number so that the GetChild function orders and execute them implicitly. &lt;/li&gt;
 &lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/</guid><link>http://nullfactory.net/2017/04/special-characters-primary-field-breaks-sharepoint-file-upload/</link><title>Special Characters in Primary Field Breaks SharePoint File Upload in Dynamics 365</title><description>&lt;p&gt;My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;An error has occurred. &lt;/p&gt;
-  
-  &lt;p&gt;Try this action again. If the problem continues, check the Microsoft Dynamics 365 Community for solutions or contact your organization's Microsoft Dynamics 365 Administrator. Finally, you can contact Microsoft Support.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/10_error_dialog.png" alt="Upload Error Dialog" /&gt;&lt;/p&gt;
-
-</description><pubDate>Thu, 13 Apr 2017 14:00:00 Z</pubDate><a10:updated>2017-04-13T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;My colleagues and I ran into this confusing issue the other day. We've been working on a Dynamics 365 Online instance integrated with SharePoint (as a server side configuration) and everything seem to be working as expected but for a few records. On these records, anytime the user hits the upload button in document management they are greeted with the following error message instead of the expected upload dialog:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;An error has occurred. &lt;/p&gt;
-  
-  &lt;p&gt;Try this action again. If the problem continues, check the Microsoft Dynamics 365 Community for solutions or contact your organization's Microsoft Dynamics 365 Administrator. Finally, you can contact Microsoft Support.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/10_error_dialog.png" alt="Upload Error Dialog" /&gt;&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;When I navigated to the physical location on the SharePoint server, I can see that a folder record was created successfully in the Document Library and that the logged user has permission to make changes to the folder and its contents. &lt;/p&gt;
-
-&lt;p&gt;Next, I tried manually uploading a document through the SharePoint server and in order to verify that the document was reflected back in the CRM integration component. This too was successful and I verified that it has the ability to perform CRUD operations as expected. &lt;/p&gt;
-
-&lt;p&gt;None of these seemed to get me closer to identifying the issue - the upload control in CRM was still broken for the record.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/20_sharepointfolder.png" alt="SharePoint Folder" /&gt;&lt;/p&gt;
-
-&lt;h2&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;With a little bit of trial and error we were finally able to narrow down the issue - it turned out to be the value of the primary field of the record. &lt;/p&gt;
-
-&lt;p&gt;By default, the integration component uses the value of the primary field in order to generate a unique folder name in SharePoint, it takes parts of the name and then appends a unique salt to the end. &lt;/p&gt;
-
-&lt;p&gt;So the problem in our broken record set was that the primary field value contained special characters. While the folder creation itself appears to have cleaned out the these characters, the upload control still did not like it. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/30_folder_invalid_chars.png" alt="SharePoint folder invalid characters" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Therefore, the fix itself pretty simple - remove the invalid characters from the primary field and the upload control started working as expected.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/BrokenSharePointInteg/40_validfolder.png" alt="valid SharePoint Folder" /&gt;&lt;/p&gt;
-
-&lt;p&gt;This issue appears to exists as of &lt;code&gt;Microsoft Dynamics 365 Version 1612 (8.2.1.164) (DB 8.2.1.164) online&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;I can think of two ways we can avoid this in the future:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Add validation on the primary field to explicitly filter out the special characters - this is the most sensible approach until Microsoft fixes the upload control.&lt;/li&gt;
-&lt;li&gt;Handle the creation of the SharePointLocation record and the physical SharePoint folder yourself - this is obviously more work, but provides you more granular control.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I hope this helps anyone else who might encounter this issue.&lt;/p&gt;
 </a10:content></item></channel></rss>
