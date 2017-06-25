@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="ALM,Visual Studio Team Services,Dynamics CRM,Dynamics CRM Online,Git" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/">Continuous Integration and Continuous Delivery of Dynamics 365 Solutions using VSTS</a></h2>
+		<p class="post-date">25 Jun 2017
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/git">Git</a>
+	  </p>
+
+		
+
+		<p>In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that <a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff">every change made to a system can be deployed</a> successfully to secondary environment:</p>
+
+<ul>
+<li><p>Continuous Integration (CI)</p>
+
+<p>A CI build is one that is usually kicked off any time a piece of code is checked-in in order to give early visibility of any potential failures. The success of a build is dependent on the actual build plus any unit tests.</p></li>
+<li><p>Scheduled</p>
+
+<p>A scheduled build, also commonly referred to as a <code>Nightly Build</code>, is a build and release that is performed on a regular cadence - usually every night. Once again, on the successful completion of the build and automated unit test, a new release is pushed to the staging environment.</p></li>
+</ul>
+
+<p>Both methods appear to be doing the same thing, so when should I choose a CI build + release over a scheduled build? The most <a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds">common metric</a> appears to be the duration of your build and unit tests. The size of the team, the project and code complexity and the frequency of check-ins can have an impact on the time it takes for build and long running unit tests to execute. In these scenarios a <code>Scheduled</code> build makes more sense.</p>
+
+<h2>Overview</h2>
+
+<p>I was disappointed to find out that, at the time of writing this post, VSTS release definitions does not provide an option to trigger off a successful a scheduled build. The only options available are to trigger it off of a CI build or the automated schedule on the release itself. </p>
+
+<p>Luckily, Rene van Osnabrugge's <a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/">excellent post</a> provides us with a workaround for this restriction. Here's an overview how it works:</p>
+
+<ul>
+<li>Setup a single build that performs all three roles (manually invoked, CI and scheduled). </li>
+<li>Add a task into the build that would to figure out which method was used to invoke. </li>
+<li>Apply the the reason as a build tag onto itself. </li>
+<li>Update the release definition to filter the the release trigger to be filtered only the scheduled tags.</li>
+</ul>
+
+<p>Lets get started setting it up.</p>
+
+<!--excerpt-->
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li>Visual Studio Team Services</li>
+<li>Existing team build - I will be re-using a Dynamics CRM project that I have used in <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">my previous post</a>. </li>
+<li>Existing release definition - Once again, I am using one that I've setup <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">previously</a>.</li>
+</ul>
+
+<h2>The Build Definition</h2>
+
+<p>As in my previous posts I will be using a standard Dynamics CRM build for this demonstration. Follow the instructions in <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">my previous post</a> for setting this up .</p>
+
+<p><img src="/images/posts/CrmCICD/10_BuildDefinition.png" alt="Build Definition" /></p>
+
+<p>Now let's make the following modifications:</p>
+
+<ol>
+<li>From within the build definition, navigate to the <code>Triggers</code> tab.</li>
+<li>Enable the Continuous Integration trigger.</li>
+<li>Check the <code>Batch changes while a build is in progress</code> check box. </li>
+<li>Add a new Path filter by clicking the <code>add</code> button.</li>
+<li>Set the type to <code>Exclude</code> and <code>Path specification</code> to <code>/Nullfactory.Xrm.Tooling</code>. We don't really care for our tools to  This is so that we only trigger on the actual solution and not the supporting tools/project.</li>
+<li>Now enable the scheduled trigger.</li>
+<li>Provide a schedule that works for your team.</li>
+<li>Finally, save the changes.</li>
+</ol>
+
+<p><img src="/images/posts/CrmCICD/20_BuildDefinitionTrigger.png" alt="Build Definition Trigger" /></p>
+
+<h3>Tagging The Build</h3>
+
+<p>Next, we update the build to tag itself upon a successful build.</p>
+
+<ol>
+<li>I downloaded the <a href="https://gist.githubusercontent.com/renevanosnabrugge/3fa094790fab2b06db970d0da81a71b0/raw/a99220346be3803297412a4b580d8e1bd6dcbcf0/Set-BuildTagToTrigger.ps1">Set-BuildTagToTrigger.ps1</a> script and added it part of the <code>Nullfactory.Xrm.Tooling/Scripts</code> project folder.</li>
+<li>Commit and push the changes to the remote repository.</li>
+<li>From within the build editor, click on the <code>Add Task</code> button and select a PowerShell task. I placed it as the last step in the order.</li>
+<li><p>Configure it with the following values:</p>
+
+<ul>
+<li>Display Name :<code>Tag Build Reason</code></li>
+<li>Type : <code>File Path</code></li>
+<li>Script Path : <code>Nullfactory.Xrm.Tooling/Scripts/Set-BuildTagToTrigger.ps1</code></li>
+<li>Arguments : <code>-BuildId $(Build.BuildId)</code></li>
+</ul>
+
+<p><img src="/images/posts/CrmCICD/30_SetTagReasonPowerShell.png" alt="Set Tag Reason PowerShell" /></p></li>
+<li><p>Ensure that the task only runs if all previous tasks have succeeded. Do this by navigating into <code>Control Options</code> section and selecting the option within the <code>Run this task</code> drop down.</p></li>
+<li><p>In order for the the script to have authenticated access to the REST service it requires access to the OAuth token. Do this now navigating to the <code>Options</code> tab and enabling the <code>Allow scripts to access OAuth token</code>.</p>
+
+<p><img src="/images/posts/CrmCICD/40_AllowODataToken.png" alt="OData Token" /></p></li>
+<li><p>Queue a new build and verify that a tag was associated with the build. Note that since we invoked the build explicitly, a <code>manual</code> tag was added.</p>
+
+<p><img src="/images/posts/CrmCICD/50_VerifyBuild.png" alt="Verify Build" /></p></li>
+</ol>
+
+<p>The tags applied to the new build are the same values as the build reason environmental variable. We only care about the following scenarios:</p>
+
+<ul>
+<li><code>Manual</code></li>
+<li><code>IndividualCI</code></li>
+<li><code>BatchedCI</code></li>
+<li><code>Schedule</code></li>
+</ul>
+
+<p>In fact, we only care about the <code>Schedule</code> typed of builds. Find the full list of available values <a href="https://www.visualstudio.com/en-us/docs/build/define/variables">here</a>.</p>
+
+<h2>The Release Definition</h2>
+
+<p>Now that the build is complete and we've proven that the solution is good enough to be deployed, let's create and augment our release definition.</p>
+
+<p>Follow the steps <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">described here</a> to create the basic release definition. Ensure that the linked source is the build definition we created earlier.</p>
+
+<ol>
+<li>From within the release definition edit screen, navigate to the <code>Triggers</code> menu.</li>
+<li>Check the <code>Continuous Deployment</code> check box.</li>
+<li>Select the build as the source from the drop down and the branch it should monitor.</li>
+<li>Add <code>schedule</code> as the tag filter.</li>
+<li>Click <code>Save</code> to confirm changes.</li>
+</ol>
+
+<p><img src="/images/posts/CrmCICD/60_ReleaseDefinition.png" alt="Updated Release Definition" /></p>
+
+<h2>Verification</h2>
+
+<ol>
+<li><p>Verify that the when the build is triggered via the schedule and that it has a <code>schedule</code> tag is associated upon completion.</p>
+
+<p><img src="/images/posts/CrmCICD/70_ScheduledBuild.png" alt="Verify Build" /></p></li>
+<li><p>Verify that a release was deployed off of it.</p>
+
+<p><img src="/images/posts/CrmCICD/80_TriggeredRelease.png" alt="Verify Build" /></p></li>
+</ol>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.visualstudio.com/learn/what-is-continuous-integration/">What is Continuous Integration? | DevOps</a></li>
+<li><a href="https://www.visualstudio.com/learn/what-is-continuous-delivery/">What is Continuous Delivery? | DevOps</a></li>
+<li><a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff">Continuous Delivery Vs. Continuous Deployment: What's the Diff? | Puppet</a></li>
+<li><a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds">Continuous Integration vs. Nightly Builds - Stack Overflow</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/build/define/triggers">Build definition triggers</a></li>
+<li><a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/">Trigger Release Pipeline only for Scheduled builds | The Road to ALM</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/build/scripts/">Use a PowerShell script to customize your build process</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/build/define/variables">Build variables</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

@@ -1,4 +1,168 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/</guid><link>http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/</link><title>Enforce Code Standards by Integrating StyleCop Validations</title><description>&lt;p&gt;StyleCop is a configurable analysis library that ensures code produced conforms to it's coding standard. While the benefits of a consistent coding standard is clear, each team has there own strong opinions how it should be enforced. &lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/</guid><link>http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/</link><title>Continuous Integration and Continuous Delivery of Dynamics 365 Solutions using VSTS</title><description>&lt;p&gt;In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that &lt;a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff"&gt;every change made to a system can be deployed&lt;/a&gt; successfully to secondary environment:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Continuous Integration (CI)&lt;/p&gt;
+
+&lt;p&gt;A CI build is one that is usually kicked off any time a piece of code is checked-in in order to give early visibility of any potential failures. The success of a build is dependent on the actual build plus any unit tests.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Scheduled&lt;/p&gt;
+
+&lt;p&gt;A scheduled build, also commonly referred to as a &lt;code&gt;Nightly Build&lt;/code&gt;, is a build and release that is performed on a regular cadence - usually every night. Once again, on the successful completion of the build and automated unit test, a new release is pushed to the staging environment.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Both methods appear to be doing the same thing, so when should I choose a CI build + release over a scheduled build? The most &lt;a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds"&gt;common metric&lt;/a&gt; appears to be the duration of your build and unit tests. The size of the team, the project and code complexity and the frequency of check-ins can have an impact on the time it takes for build and long running unit tests to execute. In these scenarios a &lt;code&gt;Scheduled&lt;/code&gt; build makes more sense.&lt;/p&gt;
+
+&lt;h2&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;I was disappointed to find out that, at the time of writing this post, VSTS release definitions does not provide an option to trigger off a successful a scheduled build. The only options available are to trigger it off of a CI build or the automated schedule on the release itself. &lt;/p&gt;
+
+&lt;p&gt;Luckily, Rene van Osnabrugge's &lt;a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/"&gt;excellent post&lt;/a&gt; provides us with a workaround for this restriction. Here's an overview how it works:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Setup a single build that performs all three roles (manually invoked, CI and scheduled). &lt;/li&gt;
+&lt;li&gt;Add a task into the build that would to figure out which method was used to invoke. &lt;/li&gt;
+&lt;li&gt;Apply the the reason as a build tag onto itself. &lt;/li&gt;
+&lt;li&gt;Update the release definition to filter the the release trigger to be filtered only the scheduled tags.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Lets get started setting it up.&lt;/p&gt;
+
+</description><pubDate>Sat, 24 Jun 2017 14:00:00 Z</pubDate><a10:updated>2017-06-24T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that &lt;a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff"&gt;every change made to a system can be deployed&lt;/a&gt; successfully to secondary environment:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Continuous Integration (CI)&lt;/p&gt;
+
+&lt;p&gt;A CI build is one that is usually kicked off any time a piece of code is checked-in in order to give early visibility of any potential failures. The success of a build is dependent on the actual build plus any unit tests.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Scheduled&lt;/p&gt;
+
+&lt;p&gt;A scheduled build, also commonly referred to as a &lt;code&gt;Nightly Build&lt;/code&gt;, is a build and release that is performed on a regular cadence - usually every night. Once again, on the successful completion of the build and automated unit test, a new release is pushed to the staging environment.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Both methods appear to be doing the same thing, so when should I choose a CI build + release over a scheduled build? The most &lt;a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds"&gt;common metric&lt;/a&gt; appears to be the duration of your build and unit tests. The size of the team, the project and code complexity and the frequency of check-ins can have an impact on the time it takes for build and long running unit tests to execute. In these scenarios a &lt;code&gt;Scheduled&lt;/code&gt; build makes more sense.&lt;/p&gt;
+
+&lt;h2&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;I was disappointed to find out that, at the time of writing this post, VSTS release definitions does not provide an option to trigger off a successful a scheduled build. The only options available are to trigger it off of a CI build or the automated schedule on the release itself. &lt;/p&gt;
+
+&lt;p&gt;Luckily, Rene van Osnabrugge's &lt;a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/"&gt;excellent post&lt;/a&gt; provides us with a workaround for this restriction. Here's an overview how it works:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Setup a single build that performs all three roles (manually invoked, CI and scheduled). &lt;/li&gt;
+&lt;li&gt;Add a task into the build that would to figure out which method was used to invoke. &lt;/li&gt;
+&lt;li&gt;Apply the the reason as a build tag onto itself. &lt;/li&gt;
+&lt;li&gt;Update the release definition to filter the the release trigger to be filtered only the scheduled tags.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Lets get started setting it up.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Visual Studio Team Services&lt;/li&gt;
+&lt;li&gt;Existing team build - I will be re-using a Dynamics CRM project that I have used in &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/"&gt;my previous post&lt;/a&gt;. &lt;/li&gt;
+&lt;li&gt;Existing release definition - Once again, I am using one that I've setup &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;previously&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;The Build Definition&lt;/h2&gt;
+
+&lt;p&gt;As in my previous posts I will be using a standard Dynamics CRM build for this demonstration. Follow the instructions in &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/"&gt;my previous post&lt;/a&gt; for setting this up .&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/10_BuildDefinition.png" alt="Build Definition" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let's make the following modifications:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;From within the build definition, navigate to the &lt;code&gt;Triggers&lt;/code&gt; tab.&lt;/li&gt;
+&lt;li&gt;Enable the Continuous Integration trigger.&lt;/li&gt;
+&lt;li&gt;Check the &lt;code&gt;Batch changes while a build is in progress&lt;/code&gt; check box. &lt;/li&gt;
+&lt;li&gt;Add a new Path filter by clicking the &lt;code&gt;add&lt;/code&gt; button.&lt;/li&gt;
+&lt;li&gt;Set the type to &lt;code&gt;Exclude&lt;/code&gt; and &lt;code&gt;Path specification&lt;/code&gt; to &lt;code&gt;/Nullfactory.Xrm.Tooling&lt;/code&gt;. We don't really care for our tools to  This is so that we only trigger on the actual solution and not the supporting tools/project.&lt;/li&gt;
+&lt;li&gt;Now enable the scheduled trigger.&lt;/li&gt;
+&lt;li&gt;Provide a schedule that works for your team.&lt;/li&gt;
+&lt;li&gt;Finally, save the changes.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/20_BuildDefinitionTrigger.png" alt="Build Definition Trigger" /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Tagging The Build&lt;/h3&gt;
+
+&lt;p&gt;Next, we update the build to tag itself upon a successful build.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;I downloaded the &lt;a href="https://gist.githubusercontent.com/renevanosnabrugge/3fa094790fab2b06db970d0da81a71b0/raw/a99220346be3803297412a4b580d8e1bd6dcbcf0/Set-BuildTagToTrigger.ps1"&gt;Set-BuildTagToTrigger.ps1&lt;/a&gt; script and added it part of the &lt;code&gt;Nullfactory.Xrm.Tooling/Scripts&lt;/code&gt; project folder.&lt;/li&gt;
+&lt;li&gt;Commit and push the changes to the remote repository.&lt;/li&gt;
+&lt;li&gt;From within the build editor, click on the &lt;code&gt;Add Task&lt;/code&gt; button and select a PowerShell task. I placed it as the last step in the order.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Configure it with the following values:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Display Name :&lt;code&gt;Tag Build Reason&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Type : &lt;code&gt;File Path&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Script Path : &lt;code&gt;Nullfactory.Xrm.Tooling/Scripts/Set-BuildTagToTrigger.ps1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Arguments : &lt;code&gt;-BuildId $(Build.BuildId)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/30_SetTagReasonPowerShell.png" alt="Set Tag Reason PowerShell" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Ensure that the task only runs if all previous tasks have succeeded. Do this by navigating into &lt;code&gt;Control Options&lt;/code&gt; section and selecting the option within the &lt;code&gt;Run this task&lt;/code&gt; drop down.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In order for the the script to have authenticated access to the REST service it requires access to the OAuth token. Do this now navigating to the &lt;code&gt;Options&lt;/code&gt; tab and enabling the &lt;code&gt;Allow scripts to access OAuth token&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/40_AllowODataToken.png" alt="OData Token" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Queue a new build and verify that a tag was associated with the build. Note that since we invoked the build explicitly, a &lt;code&gt;manual&lt;/code&gt; tag was added.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/50_VerifyBuild.png" alt="Verify Build" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The tags applied to the new build are the same values as the build reason environmental variable. We only care about the following scenarios:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Manual&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;IndividualCI&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BatchedCI&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Schedule&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In fact, we only care about the &lt;code&gt;Schedule&lt;/code&gt; typed of builds. Find the full list of available values &lt;a href="https://www.visualstudio.com/en-us/docs/build/define/variables"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;The Release Definition&lt;/h2&gt;
+
+&lt;p&gt;Now that the build is complete and we've proven that the solution is good enough to be deployed, let's create and augment our release definition.&lt;/p&gt;
+
+&lt;p&gt;Follow the steps &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;described here&lt;/a&gt; to create the basic release definition. Ensure that the linked source is the build definition we created earlier.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;From within the release definition edit screen, navigate to the &lt;code&gt;Triggers&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Check the &lt;code&gt;Continuous Deployment&lt;/code&gt; check box.&lt;/li&gt;
+&lt;li&gt;Select the build as the source from the drop down and the branch it should monitor.&lt;/li&gt;
+&lt;li&gt;Add &lt;code&gt;schedule&lt;/code&gt; as the tag filter.&lt;/li&gt;
+&lt;li&gt;Click &lt;code&gt;Save&lt;/code&gt; to confirm changes.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/60_ReleaseDefinition.png" alt="Updated Release Definition" /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Verification&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Verify that the when the build is triggered via the schedule and that it has a &lt;code&gt;schedule&lt;/code&gt; tag is associated upon completion.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/70_ScheduledBuild.png" alt="Verify Build" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Verify that a release was deployed off of it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/80_TriggeredRelease.png" alt="Verify Build" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/learn/what-is-continuous-integration/"&gt;What is Continuous Integration? | DevOps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/learn/what-is-continuous-delivery/"&gt;What is Continuous Delivery? | DevOps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff"&gt;Continuous Delivery Vs. Continuous Deployment: What's the Diff? | Puppet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds"&gt;Continuous Integration vs. Nightly Builds - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/define/triggers"&gt;Build definition triggers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/"&gt;Trigger Release Pipeline only for Scheduled builds | The Road to ALM&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/scripts/"&gt;Use a PowerShell script to customize your build process&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/define/variables"&gt;Build variables&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/</guid><link>http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/</link><title>Enforce Code Standards by Integrating StyleCop Validations</title><description>&lt;p&gt;StyleCop is a configurable analysis library that ensures code produced conforms to it's coding standard. While the benefits of a consistent coding standard is clear, each team has there own strong opinions how it should be enforced. &lt;/p&gt;
 
 &lt;p&gt;In my previous projects I've used the &lt;code&gt;StyleCop.MsBuild&lt;/code&gt; package and have been eager to try out the code analyzer version of the tool. In this post, I will start off with a quick run down of my attempt at integrating it into a solution.&lt;/p&gt;
 
@@ -1089,94 +1253,4 @@
 &lt;!--excerpt--&gt;
 
 &lt;p&gt;Please feel free to submit any feature requests or issues found to https://github.com/shanec-/generator-nullfactory-xrm/issues&lt;/p&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/</guid><link>http://nullfactory.net/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/</link><title>Release Strategy for Dynamics CRM - Part 5 - Deploy Third-Party Solutions</title><description>&lt;p&gt;More often than not the custom Dynamics 365 solutions I develop depend on third party solutions to provide additional functionality. Therefore these solutions become a pre-requisite to the successful deployment of my own solution. &lt;/p&gt;
-
-&lt;p&gt;In this post I go about updating the &lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;previously setup project&lt;/a&gt;, &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;build&lt;/a&gt; and &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;release&lt;/a&gt; definitions in Visual Studio Team Services (VSTS) in order to enable deployment of third party CRM solutions.&lt;/p&gt;
-
-&lt;h2&gt;Pre-requisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Project structure and deployment scripts based on &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator-nullfactory-xrm&lt;/a&gt; (with a minimum version of at least 1.4.0).&lt;/li&gt;
-&lt;li&gt;A working build and release definitions already setup.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Read more about setting up the project structure and build here:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Project Structure&lt;/h2&gt;
-
-&lt;p&gt;I start off by adding a solution level folder to hold third party solutions and  check-in the changes into source control.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt5/10_structure.png" alt="Project structure" /&gt;&lt;/p&gt;
-
-</description><pubDate>Sat, 15 Apr 2017 14:00:00 Z</pubDate><a10:updated>2017-04-15T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;More often than not the custom Dynamics 365 solutions I develop depend on third party solutions to provide additional functionality. Therefore these solutions become a pre-requisite to the successful deployment of my own solution. &lt;/p&gt;
-
-&lt;p&gt;In this post I go about updating the &lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;previously setup project&lt;/a&gt;, &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;build&lt;/a&gt; and &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;release&lt;/a&gt; definitions in Visual Studio Team Services (VSTS) in order to enable deployment of third party CRM solutions.&lt;/p&gt;
-
-&lt;h2&gt;Pre-requisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Project structure and deployment scripts based on &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator-nullfactory-xrm&lt;/a&gt; (with a minimum version of at least 1.4.0).&lt;/li&gt;
-&lt;li&gt;A working build and release definitions already setup.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Read more about setting up the project structure and build here:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Project Structure&lt;/h2&gt;
-
-&lt;p&gt;I start off by adding a solution level folder to hold third party solutions and  check-in the changes into source control.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt5/10_structure.png" alt="Project structure" /&gt;&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;Build&lt;/h2&gt;
-
-&lt;p&gt;Next, we update the build to ensure that the solutions are included as part of the build drop. I add a &lt;code&gt;Copy Files&lt;/code&gt; task with the following parameters:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Source Folder&lt;/code&gt;: &lt;code&gt;$(build.sourcesdirectory)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Contents&lt;/code&gt;: &lt;code&gt;**/_prereq-solutions/*.zip&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Target Folder&lt;/code&gt;:  &lt;code&gt;$(build.artifactstagingdirectory)&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt5/20_build.png" alt="Updated build definition" /&gt;&lt;/p&gt;
-
-&lt;p&gt;I trigger a new build to make sure that the solutions are copied over as part of the build artifacts.&lt;/p&gt;
-
-&lt;h2&gt;Release&lt;/h2&gt;
-
-&lt;p&gt;Now that our third-party solutions are included as part of the build drop, its time to deploy them. In this scenario I deploy all the solutions contained within the &lt;code&gt;_prereq-solutions&lt;/code&gt; folder. &lt;/p&gt;
-
-&lt;p&gt;I added a new PowerShell task as a precursor to the main solution deployment. I set it as an &lt;code&gt;inline script&lt;/code&gt; with the following body:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Get-ChildItem "..\..\_prereq-solutions\" -Filter *.zip | 
-Foreach-Object {
-    .\Deploy-CrmSolution.ps1 -serverUrl "$(sndbxservername)" -username "$(sndbxusername)" -password "$(sndbxpassword)" -externalSolutionFileName $_.FullName -publishChanges -activatePlugins -importAsHoldingSolution:$false
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;I also set the working folder to the &lt;code&gt;Nullfactory.Xrm.Tooling/Scripts&lt;/code&gt; folder.&lt;/p&gt;
-
-&lt;p&gt;This script iterates through all the solutions in the folder and attempts to deploy them. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmReleasePt5/30_release.png" alt="Updated release definition" /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you have multiple inter-dependent third-party solutions and require them to deployed in particular sequence you can either: &lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Add additional PowerShell tasks for each of the solutions.&lt;/li&gt;
-&lt;li&gt;Rename the solutions with a ranking number so that the GetChild function orders and execute them implicitly. &lt;/li&gt;
-&lt;/ul&gt;
 </a10:content></item></channel></rss>

@@ -42,6 +42,51 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/">Continuous Integration and Continuous Delivery of Dynamics 365 Solutions using VSTS</a></h2>
+      <p class="post-date">25 Jun 2017
+
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/git" title="Git">Git</a>
+</p>
+
+      <p>
+		
+		<p>In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that <a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff">every change made to a system can be deployed</a> successfully to secondary environment:</p>
+
+<ul>
+<li><p>Continuous Integration (CI)</p>
+
+<p>A CI build is one that is usually kicked off any time a piece of code is checked-in in order to give early visibility of any potential failures. The success of a build is dependent on the actual build plus any unit tests.</p></li>
+<li><p>Scheduled</p>
+
+<p>A scheduled build, also commonly referred to as a <code>Nightly Build</code>, is a build and release that is performed on a regular cadence - usually every night. Once again, on the successful completion of the build and automated unit test, a new release is pushed to the staging environment.</p></li>
+</ul>
+
+<p>Both methods appear to be doing the same thing, so when should I choose a CI build + release over a scheduled build? The most <a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds">common metric</a> appears to be the duration of your build and unit tests. The size of the team, the project and code complexity and the frequency of check-ins can have an impact on the time it takes for build and long running unit tests to execute. In these scenarios a <code>Scheduled</code> build makes more sense.</p>
+
+<h2>Overview</h2>
+
+<p>I was disappointed to find out that, at the time of writing this post, VSTS release definitions does not provide an option to trigger off a successful a scheduled build. The only options available are to trigger it off of a CI build or the automated schedule on the release itself. </p>
+
+<p>Luckily, Rene van Osnabrugge's <a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/">excellent post</a> provides us with a workaround for this restriction. Here's an overview how it works:</p>
+
+<ul>
+<li>Setup a single build that performs all three roles (manually invoked, CI and scheduled). </li>
+<li>Add a task into the build that would to figure out which method was used to invoke. </li>
+<li>Apply the the reason as a build tag onto itself. </li>
+<li>Update the release definition to filter the the release trigger to be filtered only the scheduled tags.</li>
+</ul>
+
+<p>Lets get started setting it up.</p>
+
+
+		<p><a href="/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/">Enforce Code Standards by Integrating StyleCop Validations</a></h2>
       <p class="post-date">11 Jun 2017
 
@@ -408,50 +453,6 @@
 
 
 		<p><a href="/2017/04/version-140-generator-nullfactory-xrm-published/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/">Release Strategy for Dynamics CRM - Part 5 - Deploy Third-Party Solutions</a></h2>
-      <p class="post-date">16 Apr 2017
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
-      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/git" title="Git">Git</a>
-</p>
-
-      <p>
-		
-		<p>More often than not the custom Dynamics 365 solutions I develop depend on third party solutions to provide additional functionality. Therefore these solutions become a pre-requisite to the successful deployment of my own solution. </p>
-
-<p>In this post I go about updating the <a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">previously setup project</a>, <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">build</a> and <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">release</a> definitions in Visual Studio Team Services (VSTS) in order to enable deployment of third party CRM solutions.</p>
-
-<h2>Pre-requisites</h2>
-
-<ul>
-<li>Project structure and deployment scripts based on <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">generator-nullfactory-xrm</a> (with a minimum version of at least 1.4.0).</li>
-<li>A working build and release definitions already setup.</li>
-</ul>
-
-<p>Read more about setting up the project structure and build here:</p>
-
-<ul>
-<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
-<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
-<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
-</ul>
-
-<h2>Project Structure</h2>
-
-<p>I start off by adding a solution level folder to hold third party solutions and  check-in the changes into source control.</p>
-
-<p><img src="/images/posts/CrmReleasePt5/10_structure.png" alt="Project structure" /></p>
-
-
-		<p><a href="/2017/04/release-strategy-for-dynamics-crm-deploying-third-party-solutions-part-5/">Read more...</a></p>
 	  </p>
     </div>
 </div>
