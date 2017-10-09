@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Visual Studio,Miscellaneous" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/10/dont-forget-to-install-the-just-in-time-debugger/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/10/dont-forget-to-install-the-just-in-time-debugger/">Don't Forget to Install the Just-In-Time Debugger</a></h2>
+		<p class="post-date">08 Oct 2017
+				| <a href="/category/visual-studio">Visual Studio</a>
+				| <a href="/category/miscellaneous">Miscellaneous</a>
+	  </p>
+
+		
+
+		<p>Today I learned that you can have an installation of Visual Studio 2017 without the JIT debugger - Yup, you really can.  This meant that I could not use the technique of attaching a debugger at runtime using the  <code>System.Diagnostics.Debugger.Launch();</code> code snippet. </p>
+
+<p>When the application executes the launch code, nothing happens - no error nor exception. The method even returns <code>true</code> indicating a a successful launch.</p>
+
+<!--excerpt-->
+
+<p>After equal parts of scouring the web and pulling my hair out, I eventually stumbled upon the following option in the Visual Studio setup:</p>
+
+<p><img src="/images/posts/JITDebugger/10_installdebugger.png" alt="Install Debugger" /></p>
+
+<p>The combination of features selected had somehow unchecked the Just-In-Time debugger. Heck, I didn't even know you could <strong><em>not</em></strong> install it. I hope this helps someone else out there.</p>
+
+<p><img src="/images/posts/JITDebugger/20_choosejitdebugger.png" alt="Choose Debugger" /></p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://msdn.microsoft.com/en-us/library/system.diagnostics.debugger.launch(v=vs.110).aspx">Debugger.Launch Method (System.Diagnostics)</a></li>
+<li><a href="http://defragdev.com/blog/?p=668">The wonders of Debugger.Launch() | Mark's Devblog</a></li>
+<li><a href="https://blogs.msdn.microsoft.com/mapo/2013/11/07/debugger-launch-not-displaying-jit-debugger-selection-popup-on-windows-88-1/">Debugger.Launch() not displaying JIT debugger selection popup on Windows 8/8.1 – Scattered Notes</a></li>
+<li><a href="https://stackoverflow.com/questions/12655965/debugger-launch-not-working">c# - Debugger.Launch not working - Stack Overflow</a></li>
+<li><a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/9a539c40-1869-44b8-9aed-9f9d7d402d7c/mysterious-vs-jit-debugger-invocation-failure?forum=vsdebug">Mysterious VS JIT debugger invocation failure</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/10/dont-forget-to-install-the-just-in-time-debugger/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/10/dont-forget-to-install-the-just-in-time-debugger/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

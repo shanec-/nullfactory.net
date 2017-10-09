@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="REST,SOAP,WCF" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2017/10/mocking-and-testing-a-webservice-using-soapui/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/10/mocking-and-testing-a-webservice-using-soapui/">Mocking and Testing a WebService using SoapUI</a></h2>
+		<p class="post-date">06 Oct 2017
+				| <a href="/category/rest">REST</a>
+				| <a href="/category/soap">SOAP</a>
+				| <a href="/category/wcf">WCF</a>
+	  </p>
+
+		
+
+		<p>I have recently been working on an implementation of a WCF client interacts with a remote SOAP web service. Unfortunately this service did not have a development version that I could interactively test my requests against.</p>
+
+<p>Armed with just the WSDL and the schema for expected responses, I needed to find a way to mock the remote service in order to confirm the functionality of the client. This is where SOAP UI comes in - SOAP UI is tool that allows me to point it to service contract (WSDL or REST) and mock the responses that each of the actions would generate. And finally provides the functionality to host and serve these mocked responses so that they can be consumed by different clients.</p>
+
+<p>I will be using the freely available <a href="http://www.webservicex.net/globalweather.asmx">http://www.webservicex.net/globalweather.asmx</a> web service to demonstrate the process.</p>
+
+<!--excerpt-->
+
+<p>Let's start off with a single request:</p>
+
+<ol>
+<li><p>Open up the SOAP UI application and add connection to the SOAP service. Do this by navigating to the <code>File &gt; New SOAP Project</code> menu option.</p></li>
+<li><p>Provide a name for the project and set the url to the WSDL file to <a href="http://www.webservicex.net/globalweather.asmx?wsdl">http://www.webservicex.net/globalweather.asmx?wsdl</a> . Keep the <code>Create Requests</code> check box checked: </p>
+
+<p><img src="/images/posts/MockSoapUI/10_AddNewSoapProject.png" alt="Add new SOAP project" /></p></li>
+<li><p>Now let's create a mock version of our web service. Right click on the <code>GetCitiesByCountry</code> method and select <code>Add to MockService</code> option in the context menu.</p>
+
+<p><img src="/images/posts/MockSoapUI/20_AddToMockService.png" alt="Add to mock service" /></p></li>
+<li><p>Provide it with a name, and select <code>Yes</code> to open it within the editor.</p>
+
+<p><img src="/images/posts/MockSoapUI/30_EnterNameForService.png" alt="Enter name for service" /></p>
+
+<p><img src="/images/posts/MockSoapUI/40_OpenMockServiceEditor.png" alt="Open mock service editor" /></p></li>
+<li><p>In the resulting dialog, paste the response you would like to receive when a request is made.</p>
+
+<p><img src="/images/posts/MockSoapUI/50_MockedResponse.png" alt="Mocked response" /></p></li>
+<li><p>Now that we have the response setup, let's start up the mock service to serve up our requests. Do this by double clicking the <code>WeatherMockService</code> node to bring up the service status dialog and clicking on the <code>Start</code> (play icon) button.</p>
+
+<p><img src="/images/posts/MockSoapUI/70_MockingServiceStarted.png" alt="Mocking service started" /></p></li>
+<li><p>Now let's see if our response works. The easiest way to do this is to right-click on the response that we previously populated, and on the context-menu select the <code>Open Request</code> option.</p>
+
+<p><img src="/images/posts/MockSoapUI/75_MockServiceTest.png" alt="Mocking service test" /></p></li>
+<li><p>Either select the pre-generated request, or select the option to create a new one. </p></li>
+<li><p>Modify the resulting request as necessary. </p></li>
+<li><p>Once ready, click the submit (play icon) button to send the request.</p>
+
+<p><img src="/images/posts/MockSoapUI/78_MockServiceTestResult.png" alt="Mocking service test result" /></p></li>
+<li><p>Confirm that you have received the previously setup request.</p></li>
+</ol>
+
+<p>Now we have very basic mock and responses working, let's make it a little bit more complex. In my live system, any time the service method is called it would reply with a different response subject to some external variables. I wanted to mock the same functionality so that I can better test how my client code reacts to the different sequences. </p>
+
+<p>I did a bit of research and found another individual who had the same requirement: </p>
+
+<ul>
+<li><a href="https://stackoverflow.com/questions/32975240/soapui-mock-service-custom-sequence-of-responses">https://stackoverflow.com/questions/32975240/soapui-mock-service-custom-sequence-of-responses</a></li>
+</ul>
+
+<p>This approach allows us to orchestrate the responses that are returned. In this particular example there are no smarts built in apart from the service responding to the requests in sequence.</p>
+
+<p>Let's setup our sequence of responses:</p>
+
+<ol>
+<li><p>Create a second response for the request. </p>
+
+<p><img src="/images/posts/MockSoapUI/80_MockSecondResponse.png" alt="Mock second response" /></p></li>
+<li><p>Provide it with a new response body as done previously.</p>
+
+<p><img src="/images/posts/MockSoapUI/90_MockSecondResponseBody.png" alt="Mock second response body" /></p></li>
+<li><p>Next, right-click on the <code>GetCitiesByCountry</code> method in the mock service and select <code>Show MockOperation Editor</code> in the resulting dialog.</p>
+
+<p><img src="/images/posts/MockSoapUI/100_MockOperationEditor.png" alt="Mock operation editor" /></p></li>
+<li><p>In the resulting dialog,  choose the <code>SEQUENCE</code> as the <code>Dispatch</code> method.</p>
+
+<p><img src="/images/posts/MockSoapUI/110_ScriptEditor.png" alt="Sciprt editor" /></p></li>
+<li><p>Paste the following script in the script section. This script controls the order in which the responses are returned. Update the <code>myRespList</code> array to change this sequence.</p>
+
+<pre><code>// get the list from the context
+def myRespList = context.myRespList
+
+
+// if list is null or empty reinitalize it
+if(!myRespList || !myRespList?.size){   
+    // list in the desired output order using the response names that your
+    // create in your mockservice
+    myRespList = ["Response 2","Response 1"]  
+}
+// take the first element from the list
+def resp = myRespList.take(1)[0]
+
+
+// update the context with the list without this element
+context.myRespList = myRespList.drop(1)
+
+
+// return the response
+log.info "--&gt;"+resp
+return resp
+</code></pre>
+
+<p><img src="/images/posts/MockSoapUI/120_FinalScript.png" alt="Final script" /></p></li>
+<li><p>Test out the response by clicking on the test script (play button) just above the editor. SOAP UI responds with showing us the first request that would be sent.</p>
+
+<p><img src="/images/posts/MockSoapUI/140_ScriptTestRun2.png" alt="Script returned response 2" /></p></li>
+<li><p>Testing the script again, and receive the second response. Good, the script seems to be doing its job.</p>
+
+<p><img src="/images/posts/MockSoapUI/130_ScriptTestRun1.png" alt="Script returned response 1" /></p></li>
+<li><p>Let's do one final test with an actual request to make sure its working as expected. </p>
+
+<p><img src="/images/posts/MockSoapUI/160_RequestSecondRun.png" alt="Request first run" /></p></li>
+<li><p>And run the request again to receive the second response.</p>
+
+<p><img src="/images/posts/MockSoapUI/150_RequestFirstRun.png" alt="Request second run" /></p></li>
+</ol>
+
+<h2>Final Thoughts</h2>
+
+<p>I love the fact that this tool provides the right combination of ease of use and functionality. And allows a new developer to quickly setup the basics and then extend the test scenarios as they become more complex.</p>
+
+<p>This is going into my developer tool belt for sure.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.soapui.org/getting-started/your-first-soapui-project.html">Your First SoapUI Project | Getting started with SoapUI</a></li>
+<li><a href="https://www.soapui.org/getting-started/10-tips-for-the-soapui-beginner.html">10 Tips for the SoapUI Beginner | Getting started with SoapUI</a></li>
+<li><a href="https://stackoverflow.com/questions/32975240/soapui-mock-service-custom-sequence-of-responses">groovy - SoapUI Mock Service Custom Sequence of Responses - Stack Overflow</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2017/10/mocking-and-testing-a-webservice-using-soapui/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2017/10/mocking-and-testing-a-webservice-using-soapui/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

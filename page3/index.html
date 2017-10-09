@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SOAP,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio,Visual Studio Team Services,WCF,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,205 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></h2>
+      <p class="post-date">18 Nov 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+</p>
+
+      <p>
+		
+		<p>This is the final installment of the a three part series. Use to following links to access part 1 and 2:</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+<li>Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</li>
+<li><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Release Strategy for Dynamics CRM - Part 4 - Versioning</a></li>
+</ul>
+
+<p>In the previous two posts I show you how to create the project structure and create a basic team build for your CRM solution artifacts. In this final installment I go about setting up a release definition for the build that we created.</p>
+
+<ol>
+<li>Let's start off by creating a new release by navigating to the <code>Build and Release &gt; Release</code> in your team project.</li>
+<li><p>Select the <code>Empty</code> template option and click the next button.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/10_ReleaseDefinition.png" alt="Empty release template" /></p></li>
+<li><p>On the next step, choose the source for this release - we'll be using the <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">build definition that we created in part 2</a>. Once ready click the <code>Create</code> button.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/20_SelectBuildDefinition.png" alt="Select build defintion" /></p></li>
+<li><p>Now lets declare the variables that would be used later in the process. Navigate to the <code>Variables</code> tab and define the following variables:</p>
+
+<ul>
+<li><code>DevDeployLogin</code> - The username that used to deploy the solution.</li>
+<li><code>DevDeployPassword</code> - The password for the same account.</li>
+</ul>
+
+<p>Make sure to define the <code>DevDeployPassword</code> as a secret by clicking the padlock icon next to the field.</p>
+
+<p><img src="/images/posts/CrmReleasePt3/100_SetupVariables.png" alt="Release Variables" /></p>
+
+<p>Read more about <a href="https://www.visualstudio.com/en-us/docs/build/define/variables">build and release variables here</a>.</p></li>
+</ol>
+
+
+		<p><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></h2>
+      <p class="post-date">12 Nov 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+</p>
+
+      <p>
+		
+		<p>This is the second of a three part series in which I walk through setting up a release management strategy for Dynamics CRM.</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li>Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
+<li><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Release Strategy for Dynamics CRM - Part 4 - Versioning</a></li>
+</ul>
+
+<p>In first part of the series accomplished the following:</p>
+
+<ol>
+<li>Setup the project structure using the <code>nullfactory-xrm</code> yeoman generator.    </li>
+<li>Download the CRM solution from the remote server and unpacked it using the solution packager tool.</li>
+<li>Checked-in all the artifacts back into Visual Studio Team Services (VSTS) source control.</li>
+</ol>
+
+<p>In this post I describe the steps required for setting up a team build. One of the goals with the generated project structure was to have it work with team builds with the least amount configuration. </p>
+
+<h2>Setting Up the Team Build</h2>
+
+<ol>
+<li><p>Navigate to the <code>Build and Release &gt; Builds</code> from within the VSTS team project.</p>
+
+<p><img src="/images/posts/CrmReleasePt2/10_NewDefintion.png" alt="Build and Release Menue" /></p></li>
+<li><p>Create a new build definition using a vanilla <code>Visual Studio</code> template.</p>
+
+<p><img src="/images/posts/CrmReleasePt2/20_SelectBuildTemplate.png" alt="Visual Studio Template" /></p></li>
+</ol>
+
+
+		<p><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></h2>
+      <p class="post-date">30 Oct 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/git" title="Git">Git</a>
+</p>
+
+      <p>
+		
+		<p>Earlier this year I demonstrated the strategy I use for maintaining CRM solutions in source control. I favor the approach due to its ability to be used in team builds and automated releases. Since my original post, I have created a yeoman generator that allows to quickly scaffold the project structure for new projects. And now, in this series of posts, I will walk you through the steps in setting up a new project, creating a team build finally implementing a release strategy using Visual Studio Team Services. </p>
+
+<ul>
+<li>Release Strategy for Dynamics CRM - Part 1 - Preparation</li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
+<li><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Release Strategy for Dynamics CRM - Part 4 - Versioning</a></li>
+</ul>
+
+<p>In order to automate the process we first need to make sure that the solution is maintained in source control. </p>
+
+<h2>Prerequistes</h2>
+
+<ul>
+<li>Visual Studio Team System (VSTS) source control.</li>
+<li><code>Yeoman</code> code generator with the <code>generator-nullfactory-xrm</code> installed globally. Installation instructions can be found <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">here</a>.</li>
+</ul>
+
+<p>While in this particular demo I use a VSTS team project running on top of Git source control along with VSTS Release Management for the deployment, the same steps can be adapted to be used with any other build and release system.</p>
+
+<h2>Prepping the Solution</h2>
+
+<ol>
+<li>Create a Team Project and select <code>Git</code> as the version control.</li>
+<li>Clone a working copy onto a local machine. </li>
+<li>Create a .gitignore file that excludes build output - let's use <a href="https://github.com/github/gitignore/blob/master/VisualStudio.gitignore">GitHub's definitions for Visual Studio</a>.</li>
+<li><p>Run the <code>nullfactory-xrm</code> yeoman generator in order to scaffold the project structure. More detailed instructions on running the generator can be found <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">here</a>.</p>
+
+<p><img src="/images/posts/CrmReleasePt1/10_YoGenerator.png" alt="nullfactory-xrm yo generator" /></p></li>
+</ol>
+
+
+		<p><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/09/yeoman-generator-for-dynamics-crm-solutions/">Yeoman Generator For Dynamics CRM Solutions</a></h2>
+      <p class="post-date">15 Sep 2016
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/yeoman" title="Yeoman">Yeoman</a>
+      | <a href="/category/npm" title="npm">npm</a>
+      | <a href="/category/nodejs" title="nodejs">nodejs</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+</p>
+
+      <p>
+		
+		<p>I've previously experimented on creating a simplified way of <a href="/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">maintaining CRM solutions in source control</a>. While I was quite happy with the end result, the process of setting up the projects, scripts and post-build steps was a little bit tedious. </p>
+
+<p>This is where Yeoman code generator comes in. Yeoman is a very popular javascript based scaffolding engine that enables setting up new projects a breeze. I created my own custom generator that would help me to kick start new CRM solutions quickly. You can find the end product here: <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">https://www.npmjs.com/package/generator-nullfactory-xrm</a></p>
+
+<h2>Installation</h2>
+
+<p>First, install <a href="http://yeoman.io">Yeoman</a> and generator-nullfactory-xrm using <a href="https://www.npmjs.com/">npm</a>.</p>
+
+<pre><code>npm install -g yo
+npm install -g generator-nullfactory-xrm
+</code></pre>
+
+<p>Then generate your new project:</p>
+
+<pre><code>yo nullfactory-xrm
+</code></pre>
+
+<h2>Execution</h2>
+
+<p>Template questions and their purpose:</p>
+
+<ol>
+<li>Visual Studio solution file name?  <code>The visual studio solution filename.</code></li>
+<li>Visual Studio project prefix?  <code>The prefix for the projects generated. This can be an organization name or preferred convention.</code></li>
+<li>Source CRM server url? <code>This is the source CRM server url. Example:[https://sndbx.crm6.dynamics.com](https://sndbx.crm6.dynamics.com)</code></li>
+<li>Source CRM Username? <code>The username used to connect to the source CRM server.</code></li>
+<li>Source CRM Password? <code>The password for the above account.</code></li>
+<li>Source CRM Solution Name? <code>The name of the CRM solution to be extracted.</code></li>
+<li>Add *.WebResource project? <code>Specifies if a new project should be created to manage the web resouces.</code></li>
+<li>Add *.Plugin project? <code>Specifies if a new plugin project should be created.</code></li>
+</ol>
+
+
+		<p><a href="/2016/09/yeoman-generator-for-dynamics-crm-solutions/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/07/unable-to-qualify-lead/">Unable to Qualify Lead</a></h2>
       <p class="post-date">23 Jul 2016
@@ -189,156 +388,6 @@ Okay, so I am thinking maybe I'll just disable the individual jobs for each of t
 
 
 		<p><a href="/2015/12/disabling-recurring-ondemand-webjob/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Strategy for Updating a SQL Server Database Schema via SSDT Delta Script</a></h2>
-      <p class="post-date">25 Nov 2015
-
-      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
-      | <a href="/category/sql-server-data-tools" title="SQL Server Data Tools">SQL Server Data Tools</a>
-</p>
-
-      <p>
-		
-		<p>This posts talks about the high level steps I went through in order to get the SQL Server related components ready for automation in a project I worked on recently. </p>
-
-<p>This project uses SQL Server Data Tools (SSDT) project in order to maintain the database schema in source control. Its output - the Data-tier Application Component Packages (DACPAC) gets deployed into the appropriate target environment via a WebDeploy package. And considering that the solution was designed as an Entity Framework (EF) database first approach, code first migrations were not a viable upgrade strategy.</p>
-
-<p>Here are the steps I followed in order to bring the production environment up-to-date: </p>
-
-
-		<p><a href="/2015/11/strategy-updating-sql-server-schema-via-ssdt-delta-script/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/cdn-streaming-video-azure-storage/">Setting up a CDN to Stream Video via Azure Storage</a></h2>
-      <p class="post-date">11 Oct 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-      | <a href="/category/cdn" title="CDN">CDN</a>
-      | <a href="/category/azure-storage-accounts" title="Azure Storage Accounts">Azure Storage Accounts</a>
-</p>
-
-      <p>
-		
-		<p>I needed to setup an Azure Content Delivery Network (CDN) in order to stream some video files stored in Azure Blob Storage. Sounds simple enough right? Well, yes for the most part, but I did hit a few hurdles along the way. This post would hopefully help me avoid them the next time.</p>
-
-<h2>Create the Storage Account</h2>
-
-<p>Something I found out after the fact was that CDN endpoints <a href="http://stackoverflow.com/questions/32569564/azure-resource-manager-deployment-vs-classic-deployment-of-storage-accounts">currently only support classic storage accounts</a>. So the first order of business is to create a classic storage account either via old portal or using a <a href="/2015/10/deploy-classic-storage-azure-resource-manager/">resource group manager template</a>. </p>
-
-<p>Another thing I found out is that, at the time of writing, classic storage accounts cannot be made under the 'East US' location. The closest alternative was 'East US 2' and worked fine; I guess its something worth considering if you wanted to co-locate all your resources.</p>
-
-<p>Next, create a container within storage account - the container would host the files that would be served by the CDN. It can be created manually via the old portal or even through visual studio. Ensure that container access type is set to <code>Public Blob</code>.</p>
-
-<h2>Upgrade the Storage Account to a Newer Service Version</h2>
-
-<p>The first time I tried to tried to stream a video, it did not work as expected; stream was very choppy. It turns out that the service version that got set on the storage was not the latest. <a href="http://blog.thoughtstuff.co.uk/2014/01/streaming-mp4-video-files-in-azure-storage-containers-blob-storage/">Read more here</a>, <a href="https://msdn.microsoft.com/library/azure/dd894041.aspx">and here</a>.</p>
-
-<p>So the next step is update the storage account to the latest version in order to take advantage of the improvements. This can be done using the following code:</p>
-
-<pre><code>    var credentials = new StorageCredentials("accountname", "accountkey");
-    var account = new CloudStorageAccount(credentials, true);
-    var client = account.CreateCloudBlobClient();
-    var properties = client.GetServiceProperties();
-    properties.DefaultServiceVersion = "2013-08-15";
-    client.SetServiceProperties(properties);
-    Console.WriteLine(properties.DefaultServiceVersion);
-</code></pre>
-
-
-		<p><a href="/2015/10/cdn-streaming-video-azure-storage/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Deploying a Azure Classic Storage Account using Azure Resource Manager</a></h2>
-      <p class="post-date">10 Oct 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-      | <a href="/category/deployment" title="Deployment">Deployment</a>
-      | <a href="/category/azure-storage-accounts" title="Azure Storage Accounts">Azure Storage Accounts</a>
-</p>
-
-      <p>
-		
-		<p>I've been working on Azure Resource Group templates quite a bit over the last few weeks. While it has been a pleasant experience overall, I ran into some hurdles the other day while attempting to figure out how to create a <code>Microsoft.ClassicStorage/StorageAccounts</code> using the Azure Resource Manager(ARM) API.</p>
-
-<p>The latest version (2.7 at the time of writing) of Azure SDK GUI tools for visual studio were not particularly helpful in generating the required json, but thankfully <a href="http://stackoverflow.com/questions/27347200/add-storage-to-azure-resource-manager">this</a> post pointed me in the right direction. And after a little bit of fiddling I find that <code>2015-06-01</code> appears to be last supported <code>apiVersion</code> that works with classic storage.</p>
-
-<p><a href="/images/posts/DeployClassicStorageArm/10_SupportedVersion.png"><img src="/images/posts/DeployClassicStorageArm/10_SupportedVersion.png" alt="Azure PowerShell Unsupported" /></a></p>
-
-<p>Here's the final script I used to create a classic storage container: </p>
-
-<pre><code>{
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "PrimaryStorageName": {
-            "type": "string"
-        },
-        "PrimaryStorageType": {
-            "type": "string",
-            "defaultValue": "Standard_LRS",
-            "allowedValues": [
-                "Standard_LRS",
-                "Standard_GRS",
-                "Standard_ZRS"
-            ]
-        },
-        "PrimaryStorageLocation": {
-        "type": "string",
-        "defaultValue": "East US",
-        "allowedValues": [
-            "East US",
-            "West US",
-            "West Europe",
-            "East Asia",
-            "South East Asia"
-            ]
-        }
-    },
-    "variables": {
-    },
-    "resources": [
-        {
-            "name": "[parameters('PrimaryStorageName')]",
-            "type": "Microsoft.ClassicStorage/StorageAccounts",
-            "location": "[parameters('PrimaryStorageLocation')]",
-            "apiVersion":  "2015-06-01",
-            "dependsOn": [ ],
-            "properties": {
-                "accountType": "[parameters('PrimaryStorageType')]"
-            }
-        }
-    ],
-    "outputs": {
-    }
-}
-</code></pre>
-
-
-		<p><a href="/2015/10/deploy-classic-storage-azure-resource-manager/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/publishing-assemblies-without-gacutil/">Publishing Assemblies into the GAC without GacUtil</a></h2>
-      <p class="post-date">31 Aug 2015
-
-      | <a href="/category/deployment" title="Deployment">Deployment</a>
-</p>
-
-      <p>
-		
-		<p>I constantly find myself googling this code snippet - its nice to keep handy: </p>
-
-<pre><code>[System.Reflection.Assembly]::Load("System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")
-$publish = New-Object System.EnterpriseServices.Internal.Publish
-$publish.GacInstall("c:\temp\publish_dll.dll")
-</code></pre>
-
-
-		<p><a href="/2015/08/publishing-assemblies-without-gacutil/">Read more...</a></p>
 	  </p>
     </div>
 </div>

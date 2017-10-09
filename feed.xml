@@ -1,4 +1,203 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2017-06-25T17:29:13+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/</id><title type="text">Continuous Integration and Continuous Delivery of Dynamics 365 Solutions using VSTS</title><summary type="html">&lt;p&gt;In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that &lt;a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff"&gt;every change made to a system can be deployed&lt;/a&gt; successfully to secondary environment:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2017-10-10T00:22:17+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2017/10/crm-saturday-melbourne-2017-presentation-slide-deck/</id><title type="text">CRM Saturday Melbourne 2017 - Presentation Slide Deck</title><summary type="html">&lt;p&gt;&lt;a href="https://www.slideshare.net/shanec_/zero-to-devops-source-control-release-strategy-crm-saturday-2017"&gt;&lt;img src="http://nullfactory.net/images/posts/CrmSatSlideDeck/crm-sat-slide-deck.png" alt="CRM Saturday Melbourne 2017" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I know its a "little" late, but here's the slide deck from my CRM Saturday 2017 presentation  - &lt;code&gt;Zero to DevOps - Source Control and Release Strategy for Dynamics 365 Solutions&lt;/code&gt;. &lt;/p&gt;
+
+</summary><published>2017-10-08T13:00:00Z</published><updated>2017-10-08T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/10/crm-saturday-melbourne-2017-presentation-slide-deck/" /><content type="html">&lt;p&gt;&lt;a href="https://www.slideshare.net/shanec_/zero-to-devops-source-control-release-strategy-crm-saturday-2017"&gt;&lt;img src="http://nullfactory.net/images/posts/CrmSatSlideDeck/crm-sat-slide-deck.png" alt="CRM Saturday Melbourne 2017" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I know its a "little" late, but here's the slide deck from my CRM Saturday 2017 presentation  - &lt;code&gt;Zero to DevOps - Source Control and Release Strategy for Dynamics 365 Solutions&lt;/code&gt;. &lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;&lt;a href="https://www.slideshare.net/shanec_/zero-to-devops-source-control-release-strategy-crm-saturday-2017"&gt;https://www.slideshare.net/shanec_/zero-to-devops-source-control-release-strategy-crm-saturday-2017&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;As always, feel free to reach me through social media if you have any questions.&lt;/p&gt;
+</content></entry><entry><id>http://nullfactory.net/2017/10/dont-forget-to-install-the-just-in-time-debugger/</id><title type="text">Don't Forget to Install the Just-In-Time Debugger</title><summary type="html">&lt;p&gt;Today I learned that you can have an installation of Visual Studio 2017 without the JIT debugger - Yup, you really can.  This meant that I could not use the technique of attaching a debugger at runtime using the  &lt;code&gt;System.Diagnostics.Debugger.Launch();&lt;/code&gt; code snippet. &lt;/p&gt;
+
+&lt;p&gt;When the application executes the launch code, nothing happens - no error nor exception. The method even returns &lt;code&gt;true&lt;/code&gt; indicating a a successful launch.&lt;/p&gt;
+
+</summary><published>2017-10-07T13:00:00Z</published><updated>2017-10-07T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/10/dont-forget-to-install-the-just-in-time-debugger/" /><content type="html">&lt;p&gt;Today I learned that you can have an installation of Visual Studio 2017 without the JIT debugger - Yup, you really can.  This meant that I could not use the technique of attaching a debugger at runtime using the  &lt;code&gt;System.Diagnostics.Debugger.Launch();&lt;/code&gt; code snippet. &lt;/p&gt;
+
+&lt;p&gt;When the application executes the launch code, nothing happens - no error nor exception. The method even returns &lt;code&gt;true&lt;/code&gt; indicating a a successful launch.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;After equal parts of scouring the web and pulling my hair out, I eventually stumbled upon the following option in the Visual Studio setup:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/JITDebugger/10_installdebugger.png" alt="Install Debugger" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The combination of features selected had somehow unchecked the Just-In-Time debugger. Heck, I didn't even know you could &lt;strong&gt;&lt;em&gt;not&lt;/em&gt;&lt;/strong&gt; install it. I hope this helps someone else out there.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/JITDebugger/20_choosejitdebugger.png" alt="Choose Debugger" /&gt;&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://msdn.microsoft.com/en-us/library/system.diagnostics.debugger.launch(v=vs.110).aspx"&gt;Debugger.Launch Method (System.Diagnostics)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://defragdev.com/blog/?p=668"&gt;The wonders of Debugger.Launch() | Mark's Devblog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://blogs.msdn.microsoft.com/mapo/2013/11/07/debugger-launch-not-displaying-jit-debugger-selection-popup-on-windows-88-1/"&gt;Debugger.Launch() not displaying JIT debugger selection popup on Windows 8/8.1 – Scattered Notes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stackoverflow.com/questions/12655965/debugger-launch-not-working"&gt;c# - Debugger.Launch not working - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/9a539c40-1869-44b8-9aed-9f9d7d402d7c/mysterious-vs-jit-debugger-invocation-failure?forum=vsdebug"&gt;Mysterious VS JIT debugger invocation failure&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2017/10/tail-using-powershell/</id><title type="text">Tail using PowerShell</title><summary type="html">&lt;p&gt;Consider a scenario where you are diagnosing an issue on a production server. You've enabled the logs and got everything setup to reproduce the issue. Queue the trigger to invoke the misbehaving operation and finally wait for the log file to update.&lt;/p&gt;
+
+&lt;p&gt;Staring at the log file size to change is no fun nor is refreshing the file periodically. I want to be notified the moment the log gets updated in real-time. This is exactly what a program like &lt;a href="https://en.wikipedia.org/wiki/Tail_(Unix)"&gt;&lt;code&gt;tail&lt;/code&gt;&lt;/a&gt; does - it monitors the file for changes and outputs the &lt;em&gt;tail&lt;/em&gt; end of the file.&lt;/p&gt;
+
+&lt;p&gt;There are a few incarnations of tail out there that do the job perfectly fine, but given that this was a production environment I was not keep about installing new tools.&lt;/p&gt;
+
+&lt;p&gt;Luckily, the &lt;code&gt;Get-Content&lt;/code&gt; PowerShell cmdlet has this functionality built-in. This is the combo that I finally settled on:&lt;/p&gt;
+
+</summary><published>2017-10-06T13:00:00Z</published><updated>2017-10-06T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/10/tail-using-powershell/" /><content type="html">&lt;p&gt;Consider a scenario where you are diagnosing an issue on a production server. You've enabled the logs and got everything setup to reproduce the issue. Queue the trigger to invoke the misbehaving operation and finally wait for the log file to update.&lt;/p&gt;
+
+&lt;p&gt;Staring at the log file size to change is no fun nor is refreshing the file periodically. I want to be notified the moment the log gets updated in real-time. This is exactly what a program like &lt;a href="https://en.wikipedia.org/wiki/Tail_(Unix)"&gt;&lt;code&gt;tail&lt;/code&gt;&lt;/a&gt; does - it monitors the file for changes and outputs the &lt;em&gt;tail&lt;/em&gt; end of the file.&lt;/p&gt;
+
+&lt;p&gt;There are a few incarnations of tail out there that do the job perfectly fine, but given that this was a production environment I was not keep about installing new tools.&lt;/p&gt;
+
+&lt;p&gt;Luckily, the &lt;code&gt;Get-Content&lt;/code&gt; PowerShell cmdlet has this functionality built-in. This is the combo that I finally settled on:&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;&lt;code&gt;Get-Content log.txt -tail 5 -wait&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;-tail&lt;/code&gt; argument takes in the number of lines to show from the end of the file and &lt;code&gt;-wait&lt;/code&gt; specifies that  it should continue to monitor the file.&lt;/p&gt;
+
+&lt;p&gt;Granted that this method does not have highlighting capabilities that a dedicated tool would have, but its a pretty useful option to have in a pinch.&lt;/p&gt;
+
+&lt;p&gt;Finally, save a few key strokes by using the alias:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;cat log.txt -tail 5 -wait&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://stackoverflow.com/questions/187587/looking-for-a-windows-equivalent-of-the-unix-tail-command"&gt;Looking for a windows equivalent of the unix tail command - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stackify.com/13-ways-to-tail-a-log-file-on-windows-unix/"&gt;13 Ways to Tail a Log File on Windows &amp;amp; Linux: Top Tools&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Management/Get-Content?view=powershell-5.1"&gt;Microsoft Docs - Get-Content&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2017/10/mocking-and-testing-a-webservice-using-soapui/</id><title type="text">Mocking and Testing a WebService using SoapUI</title><summary type="html">&lt;p&gt;I have recently been working on an implementation of a WCF client interacts with a remote SOAP web service. Unfortunately this service did not have a development version that I could interactively test my requests against.&lt;/p&gt;
+
+&lt;p&gt;Armed with just the WSDL and the schema for expected responses, I needed to find a way to mock the remote service in order to confirm the functionality of the client. This is where SOAP UI comes in - SOAP UI is tool that allows me to point it to service contract (WSDL or REST) and mock the responses that each of the actions would generate. And finally provides the functionality to host and serve these mocked responses so that they can be consumed by different clients.&lt;/p&gt;
+
+&lt;p&gt;I will be using the freely available &lt;a href="http://www.webservicex.net/globalweather.asmx"&gt;http://www.webservicex.net/globalweather.asmx&lt;/a&gt; web service to demonstrate the process.&lt;/p&gt;
+
+</summary><published>2017-10-05T13:00:00Z</published><updated>2017-10-05T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/10/mocking-and-testing-a-webservice-using-soapui/" /><content type="html">&lt;p&gt;I have recently been working on an implementation of a WCF client interacts with a remote SOAP web service. Unfortunately this service did not have a development version that I could interactively test my requests against.&lt;/p&gt;
+
+&lt;p&gt;Armed with just the WSDL and the schema for expected responses, I needed to find a way to mock the remote service in order to confirm the functionality of the client. This is where SOAP UI comes in - SOAP UI is tool that allows me to point it to service contract (WSDL or REST) and mock the responses that each of the actions would generate. And finally provides the functionality to host and serve these mocked responses so that they can be consumed by different clients.&lt;/p&gt;
+
+&lt;p&gt;I will be using the freely available &lt;a href="http://www.webservicex.net/globalweather.asmx"&gt;http://www.webservicex.net/globalweather.asmx&lt;/a&gt; web service to demonstrate the process.&lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;Let's start off with a single request:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Open up the SOAP UI application and add connection to the SOAP service. Do this by navigating to the &lt;code&gt;File &amp;gt; New SOAP Project&lt;/code&gt; menu option.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Provide a name for the project and set the url to the WSDL file to &lt;a href="http://www.webservicex.net/globalweather.asmx?wsdl"&gt;http://www.webservicex.net/globalweather.asmx?wsdl&lt;/a&gt; . Keep the &lt;code&gt;Create Requests&lt;/code&gt; check box checked: &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/10_AddNewSoapProject.png" alt="Add new SOAP project" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now let's create a mock version of our web service. Right click on the &lt;code&gt;GetCitiesByCountry&lt;/code&gt; method and select &lt;code&gt;Add to MockService&lt;/code&gt; option in the context menu.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/20_AddToMockService.png" alt="Add to mock service" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Provide it with a name, and select &lt;code&gt;Yes&lt;/code&gt; to open it within the editor.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/30_EnterNameForService.png" alt="Enter name for service" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/40_OpenMockServiceEditor.png" alt="Open mock service editor" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In the resulting dialog, paste the response you would like to receive when a request is made.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/50_MockedResponse.png" alt="Mocked response" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now that we have the response setup, let's start up the mock service to serve up our requests. Do this by double clicking the &lt;code&gt;WeatherMockService&lt;/code&gt; node to bring up the service status dialog and clicking on the &lt;code&gt;Start&lt;/code&gt; (play icon) button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/70_MockingServiceStarted.png" alt="Mocking service started" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now let's see if our response works. The easiest way to do this is to right-click on the response that we previously populated, and on the context-menu select the &lt;code&gt;Open Request&lt;/code&gt; option.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/75_MockServiceTest.png" alt="Mocking service test" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Either select the pre-generated request, or select the option to create a new one. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Modify the resulting request as necessary. &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once ready, click the submit (play icon) button to send the request.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/78_MockServiceTestResult.png" alt="Mocking service test result" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Confirm that you have received the previously setup request.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now we have very basic mock and responses working, let's make it a little bit more complex. In my live system, any time the service method is called it would reply with a different response subject to some external variables. I wanted to mock the same functionality so that I can better test how my client code reacts to the different sequences. &lt;/p&gt;
+
+&lt;p&gt;I did a bit of research and found another individual who had the same requirement: &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://stackoverflow.com/questions/32975240/soapui-mock-service-custom-sequence-of-responses"&gt;https://stackoverflow.com/questions/32975240/soapui-mock-service-custom-sequence-of-responses&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This approach allows us to orchestrate the responses that are returned. In this particular example there are no smarts built in apart from the service responding to the requests in sequence.&lt;/p&gt;
+
+&lt;p&gt;Let's setup our sequence of responses:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Create a second response for the request. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/80_MockSecondResponse.png" alt="Mock second response" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Provide it with a new response body as done previously.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/90_MockSecondResponseBody.png" alt="Mock second response body" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, right-click on the &lt;code&gt;GetCitiesByCountry&lt;/code&gt; method in the mock service and select &lt;code&gt;Show MockOperation Editor&lt;/code&gt; in the resulting dialog.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/100_MockOperationEditor.png" alt="Mock operation editor" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In the resulting dialog,  choose the &lt;code&gt;SEQUENCE&lt;/code&gt; as the &lt;code&gt;Dispatch&lt;/code&gt; method.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/110_ScriptEditor.png" alt="Sciprt editor" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Paste the following script in the script section. This script controls the order in which the responses are returned. Update the &lt;code&gt;myRespList&lt;/code&gt; array to change this sequence.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// get the list from the context
+def myRespList = context.myRespList
+
+
+// if list is null or empty reinitalize it
+if(!myRespList || !myRespList?.size){   
+    // list in the desired output order using the response names that your
+    // create in your mockservice
+    myRespList = ["Response 2","Response 1"]  
+}
+// take the first element from the list
+def resp = myRespList.take(1)[0]
+
+
+// update the context with the list without this element
+context.myRespList = myRespList.drop(1)
+
+
+// return the response
+log.info "--&amp;gt;"+resp
+return resp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/120_FinalScript.png" alt="Final script" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Test out the response by clicking on the test script (play button) just above the editor. SOAP UI responds with showing us the first request that would be sent.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/140_ScriptTestRun2.png" alt="Script returned response 2" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Testing the script again, and receive the second response. Good, the script seems to be doing its job.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/130_ScriptTestRun1.png" alt="Script returned response 1" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Let's do one final test with an actual request to make sure its working as expected. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/160_RequestSecondRun.png" alt="Request first run" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;And run the request again to receive the second response.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/MockSoapUI/150_RequestFirstRun.png" alt="Request second run" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;I love the fact that this tool provides the right combination of ease of use and functionality. And allows a new developer to quickly setup the basics and then extend the test scenarios as they become more complex.&lt;/p&gt;
+
+&lt;p&gt;This is going into my developer tool belt for sure.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.soapui.org/getting-started/your-first-soapui-project.html"&gt;Your First SoapUI Project | Getting started with SoapUI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.soapui.org/getting-started/10-tips-for-the-soapui-beginner.html"&gt;10 Tips for the SoapUI Beginner | Getting started with SoapUI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stackoverflow.com/questions/32975240/soapui-mock-service-custom-sequence-of-responses"&gt;groovy - SoapUI Mock Service Custom Sequence of Responses - Stack Overflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/</id><title type="text">Continuous Integration and Continuous Delivery of Dynamics 365 Solutions using VSTS</title><summary type="html">&lt;p&gt;In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that &lt;a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff"&gt;every change made to a system can be deployed&lt;/a&gt; successfully to secondary environment:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Continuous Integration (CI)&lt;/p&gt;
@@ -764,493 +963,4 @@
 &lt;li&gt;&lt;a href="https://tygertec.com/git-hooks-practical-uses-windows/"&gt;Git hooks, practical uses (yes, even on Windows) » tygertec&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.atlassian.com/git/tutorials/git-hooks"&gt;Git Hooks | Atlassian Git Tutorial&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/</id><title type="text">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</title><summary type="html">&lt;p&gt;In this third and final installment I cover the steps involved in setting up the minimum release and deployment steps required for a successful Dynamics CRM/365 deployment. The steps and actions performed in the previous posts acts as prerequisites for this one.&lt;/p&gt;
-
-&lt;p&gt;Related posts from the series:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;The Packages&lt;/h2&gt;
-
-&lt;p&gt;In the &lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/"&gt;previous post&lt;/a&gt;, I setup the team build to automatically publish packages into the Octopus Deploy package repository. &lt;/p&gt;
-
-&lt;p&gt;We can verify that they have indeed been published by navigating to the &lt;code&gt;Library &amp;gt; Packages&lt;/code&gt; tab for a list of available packages.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/05_published_package.png" alt="Available Packages" /&gt; &lt;/p&gt;
-
-&lt;h2&gt;Defining the Environment&lt;/h2&gt;
-
-&lt;p&gt;Environments are a logical grouping of targets / machines used by deployments. For the purpose of this post, I will create one environment - &lt;code&gt;Testing&lt;/code&gt; and it would contain a single CRM deployment target - the CRM Server). &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Let's start off by clicking on the &lt;code&gt;Environments&lt;/code&gt; from the main menu to navigate to the environment configuration page.&lt;/li&gt;
-&lt;li&gt;Click on &lt;code&gt;Add environment&lt;/code&gt; in the resulting page.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Set &lt;code&gt;Testing&lt;/code&gt; as the name of the environment .&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/10_create_environment.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Click on &lt;code&gt;Save&lt;/code&gt; to confirm selection.&lt;/li&gt;
-&lt;/ol&gt;
-
-</summary><published>2017-04-24T14:00:00Z</published><updated>2017-04-24T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/" /><content type="html">&lt;p&gt;In this third and final installment I cover the steps involved in setting up the minimum release and deployment steps required for a successful Dynamics CRM/365 deployment. The steps and actions performed in the previous posts acts as prerequisites for this one.&lt;/p&gt;
-
-&lt;p&gt;Related posts from the series:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;The Packages&lt;/h2&gt;
-
-&lt;p&gt;In the &lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/"&gt;previous post&lt;/a&gt;, I setup the team build to automatically publish packages into the Octopus Deploy package repository. &lt;/p&gt;
-
-&lt;p&gt;We can verify that they have indeed been published by navigating to the &lt;code&gt;Library &amp;gt; Packages&lt;/code&gt; tab for a list of available packages.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/05_published_package.png" alt="Available Packages" /&gt; &lt;/p&gt;
-
-&lt;h2&gt;Defining the Environment&lt;/h2&gt;
-
-&lt;p&gt;Environments are a logical grouping of targets / machines used by deployments. For the purpose of this post, I will create one environment - &lt;code&gt;Testing&lt;/code&gt; and it would contain a single CRM deployment target - the CRM Server). &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Let's start off by clicking on the &lt;code&gt;Environments&lt;/code&gt; from the main menu to navigate to the environment configuration page.&lt;/li&gt;
-&lt;li&gt;Click on &lt;code&gt;Add environment&lt;/code&gt; in the resulting page.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Set &lt;code&gt;Testing&lt;/code&gt; as the name of the environment .&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/10_create_environment.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Click on &lt;code&gt;Save&lt;/code&gt; to confirm selection.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;Next, define the deployment target for this environment:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to the Environments summary page and click the &lt;code&gt;Add deployment target&lt;/code&gt; button.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select &lt;code&gt;Cloud Region&lt;/code&gt; as the deployment target.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/20_deployment_target.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Set &lt;code&gt;Test CRM Server&lt;/code&gt; as the &lt;code&gt;Display name&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Select the previously created &lt;code&gt;Testing&lt;/code&gt; as one of the &lt;code&gt;Environments&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Create a new role called &lt;code&gt;crm instance&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/30_deployment_target2.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click on &lt;code&gt;Save&lt;/code&gt; button to confirm.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/40_deployment_target3.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Variable Sets&lt;/h3&gt;
-
-&lt;p&gt;I will be creating a variable set to host all settings required to connect to the CRM Server. It makes configuration easier and also provides us with the ability to reuse the same server in multiple projects.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;From the main menu navigate to &lt;code&gt;Library &amp;gt; Variable Sets&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click on &lt;code&gt;Add variable set&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/50_variables.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Define three new variables:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;#{TestCRM-servername}&lt;/code&gt;: The CRM Server Url.  &lt;/li&gt;
-&lt;li&gt;&lt;code&gt;#{TestCRM-username}&lt;/code&gt;: The deployment username.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;#{TestCRM-password}&lt;/code&gt;: The deployment password. On this one, set the &lt;code&gt;variable type&lt;/code&gt; as &lt;code&gt;Sensitive&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/60_variables_created.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Save&lt;/code&gt; button.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Define the Project&lt;/h3&gt;
-
-&lt;p&gt;Projects allow to define a proper release lifecyle by bringing together the different environments and deployment steps. &lt;/p&gt;
-
-&lt;p&gt;Let's define a new project:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to &lt;code&gt;Projects&lt;/code&gt; menu.&lt;/li&gt;
-&lt;li&gt;Click on the &lt;code&gt;Add project&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Provide a name and description. Leave the other options to default.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click on &lt;code&gt;Save&lt;/code&gt; to confirm selection.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/70_create_project.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now associate our previously created variable set as part of our project:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to the &lt;code&gt;Variable &amp;gt; Library Variable Sets&lt;/code&gt; tab within the project.&lt;/li&gt;
-&lt;li&gt;Click the &lt;code&gt;Include variable sets from the Library&lt;/code&gt; button.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Choose the previously created variable set.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/80_include_variable_project.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Apply&lt;/code&gt; and then &lt;code&gt;Save&lt;/code&gt; buttons to confirm selection.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/90_include_variable_project2.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Setup the Deployment Process&lt;/h2&gt;
-
-&lt;p&gt;The deployment steps are pretty simple and consists of two PowerShell scripts; the first one is an inline script that sets up the prerequisites while the second one does the actual deployment. &lt;/p&gt;
-
-&lt;h3&gt;Prerequisite script&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to the &lt;code&gt;Process&lt;/code&gt; tab within the project.&lt;/li&gt;
-&lt;li&gt;Click on &lt;code&gt;Add your first step&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select a &lt;code&gt;Run a Script&lt;/code&gt; template.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/100_step_template.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Update the following parameters while accepting the default selections for the others:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Step name&lt;/code&gt;: &lt;code&gt;Setup Prerequisites&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Run on&lt;/code&gt; : &lt;code&gt;Deployment targets&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Runs on targets in roles&lt;/code&gt; : &lt;code&gt;crm instance&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Script source&lt;/code&gt; : &lt;code&gt;Source code&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Script&lt;/code&gt;: &lt;code&gt;Powershell&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Provide the following for the body of the script:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/110_step_1.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click &lt;code&gt;Save&lt;/code&gt; to apply changes.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Deployment Script&lt;/h3&gt;
-
-&lt;p&gt;The steps are very similar to the previous one, but this time we want to execute a script that is already part of the package. &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Once again,click on &lt;code&gt;Add step&lt;/code&gt; and select a &lt;code&gt;Run a Script&lt;/code&gt; template:&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Update the following parameters while accepting the default selections for the others:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Step name&lt;/code&gt;: &lt;code&gt;Deploy CRM Solution&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Run on&lt;/code&gt; : &lt;code&gt;Deployment targets&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Runs on targets in roles&lt;/code&gt; : &lt;code&gt;crm instance&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Script source&lt;/code&gt; : &lt;code&gt;Script file inside a package&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Keep the &lt;code&gt;Package Feed&lt;/code&gt; on &lt;code&gt;Octopus Server (built-in)&lt;/code&gt; as we've already published our package into OD.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Set &lt;code&gt;Package ID&lt;/code&gt; to &lt;code&gt;gnxdemo.crm&lt;/code&gt;. This is the name that the build published.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Set the &lt;code&gt;Script file name&lt;/code&gt; value to:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Nullfactory.Xrm.Tooling\Scripts\Deploy-CrmSolution.ps1
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Set the &lt;code&gt;Script parameters&lt;/code&gt; value to by integrating the variables that we created earlier:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;-serverUrl "#{TestCRM-servername}" -username "#{TestCRM-username}" -password "#{TestCRM-password}" -solutionName "gnxdemo.crm" -publishChanges -activatePlugins
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/120_step_2.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Save&lt;/code&gt; button.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/130_step_summary.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Release and Deployment&lt;/h2&gt;
-
-&lt;p&gt;Now that we have everything setup let's create a new release and then deploy the same to the &lt;code&gt;Testing environment&lt;/code&gt;.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to the Project page.&lt;/li&gt;
-&lt;li&gt;Click on the &lt;code&gt;Create Release&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Provide a version number for the new release. I gave it &lt;code&gt;0.0.1&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Ensure that the &lt;code&gt;Deploy CRM Solution&lt;/code&gt; step is referencing the latest version of the solution.&lt;/li&gt;
-&lt;li&gt;Click on the &lt;code&gt;Save&lt;/code&gt; button the confirm the release. The release page shows an overview of the release including the its lifecyle path and as well as the packages being deployed.&lt;/li&gt;
-&lt;li&gt;Click on the &lt;code&gt;Deploy to Testing&lt;/code&gt; in order to deploy the solution to the testing environment.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click the &lt;code&gt;Deploy now&lt;/code&gt; button in the resulting page to kick off the deployment.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/140_deploy_release.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The page would redirect to a summary page showing the progress of the deployment. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/150_deploy_task_progress.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click on the &lt;code&gt;Task Log&lt;/code&gt; to view a more verbose view of the solution being deployed.  &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt3/160_deploy_task_log.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Final Thoughts&lt;/h2&gt;
-
-&lt;p&gt;While I think I have barely scratched the surface of the features provided by Octopus Deploy, the process of writing this series of posts made me appreciate the intuitive structure of key concepts as well as the myriad of options available to support even the most complex of release life cycles. This series also gave me the opportunity to validate the flexibility of the project structure generated using the &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator-nullfactory-xrm&lt;/a&gt; - with its ability to work with different DevOps tools.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://octopus.com/docs/key-concepts/environments"&gt;Environments - Octopus Deploy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://octopus.com/docs/key-concepts/projects"&gt;Projects - Octopus Deploy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://octopus.com/docs/key-concepts/machine-roles"&gt;Machine Roles - Octopus Deploy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://octopus.com/docs/deployment-targets"&gt;Deployment targets - Octopus Deploy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://octopus.com/docs/deployment-targets/azure-cloud-service-target"&gt;Azure Cloud Service Deployment Targets - Octopus Deploy&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/</id><title type="text">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</title><summary type="html">&lt;p&gt;This is the second part of a series of posts where I attempt to deploy a Dynamics 365/CRM solution using Visual Studio Team Services (VSTS) and Octopus Deploy (OD). Previously, I setup an OD server and integrated it with VSTS - the steps describe in that post act as a prerequisite for this one. In this post we go about modifying an existing Dynamics CRM build definition to automatically package the release-artifact and upload it to the OD server for deployment. &lt;/p&gt;
-
-&lt;p&gt;Related posts from the series:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup&lt;/a&gt; &lt;/li&gt;
-&lt;li&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Publishing Packages&lt;/h2&gt;
-
-&lt;p&gt;There are a few different ways of getting a package into Octopus Deploy:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Remotely upload a package to Octopus Deploy's built-in repository.&lt;/li&gt;
-&lt;li&gt;Make octopus deploy pull packages from an external feed. Find more information &lt;a href="https://www.visualstudio.com/en-us/docs/package/overview"&gt;here&lt;/a&gt; on setting up VSTS to publish an package feed.&lt;/li&gt;
-&lt;li&gt;Manually upload the package into the built-in repository.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And the method of publishing the package has no bearing on the end deployment -I chose to explicitly push to the remote octopus deploy server. &lt;/p&gt;
-
-</summary><published>2017-04-23T14:00:00Z</published><updated>2017-04-23T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/" /><content type="html">&lt;p&gt;This is the second part of a series of posts where I attempt to deploy a Dynamics 365/CRM solution using Visual Studio Team Services (VSTS) and Octopus Deploy (OD). Previously, I setup an OD server and integrated it with VSTS - the steps describe in that post act as a prerequisite for this one. In this post we go about modifying an existing Dynamics CRM build definition to automatically package the release-artifact and upload it to the OD server for deployment. &lt;/p&gt;
-
-&lt;p&gt;Related posts from the series:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup&lt;/a&gt; &lt;/li&gt;
-&lt;li&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Publishing Packages&lt;/h2&gt;
-
-&lt;p&gt;There are a few different ways of getting a package into Octopus Deploy:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Remotely upload a package to Octopus Deploy's built-in repository.&lt;/li&gt;
-&lt;li&gt;Make octopus deploy pull packages from an external feed. Find more information &lt;a href="https://www.visualstudio.com/en-us/docs/package/overview"&gt;here&lt;/a&gt; on setting up VSTS to publish an package feed.&lt;/li&gt;
-&lt;li&gt;Manually upload the package into the built-in repository.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And the method of publishing the package has no bearing on the end deployment -I chose to explicitly push to the remote octopus deploy server. &lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;Updating the Build Definition&lt;/h2&gt;
-
-&lt;p&gt;A quick summary of the notable steps in the existing build definition:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt2/10_starting_build_def.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;The actual &lt;code&gt;msbuild&lt;/code&gt; command that is being used to build the solution.&lt;/li&gt;
-&lt;li&gt;Copy the built artifacts to the staging folder.&lt;/li&gt;
-&lt;li&gt;Explicitly Copy Deployment Scripts into the staging folder.&lt;/li&gt;
-&lt;li&gt;Delete binaries (such as plugins and workflows) that have already been packaged as part of the solution package. As these serve no purpose in the final drop, I explicitly delete them to reduce the file size.&lt;/li&gt;
-&lt;li&gt;Publish the files in the staging folder into the final drop artifact.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Review my previous post on setting up the build definition &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Now let's start implementing the changes to the definition:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Add the &lt;code&gt;Package Application&lt;/code&gt; task.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt2/20_add_package_app.png" alt="Add Package Application Task" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Configure the task by providing the following details:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Package ID&lt;/code&gt; : This is unique identification for the package. I provided &lt;code&gt;gnxdemo.crm&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Package Format&lt;/code&gt; : Choose between NuGet and Zip. I chose NuGet. &lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Package Version&lt;/code&gt; : Configure this as appropriate. The generated package version should follow a valid SemVer versioning strategy.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Source Path&lt;/code&gt; : Set this to the &lt;code&gt;$(build.artifactstagingdirectory)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Output Path&lt;/code&gt; : Set it to a dedicated folder within the staging directory. I used &lt;code&gt;$(build.artifactstagingdirectory)\OctopusDeploy&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt2/30_config_package_app.png" alt="Configure Package Application Task" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, add the &lt;code&gt;Push Package&lt;/code&gt; task.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt2/40_add_push_package.png" alt="Add Push Package Task" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Configure the task by providing the following details:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Octopus Deploy Server&lt;/code&gt; : Choose the available server.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Package&lt;/code&gt;: This is the location of the package file. Since I am only creating a single package I setup the path resolution using a wildcard &lt;code&gt;$(build.artifactstagingdirectory)\OctopusDeploy\*.nupkg&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt2/50_config_package.png" alt="Configure Push Package Task" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Remove the &lt;code&gt;Publish Artifact: drop&lt;/code&gt; task as it is no longer necessary.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt2/60_remove_pushlish_artifacts.png" alt="Remove Publish Artifact Task" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Queue a new build to make sure that everything is in order.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt2/70_queued_build.png" alt="Queue New Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Log into the Octopus Deploy admin panel. Navigate to the &lt;code&gt;Library &amp;gt; Packages&lt;/code&gt; and ensure that the package has successfully uploaded.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt2/80_published_package.png" alt="Available Packages" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;That completes the changes to the build definition. In the &lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/"&gt;next post&lt;/a&gt; I will go about configuring the environments, project definition and the deployment process within Octopus Deploy.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://octopus.com/docs/guides/use-the-team-foundation-build-custom-task"&gt;Using the Team Foundation Build Custom Tasks - Octopus Deploy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/package/overview"&gt;Package Management in Team Services and TFS&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/</id><title type="text">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup</title><summary type="html">&lt;p&gt;I have seen &lt;a href="https://octopus.com/"&gt;Octopus Deploy (OD)&lt;/a&gt; being mentioned frequently in the community but haven't had a chance to play around with it myself. Therefore, I think that attempting to deploy a Dynamics 365/CRM solution using Octopus Deploy seemed like the perfect exercise to learn more about the platform and its features.&lt;/p&gt;
-
-&lt;p&gt;I was curious if there were other developers who have released Dynamics CRM using Octopus Deploy and sure enough there was some one who had &lt;a href="https://www.youtube.com/watch?v=--9u5azwSb4"&gt;already thought of that&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In this series of posts I try to cover everything from setting up integration with Visual Studio Team Services(VSTS), updating a build definition to automatically publish itself and then finally setting up a simple release and deployment pipeline.&lt;/p&gt;
-
-&lt;p&gt;Related posts from the series:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup &lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Prerequisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Project structure and deployment scripts based on &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator-nullfactory-xrm&lt;/a&gt; (with a minimum version of at least 1.4.0). &lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Read More&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;The project checked into Visual Studio Team Services (VSTS) using either &lt;code&gt;git&lt;/code&gt; or &lt;code&gt;tfsvc&lt;/code&gt; with a working team build already setup. &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Read More&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Installation of Octopus Deploy and ensure sure that it is publicly accessible. &lt;a href="https://www.youtube.com/watch?v=T0BQvMDXPNQ"&gt;Read More&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;The Strategy&lt;/h2&gt;
-
-&lt;p&gt;When I saw the integration tasks provided by the OD extensions for VSTS, my first reaction was to divide the tasks between the build and the release in VSTS. I wanted to the the build definition to build and package the solution and pass it on to release management. Release management would then publishing the release-artifact to OD and explicitly remote trigger the OD deployment.&lt;/p&gt;
-
-&lt;p&gt;While it was certainly possible to set this up, its did not make sense to have two deployment services for the same pipeline. Therefore the strategy is going to be very similar to the one that I had done previously - VSTS would continue to act as the version control and build server but this time Octopus deploy would act as the release component.&lt;/p&gt;
-
-&lt;p&gt;The build server would handle creating compatible package and uploading it to the OD package repository. And OD takes over the management of the environment, release and deployment complexities.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/05_overview.png" alt="Release Strategy Overview" /&gt;&lt;/p&gt;
-
-</summary><published>2017-04-22T14:00:00Z</published><updated>2017-04-22T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/" /><content type="html">&lt;p&gt;I have seen &lt;a href="https://octopus.com/"&gt;Octopus Deploy (OD)&lt;/a&gt; being mentioned frequently in the community but haven't had a chance to play around with it myself. Therefore, I think that attempting to deploy a Dynamics 365/CRM solution using Octopus Deploy seemed like the perfect exercise to learn more about the platform and its features.&lt;/p&gt;
-
-&lt;p&gt;I was curious if there were other developers who have released Dynamics CRM using Octopus Deploy and sure enough there was some one who had &lt;a href="https://www.youtube.com/watch?v=--9u5azwSb4"&gt;already thought of that&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In this series of posts I try to cover everything from setting up integration with Visual Studio Team Services(VSTS), updating a build definition to automatically publish itself and then finally setting up a simple release and deployment pipeline.&lt;/p&gt;
-
-&lt;p&gt;Related posts from the series:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup &lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/"&gt;Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Prerequisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Project structure and deployment scripts based on &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;generator-nullfactory-xrm&lt;/a&gt; (with a minimum version of at least 1.4.0). &lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Read More&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;The project checked into Visual Studio Team Services (VSTS) using either &lt;code&gt;git&lt;/code&gt; or &lt;code&gt;tfsvc&lt;/code&gt; with a working team build already setup. &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Read More&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;Installation of Octopus Deploy and ensure sure that it is publicly accessible. &lt;a href="https://www.youtube.com/watch?v=T0BQvMDXPNQ"&gt;Read More&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;The Strategy&lt;/h2&gt;
-
-&lt;p&gt;When I saw the integration tasks provided by the OD extensions for VSTS, my first reaction was to divide the tasks between the build and the release in VSTS. I wanted to the the build definition to build and package the solution and pass it on to release management. Release management would then publishing the release-artifact to OD and explicitly remote trigger the OD deployment.&lt;/p&gt;
-
-&lt;p&gt;While it was certainly possible to set this up, its did not make sense to have two deployment services for the same pipeline. Therefore the strategy is going to be very similar to the one that I had done previously - VSTS would continue to act as the version control and build server but this time Octopus deploy would act as the release component.&lt;/p&gt;
-
-&lt;p&gt;The build server would handle creating compatible package and uploading it to the OD package repository. And OD takes over the management of the environment, release and deployment complexities.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/05_overview.png" alt="Release Strategy Overview" /&gt;&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;Integrate Octopus Deploy with VSTS&lt;/h2&gt;
-
-&lt;p&gt;Let's start of by integrating OD with VSTS.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Log into the Octopus Deploy admin panel with an user account that has enough permission to generate an API key.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/10_od_api_profile.png" alt="API Profile" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click on the &lt;code&gt;Profile&lt;/code&gt; and navigate to the &lt;code&gt;API keys&lt;/code&gt; tab and generate a new API key.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/20_generate_new_api_key.png" alt="Generate New API Key" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Copy the newly generated API key. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/30_api_key.png" alt="API Key" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, log into VSTS using the project collection administrator account.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Install the &lt;a href="https://marketplace.visualstudio.com/items?itemName=octopusdeploy.octopus-deploy-build-release-tasks"&gt;Octopus Deploy Integration&lt;/a&gt; extension.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/40_od_integ.png" alt="OD VSTS Integration" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/50_od_integ_install_complete.png" alt="Integration Installation Complete" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, we create a OD connected service that would expose the build tasks required by the team build. Let's start off by navigating to the &lt;code&gt;Settings &amp;gt; Services&lt;/code&gt; tab.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Clicking on the &lt;code&gt;New Service Endpoint&lt;/code&gt; under the &lt;code&gt;Endpoints&lt;/code&gt; tab.&lt;/li&gt;
-&lt;li&gt;Select &lt;code&gt;Octopus Deploy&lt;/code&gt; from the list.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/60_service_endpoint.png" alt="Project structure" /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Provide the details of your OD environment and previously generated API key.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/OctoDeployPt1/70_service_endpoint2.png" alt="Project structure" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now that the VSTS environment is connected with OD, we move onto working on the build definition. In my &lt;a href="http://nullfactory.net/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/"&gt;next post&lt;/a&gt; I will go about updating a previously setup build definition to automatically package the solution and publish it to Octopus Deploy. &lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=--9u5azwSb4"&gt;July 2016 Meeting - Automated Deployment in CRM Using Octopus Deploy - YouTube&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/marketplace/get-vsts-extensions"&gt;Get extensions for Visual Studio Team Services | Visual Studio Team Services&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://octopus.com/docs/guides/use-the-team-foundation-build-custom-task"&gt;Using the Team Foundation Build Custom Tasks - Octopus Deploy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://octopus.com/docs/how-to/how-to-create-an-api-key"&gt;How to create an API key - Octopus Deploy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=FOxqnle2bCc"&gt;Octopus 3.0 part 1: Introduction - YouTube&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=T0BQvMDXPNQ"&gt;Octopus 3.0 part 2: Installing the Octopus Deploy Server - YouTube&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2017/04/version-140-generator-nullfactory-xrm-published/</id><title type="text">Version 1.4.0 of generator-nullfactory-xrm Published</title><summary type="html">&lt;p&gt;Version &lt;code&gt;1.4.0&lt;/code&gt; of the generator released. It includes the following changes:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Added support to deploy third-party CRM solutions.&lt;/li&gt;
-&lt;li&gt;CRM SDK assemblies updated:
-&lt;ul&gt;
-&lt;li&gt;Microsoft.CrmSdk.CoreTools &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt; &lt;code&gt;8.2.0.4&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Microsoft.CrmSdk.CoreAssemblies &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt; &lt;code&gt;8.2.0.2&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Microsoft.CrmSdk.Workflow &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt; &lt;code&gt;8.2.0.2&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;If opted-in to generate plugins and workflows projects, the generator would automatically create mapping entries in the &lt;code&gt;mapping-xml&lt;/code&gt; file. &lt;/li&gt;
-&lt;li&gt;PowerShell script updates:
-&lt;ul&gt;
-&lt;li&gt;Better handling of exception and failure flows.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;*.param.ps1&lt;/code&gt; scripts to have high verbosity by default.&lt;/li&gt;
-&lt;li&gt;Fixed deploy script to have the new solution name. (i.e. &lt;code&gt;ProjectPrefix+SolutionName&lt;/code&gt;) &lt;/li&gt;
-&lt;li&gt;Improved help documentation.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-</summary><published>2017-04-17T14:00:00Z</published><updated>2017-04-17T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/04/version-140-generator-nullfactory-xrm-published/" /><content type="html">&lt;p&gt;Version &lt;code&gt;1.4.0&lt;/code&gt; of the generator released. It includes the following changes:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Added support to deploy third-party CRM solutions.&lt;/li&gt;
-&lt;li&gt;CRM SDK assemblies updated:
-&lt;ul&gt;
-&lt;li&gt;Microsoft.CrmSdk.CoreTools &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt; &lt;code&gt;8.2.0.4&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Microsoft.CrmSdk.CoreAssemblies &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt; &lt;code&gt;8.2.0.2&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Microsoft.CrmSdk.Workflow &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt; &lt;code&gt;8.2.0.2&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;If opted-in to generate plugins and workflows projects, the generator would automatically create mapping entries in the &lt;code&gt;mapping-xml&lt;/code&gt; file. &lt;/li&gt;
-&lt;li&gt;PowerShell script updates:
-&lt;ul&gt;
-&lt;li&gt;Better handling of exception and failure flows.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;*.param.ps1&lt;/code&gt; scripts to have high verbosity by default.&lt;/li&gt;
-&lt;li&gt;Fixed deploy script to have the new solution name. (i.e. &lt;code&gt;ProjectPrefix+SolutionName&lt;/code&gt;) &lt;/li&gt;
-&lt;li&gt;Improved help documentation.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;Please feel free to submit any feature requests or issues found to https://github.com/shanec-/generator-nullfactory-xrm/issues&lt;/p&gt;
 </content></entry></feed>

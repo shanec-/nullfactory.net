@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SOAP,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio,Visual Studio Team Services,WCF,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,113 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/05/ssdt-deployment-plan-modifer/">Parameterize Schema Name within a SSDT Database Project for Multi-Tenant Solutions</a></h2>
+      <p class="post-date">09 May 2015
+
+      | <a href="/category/sql-server" title="SQL Server">SQL Server</a>
+      | <a href="/category/sql-server-data-tools" title="SQL Server Data Tools">SQL Server Data Tools</a>
+</p>
+
+      <p>
+		
+		<p>I've been working on an multi-tenant solution recently and have been trying to come up with an efficient way to manage the database deployment and upgrade. The database is designed to segregate each tenant's data under its own schema namespace as such I need to generate a re-useable script that can be deployed against each tenant. The approach I am going to take is to first source control the database schema within a SQL Server Data Tools (SSDT) database project and then use it to generate the script that can be parameterized with the tenant information.</p>
+
+<p>I first parameterized the the schema name as a SQLCMD variable - <code>$TenantName</code>: </p>
+
+<p><img src="/images/posts/DeploymentPlanModifer/10_varcmd.png" alt="SqlCmd Variable" /></p>
+
+<p>Next I tried to replace the schema name with the new variable, but this did not work as trying to build the solution now returns with a 71502 error as the project is no longer able to resolve and validate schema objects.</p>
+
+<p><img src="/images/posts/DeploymentPlanModifer/20_SchemaValidation.png" alt="Schema Validation" /></p>
+
+<p>SQLCMD does not have any complaints if I replace the <code>[dbo].</code> with <code>[$TenantName]</code> in the generated script so its the SSDT project that is attempting to maintain the integrity of database. </p>
+
+<p>One possible way to overcome this is to <a href="http://stackoverflow.com/questions/10826014/suppress-some-warnings-in-sql-server-ssdt">suppress the 71502</a> by turning them into <a href="https://social.msdn.microsoft.com/Forums/sqlserver/en-US/9b698de1-9f6d-4e51-8c73-93c57355e768/treat-specific-warning-as-error?forum=ssdt">warnings</a>. The disadvantage in this approach is that you loose the rich validation in exchange for something that is essentially a deployment convenience.</p>
+
+<p>Another duct tape and bubble gum approach would be to just have some kind of post deployment operation that does a find and replace on the schema name. Sure it would work, but that's not going to be reliable in the long run. </p>
+
+<p>A little bit of research reveals that the proper way to alter the creation of deployment script process is to create a deployment plan modifier. A deployment plan modifier is essentially a class that inherits <code>DeploymentPlanModifier</code> and allows you to inject custom actions when deploying a SQL project. There does not seem to be much formal documentation on the process, so I relied a lot on <a href="https://msdn.microsoft.com/en-US/library/dn306642(v=vs.103).aspx">this article in MSDN</a>, the sample <a href="https://github.com/Microsoft/DACExtensions">DACExtensions</a> and what forum posts I could find. So with a lot of trial and error I wrote my own plan modifier that would replace the schema identifiers when the database project is published.</p>
+
+
+		<p><a href="/2015/05/ssdt-deployment-plan-modifer/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/disabling-sharepoint-search-service/">Disabling the SharePoint Search Service</a></h2>
+      <p class="post-date">11 Mar 2015
+
+      | <a href="/category/sharepoint" title="SharePoint">SharePoint</a>
+      | <a href="/category/windows" title="Windows">Windows</a>
+</p>
+
+      <p>
+		
+		<p>If left unchecked, the SharePoint search service to attempts to consume most of the available memory in a resource constrained development box. I usually disable it when I am not actively working with it.</p>
+
+<p><a href="http://www.falconitservices.com/support/KB/Lists/Posts/Post.aspx?ID=182">This seems to be most effective</a> way to completely disable the service. Although changing the password to an invalid one works as expected, it is important to replace the user account from a domain to a local user account as well. If not, the constant invalid login attempts could trigger your account lock out threshold policy in the domain.</p>
+
+<p>So for convenience sake I created two batch files - one to disable the service and another to bring it back up.  </p>
+
+
+		<p><a href="/2015/03/disabling-sharepoint-search-service/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/create-elevated-command-prompt-different-user-context/">Create an Elevated Command Prompt Running Under a Different User Context</a></h2>
+      <p class="post-date">07 Mar 2015
+
+      | <a href="/category/security" title="Security">Security</a>
+</p>
+
+      <p>
+		
+		<p>User Account Control (UAC) is a security mechanism that is available in most modern versions of Windows. It restricts the ability to make changes to a computer environment without the explicit consent of an administrator. And as is with most production environments, it is very likely that this feature is already enabled. And just as likely, is the need to execute applications and commands under a different user within an elevated context during application deployment or maintenance. </p>
+
+<p>This is achieved by using the <code>runas</code> command with the <code>/noprofile</code> flag. The command below creates an elevated command line running under the <code>wunder\admin</code> user:</p>
+
+<pre><code>runas /noprofile /user:wunder\admin cmd 
+</code></pre>
+
+<p>Now, all commands executed within this new command prompt would be in the same elevated status.</p>
+
+
+		<p><a href="/2015/03/create-elevated-command-prompt-different-user-context/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Creating a Self-Signed Wild Card SSL Certificate for Your Development Environment</a></h2>
+      <p class="post-date">05 Mar 2015
+
+      | <a href="/category/security" title="Security">Security</a>
+</p>
+
+      <p>
+		
+		<p>Secure Socket Layer (SSL) is a security standard used to ensure secure communication between a web server and browser and used in most modern web application. As a developer it is prudent to setup your development environment to closely resemble production as much as possible, including security concerns. However, getting a full fledged CA SSL certificate for you development environment might not be the most cost-effective solution. Therefore post summarizes the steps I take to create a self signed wild card certificate to be used in the internal environments. My guide is based on this <a href="https://www.macaw.nl/weblog/2013/6/configuring-an-asp-net-project-for-development-with-ssl">excellent post</a>.</p>
+
+<h2>Create the Certificate</h2>
+
+<p>In order to create the certificate we would be using the <code>MakeCert.exe</code> tool which can be found at <code>C:\Program Files (x86)\Windows Kits\8.1\bin\x64\</code>. This command creates the certificate and adds it to the logged in user's personal certificate store:</p>
+
+<pre><code>makecert -r -pe -e 01/01/2099 -eku 1.3.6.1.5.5.7.3.1 -ss My -n CN="*.wunder.local" -sky exchange -sp "Microsoft RSA SChannel Cryptographic Provider" -sy 12 -len 2048 
+</code></pre>
+
+<p>Some of the notable flags:</p>
+
+<ul>
+<li><strong>-r</strong> - Indicates that we're creating a self-signed certificate.</li>
+<li><strong>-pe</strong> - Includes the private key in the certificate and makes it exportable.</li>
+<li><strong>-e</strong> - The validity period of the certificate.</li>
+<li><p><strong>-n</strong> - The subject's certificate name - specify the wildcard url. </p>
+
+<p><img src="/images/posts/SSWildCardSSL/1_CreateCertificate.png" alt="Create Certificate" /></p></li>
+</ul>
+
+
+		<p><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/could-not-establish-trust-relationship-ssl-tls/">Could Not Establish Trust Relationship for SSL/TLS Secure Channel</a></h2>
       <p class="post-date">02 Mar 2015
@@ -189,117 +296,6 @@ As such we assumed, incorrectly, that it would not apply to the scheduled backup
 
 
 		<p><a href="/2015/01/setting-up-tfs-source-symbol-servers/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">TFS 2013 - Enabling Reporting, Warehouse and Analysis Services</a></h2>
-      <p class="post-date">27 Dec 2014
-
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-</p>
-
-      <p>
-		
-		<p>Suppose you already have an Team Foundation Server (TFS) environment where you have opted-out from configuring the Reporting Services and Analysis Services during the installation. The following steps would help you to configure the warehouse and reporting functionality.</p>
-
-<h2>Pre-Requisites</h2>
-
-<ol>
-<li><p>Ensure that the SQL Server client tools are installed on the Application Tier.</p>
-
-<p>If this is not already done, you would most likely receive a <code>TF400465</code> error when attempting to edit the configuration. <code>TF400465</code> states that client tool are needed to be installed on the application tier in order for the analysis services to function properly.</p>
-
-<p>This can be fixed by re-running the SQL Server setup and adding the <code>Client Tools Connectivity</code> feature <a href="http://msdn.microsoft.com/en-us/library/dd578652.aspx">[Read More]</a>.</p>
-
-<p>Once installed, make sure to restart the TFS administration console.</p></li>
-<li><p>Ensure that <code>Management Tools - Complete</code> is installed on at least one of the servers in your topology. This is because SQL Server Management Studio requires the complete version installed in order to manage Analysis Services. This step optional but makes it easy for troubleshooting or future maintenance.</p></li>
-<li>Ensure that the Analysis Services have been installed and is up and running.</li>
-<li>Ensure SQL Server Reporting Services is installed and configured in native mode <a href="http://msdn.microsoft.com/en-us/library/aa545752%28v=cs.70%29.aspx">[Read More]</a>.</li>
-<li>This goes without saying, Analysis Services and Reporting Services are not available on the express version of SQL Server.</li>
-</ol>
-
-
-		<p><a href="/2014/12/tfs-enable-reporting-warehouse-analysis-services/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Get a list of files changed between changesets in Visual Studio Online using PowerShell</a></h2>
-      <p class="post-date">14 Dec 2014
-
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/team-foundation-server" title="Team Foundation Server">Team Foundation Server</a>
-      | <a href="/category/powershell" title="PowerShell">PowerShell</a>
-</p>
-
-      <p>
-		
-		<p>So recently I had the requirement of getting a list of files that changed between two different releases. We wanted to use this list to act as a verification to ensure that all artifacts were included in a release package.</p>
-
-<p>I modified the code posted <a href="https://social.msdn.microsoft.com/Forums/vstudio/en-US/f1a00836-cef3-419b-b768-3d1b6fa2b7bc/identifying-all-vb-files-changed-between-two-changesets?forum=tfsversioncontrol">here</a> in order to quickly write a console application to do the task. With the immediate problem solved, my colleges and I bounced the idea about porting the code into a PowerShell script which would allow us to enhance it better in the long run.</p>
-
-<h2>Overview</h2>
-
-<p>The solution would be built around the Visual Studio Online(VSO) REST service. This reduces any dependency on Team Foundation Server(TFS) specific client side assemblies or tools. The limitation is that, at the moment, it is only supported in Visual Studio Online and not all features are supported.</p>
-
-
-		<p><a href="/2014/12/tfs-list-of-files-changed-between-changesets/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Improved Performance by Hosting Virtual Hard Disk External USB Drives</a></h2>
-      <p class="post-date">24 Sep 2014
-
-      | <a href="/category/virtualization" title="Virtualization">Virtualization</a>
-      | <a href="/category/hyper-v" title="Hyper-V">Hyper-V</a>
-</p>
-
-      <p>
-		
-		<p>I think I already knew this to be true, but didn't own a "portable enough" hard disk to lug around with my laptop to try it out myself.  That's about to change as I got myself new Western Digital My Passport Ultra today; its the perfect size both terms of capacity and dimensions. So now I get to try this out in a real world scenario.</p>
-
-<h2>Moving the Virtual Drive Images</h2>
-
-<p>The entire process entails moving the physical files to the new location and letting Hyper-V know about this move. If the virtual machine (VM) is already active it does not seem to be possible to move the checkpoint location.</p>
-
-
-		<p><a href="/2014/09/improved-performance-by-hosting-virtual-hard-disk-external-usb-drives/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2014/09/create-an-isolated-hyper-v-environment/">Create An Isolated Hyper-V Environment</a></h2>
-      <p class="post-date">22 Sep 2014
-
-      | <a href="/category/virtualization" title="Virtualization">Virtualization</a>
-      | <a href="/category/hyper-v" title="Hyper-V">Hyper-V</a>
-</p>
-
-      <p>
-		
-		<p><em>Bad things may happen when you power up a virtualized Domain Controller on your laptop and connect it to the corporate network.</em></p>
-
-<p>This post focuses on building a self-contained, isolated virtual environment with internet connectivity.</p>
-
-<p>My colleague, Chaminda has a <a href="http://chamindac.blogspot.com/2013/12/setup-virtual-environment-for-tfs-2013_19.html">detailed post</a> on how to setup and isolated environment using virtual box. Go check it out if you would like to implement it via virtual box.  While virtual box is a good virtualization platform on its own right, I have grown accustomed to using Hyper-V in my day-job and has become a personal preference.</p>
-
-<h2>Hyper-V</h2>
-
-<p>My own environment is built around this <a href="http://blogs.technet.com/b/askpfeplat/archive/2013/03/04/your-personal-isolated-lab-featuring-windows-8-hyper-v.aspx">excellent post</a>. It details the entire process involved. While my own setup is identical to the above, I have taken into account the following caveats:</p>
-
-<ol>
-<li>As mentioned by one of the comments on the post, it is important to explicitly set the port to <code>eth0</code> soon after flashing the image.</li>
-<li><p>Port Forwarding - Even simple tasks like setting up share folders require that certain ports be accessible. Therefore this it is an important consideration when planning an isolated environment. Here are some of the services and ports I've used for my TFS environment:</p>
-
-<p><img src="/images/posts/IsolatedEnvironment/1_PortForwarding.png" alt="Port Forwarding" /></p></li>
-</ol>
-
-<h3>Setting up Routing</h3>
-
-<p>Even though I have my isolated environment, there are instances where I would like resource in my main network to have access to the internal network. Although port forwarding works to a certain degree, we run into its limitations very fast.</p>
-
-<p>This involves setting up routes on both out internal router as well as the external router under which the external resources exists.</p>
-
-
-		<p><a href="/2014/09/create-an-isolated-hyper-v-environment/">Read more...</a></p>
 	  </p>
     </div>
 </div>

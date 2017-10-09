@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory">
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio Team Services,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SOAP,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio,Visual Studio Team Services,WCF,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -41,6 +41,85 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/10/crm-saturday-melbourne-2017-presentation-slide-deck/">CRM Saturday Melbourne 2017 - Presentation Slide Deck</a></h2>
+      <p class="post-date">09 Oct 2017
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/miscellaneous" title="Miscellaneous">Miscellaneous</a>
+</p>
+
+      <p>
+		
+		<p><a href="https://www.slideshare.net/shanec_/zero-to-devops-source-control-release-strategy-crm-saturday-2017"><img src="/images/posts/CrmSatSlideDeck/crm-sat-slide-deck.png" alt="CRM Saturday Melbourne 2017" /></a></p>
+
+<p>I know its a "little" late, but here's the slide deck from my CRM Saturday 2017 presentation  - <code>Zero to DevOps - Source Control and Release Strategy for Dynamics 365 Solutions</code>. </p>
+
+
+		<p><a href="/2017/10/crm-saturday-melbourne-2017-presentation-slide-deck/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/10/dont-forget-to-install-the-just-in-time-debugger/">Don't Forget to Install the Just-In-Time Debugger</a></h2>
+      <p class="post-date">08 Oct 2017
+
+      | <a href="/category/visual-studio" title="Visual Studio">Visual Studio</a>
+      | <a href="/category/miscellaneous" title="Miscellaneous">Miscellaneous</a>
+</p>
+
+      <p>
+		
+		<p>Today I learned that you can have an installation of Visual Studio 2017 without the JIT debugger - Yup, you really can.  This meant that I could not use the technique of attaching a debugger at runtime using the  <code>System.Diagnostics.Debugger.Launch();</code> code snippet. </p>
+
+<p>When the application executes the launch code, nothing happens - no error nor exception. The method even returns <code>true</code> indicating a a successful launch.</p>
+
+
+		<p><a href="/2017/10/dont-forget-to-install-the-just-in-time-debugger/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/10/tail-using-powershell/">Tail using PowerShell</a></h2>
+      <p class="post-date">07 Oct 2017
+
+      | <a href="/category/powershell" title="PowerShell">PowerShell</a>
+</p>
+
+      <p>
+		
+		<p>Consider a scenario where you are diagnosing an issue on a production server. You've enabled the logs and got everything setup to reproduce the issue. Queue the trigger to invoke the misbehaving operation and finally wait for the log file to update.</p>
+
+<p>Staring at the log file size to change is no fun nor is refreshing the file periodically. I want to be notified the moment the log gets updated in real-time. This is exactly what a program like <a href="https://en.wikipedia.org/wiki/Tail_(Unix)"><code>tail</code></a> does - it monitors the file for changes and outputs the <em>tail</em> end of the file.</p>
+
+<p>There are a few incarnations of tail out there that do the job perfectly fine, but given that this was a production environment I was not keep about installing new tools.</p>
+
+<p>Luckily, the <code>Get-Content</code> PowerShell cmdlet has this functionality built-in. This is the combo that I finally settled on:</p>
+
+
+		<p><a href="/2017/10/tail-using-powershell/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/10/mocking-and-testing-a-webservice-using-soapui/">Mocking and Testing a WebService using SoapUI</a></h2>
+      <p class="post-date">06 Oct 2017
+
+      | <a href="/category/rest" title="REST">REST</a>
+      | <a href="/category/soap" title="SOAP">SOAP</a>
+      | <a href="/category/wcf" title="WCF">WCF</a>
+</p>
+
+      <p>
+		
+		<p>I have recently been working on an implementation of a WCF client interacts with a remote SOAP web service. Unfortunately this service did not have a development version that I could interactively test my requests against.</p>
+
+<p>Armed with just the WSDL and the schema for expected responses, I needed to find a way to mock the remote service in order to confirm the functionality of the client. This is where SOAP UI comes in - SOAP UI is tool that allows me to point it to service contract (WSDL or REST) and mock the responses that each of the actions would generate. And finally provides the functionality to host and serve these mocked responses so that they can be consumed by different clients.</p>
+
+<p>I will be using the freely available <a href="http://www.webservicex.net/globalweather.asmx">http://www.webservicex.net/globalweather.asmx</a> web service to demonstrate the process.</p>
+
+
+		<p><a href="/2017/10/mocking-and-testing-a-webservice-using-soapui/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/">Continuous Integration and Continuous Delivery of Dynamics 365 Solutions using VSTS</a></h2>
       <p class="post-date">25 Jun 2017
@@ -273,186 +352,6 @@
 
 
 		<p><a href="/2017/04/enforce-commit-message-standards-and-generate-changelogs-via-git/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</a></h2>
-      <p class="post-date">25 Apr 2017
-
-      | <a href="/category/octopus-deploy" title="Octopus Deploy">Octopus Deploy</a>
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
-      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/git" title="Git">Git</a>
-</p>
-
-      <p>
-		
-		<p>In this third and final installment I cover the steps involved in setting up the minimum release and deployment steps required for a successful Dynamics CRM/365 deployment. The steps and actions performed in the previous posts acts as prerequisites for this one.</p>
-
-<p>Related posts from the series:</p>
-
-<ul>
-<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup</a></li>
-<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</a></li>
-<li>Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</li>
-</ul>
-
-<h2>The Packages</h2>
-
-<p>In the <a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">previous post</a>, I setup the team build to automatically publish packages into the Octopus Deploy package repository. </p>
-
-<p>We can verify that they have indeed been published by navigating to the <code>Library &gt; Packages</code> tab for a list of available packages.</p>
-
-<p><img src="/images/posts/OctoDeployPt3/05_published_package.png" alt="Available Packages" /> </p>
-
-<h2>Defining the Environment</h2>
-
-<p>Environments are a logical grouping of targets / machines used by deployments. For the purpose of this post, I will create one environment - <code>Testing</code> and it would contain a single CRM deployment target - the CRM Server). </p>
-
-<ol>
-<li>Let's start off by clicking on the <code>Environments</code> from the main menu to navigate to the environment configuration page.</li>
-<li>Click on <code>Add environment</code> in the resulting page.</li>
-<li><p>Set <code>Testing</code> as the name of the environment .</p>
-
-<p><img src="/images/posts/OctoDeployPt3/10_create_environment.png" alt="Existing Build Definition" /></p></li>
-<li>Click on <code>Save</code> to confirm selection.</li>
-</ol>
-
-
-		<p><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</a></h2>
-      <p class="post-date">24 Apr 2017
-
-      | <a href="/category/octopus-deploy" title="Octopus Deploy">Octopus Deploy</a>
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
-      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/git" title="Git">Git</a>
-</p>
-
-      <p>
-		
-		<p>This is the second part of a series of posts where I attempt to deploy a Dynamics 365/CRM solution using Visual Studio Team Services (VSTS) and Octopus Deploy (OD). Previously, I setup an OD server and integrated it with VSTS - the steps describe in that post act as a prerequisite for this one. In this post we go about modifying an existing Dynamics CRM build definition to automatically package the release-artifact and upload it to the OD server for deployment. </p>
-
-<p>Related posts from the series:</p>
-
-<ul>
-<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup</a> </li>
-<li>Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</li>
-<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</a></li>
-</ul>
-
-<h2>Publishing Packages</h2>
-
-<p>There are a few different ways of getting a package into Octopus Deploy:</p>
-
-<ul>
-<li>Remotely upload a package to Octopus Deploy's built-in repository.</li>
-<li>Make octopus deploy pull packages from an external feed. Find more information <a href="https://www.visualstudio.com/en-us/docs/package/overview">here</a> on setting up VSTS to publish an package feed.</li>
-<li>Manually upload the package into the built-in repository.</li>
-</ul>
-
-<p>And the method of publishing the package has no bearing on the end deployment -I chose to explicitly push to the remote octopus deploy server. </p>
-
-
-		<p><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup</a></h2>
-      <p class="post-date">23 Apr 2017
-
-      | <a href="/category/octopus-deploy" title="Octopus Deploy">Octopus Deploy</a>
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
-      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/git" title="Git">Git</a>
-</p>
-
-      <p>
-		
-		<p>I have seen <a href="https://octopus.com/">Octopus Deploy (OD)</a> being mentioned frequently in the community but haven't had a chance to play around with it myself. Therefore, I think that attempting to deploy a Dynamics 365/CRM solution using Octopus Deploy seemed like the perfect exercise to learn more about the platform and its features.</p>
-
-<p>I was curious if there were other developers who have released Dynamics CRM using Octopus Deploy and sure enough there was some one who had <a href="https://www.youtube.com/watch?v=--9u5azwSb4">already thought of that</a>.</p>
-
-<p>In this series of posts I try to cover everything from setting up integration with Visual Studio Team Services(VSTS), updating a build definition to automatically publish itself and then finally setting up a simple release and deployment pipeline.</p>
-
-<p>Related posts from the series:</p>
-
-<ul>
-<li>Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 1 - Setup </li>
-<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-build-part-2/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 2 - Build</a></li>
-<li><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-release-part-3/">Deploy Dynamics CRM Solutions using VSTS and Octopus Deploy - Part 3 - Release and Deployment</a></li>
-</ul>
-
-<h2>Prerequisites</h2>
-
-<ul>
-<li>Project structure and deployment scripts based on <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">generator-nullfactory-xrm</a> (with a minimum version of at least 1.4.0). <a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Read More</a></li>
-<li>The project checked into Visual Studio Team Services (VSTS) using either <code>git</code> or <code>tfsvc</code> with a working team build already setup. <a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Read More</a>.</li>
-<li>Installation of Octopus Deploy and ensure sure that it is publicly accessible. <a href="https://www.youtube.com/watch?v=T0BQvMDXPNQ">Read More</a>.</li>
-</ul>
-
-<h2>The Strategy</h2>
-
-<p>When I saw the integration tasks provided by the OD extensions for VSTS, my first reaction was to divide the tasks between the build and the release in VSTS. I wanted to the the build definition to build and package the solution and pass it on to release management. Release management would then publishing the release-artifact to OD and explicitly remote trigger the OD deployment.</p>
-
-<p>While it was certainly possible to set this up, its did not make sense to have two deployment services for the same pipeline. Therefore the strategy is going to be very similar to the one that I had done previously - VSTS would continue to act as the version control and build server but this time Octopus deploy would act as the release component.</p>
-
-<p>The build server would handle creating compatible package and uploading it to the OD package repository. And OD takes over the management of the environment, release and deployment complexities.</p>
-
-<p><img src="/images/posts/OctoDeployPt1/05_overview.png" alt="Release Strategy Overview" /></p>
-
-
-		<p><a href="/2017/04/deploy-dynamics-crm-solutions-vsts-octopus-deploy-setup-part-1/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/version-140-generator-nullfactory-xrm-published/">Version 1.4.0 of generator-nullfactory-xrm Published</a></h2>
-      <p class="post-date">18 Apr 2017
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-      | <a href="/category/yeoman" title="Yeoman">Yeoman</a>
-      | <a href="/category/npm" title="npm">npm</a>
-      | <a href="/category/nodejs" title="nodejs">nodejs</a>
-      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
-</p>
-
-      <p>
-		
-		<p>Version <code>1.4.0</code> of the generator released. It includes the following changes:</p>
-
-<ul>
-<li>Added support to deploy third-party CRM solutions.</li>
-<li>CRM SDK assemblies updated:
-<ul>
-<li>Microsoft.CrmSdk.CoreTools <code>8.1.0.2</code> => <code>8.2.0.4</code></li>
-<li>Microsoft.CrmSdk.CoreAssemblies <code>8.1.0.2</code> => <code>8.2.0.2</code></li>
-<li>Microsoft.CrmSdk.Workflow <code>8.1.0.2</code> => <code>8.2.0.2</code></li>
-</ul></li>
-<li>If opted-in to generate plugins and workflows projects, the generator would automatically create mapping entries in the <code>mapping-xml</code> file. </li>
-<li>PowerShell script updates:
-<ul>
-<li>Better handling of exception and failure flows.</li>
-<li><code>*.param.ps1</code> scripts to have high verbosity by default.</li>
-<li>Fixed deploy script to have the new solution name. (i.e. <code>ProjectPrefix+SolutionName</code>) </li>
-<li>Improved help documentation.</li>
-</ul></li>
-</ul>
-
-
-		<p><a href="/2017/04/version-140-generator-nullfactory-xrm-published/">Read more...</a></p>
 	  </p>
     </div>
 </div>
