@@ -1,0 +1,61 @@
+queue:
+  name: Hosted
+  demands: 
+    - msbuild
+    - vstest
+
+steps:
+- powershell: |
+    Write-Host '##vso[task.setvariable variable=BuildConfiguration;]release'
+    Write-Host '##vso[task.setvariable variable=BuildPlatform;]any cpu'
+    Write-Host '##vso[task.setvariable variable=Parameters.solution;]**/*.sln'
+  displayName: Create variables
+  
+- task: NuGetToolInstaller@0
+
+- task: NuGetCommand@2
+  displayName: NuGet restore **\*.sln
+  inputs:
+    restoreSolution: "$(Parameters.solution)"
+
+- task: MSBuild@1
+  displayName: Build solution **/*.sln
+  inputs:
+    platform: "$(BuildPlatform)"
+    configuration: "$(BuildConfiguration)"
+
+- task: VSTest@2
+  inputs:
+    testAssemblyVer2: "**\$(BuildConfiguration)\*test*.dll
+!**\obj\**"
+    platform: "$(BuildPlatform)"
+    configuration: "$(BuildConfiguration)"
+
+- task: CopyFiles@2
+  displayName: "Copy Files to: $(build.artifactstagingdirectory)"
+  inputs:
+    SourceFolder: "$(build.sourcesdirectory)"
+    Contents: "**\bin\$(BuildConfiguration)\**"
+    TargetFolder: "$(build.artifactstagingdirectory)"
+
+- task: CopyFiles@2
+  displayName: "Copy Deployment Scripts to: $(build.artifactstagingdirectory)"
+  inputs:
+    SourceFolder: "$(build.sourcesdirectory) "
+    Contents: "**/Deploy-*.ps1"
+    TargetFolder: "$(build.artifactstagingdirectory)"
+
+- task: DeleteFiles@1
+  displayName: "Delete custom assemblies from $(build.artifactstagingdirectory)"
+  inputs:
+    SourceFolder: "$(build.artifactstagingdirectory)"
+    Contents: "nfx.Xrm.*"
+
+- task: PublishBuildArtifacts@1
+  displayName: "Publish Artifact: drop"
+  inputs:
+    PathtoPublish: "$(build.artifactstagingdirectory)"
+    ArtifactName: "drop"
+    ArtifactType: "Container"
+
+

@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Visual Studio Team Services,Git,ALM,Dynamics CRM Online,generator-nullfactory-xrm" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/">Build Pipeline as Code - YAML based CI Build for Dynamics 365 Solutions</a></h2>
+		<p class="post-date">20 Jan 2018
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/git">Git</a>
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+	  </p>
+
+		
+
+		<p>I first learned about YAML builds a while back when I was trying into integrate a project with AppVeyor. The concept of treating your build pipeline as first class code artefact was very appealing as it opens up so much possibilities. For me personally the highlights are: </p>
+
+<ul>
+<li>History, versioning and branching of your build definitions</li>
+<li>Improve quality of build definitions and consistency across projects.</li>
+<li>Quickly reuse and repurpose builds onto different projects.</li>
+<li>Make maximum use of the underlying build platform.</li>
+</ul>
+
+<p>These posts <a href="https://blog.kloud.com.au/2017/11/26/vsts-build-definitions-as-yaml-part-1-what-and-why/">here</a> and <a href="https://www.marcusfelling.com/blog/2017/vsts-yaml-builds/">here</a> dive deeper into the advantages and the different use cases.  </p>
+
+<p>A couple of months ago the Visual Studio Team Service (VSTS) team <a href="https://blogs.msdn.microsoft.com/devops/2017/11/15/pipeline-as-code-yaml-preview/">announced</a> support for the the same functionality in VSTS. Although the feature is still in preview, the VSTS team has continued to improve the feature and now provides the ability to export existing build definitions or individual tasks. In this post, I intend to take pre-existing build definition, converting it to a YAML build definition and make the necessary changes to get it to work as a CI build. </p>
+
+<p>In this post, I intend to port an existing definition to a YAML build definition and use it as a template to setup a new CI build for a second project. The source definition that I will be using is a basic version I use for Dynamics 365 projects. </p>
+
+<!--excerpt-->
+
+<h2>Prerequisites</h2>
+
+<ul>
+<li><p>Visual Studio Team Services account with a <code>git</code> repository. <code>tfsvc</code> repositories are <a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml">not supported</a> at the time of writing this post.</p></li>
+<li><p>Dynamics 365 solution prepared using the <code>generator-nullfactory-xrm</code>  and then checked into the above <code>git</code> repository.</p>
+
+<p>The following posts provide instructions in setting up the prerequisite project structure:</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+</ul></li>
+<li><p>An pre-setup build definition that successfully builds the code in the repository. </p></li>
+</ul>
+
+<h2>The Setup</h2>
+
+<h3>Enable Preview Features</h3>
+
+<p>As YAML build definitions are still in preview , users need to opt-in to the feature. Let's do this now:</p>
+
+<ol>
+<li><p>Log-in to you VSTS instance with an Account Administrator. &lt;<reference back to the article showing the permission required>></p></li>
+<li><p>Click on the Logged-in user profile picture. And click on the <code>Preview features</code> in the resulting menu. This will will open up the <code>Preview features</code> drawer.</p>
+
+<p><img src="/images/posts/YAMLBuild/10_EnablePreview.png" alt="Enable Preview" /></p></li>
+<li><p>In the first drop down make sure that the <code>for this account [your-account-name]</code> is selected.  Next, turn on the <code>Build YAML definitions</code> feature. &lt;&lt;>></p>
+
+<p><img src="/images/posts/YAMLBuild/20_EnablePreviewDrawer.png" alt="Enable Preview Drawer" /></p></li>
+</ol>
+
+<h3>Export the Build Definition</h3>
+
+<p>Now let's navigate to our build definition that we're going to be using as the source template.</p>
+
+<ol>
+<li><p>Navigate to your build using the menu <code>Build and Release &gt; Build</code> and selecting the <code>Definitions</code> tab.</p></li>
+<li><p>Click the ellipsis on the build definition and select <code>Edit...</code> from the context menu.</p>
+
+<p><img src="/images/posts/YAMLBuild/30_EditBuildDef.png" alt="Edit Build Definition" /></p>
+
+<p><img src="/images/posts/YAMLBuild/40_ExistingBuild.png" alt="Existing Build Definition" /></p>
+
+<p><em>Note that this build definition uses a <code>MSBuild</code> task instead of a <code>Visual Studio Build</code> as such does not require the <code>visualstudio</code> demand.</em></p></li>
+<li><p>If not already selected, click on the <code>Process- Build process</code> option.</p>
+
+<p><img src="/images/posts/YAMLBuild/44_ExistingBuildProcessStep.png" alt="View YAML Build" /></p></li>
+<li><p>Note the <code>View YAML</code> link to the far right of the editor. Click on it to open a popup showing a generated YAML definition.</p>
+
+<p><img src="/images/posts/YAMLBuild/50_ViewYAML.png" alt="View YAML Build" /></p>
+
+<p><img src="/images/posts/YAMLBuild/60_BuildExport.png" alt="Export Build" /></p></li>
+</ol>
+
+<p>For reference, I've uploaded the generated file <a href="/images/posts/YAMLBuild/vsts_generated.yml">here</a>. </p>
+
+<h3>Clean Up</h3>
+
+<p>The next step is to clean up and fix the exported script. The generation process identified some warnings and errors for us, so let's start with those. In this particular instance they were all related to variables not being defined:</p>
+
+<pre><code>&lt;!-- snip --&gt;
+
+#Your build definition references an undefined variable named ‘Parameters.solution’. Create or edit the build definition for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build definition references the ‘BuildPlatform’ variable, which you’ve selected to be settable at queue time. Create or edit the build definition for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+
+&lt;!-- snip --&gt;
+</code></pre>
+
+<p>The following variables were found to be undefined:</p>
+
+<ul>
+<li><code>Parameters.solution</code></li>
+<li><code>build.sourcesdirectory</code></li>
+<li><code>build.artifactstagingdirectory</code></li>
+</ul>
+
+<p>And the following were identified as being set when the build is queued:</p>
+
+<ul>
+<li><code>BuildPlatform</code></li>
+<li><code>BuildConfiguration</code></li>
+</ul>
+
+<p>The errors related to the variables prefixed with <code>build.</code> are not a problem and can be safely ignored. They are predefined variables and are indeed <a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/build/variables?tabs=batch">available in the build environment</a>.  </p>
+
+<ol>
+<li><p>Create a new PowerShell task that defines the variables and move it to the first in the order. Next set the <code>BuildConfiguration</code> and <code>BuildPlatform</code> was to <code>release</code> and <code>any cpu</code> respectively. And finally <code>Parameters.Solution</code> to the actual solution being built - as this example contains only one solution file, set it to <code>**/*.sln</code>.</p>
+
+<pre><code>steps:
+- powershell: |
+    Write-Host '##vso[task.setvariable variable=BuildConfiguration;]release'
+    Write-Host '##vso[task.setvariable variable=BuildPlatform;]any cpu'
+    Write-Host '##vso[task.setvariable variable=Parameters.solution;]**/*.sln'
+  displayName: Create variables
+</code></pre></li>
+<li><p>Next, escape any slashes in task attribute values. I had to update <code>VSTest@2</code> and <code>CopyFiles@2</code> tasks.</p>
+
+<pre><code>- task: VSTest@2
+  inputs:
+    testAssemblyVer2: "**\\$(BuildConfiguration)\\*test*.dll
+!**\\obj\\**"
+    platform: "$(BuildPlatform)"
+    configuration: "$(BuildConfiguration)"
+
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: "$(build.sourcesdirectory)"
+    Contents: "**\\bin\\$(BuildConfiguration)\\**"
+    TargetFolder: "$(build.artifactstagingdirectory)"
+</code></pre></li>
+<li><p>Add a <code>displayName</code> node for each of the tasks - this does not have an impact on the operation of the build itself, but makes it easier to keep track of the tasks being executed.</p>
+
+<pre><code>&lt;!-- snip --&gt;
+- task: NuGetCommand@2
+  displayName: NuGet restore **\*.sln
+&lt;!-- snip --&gt;
+- task: MSBuild@1
+  displayName: Build solution **/*.sln
+&lt;!-- snip --&gt;
+- task: CopyFiles@2
+  displayName: "Copy Files to: $(build.artifactstagingdirectory)"
+&lt;!-- snip --&gt;
+- task: CopyFiles@2
+  displayName: "Copy Deployment Scripts to: $(build.artifactstagingdirectory)"
+&lt;!-- snip --&gt;
+- task: DeleteFiles@1
+  displayName: "Delete custom assemblies from $(build.artifactstagingdirectory)"
+&lt;!-- snip --&gt;
+- task: PublishBuildArtifacts@1
+  displayName: "Publish Artifact: drop"
+&lt;!-- snip --&gt;
+</code></pre></li>
+</ol>
+
+<p>And we're done. Download the final form of the file <a href="/images/posts/YAMLBuild/updated_definition.yml">here</a>.</p>
+
+<h3>Deployment</h3>
+
+<p>The deployment process itself is very simple, all we need to do is create a <code>.vsts-ci.yml</code> and drop it in the root of your repository and VSTS would automatically generate the CI build.</p>
+
+<ol>
+<li>Save the cleaned up build definition with the name of <code>.vsts-ci.yml</code> and drop it in the root folder of your second project repository.</li>
+<li>Commit your changes and push them to remote.</li>
+<li>Within VSTS, navigate to the <code>Build and Release</code> and ensure that there is a new folder with the repository's name.</li>
+<li>Navigate into this folder and verify that a new build has been created <code>your_repo_name CI</code>and that it is currently in progress.</li>
+</ol>
+
+<p>And that's it, you've got a working CI build.</p>
+
+<h2>Final Thoughts</h2>
+
+<h3>Reusing Definition for Dynamics 365</h3>
+
+<p>Thanks to the use of the yeoman generator, my Dynamics 365 projects use an identical project structure. This mean that I can just copy the <code>.vsts-ci.yml</code> to the root of repository of the new project, make any project specific changes if necessary and you've got a working CI build.</p>
+
+<h3>Branching Behaviour</h3>
+
+<p>I was curious to find out what happens when we branch the YAML build. Does VSTS create a new instance of the definition for each of the branches? Look out for it's blog post.</p>
+
+<h3>Defining Variables via the UI</h3>
+
+<p>As an alternative to defining the variables using a PowerShell or Shell a task, they can also be defined using the VSTS user interface.</p>
+
+<ol>
+<li><p>Skip the previous step where we initialize the variables using the PowerShell task. Continue on with the other steps.</p></li>
+<li><p>Check-in and push the CI build to remote.</p></li>
+<li><p>Navigate to the <code>Build and Release</code> menu and <code>Build</code> tab and verify that a new build was provisioned as expected.</p>
+
+<p><em>The initial check-in of the CI build itself is going to fail as it will be triggered the moment the build definition is provisioned.</em> </p></li>
+<li><p>Next, <code>Edit</code> the definition and navigate to the <code>Variables</code> tab.</p></li>
+<li><p>Define the <code>BuildConfiguration</code>, <code>BuildPlatform</code>, <code>Parameters.solution</code> variables:</p>
+
+<p><img src="/images/posts/YAMLBuild/70_AltSetVariables.png" alt="Set Process Variables" /></p></li>
+<li><p>Test out your new definition by making a change to the repository or explicitly triggering a new build.</p></li>
+</ol>
+
+<p>The downside of this method is that all the components required by the build definition is not contained within the YAML file. </p>
+
+<p>So why would I want to take this approach?  Secrets. This is the perfect way to store your secrets and avoid inadvertently checking them into your repository.</p>
+
+<p><img src="/images/posts/YAMLBuild/80_SecretVariable.png" alt="Secret Process Variables" /></p>
+
+<p>Therefore I would recommend using an hybrid approach. Should your CI build require the use of sensitive information, define them via the UI and place the rest of the variables in the script itself.</p>
+
+<h3>Alternative Approaches</h3>
+
+<p>I've noticed that different vendors and tend to have their own flavour of what a YAML build file format would look like. Unfortunately, this means that if a development team was to ever to switch build providers or fork a copy of the project to another build platform, they would likely need to rework or add platform specific build scripts.</p>
+
+<p>One approach I have seen, especially in OSS projects, is to use a platform agnostic script (PowerShell / Shell) that can be used to build your application in isolation and setup the CI build task to make a call to this script. You still get a lot of the advantages mentioned previously, but forego the tight integration and features of a particular build systems.</p>
+
+<h3>Next Steps</h3>
+
+<p>Since most of the teams I work with use VSTS exclusively, I was super stoked when this announcement was made. This feature is a perfect candidate to be included as part of the <code>generator-nullfactory-xrm</code> yeoman  generator as it removes the manual steps and further reduces the time it takes to setup a CI pipeline within VSTS.</p>
+
+<p>The next release of the generator will include the ability to generate a tailored CI build for VSTS with the I hopes of adding other providers in the future. It's will be implemented as a sub-generator and would needed be opted into. </p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://blog.kloud.com.au/2017/11/26/vsts-build-definitions-as-yaml-part-1-what-and-why/">VSTS Build Definitions as YAML Part 1: What and Why? | Kloud Blog</a></li>
+<li><a href="https://www.marcusfelling.com/blog/2017/vsts-yaml-builds/">VSTS YAML Builds (Pipeline as code) - Marcus Felling</a></li>
+<li><a href="https://blogs.msdn.microsoft.com/devops/2017/11/15/pipeline-as-code-yaml-preview/">Pipeline as code (YAML) preview – Microsoft DevOps Blog</a></li>
+<li><a href="https://blog.kloud.com.au/2017/11/26/vsts-build-definitions-as-yaml-part-2-how/">VSTS Build Definitions as YAML Part 2: How? | Kloud Blog</a></li>
+<li><a href="https://www.visualstudio.com/en-us/docs/build/concepts/process/phases">Build and Release Automation Phases in VSTS and TFS | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml">CI Build in code using YAML | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/_shared/set-variables-in-scripts?tabs=powershell">Define and modify your variables in a script | Microsoft Docs</a></li>
+<li><a href="https://github.com/Microsoft/vsts-agent/blob/master/docs/preview/yamlgettingstarted-powershell.md">vsts-agent/yamlgettingstarted-powershell.md at master · Microsoft/vsts-agent</a></li>
+<li><a href="http://chamindac.blogspot.com.au/2017/11/build-definition-as-code-with-yaml.html">Chaminda's Blog: Build Definition as Code with YAML Builds</a></li>
+<li><a href="https://github.com/Microsoft/vsts-agent/blob/master/.vsts.ci.yml">vsts-agent/.vsts.ci.yml at master · Microsoft/vsts-agent</a></li>
+<li><a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/build/variables?tabs=batch">Build variables | Microsoft Docs</a></li>
+<li><a href="https://www.motowilliams.com/vsts-yaml-build-definitions">Eric Williams - VSTS: YAML Build Definitions</a></li>
+<li><a href="https://mattvsts.blogspot.com.au/2017/11/yaml-build-definitions-in-team-build.html">Matt's ALM space: YAML Build Definitions in the Team Build, now what?</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

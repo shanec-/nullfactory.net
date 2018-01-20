@@ -42,6 +42,45 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/">Setting up a Private Build Agent in Visual Studio Team Services</a></h2>
+      <p class="post-date">26 Nov 2016
+
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/team-build" title="Team Build">Team Build</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/azure" title="Azure">Azure</a>
+</p>
+
+      <p>
+		
+		<p>I've started working on a new hobby project hosted in Visual Studio Team Services (VSTS) and was keen to follow mature build and release practices on it. Given that I am essentially a one man team, I decided to make due with the free tiers. One of the limitations in this tier is the number of CPU cycles available for hosted builds and releases. This means that if I setup all - continuous integration (CI) build, standard build and release definition I am surely going to use up all the available minutes.</p>
+
+<p>The goal was to keep the overall costs low without sacrificing any build and release related automation. Luckily, VSTS allows us to host our own agents on a <a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-private-pipelines">private pipeline</a>. This seemed the ideal a minimalist setup for me, this looked to be cheaper than having additional <a href="https://marketplace.visualstudio.com/items?itemName=ms.build-release-hosted-pipelines">hosted pipelines</a>. Also worth noting that VSTS currently provides one private pipeline in the free tier with the ability to purchase more private agents (which is slightly cheaper than the hosted).</p>
+
+<p>In this post I go about setting up a virtual machine and then install and configure a build/release agent that can be used by the team builds and releases. </p>
+
+<h2>Provisioning the Virtual Machine</h2>
+
+<ol>
+<li>Start off by creating a new resource group dedicated for the build server(s). This is so that we can tie the scheduler to shutdown all agents in a resource group without having to shutdown individual servers.</li>
+<li>Next, let's provision a new Windows virtual machine, customize this as you see fit - I used a standard Windows 10 machine. In order to make life easier, I chose a higher tier during your setup with the intention of scaling it down to a lower one once everything is setup.</li>
+<li>For this to be a viable build server, I installed the <a href="http://www.microsoft.com/en-us/download/details.aspx?id=42637">.NET 4.5.2 targeting pack</a>. Alternatively, you could install Visual Studio Community Edition or any other dependencies that your particular build might require.</li>
+</ol>
+
+<h2>Installing the Agent</h2>
+
+<ol>
+<li>Log into the newly provisioned virtual machine.</li>
+<li>Next, open a browser and log in to your VSTS instance from within it and navigate to settings page by clicking on the cog icon. Then click the <code>Agent pools</code> sub menu in order to view the list of available agent pools.</li>
+<li><p>Click on the <code>Download Agent</code> button and follow the instructions to install the agent.</p>
+
+<p><img src="/images/posts/VstsOnPremAgent/10_DownloadAgent.png" alt="Download agent" /></p>
+
+
+		<p><a href="/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></h2>
       <p class="post-date">18 Nov 2016
 
@@ -370,24 +409,6 @@ npm install -g generator-nullfactory-xrm
 
 
 		<p><a href="/2016/01/crm-solution-tfs-microsoft-xrm-data-powershell/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/12/disabling-recurring-ondemand-webjob/">Disabling Recurring and OnDemand Web Jobs within a Deployment Slot</a></h2>
-      <p class="post-date">20 Dec 2015
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-</p>
-
-      <p>
-		
-		<p>I've come to realize that things can get a bit tricky when working with slot deployments and webjobs. I learned <em>the hard way</em> that stopping a slotted Web App does <strong>not</strong> stop the web jobs it hosts. This means that I can't just stop all my website slots and expect the related jobs to automatically shutdown as well. Bummer. 
-Okay, so I am thinking maybe I'll just disable the individual jobs for each of the slots? Not much luck on that front either as the Azure portal only provides a <code>stop</code> option for <code>continuous</code> jobs and not for the <code>recurring</code> and <code>OnDemand</code> jobs.</p>
-
-<p>This limits us to a few possible solutions:</p>
-
-
-		<p><a href="/2015/12/disabling-recurring-ondemand-webjob/">Read more...</a></p>
 	  </p>
     </div>
 </div>

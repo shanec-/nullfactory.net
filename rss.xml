@@ -1,4 +1,250 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2017/10/crm-saturday-melbourne-2017-presentation-slide-deck/</guid><link>http://nullfactory.net/2017/10/crm-saturday-melbourne-2017-presentation-slide-deck/</link><title>CRM Saturday Melbourne 2017 - Presentation Slide Deck</title><description>&lt;p&gt;&lt;a href="https://www.slideshare.net/shanec_/zero-to-devops-source-control-release-strategy-crm-saturday-2017"&gt;&lt;img src="http://nullfactory.net/images/posts/CrmSatSlideDeck/crm-sat-slide-deck.png" alt="CRM Saturday Melbourne 2017" /&gt;&lt;/a&gt;&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/</guid><link>http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/</link><title>Build Pipeline as Code - YAML based CI Build for Dynamics 365 Solutions</title><description>&lt;p&gt;I first learned about YAML builds a while back when I was trying into integrate a project with AppVeyor. The concept of treating your build pipeline as first class code artefact was very appealing as it opens up so much possibilities. For me personally the highlights are: &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;History, versioning and branching of your build definitions&lt;/li&gt;
+&lt;li&gt;Improve quality of build definitions and consistency across projects.&lt;/li&gt;
+&lt;li&gt;Quickly reuse and repurpose builds onto different projects.&lt;/li&gt;
+&lt;li&gt;Make maximum use of the underlying build platform.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These posts &lt;a href="https://blog.kloud.com.au/2017/11/26/vsts-build-definitions-as-yaml-part-1-what-and-why/"&gt;here&lt;/a&gt; and &lt;a href="https://www.marcusfelling.com/blog/2017/vsts-yaml-builds/"&gt;here&lt;/a&gt; dive deeper into the advantages and the different use cases.  &lt;/p&gt;
+
+&lt;p&gt;A couple of months ago the Visual Studio Team Service (VSTS) team &lt;a href="https://blogs.msdn.microsoft.com/devops/2017/11/15/pipeline-as-code-yaml-preview/"&gt;announced&lt;/a&gt; support for the the same functionality in VSTS. Although the feature is still in preview, the VSTS team has continued to improve the feature and now provides the ability to export existing build definitions or individual tasks. In this post, I intend to take pre-existing build definition, converting it to a YAML build definition and make the necessary changes to get it to work as a CI build. &lt;/p&gt;
+
+&lt;p&gt;In this post, I intend to port an existing definition to a YAML build definition and use it as a template to setup a new CI build for a second project. The source definition that I will be using is a basic version I use for Dynamics 365 projects. &lt;/p&gt;
+
+</description><pubDate>Fri, 19 Jan 2018 13:00:00 Z</pubDate><a10:updated>2018-01-19T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;I first learned about YAML builds a while back when I was trying into integrate a project with AppVeyor. The concept of treating your build pipeline as first class code artefact was very appealing as it opens up so much possibilities. For me personally the highlights are: &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;History, versioning and branching of your build definitions&lt;/li&gt;
+&lt;li&gt;Improve quality of build definitions and consistency across projects.&lt;/li&gt;
+&lt;li&gt;Quickly reuse and repurpose builds onto different projects.&lt;/li&gt;
+&lt;li&gt;Make maximum use of the underlying build platform.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These posts &lt;a href="https://blog.kloud.com.au/2017/11/26/vsts-build-definitions-as-yaml-part-1-what-and-why/"&gt;here&lt;/a&gt; and &lt;a href="https://www.marcusfelling.com/blog/2017/vsts-yaml-builds/"&gt;here&lt;/a&gt; dive deeper into the advantages and the different use cases.  &lt;/p&gt;
+
+&lt;p&gt;A couple of months ago the Visual Studio Team Service (VSTS) team &lt;a href="https://blogs.msdn.microsoft.com/devops/2017/11/15/pipeline-as-code-yaml-preview/"&gt;announced&lt;/a&gt; support for the the same functionality in VSTS. Although the feature is still in preview, the VSTS team has continued to improve the feature and now provides the ability to export existing build definitions or individual tasks. In this post, I intend to take pre-existing build definition, converting it to a YAML build definition and make the necessary changes to get it to work as a CI build. &lt;/p&gt;
+
+&lt;p&gt;In this post, I intend to port an existing definition to a YAML build definition and use it as a template to setup a new CI build for a second project. The source definition that I will be using is a basic version I use for Dynamics 365 projects. &lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Visual Studio Team Services account with a &lt;code&gt;git&lt;/code&gt; repository. &lt;code&gt;tfsvc&lt;/code&gt; repositories are &lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml"&gt;not supported&lt;/a&gt; at the time of writing this post.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Dynamics 365 solution prepared using the &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;  and then checked into the above &lt;code&gt;git&lt;/code&gt; repository.&lt;/p&gt;
+
+&lt;p&gt;The following posts provide instructions in setting up the prerequisite project structure:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;An pre-setup build definition that successfully builds the code in the repository. &lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;The Setup&lt;/h2&gt;
+
+&lt;h3&gt;Enable Preview Features&lt;/h3&gt;
+
+&lt;p&gt;As YAML build definitions are still in preview , users need to opt-in to the feature. Let's do this now:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Log-in to you VSTS instance with an Account Administrator. &amp;lt;&lt;reference back to the article showing the permission required&gt;&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click on the Logged-in user profile picture. And click on the &lt;code&gt;Preview features&lt;/code&gt; in the resulting menu. This will will open up the &lt;code&gt;Preview features&lt;/code&gt; drawer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/10_EnablePreview.png" alt="Enable Preview" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In the first drop down make sure that the &lt;code&gt;for this account [your-account-name]&lt;/code&gt; is selected.  Next, turn on the &lt;code&gt;Build YAML definitions&lt;/code&gt; feature. &amp;lt;&amp;lt;&gt;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/20_EnablePreviewDrawer.png" alt="Enable Preview Drawer" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Export the Build Definition&lt;/h3&gt;
+
+&lt;p&gt;Now let's navigate to our build definition that we're going to be using as the source template.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Navigate to your build using the menu &lt;code&gt;Build and Release &amp;gt; Build&lt;/code&gt; and selecting the &lt;code&gt;Definitions&lt;/code&gt; tab.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click the ellipsis on the build definition and select &lt;code&gt;Edit...&lt;/code&gt; from the context menu.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/30_EditBuildDef.png" alt="Edit Build Definition" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/40_ExistingBuild.png" alt="Existing Build Definition" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note that this build definition uses a &lt;code&gt;MSBuild&lt;/code&gt; task instead of a &lt;code&gt;Visual Studio Build&lt;/code&gt; as such does not require the &lt;code&gt;visualstudio&lt;/code&gt; demand.&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If not already selected, click on the &lt;code&gt;Process- Build process&lt;/code&gt; option.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/44_ExistingBuildProcessStep.png" alt="View YAML Build" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Note the &lt;code&gt;View YAML&lt;/code&gt; link to the far right of the editor. Click on it to open a popup showing a generated YAML definition.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/50_ViewYAML.png" alt="View YAML Build" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/60_BuildExport.png" alt="Export Build" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;For reference, I've uploaded the generated file &lt;a href="http://nullfactory.net/images/posts/YAMLBuild/vsts_generated.yml"&gt;here&lt;/a&gt;. &lt;/p&gt;
+
+&lt;h3&gt;Clean Up&lt;/h3&gt;
+
+&lt;p&gt;The next step is to clean up and fix the exported script. The generation process identified some warnings and errors for us, so let's start with those. In this particular instance they were all related to variables not being defined:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- snip --&amp;gt;
+
+#Your build definition references an undefined variable named ‘Parameters.solution’. Create or edit the build definition for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build definition references the ‘BuildPlatform’ variable, which you’ve selected to be settable at queue time. Create or edit the build definition for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+
+&amp;lt;!-- snip --&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The following variables were found to be undefined:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Parameters.solution&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;build.sourcesdirectory&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;build.artifactstagingdirectory&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And the following were identified as being set when the build is queued:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;BuildPlatform&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BuildConfiguration&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The errors related to the variables prefixed with &lt;code&gt;build.&lt;/code&gt; are not a problem and can be safely ignored. They are predefined variables and are indeed &lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/build/variables?tabs=batch"&gt;available in the build environment&lt;/a&gt;.  &lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Create a new PowerShell task that defines the variables and move it to the first in the order. Next set the &lt;code&gt;BuildConfiguration&lt;/code&gt; and &lt;code&gt;BuildPlatform&lt;/code&gt; was to &lt;code&gt;release&lt;/code&gt; and &lt;code&gt;any cpu&lt;/code&gt; respectively. And finally &lt;code&gt;Parameters.Solution&lt;/code&gt; to the actual solution being built - as this example contains only one solution file, set it to &lt;code&gt;**/*.sln&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;steps:
+- powershell: |
+    Write-Host '##vso[task.setvariable variable=BuildConfiguration;]release'
+    Write-Host '##vso[task.setvariable variable=BuildPlatform;]any cpu'
+    Write-Host '##vso[task.setvariable variable=Parameters.solution;]**/*.sln'
+  displayName: Create variables
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, escape any slashes in task attribute values. I had to update &lt;code&gt;VSTest@2&lt;/code&gt; and &lt;code&gt;CopyFiles@2&lt;/code&gt; tasks.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- task: VSTest@2
+  inputs:
+    testAssemblyVer2: "**\\$(BuildConfiguration)\\*test*.dll
+!**\\obj\\**"
+    platform: "$(BuildPlatform)"
+    configuration: "$(BuildConfiguration)"
+
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: "$(build.sourcesdirectory)"
+    Contents: "**\\bin\\$(BuildConfiguration)\\**"
+    TargetFolder: "$(build.artifactstagingdirectory)"
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add a &lt;code&gt;displayName&lt;/code&gt; node for each of the tasks - this does not have an impact on the operation of the build itself, but makes it easier to keep track of the tasks being executed.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- snip --&amp;gt;
+- task: NuGetCommand@2
+  displayName: NuGet restore **\*.sln
+&amp;lt;!-- snip --&amp;gt;
+- task: MSBuild@1
+  displayName: Build solution **/*.sln
+&amp;lt;!-- snip --&amp;gt;
+- task: CopyFiles@2
+  displayName: "Copy Files to: $(build.artifactstagingdirectory)"
+&amp;lt;!-- snip --&amp;gt;
+- task: CopyFiles@2
+  displayName: "Copy Deployment Scripts to: $(build.artifactstagingdirectory)"
+&amp;lt;!-- snip --&amp;gt;
+- task: DeleteFiles@1
+  displayName: "Delete custom assemblies from $(build.artifactstagingdirectory)"
+&amp;lt;!-- snip --&amp;gt;
+- task: PublishBuildArtifacts@1
+  displayName: "Publish Artifact: drop"
+&amp;lt;!-- snip --&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And we're done. Download the final form of the file &lt;a href="http://nullfactory.net/images/posts/YAMLBuild/updated_definition.yml"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Deployment&lt;/h3&gt;
+
+&lt;p&gt;The deployment process itself is very simple, all we need to do is create a &lt;code&gt;.vsts-ci.yml&lt;/code&gt; and drop it in the root of your repository and VSTS would automatically generate the CI build.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Save the cleaned up build definition with the name of &lt;code&gt;.vsts-ci.yml&lt;/code&gt; and drop it in the root folder of your second project repository.&lt;/li&gt;
+&lt;li&gt;Commit your changes and push them to remote.&lt;/li&gt;
+&lt;li&gt;Within VSTS, navigate to the &lt;code&gt;Build and Release&lt;/code&gt; and ensure that there is a new folder with the repository's name.&lt;/li&gt;
+&lt;li&gt;Navigate into this folder and verify that a new build has been created &lt;code&gt;your_repo_name CI&lt;/code&gt;and that it is currently in progress.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And that's it, you've got a working CI build.&lt;/p&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;h3&gt;Reusing Definition for Dynamics 365&lt;/h3&gt;
+
+&lt;p&gt;Thanks to the use of the yeoman generator, my Dynamics 365 projects use an identical project structure. This mean that I can just copy the &lt;code&gt;.vsts-ci.yml&lt;/code&gt; to the root of repository of the new project, make any project specific changes if necessary and you've got a working CI build.&lt;/p&gt;
+
+&lt;h3&gt;Branching Behaviour&lt;/h3&gt;
+
+&lt;p&gt;I was curious to find out what happens when we branch the YAML build. Does VSTS create a new instance of the definition for each of the branches? Look out for it's blog post.&lt;/p&gt;
+
+&lt;h3&gt;Defining Variables via the UI&lt;/h3&gt;
+
+&lt;p&gt;As an alternative to defining the variables using a PowerShell or Shell a task, they can also be defined using the VSTS user interface.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Skip the previous step where we initialize the variables using the PowerShell task. Continue on with the other steps.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Check-in and push the CI build to remote.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Navigate to the &lt;code&gt;Build and Release&lt;/code&gt; menu and &lt;code&gt;Build&lt;/code&gt; tab and verify that a new build was provisioned as expected.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;The initial check-in of the CI build itself is going to fail as it will be triggered the moment the build definition is provisioned.&lt;/em&gt; &lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, &lt;code&gt;Edit&lt;/code&gt; the definition and navigate to the &lt;code&gt;Variables&lt;/code&gt; tab.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Define the &lt;code&gt;BuildConfiguration&lt;/code&gt;, &lt;code&gt;BuildPlatform&lt;/code&gt;, &lt;code&gt;Parameters.solution&lt;/code&gt; variables:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/70_AltSetVariables.png" alt="Set Process Variables" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Test out your new definition by making a change to the repository or explicitly triggering a new build.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The downside of this method is that all the components required by the build definition is not contained within the YAML file. &lt;/p&gt;
+
+&lt;p&gt;So why would I want to take this approach?  Secrets. This is the perfect way to store your secrets and avoid inadvertently checking them into your repository.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YAMLBuild/80_SecretVariable.png" alt="Secret Process Variables" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Therefore I would recommend using an hybrid approach. Should your CI build require the use of sensitive information, define them via the UI and place the rest of the variables in the script itself.&lt;/p&gt;
+
+&lt;h3&gt;Alternative Approaches&lt;/h3&gt;
+
+&lt;p&gt;I've noticed that different vendors and tend to have their own flavour of what a YAML build file format would look like. Unfortunately, this means that if a development team was to ever to switch build providers or fork a copy of the project to another build platform, they would likely need to rework or add platform specific build scripts.&lt;/p&gt;
+
+&lt;p&gt;One approach I have seen, especially in OSS projects, is to use a platform agnostic script (PowerShell / Shell) that can be used to build your application in isolation and setup the CI build task to make a call to this script. You still get a lot of the advantages mentioned previously, but forego the tight integration and features of a particular build systems.&lt;/p&gt;
+
+&lt;h3&gt;Next Steps&lt;/h3&gt;
+
+&lt;p&gt;Since most of the teams I work with use VSTS exclusively, I was super stoked when this announcement was made. This feature is a perfect candidate to be included as part of the &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt; yeoman  generator as it removes the manual steps and further reduces the time it takes to setup a CI pipeline within VSTS.&lt;/p&gt;
+
+&lt;p&gt;The next release of the generator will include the ability to generate a tailored CI build for VSTS with the I hopes of adding other providers in the future. It's will be implemented as a sub-generator and would needed be opted into. &lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://blog.kloud.com.au/2017/11/26/vsts-build-definitions-as-yaml-part-1-what-and-why/"&gt;VSTS Build Definitions as YAML Part 1: What and Why? | Kloud Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.marcusfelling.com/blog/2017/vsts-yaml-builds/"&gt;VSTS YAML Builds (Pipeline as code) - Marcus Felling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://blogs.msdn.microsoft.com/devops/2017/11/15/pipeline-as-code-yaml-preview/"&gt;Pipeline as code (YAML) preview – Microsoft DevOps Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://blog.kloud.com.au/2017/11/26/vsts-build-definitions-as-yaml-part-2-how/"&gt;VSTS Build Definitions as YAML Part 2: How? | Kloud Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/concepts/process/phases"&gt;Build and Release Automation Phases in VSTS and TFS | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml"&gt;CI Build in code using YAML | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/_shared/set-variables-in-scripts?tabs=powershell"&gt;Define and modify your variables in a script | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/Microsoft/vsts-agent/blob/master/docs/preview/yamlgettingstarted-powershell.md"&gt;vsts-agent/yamlgettingstarted-powershell.md at master · Microsoft/vsts-agent&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://chamindac.blogspot.com.au/2017/11/build-definition-as-code-with-yaml.html"&gt;Chaminda's Blog: Build Definition as Code with YAML Builds&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/Microsoft/vsts-agent/blob/master/.vsts.ci.yml"&gt;vsts-agent/.vsts.ci.yml at master · Microsoft/vsts-agent&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/build/variables?tabs=batch"&gt;Build variables | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.motowilliams.com/vsts-yaml-build-definitions"&gt;Eric Williams - VSTS: YAML Build Definitions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://mattvsts.blogspot.com.au/2017/11/yaml-build-definitions-in-team-build.html"&gt;Matt's ALM space: YAML Build Definitions in the Team Build, now what?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/10/crm-saturday-melbourne-2017-presentation-slide-deck/</guid><link>http://nullfactory.net/2017/10/crm-saturday-melbourne-2017-presentation-slide-deck/</link><title>CRM Saturday Melbourne 2017 - Presentation Slide Deck</title><description>&lt;p&gt;&lt;a href="https://www.slideshare.net/shanec_/zero-to-devops-source-control-release-strategy-crm-saturday-2017"&gt;&lt;img src="http://nullfactory.net/images/posts/CrmSatSlideDeck/crm-sat-slide-deck.png" alt="CRM Saturday Melbourne 2017" /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;I know its a "little" late, but here's the slide deck from my CRM Saturday 2017 presentation  - &lt;code&gt;Zero to DevOps - Source Control and Release Strategy for Dynamics 365 Solutions&lt;/code&gt;. &lt;/p&gt;
 
@@ -756,211 +1002,5 @@ return resp
 &lt;li&gt;&lt;a href="http://missdynamicscrm.blogspot.com.au/2014/06/crm-2011-2013-modify-createdon-createdby-modifiedon-modifiedby-using-SDK-CSharp.html"&gt;CRM 2011/ 2013 Modify CreatedOn, CreatedBy, ModifiedOn, and ModifiedBy Using SDK C# ~ Ms. Dynamics CRM&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://blogs.msdn.microsoft.com/emeadcrmsupport/2012/08/01/the-truth-about-override-created-on-or-created-by-for-records-during-data-import/"&gt;The truth about ‘Override Created on or Created by for records during data import’ – EMEA Dynamics CRM Support&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://blogs.msdn.microsoft.com/emeadcrmsupport/2012/08/01/the-truth-about-override-created-on-or-created-by-for-records-during-data-import/"&gt;The truth about ‘Override Created on or Created by for records during data import’ – EMEA Dynamics CRM Support&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/04/enforce-commit-message-standards-and-generate-changelogs-via-git/</guid><link>http://nullfactory.net/2017/04/enforce-commit-message-standards-and-generate-changelogs-via-git/</link><title>Enforce Commit Message Standards and Generate Changelogs via Git</title><description>&lt;p&gt;In past projects my release note strategy has been a combination of custom scripts (to pull the changesets between releases) and good old fashioned elbow grease to manually create the notes. I was curious to know ways about the ways to achieve the same in git and learning about the techniques used in popular open source projects.  &lt;/p&gt;
-
-&lt;p&gt;In order to automatically generate a changelog the repository requires consistent commits - and I found that there are three steps that can be done to achieve this: &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Enforcing commit message rules.&lt;/li&gt;
-&lt;li&gt;Install and setup tools that help generate commit messages that are compliant.&lt;/li&gt;
-&lt;li&gt;Generate the changelog for the project based on the commits.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Prerequisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Node.js - instructions on installing node can be found &lt;a href="https://docs.npmjs.com/getting-started/installing-node"&gt;here&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;A &lt;code&gt;package.json&lt;/code&gt; file for your project. One can be generated by navigating to the root folder of the project, run the &lt;code&gt;npm init&lt;/code&gt; command and follow the instructions&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Enforcing Commit Message Rules&lt;/h2&gt;
-
-&lt;p&gt;The enforcing of the rules are done using &lt;code&gt;husky&lt;/code&gt; and &lt;code&gt;validate-commit-msg&lt;/code&gt; packages. &lt;code&gt;Husky&lt;/code&gt; makes it very easy to tap into the commit event and execute custom validation scripts and uses &lt;a href="https://tygertec.com/git-hooks-practical-uses-windows/"&gt;git hooks&lt;/a&gt; to do this. &lt;code&gt;validate-commit-msg&lt;/code&gt; implements the validation scheme - conventional commits - that we would be used when the commit occurs.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href="https://conventionalcommits.org/"&gt;conventional commits specification site&lt;/a&gt; summarizes its advantages very well:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-  &lt;li&gt;Automatically generating CHANGELOGs.&lt;/li&gt;
-  &lt;li&gt;Automatically determining a semantic version bump (based on the types of commits landed).&lt;/li&gt;
-  &lt;li&gt;Communicating the nature of changes to teammates, the public, and other stakeholders.&lt;/li&gt;
-  &lt;li&gt;Triggering build and publish processes.&lt;/li&gt;
-  &lt;li&gt;Making it easier for people to contribute to your projects, by allowing them to explore a more structured commit history.&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-</description><pubDate>Sat, 29 Apr 2017 14:00:00 Z</pubDate><a10:updated>2017-04-29T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;In past projects my release note strategy has been a combination of custom scripts (to pull the changesets between releases) and good old fashioned elbow grease to manually create the notes. I was curious to know ways about the ways to achieve the same in git and learning about the techniques used in popular open source projects.  &lt;/p&gt;
-
-&lt;p&gt;In order to automatically generate a changelog the repository requires consistent commits - and I found that there are three steps that can be done to achieve this: &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Enforcing commit message rules.&lt;/li&gt;
-&lt;li&gt;Install and setup tools that help generate commit messages that are compliant.&lt;/li&gt;
-&lt;li&gt;Generate the changelog for the project based on the commits.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Prerequisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Node.js - instructions on installing node can be found &lt;a href="https://docs.npmjs.com/getting-started/installing-node"&gt;here&lt;/a&gt;.&lt;/li&gt;
-&lt;li&gt;A &lt;code&gt;package.json&lt;/code&gt; file for your project. One can be generated by navigating to the root folder of the project, run the &lt;code&gt;npm init&lt;/code&gt; command and follow the instructions&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Enforcing Commit Message Rules&lt;/h2&gt;
-
-&lt;p&gt;The enforcing of the rules are done using &lt;code&gt;husky&lt;/code&gt; and &lt;code&gt;validate-commit-msg&lt;/code&gt; packages. &lt;code&gt;Husky&lt;/code&gt; makes it very easy to tap into the commit event and execute custom validation scripts and uses &lt;a href="https://tygertec.com/git-hooks-practical-uses-windows/"&gt;git hooks&lt;/a&gt; to do this. &lt;code&gt;validate-commit-msg&lt;/code&gt; implements the validation scheme - conventional commits - that we would be used when the commit occurs.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href="https://conventionalcommits.org/"&gt;conventional commits specification site&lt;/a&gt; summarizes its advantages very well:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-  &lt;li&gt;Automatically generating CHANGELOGs.&lt;/li&gt;
-  &lt;li&gt;Automatically determining a semantic version bump (based on the types of commits landed).&lt;/li&gt;
-  &lt;li&gt;Communicating the nature of changes to teammates, the public, and other stakeholders.&lt;/li&gt;
-  &lt;li&gt;Triggering build and publish processes.&lt;/li&gt;
-  &lt;li&gt;Making it easier for people to contribute to your projects, by allowing them to explore a more structured commit history.&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;First, navigate to the root of your project folder and install &lt;code&gt;husky&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;npm install husky --save-dev
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, install the &lt;code&gt;validate-commit-msg&lt;/code&gt; package.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;npm install --save-dev validate-commit-msg
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Update the &lt;code&gt;package.json&lt;/code&gt; scripts node to let husky know that we want to use the &lt;code&gt;validate-commit-msg&lt;/code&gt; validations with &lt;code&gt;husky&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;"scripts": {
-    "commitmsg": "validate-commit-msg"
-},
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;From now on any commits done would be validated against the standard. &lt;/p&gt;
-
-&lt;h2&gt;Scaffold and Commit&lt;/h2&gt;
-
-&lt;p&gt;Now that we have the validation in place, let make life easier by installing some tools that help us adhere to the rules. &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Install &lt;code&gt;Commitizen&lt;/code&gt; by running the following command.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;npm install -g commitizen 
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Install the &lt;code&gt;cz-conventional-changelog&lt;/code&gt; adapter as part of the project - this is the conventional commits guide lines. Read more about this standard &lt;a href="https://conventionalcommits.org/"&gt;here&lt;/a&gt; and &lt;a href="https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines"&gt;here&lt;/a&gt;. &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;commitizen init cz-conventional-changelog --save-dev --save-exact
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Verify that commitizen has been conifgured automatically in the &lt;code&gt;package.json&lt;/code&gt;: &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now that we have commitizen and its adapter installed, now its time to do some commits. The following command now replaces the usual &lt;code&gt;git commit&lt;/code&gt; command: &lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;git cz
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;It would guide you interactively to create the best commit message based on the &lt;code&gt;conventional-changelog&lt;/code&gt; adapter. Find a recap of the message format &lt;a href="http://karma-runner.github.io/0.10/dev/git-commit-msg.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ConventionalCommit/10_commitizen.png" alt="Commitizen" /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Generate Changelog&lt;/h2&gt;
-
-&lt;p&gt;Now to generate the changelog. In my non-node.js based projects, I usually rely on the build process to bump the version number of the release, but node.js projects and tools appear to like the explicit versioning in the &lt;code&gt;package.json&lt;/code&gt; file and the same checked into source control. I can work with that.&lt;/p&gt;
-
-&lt;p&gt;The following is the &lt;a href="https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-cli#recommended-workflow"&gt;recommended workflow&lt;/a&gt; for generating the changelog:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;ol&gt;
-  &lt;li&gt;Make changes&lt;/li&gt;
-  &lt;li&gt;Commit those changes&lt;/li&gt;
-  &lt;li&gt;Make sure Travis turns green&lt;/li&gt;
-  &lt;li&gt;Bump version in package.json&lt;/li&gt;
-  &lt;li&gt;conventionalChangelog&lt;/li&gt;
-  &lt;li&gt;Commit package.json and CHANGELOG.md files&lt;/li&gt;
-  &lt;li&gt;Tag&lt;/li&gt;
-  &lt;li&gt;Push&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Let's adapt these steps to work with our own workflow:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;I am going to install the command line version of &lt;code&gt;conventional-changelog&lt;/code&gt; which is &lt;code&gt;conventional-changelog-cli&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;npm install -g conventional-changelog-cli
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Since this is the first time I am running it, I want the changelog to take all historical commits into consideration. I am going to run the following command:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;conventional-changelog -p angular -i CHANGELOG.md -s -r 0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;-p&lt;/code&gt; being the preset being used. I am using &lt;code&gt;angular&lt;/code&gt; in this case and uses this kind . More detailed explanation of the format can be found &lt;a href="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#"&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;-i&lt;/code&gt; the input file.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;-s&lt;/code&gt; indicates that the input file and the output file are the same.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;-r 0&lt;/code&gt; How many releases to be generated from the latest. If &lt;code&gt;0&lt;/code&gt;, the whole changelog will be regenerated and the outfile will be overwritten Default: &lt;code&gt;1&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The full list of options available can be found by executing &lt;code&gt;conventional-changelog --help&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Continue creating commits using the &lt;code&gt;git cz&lt;/code&gt; command. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;If you have a CI build setup, make sure that its successful. Then update the version number in the &lt;code&gt;package.json&lt;/code&gt; to a higher one.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Now lets update the changelog using the following command:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;conventional-changelog -p angular -i CHANGELOG.md -s 
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Confirm that the changelog has been updated with the new significant features. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Commit the changes back into git.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Final Thoughts&lt;/h2&gt;
-
-&lt;p&gt;These same steps can be applied to almost any project type including .NET. So I am pretty excited to test this out in the Dynamics CRM/365 projects. I also found out that visual studio 2017 &lt;a href="https://andrewlock.net/git-integration-improvements-in-visual-studio-2017/"&gt;plays nice with git hooks&lt;/a&gt;.  &lt;/p&gt;
-
-&lt;h3&gt;Client Side&lt;/h3&gt;
-
-&lt;p&gt;It is important to remember that Git Hooks are client site and that it can be &lt;a href="https://tygertec.com/git-hooks-practical-uses-windows/"&gt;overridden&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;... Client side hooks can often be bypassed, either by using low-level “plumbing” commands instead of the high-level “porcelain” commands, and often by passing the &lt;code&gt;–no-verify&lt;/code&gt; option to the command. For example, &lt;code&gt;git commit –no-verify&lt;/code&gt; will not run the pre-commit hook. ...&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;On an open-source project, maybe the maintainer could possibly eye-ball the pull request and ensure that it is valid or squash and provide a different message?&lt;/p&gt;
-
-&lt;h3&gt;Versioning&lt;/h3&gt;
-
-&lt;p&gt;Since the &lt;code&gt;package.json&lt;/code&gt; would be driving the version number, in my .NET/Dynamics CRM projects, I can possibly implement a PowerShell script that would bumps the version of the CRM solution based on the &lt;code&gt;package.json&lt;/code&gt; instead of the build.&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://docs.npmjs.com/getting-started/installing-node"&gt;02 - Installing Node.js and updating npm | npm Documentation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-cli"&gt;conventional-changelog/packages/conventional-changelog-cli at master · conventional-changelog/conventional-changelog · GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://docs.npmjs.com/cli/init"&gt;init | npm Documentation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://notebook.aaronwest.net/2015/08/03/better-documentation-using-conventional-changelog.html"&gt;Better Documentation Using Conventional-Changelog - aaron’s engineering notebook&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://conventionalcommits.org/"&gt;Conventional Commits 1.0.0-beta - Conventional Commits&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://karma-runner.github.io/0.10/dev/git-commit-msg.html"&gt;Karma - Git Commit Msg&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#"&gt;Git Commit Message Conventions - Google Docs&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://commitizen.github.io/cz-cli/"&gt;Commitizen by commitizen&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/commitizen/cz-cli"&gt;GitHub - commitizen/cz-cli: The commitizen command line utility.&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/kentcdodds/validate-commit-msg"&gt;GitHub - kentcdodds/validate-commit-msg: githook to validate commit messages are up to standard&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/typicode/husky"&gt;GitHub - typicode/husky: Git hooks made easy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://stackoverflow.com/questions/41785974/how-can-i-use-husky-to-check-a-git-commit-message-format/41787949#41787949"&gt;How can I use husky to check a git commit message format? - Stack Overflow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://andrewlock.net/git-integration-improvements-in-visual-studio-2017/"&gt;Git integration improvements in Visual Studio 2017 - git-hooks&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://tygertec.com/git-hooks-practical-uses-windows/"&gt;Git hooks, practical uses (yes, even on Windows) » tygertec&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.atlassian.com/git/tutorials/git-hooks"&gt;Git Hooks | Atlassian Git Tutorial&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>
