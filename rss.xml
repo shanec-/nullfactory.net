@@ -1,4 +1,126 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/</guid><link>http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/</link><title>Build Pipeline as Code - YAML based CI Build for Dynamics 365 Solutions</title><description>&lt;p&gt;I first learned about YAML builds a while back when I was trying into integrate a project with AppVeyor. The concept of treating your build pipeline as first class code artefact was very appealing as it opens up so much possibilities. For me personally the highlights are: &lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/</guid><link>http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/</link><title>YAML Builds and Branching in Visual Studio Team Services</title><description>&lt;p&gt;In my previous post I explored the the concept of treating build as a first class code citizen and how to automatically setup up an YAML based continuous integration (CI) build in Visual Studio Team Services (VSTS). &lt;/p&gt;
+
+&lt;p&gt;At the end of that exercise I was curious as to how VSTS handles build definitions when you throw branching into the mix. I could not find much information on the topic, so I thought I might try it out myself.&lt;/p&gt;
+
+&lt;h2&gt;Branches and CI Builds&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Prepare the project structure place the you build definition &lt;code&gt;.vsts-ci.yml&lt;/code&gt; in the root of the repository. Read &lt;a href="http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/"&gt;my previous post&lt;/a&gt; for setting up an exported CI build.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add an echo step so we can uniquely identify this build branch.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/5_TriggeredEchoMaster.png" alt="Triggered Echo" /&gt;&lt;/p&gt;
+
+</description><pubDate>Sat, 17 Feb 2018 13:00:00 Z</pubDate><a10:updated>2018-02-17T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;In my previous post I explored the the concept of treating build as a first class code citizen and how to automatically setup up an YAML based continuous integration (CI) build in Visual Studio Team Services (VSTS). &lt;/p&gt;
+
+&lt;p&gt;At the end of that exercise I was curious as to how VSTS handles build definitions when you throw branching into the mix. I could not find much information on the topic, so I thought I might try it out myself.&lt;/p&gt;
+
+&lt;h2&gt;Branches and CI Builds&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Prepare the project structure place the you build definition &lt;code&gt;.vsts-ci.yml&lt;/code&gt; in the root of the repository. Read &lt;a href="http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/"&gt;my previous post&lt;/a&gt; for setting up an exported CI build.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add an echo step so we can uniquely identify this build branch.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/5_TriggeredEchoMaster.png" alt="Triggered Echo" /&gt;&lt;/p&gt;
+
+&lt;!--excerpt--&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Commit changes to the &lt;code&gt;master&lt;/code&gt; branch and push it to the remote repository.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Verify that VSTS picked up the build and provisioned the CI build as expected. And that it triggered an initial build.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/10_BuildProvisioned.png" alt="Build Provisioned" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Verify that our echo statement worked.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/15_BuildEchoStatement.png" alt="Build Echo Statement" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now let's update the build trigger to include all feature branches we create. Edit the build definition and navigate to the triggers tab add the following branch filter: &lt;code&gt;features/*&lt;/code&gt;. This means that the build would trigger on each of the &lt;code&gt;feature/&lt;/code&gt; topic branches.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/20_EditBuildDefinition.png" alt="Edit Build Definition" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Navigate to the triggers tab and add a new branch filter.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/30_AddBranchFilter.png" alt="Add Branch Filter" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Save the changes.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, create a new topic branch and switch to it. I am going to call it &lt;code&gt;features/complex-feature1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;​    &lt;code&gt;git checkout -b 'features/complex-feature1'&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Push the new branch to the remote server.&lt;/p&gt;
+
+&lt;p&gt;​ &lt;code&gt;git push -u origin 'features/complex-feature1'&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Verify that the build definition got triggered against the new branch.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/40_BranchBuildTriggered.png" alt="Branch triggered on New Branch" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Now let's make a change to the &lt;code&gt;.vsts-ci.yml&lt;/code&gt;. In order to keep things simple, I am just going to update the echo statement with the branch name.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/50_UpdatedEcho.png" alt="Branch triggered on New Branch" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once again, let's commit and push the changes to the remote server.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Verify that a new build was triggered.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/60_UpdatedBuildTriggered.png" alt="Updated Build Trigger" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Confirm that the branch specific version of the build was executed.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/70_BranchBuild.png" alt="Branch triggered on New Branch" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This confirms that VSTS honors and executes the appropriate build definitions on the appropriate branch. Super cool!&lt;/p&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;Branching of build definitions give team members to customize and test changes to the build definition in isolation. It also causes the least amount of disruption to the rest of the team until the changes are ready to merge with main development.&lt;/p&gt;
+
+&lt;h3&gt;Path Filters&lt;/h3&gt;
+
+&lt;p&gt;It doesn't seem to be possible to setup path filters from the YAML file. That being said, it can still be setup by editing the build definition after the provisioning. &lt;/p&gt;
+
+&lt;p&gt;This can be done by navigate to the &lt;code&gt;Triggers&lt;/code&gt; tab in the build definition and adding the path filter.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/80_PathFilter.png" alt="Path Filters" /&gt;&lt;/p&gt;
+
+&lt;p&gt;In the above example, I want to make sure that the CI build does not trigger when I make changes to the support tools. &lt;/p&gt;
+
+&lt;h3&gt;Scheduling Builds&lt;/h3&gt;
+
+&lt;p&gt;Schedule builds also needs to be setup in a similar fashion to path filters. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/90_BuildSchedule.png" alt="Build Schedule" /&gt;&lt;/p&gt;
+
+&lt;h3&gt;Multiple Build Definitions and Manual Setup&lt;/h3&gt;
+
+&lt;p&gt;What happens when you have multiple &lt;code&gt;yml&lt;/code&gt; files within a single repository? I hadn't even considered this until I stumble across it in the documentation. &lt;/p&gt;
+
+&lt;p&gt;Consider an example where the project contains your wired up CI build but you'd like to use the second dedicated build for your production releases. &lt;/p&gt;
+
+&lt;p&gt;This is certainly possible - if VSTS finds a a file named &lt;code&gt;.vsts-ci.yml&lt;/code&gt; in the root path then it attempts to wire it up as a CI &lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#automatically-create-a-yaml-build-definition"&gt;build automatically&lt;/a&gt;, but the additional builds needs to be &lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#manually-create-a-yaml-build-definition"&gt;setup manually&lt;/a&gt;. &lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Start by creating a new build definition from within VSTS and choose &lt;code&gt;YAML&lt;/code&gt; as the template. Confirm the selection by clicking the &lt;code&gt;Apply&lt;/code&gt; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/100_NewBuildTemplate.png" alt="Build Schedule" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, click the ellipsis button &lt;code&gt;...&lt;/code&gt; and select the path to the YAML file and click &lt;code&gt;OK&lt;/code&gt; to confirm.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/110_ProdBuild.png" alt="Build Schedule" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Once saved, you can trigger the build as you would any other.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I can also confirm that VSTS treats YAML builds as regular builds and they can be used as the source for your release definitions.&lt;/p&gt;
+
+&lt;h3&gt;Change Tracking&lt;/h3&gt;
+
+&lt;p&gt;So the changes YAML file itself is tracked by git, but does VSTS track the changes we do to the build definition after provisioning? Yes, it does. Under the covers, it looks like VSTS sets up an json-exportable definition of the build. This is not a replication of your &lt;code&gt;YAML&lt;/code&gt; build tasks, but rather maintains everything that's &lt;strong&gt;not&lt;/strong&gt; configurable in the &lt;code&gt;YAML&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;A history of all changes done to the definition can be viewed and compared from the history tab.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildBranch/120_BuildHistory.png" alt="Build History" /&gt;&lt;/p&gt;
+
+&lt;p&gt;I, for one, have become a fan of YAML builds and can't wait for this feature to come out of preview and become a permanent.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/ci-build-git"&gt;Define a CI build process for your Git repo | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml"&gt;CI Build in code using YAML | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-gb/vsts/build-release/concepts/definitions/build/variables?tabs=batch"&gt;Build variables | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/build/triggers"&gt;Build definition triggers | Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#automatically-create-a-yaml-build-definition"&gt;CI Build in code using YAML - Automatic Build Definition| Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#manually-create-a-yaml-build-definition"&gt;CI Build in code using YAML - Manual Build Definition| Microsoft Docs&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/</guid><link>http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/</link><title>Build Pipeline as Code - YAML based CI Build for Dynamics 365 Solutions</title><description>&lt;p&gt;I first learned about YAML builds a while back when I was trying into integrate a project with AppVeyor. The concept of treating your build pipeline as first class code artefact was very appealing as it opens up so much possibilities. For me personally the highlights are: &lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;History, versioning and branching of your build definitions&lt;/li&gt;
@@ -917,90 +1039,5 @@ return resp
 &lt;li&gt;&lt;a href="https://channel9.msdn.com/Events/Visual-Studio/Visual-Studio-2015-Final-Release-Event/Git-Branches-and-Policies-in-Team-Foundation-Server-2015"&gt;Git Branches and Policies in Team Foundation Server 2015 | Visual Studio 2015 Final Release Event | Channel 9&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://blogs.msdn.microsoft.com/buckh/2016/03/20/gated-checkin-for-git-using-branch-policies-to-run-a-build-in-vsts-and-tfs/"&gt;Gated checkin for Git: Using Branch Policies to run a build in VSTS and TFS – Buck Hodges&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/git/branch-policies"&gt;Protect your Git branches with policies | Team Services &amp;amp; TFS&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/</guid><link>http://nullfactory.net/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/</link><title>Reassignment of Record Causes Attached Notes to Update its ModifiedBy User Field in Dynamics CRM</title><description>&lt;p&gt;My colleagues and I ran into a interesting problem the other day; we noticed that on some records all the notes attached to it were being updated seemingly randomly being updated. At first glance I was confused as to why this was happening, but we eventually found the steps to reproduce it: &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a record &lt;code&gt;Record 1&lt;/code&gt; in an entity. This can either be a custom entity or out-of-the-box entity with notes and attachments enabled. &lt;/li&gt;
-&lt;li&gt;If the notes control has not been added onto the form, do that now.&lt;/li&gt;
-&lt;li&gt;Update it such that it has several notes created by different users.&lt;/li&gt;
-&lt;li&gt;Next make sure that &lt;code&gt;Record 1&lt;/code&gt; is owned by &lt;code&gt;User A&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Login as &lt;code&gt;User B&lt;/code&gt; and reassign the &lt;code&gt;Record 1&lt;/code&gt; to &lt;code&gt;User C&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now, if we observe the notes control it shows &lt;code&gt;User B&lt;/code&gt;'s name along side the date and time stamp. &lt;/p&gt;
-
-&lt;p&gt;I was initially thrown off as to why the above actions changed the &lt;code&gt;Created By&lt;/code&gt; of the notes, but what I failed to realize was that the annotation control shows the &lt;code&gt;Modified By&lt;/code&gt; user and not the &lt;code&gt;Created By&lt;/code&gt;.&lt;/p&gt;
-
-</description><pubDate>Wed, 03 May 2017 14:00:00 Z</pubDate><a10:updated>2017-05-03T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;My colleagues and I ran into a interesting problem the other day; we noticed that on some records all the notes attached to it were being updated seemingly randomly being updated. At first glance I was confused as to why this was happening, but we eventually found the steps to reproduce it: &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a record &lt;code&gt;Record 1&lt;/code&gt; in an entity. This can either be a custom entity or out-of-the-box entity with notes and attachments enabled. &lt;/li&gt;
-&lt;li&gt;If the notes control has not been added onto the form, do that now.&lt;/li&gt;
-&lt;li&gt;Update it such that it has several notes created by different users.&lt;/li&gt;
-&lt;li&gt;Next make sure that &lt;code&gt;Record 1&lt;/code&gt; is owned by &lt;code&gt;User A&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Login as &lt;code&gt;User B&lt;/code&gt; and reassign the &lt;code&gt;Record 1&lt;/code&gt; to &lt;code&gt;User C&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now, if we observe the notes control it shows &lt;code&gt;User B&lt;/code&gt;'s name along side the date and time stamp. &lt;/p&gt;
-
-&lt;p&gt;I was initially thrown off as to why the above actions changed the &lt;code&gt;Created By&lt;/code&gt; of the notes, but what I failed to realize was that the annotation control shows the &lt;code&gt;Modified By&lt;/code&gt; user and not the &lt;code&gt;Created By&lt;/code&gt;.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;The relationship between the custom entity and the &lt;code&gt;annotation&lt;/code&gt; entity is parental with &lt;code&gt;cascade all&lt;/code&gt; set on assignment, therefore when the parent record is reassigned, it automatically reassigns all the notes associated with it. The reassignment itself is considered an update and thus shows the the user who initiated the reassign as the &lt;code&gt;Modified By&lt;/code&gt; user.  And if you think about it you would see that CRM is behaving exactly as it should - the parent record and the notes are assigned to &lt;code&gt;User C&lt;/code&gt; while the last modified is set to &lt;code&gt;User B&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;In this particular custom solution I was working on, the notes were being treated as immutable - that is the security roles were structured such that once created it would not be modified. The reassignment logic is done by an external process executed under an service account. So the reassignment and subsequent change of the &lt;code&gt;Modified By&lt;/code&gt; to the service account was confusing the users. &lt;/p&gt;
-
-&lt;p&gt;I found that there are two potential workarounds for this, but each with its own caveats.&lt;/p&gt;
-
-&lt;h2&gt;Workaround 1&lt;/h2&gt;
-
-&lt;p&gt;The first approach is to alter the parental relationship of the record. Change the relationship behavior from &lt;code&gt;Parental&lt;/code&gt; to &lt;code&gt;Configurable Cascading&lt;/code&gt; and then the &lt;code&gt;Assign&lt;/code&gt; option from &lt;code&gt;Cascade All&lt;/code&gt; to &lt;code&gt;Cascade None&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/ReassignChildNotes/10_updated_relationship.png" alt="Updated Parental Relationship" /&gt;&lt;/p&gt;
-
-&lt;p&gt;One caveat of this approach is that if the parent record is reassigned from a user in a higher business unit hierarchy to one in a lower business unit, the notes would not be visible to other users in the lower business unit. This is of course subject to the way the security permissions have been configured - your mileage may vary.&lt;/p&gt;
-
-&lt;h2&gt;Workaround 2&lt;/h2&gt;
-
-&lt;p&gt;Write a &lt;code&gt;pre-operation&lt;/code&gt; plugin that runs on the update of the annotation entity. Have it configured to run on the same service account as the one used by the external process. This way when the record is reassigned by the external process the last modified by user is still retained. &lt;/p&gt;
-
-&lt;p&gt;Read more this approach &lt;a href="http://missdynamicscrm.blogspot.com.au/2014/06/crm-2011-2013-modify-createdon-createdby-modifiedon-modifiedby-using-SDK-CSharp.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;public class RetainModifiedByUserPlugin : IPlugin
-{
-    public void Execute(IServiceProvider serviceProvider)
-    {
-        IPluginExecutionContext context =
-            (IPluginExecutionContext)serviceProvider.GetService(typeof(IPluginExecutionContext));
-
-        #warning todo: defensive programming!
-
-        var preImage = context.PreEntityImages["Image"];
-        var previousUser = (EntityReference)preImage["modifiedby"];
-
-        var updateRequest = new UpdateRequest() { Parameters = context.InputParameters };
-        var modifiedBy = (EntityReference)updateRequest.Target["modifiedby"];
-
-        // if record is modified by the service account
-        if (modifiedBy.Id == context.UserId)
-        {
-            updateRequest.Target["modifiedby"] = previousUser;
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The downside to this approach is that updating user has to be the designated "service account". I also think that changing the expected behaviour of the update functionality is not the best user experience, but once again depending on the requirement your mileage may vary. &lt;/p&gt;
-
-&lt;p&gt;I can also confirm that this solution still works even with the latest version of Dynamics 365 online (&lt;code&gt;Version 1612 (8.2.1.176) (DB 8.2.1.176) online&lt;/code&gt; as of writing this post).&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="http://missdynamicscrm.blogspot.com.au/2014/06/crm-2011-2013-modify-createdon-createdby-modifiedon-modifiedby-using-SDK-CSharp.html"&gt;CRM 2011/ 2013 Modify CreatedOn, CreatedBy, ModifiedOn, and ModifiedBy Using SDK C# ~ Ms. Dynamics CRM&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://blogs.msdn.microsoft.com/emeadcrmsupport/2012/08/01/the-truth-about-override-created-on-or-created-by-for-records-during-data-import/"&gt;The truth about ‘Override Created on or Created by for records during data import’ – EMEA Dynamics CRM Support&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://blogs.msdn.microsoft.com/emeadcrmsupport/2012/08/01/the-truth-about-override-created-on-or-created-by-for-records-during-data-import/"&gt;The truth about ‘Override Created on or Created by for records during data import’ – EMEA Dynamics CRM Support&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>

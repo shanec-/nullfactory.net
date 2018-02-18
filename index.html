@@ -42,6 +42,33 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/02/yaml-builds-and-branches-visual-studio-team-services/">YAML Builds and Branching in Visual Studio Team Services</a></h2>
+      <p class="post-date">18 Feb 2018
+
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/git" title="Git">Git</a>
+</p>
+
+      <p>
+		
+		<p>In my previous post I explored the the concept of treating build as a first class code citizen and how to automatically setup up an YAML based continuous integration (CI) build in Visual Studio Team Services (VSTS). </p>
+
+<p>At the end of that exercise I was curious as to how VSTS handles build definitions when you throw branching into the mix. I could not find much information on the topic, so I thought I might try it out myself.</p>
+
+<h2>Branches and CI Builds</h2>
+
+<ol>
+<li><p>Prepare the project structure place the you build definition <code>.vsts-ci.yml</code> in the root of the repository. Read <a href="/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/">my previous post</a> for setting up an exported CI build.</p></li>
+<li><p>Add an echo step so we can uniquely identify this build branch.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/5_TriggeredEchoMaster.png" alt="Triggered Echo" /></p>
+
+
+		<p><a href="/2018/02/yaml-builds-and-branches-visual-studio-team-services/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/">Build Pipeline as Code - YAML based CI Build for Dynamics 365 Solutions</a></h2>
       <p class="post-date">20 Jan 2018
 
@@ -305,34 +332,6 @@
 
 
 		<p><a href="/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/">Reassignment of Record Causes Attached Notes to Update its ModifiedBy User Field in Dynamics CRM</a></h2>
-      <p class="post-date">04 May 2017
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-</p>
-
-      <p>
-		
-		<p>My colleagues and I ran into a interesting problem the other day; we noticed that on some records all the notes attached to it were being updated seemingly randomly being updated. At first glance I was confused as to why this was happening, but we eventually found the steps to reproduce it: </p>
-
-<ol>
-<li>Create a record <code>Record 1</code> in an entity. This can either be a custom entity or out-of-the-box entity with notes and attachments enabled. </li>
-<li>If the notes control has not been added onto the form, do that now.</li>
-<li>Update it such that it has several notes created by different users.</li>
-<li>Next make sure that <code>Record 1</code> is owned by <code>User A</code>.</li>
-<li>Login as <code>User B</code> and reassign the <code>Record 1</code> to <code>User C</code>.</li>
-</ol>
-
-<p>Now, if we observe the notes control it shows <code>User B</code>'s name along side the date and time stamp. </p>
-
-<p>I was initially thrown off as to why the above actions changed the <code>Created By</code> of the notes, but what I failed to realize was that the annotation control shows the <code>Modified By</code> user and not the <code>Created By</code>.</p>
-
-
-		<p><a href="/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/">Read more...</a></p>
 	  </p>
     </div>
 </div>

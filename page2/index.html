@@ -42,6 +42,34 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/">Reassignment of Record Causes Attached Notes to Update its ModifiedBy User Field in Dynamics CRM</a></h2>
+      <p class="post-date">04 May 2017
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+</p>
+
+      <p>
+		
+		<p>My colleagues and I ran into a interesting problem the other day; we noticed that on some records all the notes attached to it were being updated seemingly randomly being updated. At first glance I was confused as to why this was happening, but we eventually found the steps to reproduce it: </p>
+
+<ol>
+<li>Create a record <code>Record 1</code> in an entity. This can either be a custom entity or out-of-the-box entity with notes and attachments enabled. </li>
+<li>If the notes control has not been added onto the form, do that now.</li>
+<li>Update it such that it has several notes created by different users.</li>
+<li>Next make sure that <code>Record 1</code> is owned by <code>User A</code>.</li>
+<li>Login as <code>User B</code> and reassign the <code>Record 1</code> to <code>User C</code>.</li>
+</ol>
+
+<p>Now, if we observe the notes control it shows <code>User B</code>'s name along side the date and time stamp. </p>
+
+<p>I was initially thrown off as to why the above actions changed the <code>Created By</code> of the notes, but what I failed to realize was that the annotation control shows the <code>Modified By</code> user and not the <code>Created By</code>.</p>
+
+
+		<p><a href="/2017/05/reassignment-of-record-causes-attached-notes-to-update-its-modifiedby-user-field-in-dynamics-crm/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/04/enforce-commit-message-standards-and-generate-changelogs-via-git/">Enforce Commit Message Standards and Generate Changelogs via Git</a></h2>
       <p class="post-date">30 Apr 2017
 
@@ -391,43 +419,6 @@
 
 
 		<p><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/">Scheduling the Uptime of an Azure Virtual Machine</a></h2>
-      <p class="post-date">28 Nov 2016
-
-      | <a href="/category/azure" title="Azure">Azure</a>
-</p>
-
-      <p>
-		
-		<p>In a previous post I setup a <a href="/2016/11/setting-up-a-private-build-agent-in-visual-studio-team-services/">build agent in a private pipeline</a> - hosted within a Azure Virtual Machine (VM). In this one, I try to minimize the uptime of the VM by making it run only during work hours - I require it to start automatically first thing in the morning and then turn itself off at the close of business. In order to achieve this I make use of the <a href="https://azure.microsoft.com/en-au/services/automation/">Azure Automation</a> feature.</p>
-
-<ol>
-<li><p>Let's start off by logging into our Azure account and creating a new <code>Automation Account</code> entry. </p>
-
-<p><img src="/images/posts/AzureVmSchedule/10_Automation.png" alt="Search Automation Account" /></p>
-
-<p><img src="/images/posts/AzureVmSchedule/20_CreateAutomation.png" alt="Create Automation Account" /></p></li>
-<li><p>Provide the required details:</p>
-
-<ul>
-<li><code>Name</code> - Name for the automation account.</li>
-<li><code>Subscription</code> - Azure subscription for this account.</li>
-<li><code>Resource Group</code> - Create or select an existing resource group from the list. </li>
-<li><code>Location</code> - Select an available region from the list.</li>
-<li><code>Create Azure Run As account</code> - Select <code>Yes</code>.</li>
-</ul>
-
-<p><img src="/images/posts/AzureVmSchedule/30_AddAutomationInfo.png" alt="Add Automation Account" /></p></li>
-<li><p>Click the <code>Create</code> button to start provisioning the automation account.</p></li>
-<li><p>Once done, navigate to it's blade via the resource groups and click on the <code>Runbooks</code> widget.</p>
-
-<p><img src="/images/posts/AzureVmSchedule/40_CreateRunbook.png" alt="Create runbook" /></p>
-
-
-		<p><a href="/2016/11/scheduling-the-uptime-of-an-azure-virtual-machine/">Read more...</a></p>
 	  </p>
     </div>
 </div>

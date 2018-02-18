@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Visual Studio Team Services,ALM,Git" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/02/yaml-builds-and-branches-visual-studio-team-services/">YAML Builds and Branching in Visual Studio Team Services</a></h2>
+		<p class="post-date">18 Feb 2018
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/git">Git</a>
+	  </p>
+
+		
+
+		<p>In my previous post I explored the the concept of treating build as a first class code citizen and how to automatically setup up an YAML based continuous integration (CI) build in Visual Studio Team Services (VSTS). </p>
+
+<p>At the end of that exercise I was curious as to how VSTS handles build definitions when you throw branching into the mix. I could not find much information on the topic, so I thought I might try it out myself.</p>
+
+<h2>Branches and CI Builds</h2>
+
+<ol>
+<li><p>Prepare the project structure place the you build definition <code>.vsts-ci.yml</code> in the root of the repository. Read <a href="/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/">my previous post</a> for setting up an exported CI build.</p></li>
+<li><p>Add an echo step so we can uniquely identify this build branch.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/5_TriggeredEchoMaster.png" alt="Triggered Echo" /></p>
+
+<!--excerpt--></li>
+<li><p>Commit changes to the <code>master</code> branch and push it to the remote repository.</p></li>
+<li><p>Verify that VSTS picked up the build and provisioned the CI build as expected. And that it triggered an initial build.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/10_BuildProvisioned.png" alt="Build Provisioned" /></p></li>
+<li><p>Verify that our echo statement worked.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/15_BuildEchoStatement.png" alt="Build Echo Statement" /></p></li>
+<li><p>Now let's update the build trigger to include all feature branches we create. Edit the build definition and navigate to the triggers tab add the following branch filter: <code>features/*</code>. This means that the build would trigger on each of the <code>feature/</code> topic branches.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/20_EditBuildDefinition.png" alt="Edit Build Definition" /></p></li>
+<li><p>Navigate to the triggers tab and add a new branch filter.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/30_AddBranchFilter.png" alt="Add Branch Filter" /></p></li>
+<li><p>Save the changes.</p></li>
+<li><p>Next, create a new topic branch and switch to it. I am going to call it <code>features/complex-feature1</code>.</p>
+
+<p>​    <code>git checkout -b 'features/complex-feature1'</code></p></li>
+<li><p>Push the new branch to the remote server.</p>
+
+<p>​ <code>git push -u origin 'features/complex-feature1'</code></p></li>
+<li><p>Verify that the build definition got triggered against the new branch.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/40_BranchBuildTriggered.png" alt="Branch triggered on New Branch" /></p></li>
+<li><p>Now let's make a change to the <code>.vsts-ci.yml</code>. In order to keep things simple, I am just going to update the echo statement with the branch name.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/50_UpdatedEcho.png" alt="Branch triggered on New Branch" /></p></li>
+<li><p>Once again, let's commit and push the changes to the remote server.</p></li>
+<li><p>Verify that a new build was triggered.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/60_UpdatedBuildTriggered.png" alt="Updated Build Trigger" /></p></li>
+<li><p>Confirm that the branch specific version of the build was executed.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/70_BranchBuild.png" alt="Branch triggered on New Branch" /></p></li>
+</ol>
+
+<p>This confirms that VSTS honors and executes the appropriate build definitions on the appropriate branch. Super cool!</p>
+
+<h2>Final Thoughts</h2>
+
+<p>Branching of build definitions give team members to customize and test changes to the build definition in isolation. It also causes the least amount of disruption to the rest of the team until the changes are ready to merge with main development.</p>
+
+<h3>Path Filters</h3>
+
+<p>It doesn't seem to be possible to setup path filters from the YAML file. That being said, it can still be setup by editing the build definition after the provisioning. </p>
+
+<p>This can be done by navigate to the <code>Triggers</code> tab in the build definition and adding the path filter.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/80_PathFilter.png" alt="Path Filters" /></p>
+
+<p>In the above example, I want to make sure that the CI build does not trigger when I make changes to the support tools. </p>
+
+<h3>Scheduling Builds</h3>
+
+<p>Schedule builds also needs to be setup in a similar fashion to path filters. </p>
+
+<p><img src="/images/posts/YamlBuildBranch/90_BuildSchedule.png" alt="Build Schedule" /></p>
+
+<h3>Multiple Build Definitions and Manual Setup</h3>
+
+<p>What happens when you have multiple <code>yml</code> files within a single repository? I hadn't even considered this until I stumble across it in the documentation. </p>
+
+<p>Consider an example where the project contains your wired up CI build but you'd like to use the second dedicated build for your production releases. </p>
+
+<p>This is certainly possible - if VSTS finds a a file named <code>.vsts-ci.yml</code> in the root path then it attempts to wire it up as a CI <a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#automatically-create-a-yaml-build-definition">build automatically</a>, but the additional builds needs to be <a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#manually-create-a-yaml-build-definition">setup manually</a>. </p>
+
+<ol>
+<li><p>Start by creating a new build definition from within VSTS and choose <code>YAML</code> as the template. Confirm the selection by clicking the <code>Apply</code> button.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/100_NewBuildTemplate.png" alt="Build Schedule" /></p></li>
+<li><p>Next, click the ellipsis button <code>...</code> and select the path to the YAML file and click <code>OK</code> to confirm.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/110_ProdBuild.png" alt="Build Schedule" /></p></li>
+<li><p>Once saved, you can trigger the build as you would any other.</p></li>
+</ol>
+
+<p>I can also confirm that VSTS treats YAML builds as regular builds and they can be used as the source for your release definitions.</p>
+
+<h3>Change Tracking</h3>
+
+<p>So the changes YAML file itself is tracked by git, but does VSTS track the changes we do to the build definition after provisioning? Yes, it does. Under the covers, it looks like VSTS sets up an json-exportable definition of the build. This is not a replication of your <code>YAML</code> build tasks, but rather maintains everything that's <strong>not</strong> configurable in the <code>YAML</code> file.</p>
+
+<p>A history of all changes done to the definition can be viewed and compared from the history tab.</p>
+
+<p><img src="/images/posts/YamlBuildBranch/120_BuildHistory.png" alt="Build History" /></p>
+
+<p>I, for one, have become a fan of YAML builds and can't wait for this feature to come out of preview and become a permanent.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/ci-build-git">Define a CI build process for your Git repo | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml">CI Build in code using YAML | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-gb/vsts/build-release/concepts/definitions/build/variables?tabs=batch">Build variables | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/build/triggers">Build definition triggers | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#automatically-create-a-yaml-build-definition">CI Build in code using YAML - Automatic Build Definition| Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#manually-create-a-yaml-build-definition">CI Build in code using YAML - Manual Build Definition| Microsoft Docs</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
