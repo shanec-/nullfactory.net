@@ -3,9 +3,9 @@ layout: post
 title: generator-nullfactory-xrm 1.6.0 Released!
 category: Dynamics CRM, Dynamics CRM Online, Yeoman, npm, nodejs, generator-nullfactory-xrm
 ---
-![generator-nullfactory-xrm](/images/posts/generator160/hero.png)
-
 I just [released](https://www.npmjs.com/package/generator-nullfactory-xrm) version `1.6.0` of `generator-nullfactory-xrm`. This release includes the following changes:
+
+![generator-nullfactory-xrm](/images/posts/generator160/hero.png)
 
 - V9 Support!
 - Simplified post installation steps with the introduction of `_RunFirst.ps1` script.
