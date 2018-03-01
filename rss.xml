@@ -1,4 +1,68 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/</guid><link>http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/</link><title>YAML Builds and Branching in Visual Studio Team Services</title><description>&lt;p&gt;In my previous post I explored the the concept of treating build as a first class code citizen and how to automatically setup up an YAML based continuous integration (CI) build in Visual Studio Team Services (VSTS). &lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/03/generator-nullfactory-xrm-1-6-0-released/</guid><link>http://nullfactory.net/2018/03/generator-nullfactory-xrm-1-6-0-released/</link><title>generator-nullfactory-xrm 1.6.0 Released!</title><description>&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/generator160/hero.png" alt="generator-nullfactory-xrm" /&gt;&lt;/p&gt;
+
+&lt;p&gt;I just &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;released&lt;/a&gt; version &lt;code&gt;1.6.0&lt;/code&gt; of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. This release includes the following changes:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;V9 Support!&lt;/li&gt;
+&lt;li&gt;Simplified post installation steps with the introduction of &lt;code&gt;_RunFirst.ps1&lt;/code&gt; script.&lt;/li&gt;
+&lt;li&gt;Generate VSTS compatible YML build file:
+&lt;ul&gt;
+&lt;li&gt;Added &lt;code&gt;nullfactory-xrm:cibuild&lt;/code&gt; sub-command.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Generate individual CRM project file post initial scaffolding:
+&lt;ul&gt;
+&lt;li&gt;Added &lt;code&gt;nullfactory-xrm:solution&lt;/code&gt; sub-command. &lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Default generator creates a tailored &lt;code&gt;README.md&lt;/code&gt; file with a summary of changes.&lt;/li&gt;
+&lt;li&gt;Fixed issue with generated workflow template code.&lt;/li&gt;
+&lt;li&gt;CRM SDK assemblies updated:
+&lt;ul&gt;
+&lt;li&gt;Microsoft.CrmSdk.CoreTools &lt;code&gt;8.2.0.4&lt;/code&gt; =&gt; &lt;code&gt;9.0.0.7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Microsoft.CrmSdk.CoreAssemblies &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt; &lt;code&gt;9.0.0.7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Microsoft.CrmSdk.Workflow &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt;  &lt;code&gt;9.0.0.7&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Added (Beta) version of the Online Management API scripts.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description><pubDate>Wed, 28 Feb 2018 13:00:00 Z</pubDate><a10:updated>2018-02-28T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/generator160/hero.png" alt="generator-nullfactory-xrm" /&gt;&lt;/p&gt;
+
+&lt;p&gt;I just &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;released&lt;/a&gt; version &lt;code&gt;1.6.0&lt;/code&gt; of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. This release includes the following changes:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;V9 Support!&lt;/li&gt;
+&lt;li&gt;Simplified post installation steps with the introduction of &lt;code&gt;_RunFirst.ps1&lt;/code&gt; script.&lt;/li&gt;
+&lt;li&gt;Generate VSTS compatible YML build file:
+&lt;ul&gt;
+&lt;li&gt;Added &lt;code&gt;nullfactory-xrm:cibuild&lt;/code&gt; sub-command.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Generate individual CRM project file post initial scaffolding:
+&lt;ul&gt;
+&lt;li&gt;Added &lt;code&gt;nullfactory-xrm:solution&lt;/code&gt; sub-command. &lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Default generator creates a tailored &lt;code&gt;README.md&lt;/code&gt; file with a summary of changes.&lt;/li&gt;
+&lt;li&gt;Fixed issue with generated workflow template code.&lt;/li&gt;
+&lt;li&gt;CRM SDK assemblies updated:
+&lt;ul&gt;
+&lt;li&gt;Microsoft.CrmSdk.CoreTools &lt;code&gt;8.2.0.4&lt;/code&gt; =&gt; &lt;code&gt;9.0.0.7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Microsoft.CrmSdk.CoreAssemblies &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt; &lt;code&gt;9.0.0.7&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Microsoft.CrmSdk.Workflow &lt;code&gt;8.1.0.2&lt;/code&gt; =&gt;  &lt;code&gt;9.0.0.7&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Added (Beta) version of the Online Management API scripts.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;Please feel free to submit any feature requests or issues found to &lt;a href="https://github.com/shanec-/generator-nullfactory-xrm/issues"&gt;https://github.com/shanec-/generator-nullfactory-xrm/issues&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Read more about the Dynamics 365 release strategy and how everything fits together:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/"&gt;Release Strategy for Dynamics CRM - Part 4 - Versioning&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/</guid><link>http://nullfactory.net/2018/02/yaml-builds-and-branches-visual-studio-team-services/</link><title>YAML Builds and Branching in Visual Studio Team Services</title><description>&lt;p&gt;In my previous post I explored the the concept of treating build as a first class code citizen and how to automatically setup up an YAML based continuous integration (CI) build in Visual Studio Team Services (VSTS). &lt;/p&gt;
 
 &lt;p&gt;At the end of that exercise I was curious as to how VSTS handles build definitions when you throw branching into the mix. I could not find much information on the topic, so I thought I might try it out myself.&lt;/p&gt;
 
@@ -891,153 +955,4 @@ return resp
 &lt;h2&gt;Final Thoughts&lt;/h2&gt;
 
 &lt;p&gt;I think the lesson learned here is that even though the benifits of going asynchronous are numerous, it is important to evaluate and implement one that works well with the particular business secenario. &lt;/p&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/</guid><link>http://nullfactory.net/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/</link><title>Gated Check-ins in Visual Studio Team Services using TFSVC and Git</title><description>&lt;p&gt;A continuous integration build ensures that the code within a source control repository can be compiled successfully after a commit. &lt;a href="https://www.thoughtworks.com/continuous-integration"&gt;It is defined as&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Continuous Integration (CI) is a development practice that requires developers to integrate code into a shared repository several times a day. Each check-in is then verified by an automated build, allowing teams to detect problems early. &lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Where as CI builds occur after a commit has been merged into the repository, a gated check-in is a "pessimistic" process that would treat a commit as completed &lt;strong&gt;only&lt;/strong&gt; if the result of it being merged with the repository is a successful build.&lt;/p&gt;
-
-&lt;p&gt;In this post I will try my hand in setting up a gated check-in using Visual Studio Team Services (VSTS). I will start off with TFSVC as the underlying version control system and then replicate the same functionality using Git.&lt;/p&gt;
-
-&lt;h2&gt;Configuring a Gated Check-In Using TFSVC&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Prerequisite: A repository already exists in the remote server with project code checked-in. I will be using one of my demo CRM projects.&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Define the steps for the build that would act as the verification build.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/10_CIBuild.png" alt="Verification Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Navigate to the &lt;code&gt;Triggers&lt;/code&gt; tab within the build definition and enabling the &lt;code&gt;Gated Check-In&lt;/code&gt; trigger.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/20_GatedCheckIn.png" alt="Gated Check-In" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-</description><pubDate>Sun, 14 May 2017 14:00:00 Z</pubDate><a10:updated>2017-05-14T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;A continuous integration build ensures that the code within a source control repository can be compiled successfully after a commit. &lt;a href="https://www.thoughtworks.com/continuous-integration"&gt;It is defined as&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Continuous Integration (CI) is a development practice that requires developers to integrate code into a shared repository several times a day. Each check-in is then verified by an automated build, allowing teams to detect problems early. &lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Where as CI builds occur after a commit has been merged into the repository, a gated check-in is a "pessimistic" process that would treat a commit as completed &lt;strong&gt;only&lt;/strong&gt; if the result of it being merged with the repository is a successful build.&lt;/p&gt;
-
-&lt;p&gt;In this post I will try my hand in setting up a gated check-in using Visual Studio Team Services (VSTS). I will start off with TFSVC as the underlying version control system and then replicate the same functionality using Git.&lt;/p&gt;
-
-&lt;h2&gt;Configuring a Gated Check-In Using TFSVC&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Prerequisite: A repository already exists in the remote server with project code checked-in. I will be using one of my demo CRM projects.&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Define the steps for the build that would act as the verification build.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/10_CIBuild.png" alt="Verification Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Navigate to the &lt;code&gt;Triggers&lt;/code&gt; tab within the build definition and enabling the &lt;code&gt;Gated Check-In&lt;/code&gt; trigger.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/20_GatedCheckIn.png" alt="Gated Check-In" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Leave the &lt;code&gt;Run continuous integration triggers for committed changes&lt;/code&gt; unchecked. If a CI build has been configured and &lt;a href="https://www.visualstudio.com/en-us/docs/build/define/triggers"&gt;this option was checked&lt;/a&gt; then an additional CI build would run after a successful gated check-in build.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Testing Out the Process&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Make a change to the code that causes an compilation error. &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Check-in this code into the version control. Upon clicking the &lt;code&gt;Check In&lt;/code&gt; button within Visual Studio, the following warning dialog appears indicating that the new check-in would be stored as a shelveset until its successful completion: &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/30_GatedWarning.png" alt="Gated Check-In Warning" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Uncheck the &lt;code&gt;Preserve my pending changes locally&lt;/code&gt; option and click on the &lt;code&gt;Build Changes&lt;/code&gt; button to kick off the build.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, navigate to builds definition folder and confirm that the verification build was in fact triggered and that it failed as expected.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/40_GatedCIBuild.png" alt="Failed Gated Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Since we did not opt-in to preserve our check-ins locally, let's retrieve it from the generated shelveset. Back in Visual Studio, navigate to the&lt;code&gt;Team Explorer&lt;/code&gt; window and from the &lt;code&gt;Actions&lt;/code&gt; menu click the &lt;code&gt;Find Shelvesets&lt;/code&gt; &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/50_FindShelveset.png" alt="Failed Gated Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select the last shelveset that failed the build - it would be prefixed with &lt;code&gt;Gated_&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/60_ShelvesetAssigned.png" alt="Shelvesets Assigned" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Fix the compilation errors we introduced previously and check in the changes.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/70_Recheckin.png" alt="Check-in Corrections" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Verify that the new check in and resultant gated-build is successful. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/TfsvcGatedCheckIns/80_BuildSuccess.png" alt="Successful Gated Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Now that the check-in has been merged, get the latest version of the code using Visual Studio.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Configuring a Gated Check-In Using Git&lt;/h2&gt;
-
-&lt;p&gt;Branch Policies are used to implement gated check-ins in git. It is a feature in VSTS that provides rules to govern the activity within a branch and ensure the code quality and change management standards are followed. &lt;/p&gt;
-
-&lt;p&gt;There are many &lt;a href="https://www.visualstudio.com/en-us/docs/git/branch-policies"&gt;policies available&lt;/a&gt; but I am interested only in the ones related to when a pull request is made.&lt;/p&gt;
-
-&lt;p&gt;Given the way that git operates, it cannot be configured to have a gated check-in against every commit as we did with TFSVC. Instead the policy would be enforced during the pull requests between the topic branch to the &lt;code&gt;master&lt;/code&gt; branch.&lt;/p&gt;
-
-&lt;p&gt;The following steps describe the process of setting up a gated check-in on the &lt;code&gt;master&lt;/code&gt; branch:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Prerequisite: A repository already exists in the remote server with project code checked-in. I will be using one of my demo CRM projects.&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Start off by defining a build that would act as the verification.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/05_verificationbuild.png" alt="Verification Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Navigate to the repository.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Click on the &lt;code&gt;Branches&lt;/code&gt; menu.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click on the ellipsis against the &lt;code&gt;master&lt;/code&gt; branch and on the menu and select &lt;code&gt;Branch Policies&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/10_updatebranch.png" alt="Update Branch" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Under the &lt;code&gt;Automatically build pull requests&lt;/code&gt; menu check the &lt;code&gt;When team members create or update a pull request into the master branch, queue this build:&lt;/code&gt; option.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Then select the build that you want to use to perform the verification.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/20_setupbranchpolicy.png" alt="Branch Policies" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Click &lt;code&gt;Save Changes&lt;/code&gt; button to confirm the changes.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3&gt;Testing out the Policy&lt;/h3&gt;
-
-&lt;p&gt;Now let's test our branch policy:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;On the development machine, create a new local branch called &lt;code&gt;development&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Commit a change that causes a compilation error. &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Push the branch and changes to the remote repository.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/30_devbranch.png" alt="Development Branch" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, log into VSTS and navigate to the &lt;code&gt;Branches&lt;/code&gt; menu.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Click on the ellipsis against the &lt;code&gt;development&lt;/code&gt; branch to open up the context menu. &lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select the &lt;code&gt;New pull request&lt;/code&gt; option.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/40_newpullrequest.png" alt="New pull request" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Provide a meaningful &lt;code&gt;Title&lt;/code&gt; and &lt;code&gt;Description&lt;/code&gt; and click on the &lt;code&gt;Create&lt;/code&gt; button.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/50_pullrequestdialog.png" alt="New pull request" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Confirm that a new verification build has been queued for the pull request.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/60_verifybuild.png" alt="Verification Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Confirm that this build failed.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/70_confirmbuildfailed.png" alt="Confirm Build Failure" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Now let's fix the code, commit and push the change in to the repository.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/80_fixbuild.png" alt="Fix the build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Verify that the build policy has detected the new commit and automatically associated it with the pull request. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Confirm that a new build was triggered as a result and that its successful. The successful build completes the pull request.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/GitGatedCheckIns/90_completedpullrequest.png" alt="Complete Pull Request" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://www.thoughtworks.com/continuous-integration"&gt;Continuous integration | ThoughtWorks&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/define/triggers"&gt;Build definition triggers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/tfvc/check-folder-controlled-by-gated-check-build-process"&gt;Check in to a folder that is controlled by a gated check-in build process&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://channel9.msdn.com/Events/Visual-Studio/Visual-Studio-2015-Final-Release-Event/Git-Branches-and-Policies-in-Team-Foundation-Server-2015"&gt;Git Branches and Policies in Team Foundation Server 2015 | Visual Studio 2015 Final Release Event | Channel 9&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://blogs.msdn.microsoft.com/buckh/2016/03/20/gated-checkin-for-git-using-branch-policies-to-run-a-build-in-vsts-and-tfs/"&gt;Gated checkin for Git: Using Branch Policies to run a build in VSTS and TFS – Buck Hodges&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/git/branch-policies"&gt;Protect your Git branches with policies | Team Services &amp;amp; TFS&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 </a10:content></item></channel></rss>
