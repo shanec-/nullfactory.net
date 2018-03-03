@@ -42,6 +42,50 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/03/generator-nullfactory-xrm-1-6-0-released/">generator-nullfactory-xrm 1.6.0 Released!</a></h2>
+      <p class="post-date">01 Mar 2018
+
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/yeoman" title="Yeoman">Yeoman</a>
+      | <a href="/category/npm" title="npm">npm</a>
+      | <a href="/category/nodejs" title="nodejs">nodejs</a>
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+</p>
+
+      <p>
+		
+		<p>I just <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">released</a> version <code>1.6.0</code> of <code>generator-nullfactory-xrm</code>. This release includes the following changes:</p>
+
+<p><img src="/images/posts/generator160/hero.png" alt="generator-nullfactory-xrm" /></p>
+
+<ul>
+<li>V9 Support!</li>
+<li>Simplified post installation steps with the introduction of <code>_RunFirst.ps1</code> script.</li>
+<li>Generate VSTS compatible YML build file:
+<ul>
+<li>Added <code>nullfactory-xrm:cibuild</code> sub-command.</li>
+</ul></li>
+<li>Generate individual CRM project file post initial scaffolding:
+<ul>
+<li>Added <code>nullfactory-xrm:solution</code> sub-command. </li>
+</ul></li>
+<li>Default generator creates a tailored <code>README.md</code> file with a summary of changes.</li>
+<li>Fixed issue with generated workflow template code.</li>
+<li>CRM SDK assemblies updated:
+<ul>
+<li>Microsoft.CrmSdk.CoreTools <code>8.2.0.4</code> => <code>9.0.0.7</code></li>
+<li>Microsoft.CrmSdk.CoreAssemblies <code>8.1.0.2</code> => <code>9.0.0.7</code></li>
+<li>Microsoft.CrmSdk.Workflow <code>8.1.0.2</code> =>  <code>9.0.0.7</code></li>
+</ul></li>
+<li>Added (Beta) version of the Online Management API scripts.</li>
+</ul>
+
+
+		<p><a href="/2018/03/generator-nullfactory-xrm-1-6-0-released/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/02/yaml-builds-and-branches-visual-studio-team-services/">YAML Builds and Branching in Visual Studio Team Services</a></h2>
       <p class="post-date">18 Feb 2018
 
@@ -293,45 +337,6 @@
 
 
 		<p><a href="/2017/06/resolving-race-condition-within-dynamics-365-process/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/">Gated Check-ins in Visual Studio Team Services using TFSVC and Git</a></h2>
-      <p class="post-date">15 May 2017
-
-      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
-      | <a href="/category/tfsvc" title="TFSVC">TFSVC</a>
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/git" title="Git">Git</a>
-</p>
-
-      <p>
-		
-		<p>A continuous integration build ensures that the code within a source control repository can be compiled successfully after a commit. <a href="https://www.thoughtworks.com/continuous-integration">It is defined as</a>:</p>
-
-<blockquote>
-  <p>Continuous Integration (CI) is a development practice that requires developers to integrate code into a shared repository several times a day. Each check-in is then verified by an automated build, allowing teams to detect problems early. </p>
-</blockquote>
-
-<p>Where as CI builds occur after a commit has been merged into the repository, a gated check-in is a "pessimistic" process that would treat a commit as completed <strong>only</strong> if the result of it being merged with the repository is a successful build.</p>
-
-<p>In this post I will try my hand in setting up a gated check-in using Visual Studio Team Services (VSTS). I will start off with TFSVC as the underlying version control system and then replicate the same functionality using Git.</p>
-
-<h2>Configuring a Gated Check-In Using TFSVC</h2>
-
-<p><em>Prerequisite: A repository already exists in the remote server with project code checked-in. I will be using one of my demo CRM projects.</em></p>
-
-<ol>
-<li><p>Define the steps for the build that would act as the verification build.</p>
-
-<p><img src="/images/posts/TfsvcGatedCheckIns/10_CIBuild.png" alt="Verification Build" /></p></li>
-<li><p>Navigate to the <code>Triggers</code> tab within the build definition and enabling the <code>Gated Check-In</code> trigger.</p>
-
-<p><img src="/images/posts/TfsvcGatedCheckIns/20_GatedCheckIn.png" alt="Gated Check-In" /></p></li>
-</ol>
-
-
-		<p><a href="/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/">Read more...</a></p>
 	  </p>
     </div>
 </div>
