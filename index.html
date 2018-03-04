@@ -42,6 +42,45 @@
 </header>
  <div class="listing">
     <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/03/yaml-build-support-for-generator-nullfactory-xrm/">YAML Build Support for generator-nullfactory-xrm</a></h2>
+      <p class="post-date">03 Mar 2018
+
+      | <a href="/category/generator-nullfactory-xrm" title="generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
+      | <a href="/category/alm" title="ALM">ALM</a>
+      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
+      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
+      | <a href="/category/yeoman" title="Yeoman">Yeoman</a>
+      | <a href="/category/npm" title="npm">npm</a>
+      | <a href="/category/nodejs" title="nodejs">nodejs</a>
+</p>
+
+      <p>
+		
+		<p>If you've read my previous posts on the topic, you might have already guessed that I am a big fan of maintaining builds as code artefacts. I was super excited when the Visual Studio Team Services (VSTS) team announced YAML support and I knew right then that this had to be part of <code>generator-nullfactory-xrm</code>. </p>
+
+<p>With version <code>1.6.0</code>, I've added the ability to generate tailored YAML build definitions into your Dynamics 365 projects. What this means is that you get rich CI build support right out of the gate! No more excuses for not having a CI build in your project!</p>
+
+<p><img src="/images/posts/YamlBuildGeneratorSupport/hero.jpg" alt="CI Builds for Everyone" /></p>
+
+<p>The option to generate a CI build is defined as a sub-generator. This is intentional as I didn't want to automatically assume that everyone would be using VSTS as their source control.</p>
+
+<p>Here's the quick rundown of the steps necessary to get things up and running. What we're aiming for is a layered approach:</p>
+
+<ol>
+<li>First generate the default project structure.</li>
+<li>Next, generate the YML file using a sub-generator.</li>
+<li>Push changes to remote VSTS <code>git</code> repository.</li>
+<li>Verify that VSTS provisioned the YML file as the CI build.</li>
+<li>... </li>
+<li>Profit!</li>
+</ol>
+
+
+		<p><a href="/2018/03/yaml-build-support-for-generator-nullfactory-xrm/">Read more...</a></p>
+	  </p>
+    </div>
+    <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/03/generator-nullfactory-xrm-1-6-0-released/">generator-nullfactory-xrm 1.6.0 Released!</a></h2>
       <p class="post-date">01 Mar 2018
 
@@ -306,37 +345,6 @@
 
 
 		<p><a href="/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/resolving-race-condition-within-dynamics-365-process/">Resolving a Race Condition Within a Dynamics 365 Process</a></h2>
-      <p class="post-date">09 Jun 2017
-
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-</p>
-
-      <p>
-		
-		<p>I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.</p>
-
-<p><img src="/images/posts/AsyncWorkflow/10_singleworkflow.png" alt="Single Workflow" /> </p>
-
-<p><img src="/images/posts/AsyncWorkflow/20_singleworkflow_trigger.png" alt="Workflow Triggger" /></p>
-
-<p>If we take the above example, it can be replicated easily:</p>
-
-<ol>
-<li>Create a new record where <code>Delivery Status</code> is <code>Current</code>.</li>
-<li>Immediately update the record to <code>Pending</code>.</li>
-</ol>
-
-<p>Navigate to the background processes and ensure that the workflow was executed twice, once on the create and then again on the update. If you performed the update soon enough, you notice that both instances satisfied the citieria and the custom activity invoked.</p>
-
-<p>This behaviour is by design - when an async workflow is triggered it neither guarantees the immediate execution of the process nor the state of the record at the time it was queued. This means that the workflow would work against the latest version of the record at the time of execution.</p>
-
-
-		<p><a href="/2017/06/resolving-race-condition-within-dynamics-365-process/">Read more...</a></p>
 	  </p>
     </div>
 </div>

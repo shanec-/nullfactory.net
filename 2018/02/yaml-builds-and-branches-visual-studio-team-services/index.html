@@ -98,7 +98,7 @@
 
 <h2>Final Thoughts</h2>
 
-<p>Branching of build definitions give team members to customize and test changes to the build definition in isolation. It also causes the least amount of disruption to the rest of the team until the changes are ready to merge with main development.</p>
+<p>The ability to branch build definitions gives team members the ability to customize and test build changes in isolation. It also minimizes the disruption to on going development until the changes are ready to be merged and shared with the rest of the team.</p>
 
 <h3>Path Filters</h3>
 
@@ -120,7 +120,7 @@
 
 <p>What happens when you have multiple <code>yml</code> files within a single repository? I hadn't even considered this until I stumble across it in the documentation. </p>
 
-<p>Consider an example where the project contains your wired up CI build but you'd like to use the second dedicated build for your production releases. </p>
+<p>Consider an example where the project already contains your wired up CI build but you'd like to use the second dedicated build for your production releases. </p>
 
 <p>This is certainly possible - if VSTS finds a a file named <code>.vsts-ci.yml</code> in the root path then it attempts to wire it up as a CI <a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#automatically-create-a-yaml-build-definition">build automatically</a>, but the additional builds needs to be <a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#manually-create-a-yaml-build-definition">setup manually</a>. </p>
 
@@ -138,7 +138,7 @@
 
 <h3>Change Tracking</h3>
 
-<p>So the changes YAML file itself is tracked by git, but does VSTS track the changes we do to the build definition after provisioning? Yes, it does. Under the covers, it looks like VSTS sets up an json-exportable definition of the build. This is not a replication of your <code>YAML</code> build tasks, but rather maintains everything that's <strong>not</strong> configurable in the <code>YAML</code> file.</p>
+<p>So the changes YAML file itself is tracked by <code>git</code>, but does VSTS track the changes we do to the build definition after provisioning? Yes, it does. Under the covers, it looks like VSTS sets up an json-exportable definition of the build. This is not a replication of your <code>YAML</code> build tasks, but rather maintains everything thats <strong>not</strong> configurable in the <code>YAML</code> file.</p>
 
 <p>A history of all changes done to the definition can be viewed and compared from the history tab.</p>
 

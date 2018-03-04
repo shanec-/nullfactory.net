@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="generator-nullfactory-xrm,Visual Studio Team Services,ALM,Dynamics CRM,Dynamics CRM Online,Yeoman,npm,nodejs" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" Feed">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link rel="canonical" href="http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/" />
+</head>
+<body>
+  <!-- header -->
+
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>the nullfactory</a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span class="mega-octicon octicon-book" style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+
+  <!-- header -->
+
+  <div class="container">
+	
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/03/yaml-build-support-for-generator-nullfactory-xrm/">YAML Build Support for generator-nullfactory-xrm</a></h2>
+		<p class="post-date">03 Mar 2018
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+				| <a href="/category/visual-studio-team-services">Visual Studio Team Services</a>
+				| <a href="/category/alm">ALM</a>
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/yeoman">Yeoman</a>
+				| <a href="/category/npm">npm</a>
+				| <a href="/category/nodejs">nodejs</a>
+	  </p>
+
+		
+
+		<p>If you've read my previous posts on the topic, you might have already guessed that I am a big fan of maintaining builds as code artefacts. I was super excited when the Visual Studio Team Services (VSTS) team announced YAML support and I knew right then that this had to be part of <code>generator-nullfactory-xrm</code>. </p>
+
+<p>With version <code>1.6.0</code>, I've added the ability to generate tailored YAML build definitions into your Dynamics 365 projects. What this means is that you get rich CI build support right out of the gate! No more excuses for not having a CI build in your project!</p>
+
+<p><img src="/images/posts/YamlBuildGeneratorSupport/hero.jpg" alt="CI Builds for Everyone" /></p>
+
+<p>The option to generate a CI build is defined as a sub-generator. This is intentional as I didn't want to automatically assume that everyone would be using VSTS as their source control.</p>
+
+<p>Here's the quick rundown of the steps necessary to get things up and running. What we're aiming for is a layered approach:</p>
+
+<ol>
+<li>First generate the default project structure.</li>
+<li>Next, generate the YML file using a sub-generator.</li>
+<li>Push changes to remote VSTS <code>git</code> repository.</li>
+<li>Verify that VSTS provisioned the YML file as the CI build.</li>
+<li>... </li>
+<li>Profit!</li>
+</ol>
+
+<!--excerpt-->
+
+<h2>Prerequisites</h2>
+
+<ol>
+<li><p>Opt-in to the preview build feature in VSTS. <a href="/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/">Read my previous post</a> on how to do this.</p>
+
+<p><em>Fair warning that as of writing this post, the YAML builds feature within VSTS is still in preview. While very unlikely, there's always the possibility that things might break due to future change.</em></p></li>
+<li><p>A <code>git</code> based repository in VSTS - YAML builds only work with git repositories.</p></li>
+</ol>
+
+<h2>The Setup</h2>
+
+<p>Assumption that nullfactory-xrm generator and <a href="http://yeoman.io/">Yeoman</a> itself has alredy been installed on the client computer being worked on and that a Dynamics CRM solution is ready to be synced.</p>
+
+<ol>
+<li><p>Setup the project using <code>generator-nullfactory-xrm</code> using the default generator. <a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Read this post</a> for more detail steps.</p>
+
+<pre><code>yo nullfactory-xrm
+</code></pre>
+
+<p><img src="/images/posts/YamlBuildGeneratorSupport/10_defaultgenerator.png" alt="Default Generator" /></p></li>
+<li><p>Next, run the generator once more from the same folder location, and this time let's use the <code>cibuild</code> sub-generator:</p>
+
+<pre><code>yo nullfactory-xrm:cibuild
+</code></pre>
+
+<p>Provide the same solution name you provided in step 1. And choose <code>Visual Studio Team Services</code> as the type of source control being used.</p>
+
+<p><img src="/images/posts/YamlBuildGeneratorSupport/20_generatecibuild.png" alt="Default Generator" /></p></li>
+</ol>
+
+<p>This would have generated a file called <code>.vsts-ci.yml</code>. And that's it - once your changes are checked in and pushed to VSTS, the YML file would be automatically provisioned as the default CI build.</p>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: YAML Build Support for generator-nullfactory-xrm
-category: generator-nullfactory-xrm, VSTS, ALM, Dynamics CRM, Dynamics CRM Online, Yeoman, npm, nodejs
+category: generator-nullfactory-xrm, Visual Studio Team Services, ALM, Dynamics CRM, Dynamics CRM Online, Yeoman, npm, nodejs
 ---
 
 If you've read my previous posts on the topic, you might have already guessed that I am a big fan of maintaining builds as code artefacts. I was super excited when the Visual Studio Team Services (VSTS) team announced YAML support and I knew right then that this had to be part of `generator-nullfactory-xrm`. 

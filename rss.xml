@@ -1,4 +1,75 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/03/generator-nullfactory-xrm-1-6-0-released/</guid><link>http://nullfactory.net/2018/03/generator-nullfactory-xrm-1-6-0-released/</link><title>generator-nullfactory-xrm 1.6.0 Released!</title><description>&lt;p&gt;I just &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;released&lt;/a&gt; version &lt;code&gt;1.6.0&lt;/code&gt; of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. This release includes the following changes:&lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/</guid><link>http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/</link><title>YAML Build Support for generator-nullfactory-xrm</title><description>&lt;p&gt;If you've read my previous posts on the topic, you might have already guessed that I am a big fan of maintaining builds as code artefacts. I was super excited when the Visual Studio Team Services (VSTS) team announced YAML support and I knew right then that this had to be part of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;With version &lt;code&gt;1.6.0&lt;/code&gt;, I've added the ability to generate tailored YAML build definitions into your Dynamics 365 projects. What this means is that you get rich CI build support right out of the gate! No more excuses for not having a CI build in your project!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildGeneratorSupport/hero.jpg" alt="CI Builds for Everyone" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The option to generate a CI build is defined as a sub-generator. This is intentional as I didn't want to automatically assume that everyone would be using VSTS as their source control.&lt;/p&gt;
+
+&lt;p&gt;Here's the quick rundown of the steps necessary to get things up and running. What we're aiming for is a layered approach:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;First generate the default project structure.&lt;/li&gt;
+&lt;li&gt;Next, generate the YML file using a sub-generator.&lt;/li&gt;
+&lt;li&gt;Push changes to remote VSTS &lt;code&gt;git&lt;/code&gt; repository.&lt;/li&gt;
+&lt;li&gt;Verify that VSTS provisioned the YML file as the CI build.&lt;/li&gt;
+&lt;li&gt;... &lt;/li&gt;
+&lt;li&gt;Profit!&lt;/li&gt;
+&lt;/ol&gt;
+
+</description><pubDate>Fri, 02 Mar 2018 13:00:00 Z</pubDate><a10:updated>2018-03-02T13:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;If you've read my previous posts on the topic, you might have already guessed that I am a big fan of maintaining builds as code artefacts. I was super excited when the Visual Studio Team Services (VSTS) team announced YAML support and I knew right then that this had to be part of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;With version &lt;code&gt;1.6.0&lt;/code&gt;, I've added the ability to generate tailored YAML build definitions into your Dynamics 365 projects. What this means is that you get rich CI build support right out of the gate! No more excuses for not having a CI build in your project!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildGeneratorSupport/hero.jpg" alt="CI Builds for Everyone" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The option to generate a CI build is defined as a sub-generator. This is intentional as I didn't want to automatically assume that everyone would be using VSTS as their source control.&lt;/p&gt;
+
+&lt;p&gt;Here's the quick rundown of the steps necessary to get things up and running. What we're aiming for is a layered approach:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;First generate the default project structure.&lt;/li&gt;
+&lt;li&gt;Next, generate the YML file using a sub-generator.&lt;/li&gt;
+&lt;li&gt;Push changes to remote VSTS &lt;code&gt;git&lt;/code&gt; repository.&lt;/li&gt;
+&lt;li&gt;Verify that VSTS provisioned the YML file as the CI build.&lt;/li&gt;
+&lt;li&gt;... &lt;/li&gt;
+&lt;li&gt;Profit!&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Opt-in to the preview build feature in VSTS. &lt;a href="http://nullfactory.net/2018/01/build-pipeline-as-code-yaml-based-ci-build-for-dynamics-365-solutions/"&gt;Read my previous post&lt;/a&gt; on how to do this.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Fair warning that as of writing this post, the YAML builds feature within VSTS is still in preview. While very unlikely, there's always the possibility that things might break due to future change.&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A &lt;code&gt;git&lt;/code&gt; based repository in VSTS - YAML builds only work with git repositories.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;The Setup&lt;/h2&gt;
+
+&lt;p&gt;Assumption that nullfactory-xrm generator and &lt;a href="http://yeoman.io/"&gt;Yeoman&lt;/a&gt; itself has alredy been installed on the client computer being worked on and that a Dynamics CRM solution is ready to be synced.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Setup the project using &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt; using the default generator. &lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Read this post&lt;/a&gt; for more detail steps.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yo nullfactory-xrm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildGeneratorSupport/10_defaultgenerator.png" alt="Default Generator" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Next, run the generator once more from the same folder location, and this time let's use the &lt;code&gt;cibuild&lt;/code&gt; sub-generator:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yo nullfactory-xrm:cibuild
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Provide the same solution name you provided in step 1. And choose &lt;code&gt;Visual Studio Team Services&lt;/code&gt; as the type of source control being used.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/YamlBuildGeneratorSupport/20_generatecibuild.png" alt="Default Generator" /&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This would have generated a file called &lt;code&gt;.vsts-ci.yml&lt;/code&gt;. And that's it - once your changes are checked in and pushed to VSTS, the YML file would be automatically provisioned as the default CI build.&lt;/p&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2018/03/generator-nullfactory-xrm-1-6-0-released/</guid><link>http://nullfactory.net/2018/03/generator-nullfactory-xrm-1-6-0-released/</link><title>generator-nullfactory-xrm 1.6.0 Released!</title><description>&lt;p&gt;I just &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;released&lt;/a&gt; version &lt;code&gt;1.6.0&lt;/code&gt; of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. This release includes the following changes:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/generator160/hero.png" alt="generator-nullfactory-xrm" /&gt;&lt;/p&gt;
 
@@ -126,7 +197,7 @@
 
 &lt;h2&gt;Final Thoughts&lt;/h2&gt;
 
-&lt;p&gt;Branching of build definitions give team members to customize and test changes to the build definition in isolation. It also causes the least amount of disruption to the rest of the team until the changes are ready to merge with main development.&lt;/p&gt;
+&lt;p&gt;The ability to branch build definitions gives team members the ability to customize and test build changes in isolation. It also minimizes the disruption to on going development until the changes are ready to be merged and shared with the rest of the team.&lt;/p&gt;
 
 &lt;h3&gt;Path Filters&lt;/h3&gt;
 
@@ -148,7 +219,7 @@
 
 &lt;p&gt;What happens when you have multiple &lt;code&gt;yml&lt;/code&gt; files within a single repository? I hadn't even considered this until I stumble across it in the documentation. &lt;/p&gt;
 
-&lt;p&gt;Consider an example where the project contains your wired up CI build but you'd like to use the second dedicated build for your production releases. &lt;/p&gt;
+&lt;p&gt;Consider an example where the project already contains your wired up CI build but you'd like to use the second dedicated build for your production releases. &lt;/p&gt;
 
 &lt;p&gt;This is certainly possible - if VSTS finds a a file named &lt;code&gt;.vsts-ci.yml&lt;/code&gt; in the root path then it attempts to wire it up as a CI &lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#automatically-create-a-yaml-build-definition"&gt;build automatically&lt;/a&gt;, but the additional builds needs to be &lt;a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/build-yaml#manually-create-a-yaml-build-definition"&gt;setup manually&lt;/a&gt;. &lt;/p&gt;
 
@@ -166,7 +237,7 @@
 
 &lt;h3&gt;Change Tracking&lt;/h3&gt;
 
-&lt;p&gt;So the changes YAML file itself is tracked by git, but does VSTS track the changes we do to the build definition after provisioning? Yes, it does. Under the covers, it looks like VSTS sets up an json-exportable definition of the build. This is not a replication of your &lt;code&gt;YAML&lt;/code&gt; build tasks, but rather maintains everything that's &lt;strong&gt;not&lt;/strong&gt; configurable in the &lt;code&gt;YAML&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;So the changes YAML file itself is tracked by &lt;code&gt;git&lt;/code&gt;, but does VSTS track the changes we do to the build definition after provisioning? Yes, it does. Under the covers, it looks like VSTS sets up an json-exportable definition of the build. This is not a replication of your &lt;code&gt;YAML&lt;/code&gt; build tasks, but rather maintains everything thats &lt;strong&gt;not&lt;/strong&gt; configurable in the &lt;code&gt;YAML&lt;/code&gt; file.&lt;/p&gt;
 
 &lt;p&gt;A history of all changes done to the definition can be viewed and compared from the history tab.&lt;/p&gt;
 
@@ -906,53 +977,4 @@ return resp
 &lt;li&gt;&lt;a href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers"&gt;GitHub - DotNetAnalyzers/StyleCopAnalyzers: An implementation of StyleCop rules using the .NET Compiler Platform&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://blog.codinghorror.com/the-broken-window-theory/"&gt;The Broken Window Theory&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/</guid><link>http://nullfactory.net/2017/06/resolving-race-condition-within-dynamics-365-process/</link><title>Resolving a Race Condition Within a Dynamics 365 Process</title><description>&lt;p&gt;I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/10_singleworkflow.png" alt="Single Workflow" /&gt; &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/20_singleworkflow_trigger.png" alt="Workflow Triggger" /&gt;&lt;/p&gt;
-
-&lt;p&gt;If we take the above example, it can be replicated easily:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a new record where &lt;code&gt;Delivery Status&lt;/code&gt; is &lt;code&gt;Current&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Immediately update the record to &lt;code&gt;Pending&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Navigate to the background processes and ensure that the workflow was executed twice, once on the create and then again on the update. If you performed the update soon enough, you notice that both instances satisfied the citieria and the custom activity invoked.&lt;/p&gt;
-
-&lt;p&gt;This behaviour is by design - when an async workflow is triggered it neither guarantees the immediate execution of the process nor the state of the record at the time it was queued. This means that the workflow would work against the latest version of the record at the time of execution.&lt;/p&gt;
-
-</description><pubDate>Thu, 08 Jun 2017 14:00:00 Z</pubDate><a10:updated>2017-06-08T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;I was attempting to diagnose and issue for a client the other day. It revolves around a single workflow that is being executed on both the create and update event of a field. And within this workflow, a custom activity executed if the field matches a certain condition. The problem was that the custom activity was being executed twice when it was only expected to run once.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/10_singleworkflow.png" alt="Single Workflow" /&gt; &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/20_singleworkflow_trigger.png" alt="Workflow Triggger" /&gt;&lt;/p&gt;
-
-&lt;p&gt;If we take the above example, it can be replicated easily:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a new record where &lt;code&gt;Delivery Status&lt;/code&gt; is &lt;code&gt;Current&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Immediately update the record to &lt;code&gt;Pending&lt;/code&gt;.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Navigate to the background processes and ensure that the workflow was executed twice, once on the create and then again on the update. If you performed the update soon enough, you notice that both instances satisfied the citieria and the custom activity invoked.&lt;/p&gt;
-
-&lt;p&gt;This behaviour is by design - when an async workflow is triggered it neither guarantees the immediate execution of the process nor the state of the record at the time it was queued. This means that the workflow would work against the latest version of the record at the time of execution.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;The solution was to break the workflow process into two different parent-child workflows. The parent workflow evaluates the critiera and execute the child workflow, and the child workflow invokes the custom workflow activity. In order to avoid the same race condition we encountered earlier, the parent workflow is set to run &lt;code&gt;synchronously&lt;/code&gt;. The child workflow will continue to be executed asynchronously.  &lt;/p&gt;
-
-&lt;p&gt;The new structure of the workflow:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/30_SplitSyncParent.png" alt="Split Synchronized Parent" /&gt; &lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/AsyncWorkflow/40_SplitAsyncChild.png" alt="Split Asynchronized Child" /&gt; &lt;/p&gt;
-
-&lt;h2&gt;Final Thoughts&lt;/h2&gt;
-
-&lt;p&gt;I think the lesson learned here is that even though the benifits of going asynchronous are numerous, it is important to evaluate and implement one that works well with the particular business secenario. &lt;/p&gt;
 </a10:content></item></channel></rss>
