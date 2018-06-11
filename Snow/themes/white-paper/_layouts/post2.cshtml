@@ -1,0 +1,28 @@
+@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Snow.ViewModels.PostViewModel>
+@using System.Collections.Generic
+@{
+  Layout = "default.cshtml";
+}
+<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="@Model.Url">@Model.Title</a></h2>
+		<p class="post-date">@Model.PostDate.ToString("dd MMM yyyy")
+		    @foreach (var category in Model.Categories) {
+				@:| <a href="/category/@category.Url">@category.Name</a>
+			}
+	  </p>
+
+		@Html.RenderSeries()
+
+		@Html.Raw(Model.PostContent)
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		@Html.RenderDisqusComments("thenullfactory")
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>

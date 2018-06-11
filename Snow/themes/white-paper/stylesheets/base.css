@@ -32,7 +32,7 @@ a img{ border:none; }
 ----------------------------------------------------------------------------*/
 
 body {
-  font-family: "Lato", Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 16px;
   line-height: 1.4;
   color: #666;
@@ -62,6 +62,10 @@ hr {
 hr:before {
   content: '\2022 \2022 \2022 \2022 \2022';
 }
+.logo {
+  width: 150px;
+  vertical-align: bottom;
+}
 
 .container {
   margin: 0 auto;
@@ -83,17 +87,19 @@ header {
 }
 
 ul.nav {
-  background-color: #667870;
+  background-color: #bbbbbba8;
+  border:#27282285;
+  border-style: dashed;
+  border-width: 0px 0px 1px 0px;
   margin: 0;
   padding: 12px 0 10px 0;
   list-style-type: none;
-  line-height: 30px;
 }
 ul.nav li {
-  margin: 0 20px;
+  margin: 0px 5px 0px 5px;
   display: inline-block;
-  /*text-transform: uppercase;*/
-  font-size: 18px;
+  text-transform: uppercase;
+  font-size: 12px;
   font-weight: 300;
 }
 @media only screen and (max-width: 520px) {
@@ -113,9 +119,9 @@ ul.nav li {
   }
 }
 ul.nav li a {
-  color: white;
+  color: #00000070;
   text-decoration: none;
-  font-weight: lighter;
+  font-weight: 600;
 }
 
 ul.nav li.logo {
@@ -152,14 +158,16 @@ ul.nav li.logo a {
 }
 
 .listing .post h2 {
+  color:#565656;
   margin: 0 0 -20px 0;
-  font-size: 30px;
-  border: none;
+  font-size: 18px;
+  font-weight:600;
 }
 
 .listing .post h2 a {
   color: #000;
-  font-weight:bold;
+  font-family:'Open Sans', sans-serif;
+  font-weight:700;
   font-size:20px;
   text-decoration: none;
 }
@@ -170,7 +178,6 @@ ul.nav li.logo a {
 }
 
 .listing .post.other {
-  color: #666;
   /*border-left: 1px solid #ddd;*/
 }
 .listing .post.other h2 {
@@ -179,8 +186,6 @@ ul.nav li.logo a {
   margin-left:0px;
   margin-bottom:-12px;
 
-  font-size: 19px;
-  font-weight: lighter;
 }
 
 .listing .post.other h2 a {
