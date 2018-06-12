@@ -64,7 +64,7 @@ hr:before {
 }
 .logo {
   font-family: 'Bungee', cursive;
-  font-size: 22px;
+  font-size: 30px;
   color: orangered;
   text-shadow: -1px 0 #ffffff99, 0 1px #ffffff99, 1px 0 #ffffff99, 0 -1px #ffffff99;
 }
@@ -94,7 +94,7 @@ ul.nav {
   border-style: dashed;
   border-width: 0px 0px 1px 0px;
   margin: 0;
-  padding: 12px 0 10px 0;
+  padding: 4px 0 4px 0;
   list-style-type: none;
 }
 ul.nav li {
