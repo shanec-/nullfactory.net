@@ -63,8 +63,10 @@ hr:before {
   content: '\2022 \2022 \2022 \2022 \2022';
 }
 .logo {
-  width: 150px;
-  vertical-align: bottom;
+  font-family: 'Bungee', cursive;
+  font-size: 22px;
+  color: orangered;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .container {
