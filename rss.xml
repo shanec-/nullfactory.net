@@ -1,4 +1,58 @@
-<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/</guid><link>http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/</link><title>YAML Build Support for generator-nullfactory-xrm</title><description>&lt;p&gt;If you've read my previous posts on the topic, you might have already guessed that I am a big fan of maintaining builds as code artefacts. I was super excited when the Visual Studio Team Services (VSTS) team announced YAML support and I knew right then that this had to be part of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. &lt;/p&gt;
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0"><channel><title>nullfactory.net</title><link>http://nullfactory.net/rss.xml</link><description>nullfactory.net</description><item><guid isPermaLink="true">http://nullfactory.net/2018/06/generator-nullfactory-xrm-1-7-0-released/</guid><link>http://nullfactory.net/2018/06/generator-nullfactory-xrm-1-7-0-released/</link><title>generator-nullfactory-xrm 1.7.0 Released!</title><description>&lt;p&gt;I just &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;released&lt;/a&gt; version &lt;code&gt;1.7.0&lt;/code&gt; of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. This release includes a lot of defect fixes, dependency version upgrades and refactored code.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Feature #37: Added ability to upgrade tooling PowerShell scripts via the generator.
+&lt;ul&gt;
+&lt;li&gt;Run &lt;code&gt;yo nullfactory-xrml:tooling&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Feature #12: The generated *.csproj files now have unique identifiers. This should avoid any potential conflict between projects.&lt;/li&gt;
+&lt;li&gt;Feature #35: .gitignore file updated to be compatible with nested "standard project structure". (see https://gist.github.com/davidfowl/ed7564297c61fe9ab814).&lt;/li&gt;
+&lt;li&gt;Fixed #34: Pull-CrmSolution.ps1 now downloads the zip file to a temporary file location before extraction.&lt;/li&gt;
+&lt;li&gt;Fixed #36: &lt;code&gt;solution&lt;/code&gt; sub-generator now creates mapping file as expected.&lt;/li&gt;
+&lt;li&gt;Updated plugin and workflow project dependencies:
+&lt;ul&gt;
+&lt;li&gt;Microsoft.CrmSdk.CoreAssemblies - &lt;code&gt;9.0.0.7&lt;/code&gt; ==&gt; &lt;code&gt;9.0.2.3&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Microsoft.CrmSdk.Worklow - &lt;code&gt;9.0.0.7&lt;/code&gt; ==&gt; &lt;code&gt;9.0.2.3&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Refactored the internal structure of the generator.&lt;/li&gt;
+&lt;li&gt;Refreshed package dependencies.&lt;/li&gt;
+&lt;li&gt;Fixed broken unit tests.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description><pubDate>Sun, 17 Jun 2018 14:00:00 Z</pubDate><a10:updated>2018-06-17T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;I just &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;released&lt;/a&gt; version &lt;code&gt;1.7.0&lt;/code&gt; of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. This release includes a lot of defect fixes, dependency version upgrades and refactored code.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Feature #37: Added ability to upgrade tooling PowerShell scripts via the generator.
+&lt;ul&gt;
+&lt;li&gt;Run &lt;code&gt;yo nullfactory-xrml:tooling&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Feature #12: The generated *.csproj files now have unique identifiers. This should avoid any potential conflict between projects.&lt;/li&gt;
+&lt;li&gt;Feature #35: .gitignore file updated to be compatible with nested "standard project structure". (see https://gist.github.com/davidfowl/ed7564297c61fe9ab814).&lt;/li&gt;
+&lt;li&gt;Fixed #34: Pull-CrmSolution.ps1 now downloads the zip file to a temporary file location before extraction.&lt;/li&gt;
+&lt;li&gt;Fixed #36: &lt;code&gt;solution&lt;/code&gt; sub-generator now creates mapping file as expected.&lt;/li&gt;
+&lt;li&gt;Updated plugin and workflow project dependencies:
+&lt;ul&gt;
+&lt;li&gt;Microsoft.CrmSdk.CoreAssemblies - &lt;code&gt;9.0.0.7&lt;/code&gt; ==&gt; &lt;code&gt;9.0.2.3&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Microsoft.CrmSdk.Worklow - &lt;code&gt;9.0.0.7&lt;/code&gt; ==&gt; &lt;code&gt;9.0.2.3&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Refactored the internal structure of the generator.&lt;/li&gt;
+&lt;li&gt;Refreshed package dependencies.&lt;/li&gt;
+&lt;li&gt;Fixed broken unit tests.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;p&gt;Please feel free to submit any feature requests or issues found to &lt;a href="https://github.com/shanec-/generator-nullfactory-xrm/issues"&gt;https://github.com/shanec-/generator-nullfactory-xrm/issues&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Read more about the Dynamics 365 release strategy and how everything fits together:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/"&gt;Release Strategy for Dynamics CRM - Part 1 - Preparation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2"&gt;Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://nullfactory.net/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/"&gt;Release Strategy for Dynamics CRM - Part 4 - Versioning&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/</guid><link>http://nullfactory.net/2018/03/yaml-build-support-for-generator-nullfactory-xrm/</link><title>YAML Build Support for generator-nullfactory-xrm</title><description>&lt;p&gt;If you've read my previous posts on the topic, you might have already guessed that I am a big fan of maintaining builds as code artefacts. I was super excited when the Visual Studio Team Services (VSTS) team announced YAML support and I knew right then that this had to be part of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. &lt;/p&gt;
 
 &lt;p&gt;With version &lt;code&gt;1.6.0&lt;/code&gt;, I've added the ability to generate tailored YAML build definitions into your Dynamics 365 projects. What this means is that you get rich CI build support right out of the gate! No more excuses for not having a CI build in your project!&lt;/p&gt;
 
@@ -863,118 +917,5 @@ return resp
 &lt;li&gt;&lt;a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/"&gt;Trigger Release Pipeline only for Scheduled builds | The Road to ALM&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/scripts/"&gt;Use a PowerShell script to customize your build process&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/define/variables"&gt;Build variables&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</a10:content></item><item><guid isPermaLink="true">http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/</guid><link>http://nullfactory.net/2017/06/enforce-coding-standards-by-integrating-stylecop-validations/</link><title>Enforce Code Standards by Integrating StyleCop Validations</title><description>&lt;p&gt;StyleCop is a configurable analysis library that ensures code produced conforms to it's coding standard. While the benefits of a consistent coding standard is clear, each team has there own strong opinions how it should be enforced. &lt;/p&gt;
-
-&lt;p&gt;In my previous projects I've used the &lt;code&gt;StyleCop.MsBuild&lt;/code&gt; package and have been eager to try out the code analyzer version of the tool. In this post, I will start off with a quick run down of my attempt at integrating it into a solution.&lt;/p&gt;
-
-&lt;h2&gt;Prerequisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Visual Studio Professional 2015 or higher. Its not really necessary, but makes for an easier setup and nicer integration with the Roslyn base analyzer. &lt;/li&gt;
-&lt;li&gt;If integrating with an SCM or Automated build -  Visual Studio Team Services (VSTS) using git. The steps are not limited to VSTS, but its just my personal preference.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Installation&lt;/h2&gt;
-
-&lt;p&gt;Installation itself is pretty simple - just install the &lt;code&gt;StyleCop.Analyzers&lt;/code&gt; nuget package by running the following command in the package manager console witihin Visual Studio:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Install-Package StyleCop.Analyzers
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;That's it. That all we need to do to get started.&lt;/p&gt;
-
-&lt;h2&gt;Warning Vs. Error&lt;/h2&gt;
-
-&lt;p&gt;By default StyleCop treats suggestions as warnings, but I prefer to go strict mode and treat all style cop validations as errors. This means that build actually fails if the code does not adhere to the style validations. My justification is that its always cheaper to fix these issues early in the development cycle as well as minimizing &lt;a href="https://blog.codinghorror.com/the-broken-window-theory/"&gt;"broken windows syndrome"&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;When using the older &lt;code&gt;StyleCop.MSBuild&lt;/code&gt; package, I could just set the &lt;code&gt;StyleCopTreatErrorsAsWarnings&lt;/code&gt; environmental variable in the development machine or the team build and it will ensure that the the scope is limited to the StyleCop errors only. Unfortunately, with the Analyzers project it does not seem to be that simple. There exists an &lt;code&gt;TreatWarningsAsErrors&lt;/code&gt; environmental variable, but this is global and treats any warnings as errors - not what I want.&lt;/p&gt;
-
-</description><pubDate>Sat, 10 Jun 2017 14:00:00 Z</pubDate><a10:updated>2017-06-10T14:00:00Z</a10:updated><a10:content type="html">&lt;p&gt;StyleCop is a configurable analysis library that ensures code produced conforms to it's coding standard. While the benefits of a consistent coding standard is clear, each team has there own strong opinions how it should be enforced. &lt;/p&gt;
-
-&lt;p&gt;In my previous projects I've used the &lt;code&gt;StyleCop.MsBuild&lt;/code&gt; package and have been eager to try out the code analyzer version of the tool. In this post, I will start off with a quick run down of my attempt at integrating it into a solution.&lt;/p&gt;
-
-&lt;h2&gt;Prerequisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Visual Studio Professional 2015 or higher. Its not really necessary, but makes for an easier setup and nicer integration with the Roslyn base analyzer. &lt;/li&gt;
-&lt;li&gt;If integrating with an SCM or Automated build -  Visual Studio Team Services (VSTS) using git. The steps are not limited to VSTS, but its just my personal preference.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Installation&lt;/h2&gt;
-
-&lt;p&gt;Installation itself is pretty simple - just install the &lt;code&gt;StyleCop.Analyzers&lt;/code&gt; nuget package by running the following command in the package manager console witihin Visual Studio:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Install-Package StyleCop.Analyzers
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;That's it. That all we need to do to get started.&lt;/p&gt;
-
-&lt;h2&gt;Warning Vs. Error&lt;/h2&gt;
-
-&lt;p&gt;By default StyleCop treats suggestions as warnings, but I prefer to go strict mode and treat all style cop validations as errors. This means that build actually fails if the code does not adhere to the style validations. My justification is that its always cheaper to fix these issues early in the development cycle as well as minimizing &lt;a href="https://blog.codinghorror.com/the-broken-window-theory/"&gt;"broken windows syndrome"&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;When using the older &lt;code&gt;StyleCop.MSBuild&lt;/code&gt; package, I could just set the &lt;code&gt;StyleCopTreatErrorsAsWarnings&lt;/code&gt; environmental variable in the development machine or the team build and it will ensure that the the scope is limited to the StyleCop errors only. Unfortunately, with the Analyzers project it does not seem to be that simple. There exists an &lt;code&gt;TreatWarningsAsErrors&lt;/code&gt; environmental variable, but this is global and treats any warnings as errors - not what I want.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;p&gt;So my plan is to create two rule sets and tie them down to two individual configurations. I will create one rule set used in the debug configuration and then a stricter one for the release configuration.&lt;/p&gt;
-
-&lt;p&gt;Now let's configure the rules:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Let's create a very simple console application called &lt;code&gt;AnalyzersDemo&lt;/code&gt;and open it up in Visual Studio.&lt;/li&gt;
-&lt;li&gt;Install the &lt;code&gt;StyleCop.Analyzers&lt;/code&gt; package into the project.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, navigate to the &lt;code&gt;Analyze &amp;gt; Configure Code Analysis &amp;gt; For AnalyzersDemo]&lt;/code&gt; menu option.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/10_configureanalysis.png" alt="Code Analysis" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;In the resulting dialog, accept the default values by clicking the &lt;code&gt;Open&lt;/code&gt; button. This will open a dialog that allows us to configure the behaviour of the rule sets.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/20_opencustomize.png" alt="Code Analysis Customize" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Select all the warnings related to &lt;code&gt;StyleCop.Analyzers&lt;/code&gt; and update the Action to &lt;code&gt;Error&lt;/code&gt;. Notice that a new rule set file has been created.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/30_customizerules.png" alt="Code Analysis Customize Rules" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Duplicate the rule set file and rename them &lt;code&gt;BaseRuleset.ruleset&lt;/code&gt; to &lt;code&gt;StrictRuleset.ruleset&lt;/code&gt;. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;Move them them up as solution items. This is so that we can share the same rule sets against all the projects.&lt;/li&gt;
-&lt;li&gt;Edit the files and give the name and descriptions more meaningful values.&lt;/li&gt;
-&lt;li&gt;Remove all nodes except for the &lt;code&gt;&amp;lt;RuleSet&amp;gt;&lt;/code&gt; root node from the &lt;code&gt;BaseRuleset&lt;/code&gt; file so that it will revert the default action level.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Next, associate the two rule sets with the different configurations; the &lt;code&gt;BaseRuleset&lt;/code&gt; and &lt;code&gt;StrictRuleset&lt;/code&gt; to the &lt;code&gt;debug&lt;/code&gt; and &lt;code&gt;release&lt;/code&gt; configuration respectively.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/40_debugrules.png" alt="Debug RuleSet" /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/50_releaserules.png" alt="Release RuleSet" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;This is the final project structure:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/60_projectstructure.png" alt="Project Structure" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now the strict validation is performed only when a &lt;code&gt;release&lt;/code&gt; build is performed.&lt;/p&gt;
-
-&lt;h2&gt;Final Thoughts&lt;/h2&gt;
-
-&lt;p&gt;One may argue that the "draconian mode" of enforcing styles is not worth the potential disruption it causes.  So let's try to compromise - If your source control strategy uses multiple branches (which you should always do, by the way), the strict mode can be enforced as a gated check-in. This means that the rules are enforced only when a pull-request is made into the &lt;code&gt;master&lt;/code&gt; branch. Refer my &lt;a href="http://nullfactory.net/2017/05/gated-checkins-in-vsts-using-tfsvc-and-git/"&gt;previous post&lt;/a&gt; on setting up a gated branch policy.&lt;/p&gt;
-
-&lt;p&gt;More information on customization of the StyleCop rules can be found &lt;a href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md"&gt;here&lt;/a&gt;. &lt;/p&gt;
-
-&lt;p&gt;And finally, here is a build manually executed with an explicit configuration:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/65_queuebuild.png" alt="Queue Build" /&gt;&lt;/p&gt;
-
-&lt;p&gt;The failure in a &lt;code&gt;release&lt;/code&gt; configuration:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/70_releasebuild.png" alt="Release Build" /&gt;&lt;/p&gt;
-
-&lt;p&gt;And warnings in &lt;code&gt;debug&lt;/code&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/StyleCopInteg/80_debugbuild.png" alt="Debug Build" /&gt;&lt;/p&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://stylecop.codeplex.com/wikipage?title=Setting%20Up%20StyleCop%20MSBuild%20Integration"&gt;StyleCop - Documentation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://tech.marketinvoice.com/2015/09/06/using-roslyn-analysers/"&gt;Using, configuring and distributing Roslyn analysers in teams&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.nuget.org/packages/StyleCop.MSBuild/"&gt;NuGet Gallery | StyleCop.MSBuild 4.7.55&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/DotNetAnalyzers/StyleCopAnalyzers"&gt;GitHub - DotNetAnalyzers/StyleCopAnalyzers: An implementation of StyleCop rules using the .NET Compiler Platform&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://blog.codinghorror.com/the-broken-window-theory/"&gt;The Broken Window Theory&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </a10:content></item></channel></rss>

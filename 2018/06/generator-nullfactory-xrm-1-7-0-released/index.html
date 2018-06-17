@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory - generator-nullfactory-xrm 1.7.0 Released!</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Dynamics CRM,Dynamics CRM Online,Yeoman,npm,nodejs,generator-nullfactory-xrm" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Bungee" rel="stylesheet">
+	<link rel="canonical" href="http://nullfactory.net/2018/06/generator-nullfactory-xrm-1-7-0-released/" />
+</head>
+<body>
+  <!-- header -->
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="logo">the nullfactory</span></a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  <!-- header -->
+
+  <div class="container">
+		<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/06/generator-nullfactory-xrm-1-7-0-released/">generator-nullfactory-xrm 1.7.0 Released!</a></h2>
+		<p class="post-date">18 Jun 2018
+				| <a href="/category/dynamics-crm">Dynamics CRM</a>
+				| <a href="/category/dynamics-crm-online">Dynamics CRM Online</a>
+				| <a href="/category/yeoman">Yeoman</a>
+				| <a href="/category/npm">npm</a>
+				| <a href="/category/nodejs">nodejs</a>
+				| <a href="/category/generator-nullfactory-xrm">generator-nullfactory-xrm</a>
+	  </p>
+
+		
+
+		<p>I just <a href="https://www.npmjs.com/package/generator-nullfactory-xrm">released</a> version <code>1.7.0</code> of <code>generator-nullfactory-xrm</code>. This release includes a lot of defect fixes, dependency version upgrades and refactored code.</p>
+
+<ul>
+<li>Feature #37: Added ability to upgrade tooling PowerShell scripts via the generator.
+<ul>
+<li>Run <code>yo nullfactory-xrml:tooling</code></li>
+</ul></li>
+<li>Feature #12: The generated *.csproj files now have unique identifiers. This should avoid any potential conflict between projects.</li>
+<li>Feature #35: .gitignore file updated to be compatible with nested "standard project structure". (see https://gist.github.com/davidfowl/ed7564297c61fe9ab814).</li>
+<li>Fixed #34: Pull-CrmSolution.ps1 now downloads the zip file to a temporary file location before extraction.</li>
+<li>Fixed #36: <code>solution</code> sub-generator now creates mapping file as expected.</li>
+<li>Updated plugin and workflow project dependencies:
+<ul>
+<li>Microsoft.CrmSdk.CoreAssemblies - <code>9.0.0.7</code> ==> <code>9.0.2.3</code></li>
+<li>Microsoft.CrmSdk.Worklow - <code>9.0.0.7</code> ==> <code>9.0.2.3</code></li>
+</ul></li>
+<li>Refactored the internal structure of the generator.</li>
+<li>Refreshed package dependencies.</li>
+<li>Fixed broken unit tests.</li>
+</ul>
+
+<!--excerpt-->
+
+<p>Please feel free to submit any feature requests or issues found to <a href="https://github.com/shanec-/generator-nullfactory-xrm/issues">https://github.com/shanec-/generator-nullfactory-xrm/issues</a></p>
+
+<p>Read more about the Dynamics 365 release strategy and how everything fits together:</p>
+
+<ul>
+<li><a href="/2016/10/release-strategy-for-dynamics-crm-prepping-part-1/">Release Strategy for Dynamics CRM - Part 1 - Preparation</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2">Release Strategy for Dynamics CRM - Part 2 - Setting Up the Build</a></li>
+<li><a href="/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/">Release Strategy for Dynamics CRM - Part 3 - Setting Up the Release</a></li>
+<li><a href="/2017/02/release-strategy-for-dynamics-crm-versioning-part-4/">Release Strategy for Dynamics CRM - Part 4 - Versioning</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2018/06/generator-nullfactory-xrm-1-7-0-released/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2018/06/generator-nullfactory-xrm-1-7-0-released/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>
