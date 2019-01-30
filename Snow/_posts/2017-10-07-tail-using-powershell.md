@@ -23,9 +23,13 @@ Finally, save a few key strokes by using the alias:
 
 `cat log.txt -tail 5 -wait`
 
+*Update 2019-01-30:* I recently had the requirement to monitor a file for some text and then note the timestamp of when it was written. It is based off of [this suggested solution](https://blogs.technet.microsoft.com/rmilne/2016/06/03/powershell-tail-command/#comment-90245).
+
+cat .\processed-users.txt -tail 5 -wait | ? { $_ -like '*SEARCH_STRING_HERE*' } | % { Write-Host $(Get-Date -Format T) -noNewLine -ForegroundColor Blue; Write-Host " $_"   }
+
 ## References
 
 - [Looking for a windows equivalent of the unix tail command - Stack Overflow](https://stackoverflow.com/questions/187587/looking-for-a-windows-equivalent-of-the-unix-tail-command)
 - [13 Ways to Tail a Log File on Windows & Linux: Top Tools](https://stackify.com/13-ways-to-tail-a-log-file-on-windows-unix/)
 - [Microsoft Docs - Get-Content](https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Management/Get-Content?view=powershell-5.1)
-
+- [PowerShell Tail Command – 250 Hello](https://blogs.technet.microsoft.com/rmilne/2016/06/03/powershell-tail-command/#comment-90245)
