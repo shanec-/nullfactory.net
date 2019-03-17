@@ -1,4 +1,116 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2018-06-18T00:03:58+10:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2018/06/generator-nullfactory-xrm-1-7-0-released/</id><title type="text">generator-nullfactory-xrm 1.7.0 Released!</title><summary type="html">&lt;p&gt;I just &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;released&lt;/a&gt; version &lt;code&gt;1.7.0&lt;/code&gt; of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. This release includes a lot of defect fixes, dependency version upgrades and refactored code.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title type="text">nullfactory.net</title><subtitle type="text">nullfactory.net</subtitle><id>http://nullfactory.net/</id><updated>2019-03-17T23:39:11+11:00</updated><author><name>Shane Carvalho</name><uri>http://nullfactory.net</uri><email>shanec_@hotmail.com</email></author><generator>Sandra.Snow Atom Generator</generator><link rel="alternate" href="http://nullfactory.net/feed.xml" /><link rel="self" type="text/html" title="nullfactory.net" href="http://nullfactory.net/feed.xml" /><entry><id>http://nullfactory.net/2019/03/configuring-rpi-zero-lcd-display-tmux/</id><title type="text">Configuring Raspberry PI Zero + LCD Display + Tmux</title><summary type="html">&lt;p&gt;I needed a display for a new project that I am working on and saw that the 3.5 RPI Display Board was on sale and decided to pick one up.  I've previously used mini OLED displays before, but they're pretty limited by its size and the colors that it can display. This is a 480x320 resolution device that is designed to affix right onto the Raspberry Pi (RPi) GPIO pins. The installation is simple as you'd imagine:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/RpiLcdTmux/10_final_form.jpg" alt="Connection" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/RpiLcdTmux/20_connection.jpg" alt="Connection" /&gt;&lt;/p&gt;
+
+&lt;p&gt;For the project I had in mind, I do not need a fancy GUI nor the use of the touch controller. The display will be used to show console statistics and accessing the device using SSH. &lt;/p&gt;
+
+</summary><published>2019-03-16T13:00:00Z</published><updated>2019-03-16T13:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2019/03/configuring-rpi-zero-lcd-display-tmux/" /><content type="html">&lt;p&gt;I needed a display for a new project that I am working on and saw that the 3.5 RPI Display Board was on sale and decided to pick one up.  I've previously used mini OLED displays before, but they're pretty limited by its size and the colors that it can display. This is a 480x320 resolution device that is designed to affix right onto the Raspberry Pi (RPi) GPIO pins. The installation is simple as you'd imagine:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/RpiLcdTmux/10_final_form.jpg" alt="Connection" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/RpiLcdTmux/20_connection.jpg" alt="Connection" /&gt;&lt;/p&gt;
+
+&lt;p&gt;For the project I had in mind, I do not need a fancy GUI nor the use of the touch controller. The display will be used to show console statistics and accessing the device using SSH. &lt;/p&gt;
+
+&lt;!--excerpt--&gt;
+
+&lt;h2&gt;Install and Configure LCD Show&lt;/h2&gt;
+
+&lt;p&gt;I am using a vanilla Raspbian lite and no additional drivers were required to get this working. All we need to do is configure some boot scripts and introduce some new configuration files. It's possible to do this &lt;a href="https://www.raspberrypi.org/forums/viewtopic.php?t=143581"&gt;manually&lt;/a&gt;, but thankfully &lt;a href="https://github.com/goodtft/LCD-show"&gt;LCD-Show&lt;/a&gt; automates the process for us.&lt;/p&gt;
+
+&lt;p&gt;Installation of LCD-Show and switching between displays is pretty straight forward:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Clone the repository. &lt;code&gt;git clone https://github.com/goodtft/LCD-show.git&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Give the new folder execute permission. &lt;code&gt;chmod -R 755 LCD-show&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;For my version of the display I need to use the LCD 35 version of the file. Run the &lt;code&gt;LCD35-show&lt;/code&gt; script.&lt;/li&gt;
+&lt;li&gt;Reboot the Pi using &lt;code&gt;sudo shutdown -r now&lt;/code&gt; or &lt;code&gt;sudo reboot&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Upon reboot the LCD panel should be your primary display. &lt;/p&gt;
+
+&lt;p&gt;It would have been nice if I could have mirrored the HDMI output and the LCD panel at the same time, but I could not figure out how to do this or if it was possible at all. &lt;/p&gt;
+
+&lt;p&gt;In order to flip back to HDMI as the primary, execute the &lt;code&gt;LCD-hdmi&lt;/code&gt; script and reboot to take effect.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/RpiLcdTmux/30_panel.jpg" alt="Connection" /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Automatic Login&lt;/h2&gt;
+
+&lt;p&gt;In order to show console of my program on screen we need to login as a user and I want this to happen  automatically at boot time. &lt;/p&gt;
+
+&lt;p&gt;I followed the instructions in &lt;a href="https://unix.stackexchange.com/a/401798"&gt;this post&lt;/a&gt; in order to configure auto login on boot:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Edit the &lt;code&gt;/etc/systemd/logind.conf&lt;/code&gt; file and uncomment the &lt;code&gt;#NAutoVTs=6&lt;/code&gt; line to &lt;code&gt;NAutoVTs=1&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Create a new file at &lt;code&gt;/etc/systemd/system/getty@tty1.service.d/override.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Add the following content:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin appsvcuser --noclear %I 38400 linux`
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Replace the &lt;code&gt;autologin&lt;/code&gt; parameter value with the user you would like to login. In my scenario there is no possibility to physically access and compromise the device, even then I would recommend to use an account with the least amount of privileged to accomplish your tasks.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Start the &lt;code&gt;getty@tty1.service&lt;/code&gt; service using &lt;code&gt;systemctl enable getty@tty1.service&lt;/code&gt; command.&lt;/li&gt;
+&lt;li&gt;Reboot using &lt;code&gt;sudo shutdown -r now&lt;/code&gt; or &lt;code&gt;sudo reboot&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Configure Tmux&lt;/h2&gt;
+
+&lt;p&gt;I initially attempted to configure it using &lt;a href="https://kerpanic.wordpress.com/2017/03/30/loading-tmux-on-boot-in-linux/"&gt;this approach&lt;/a&gt;, but quickly realised that it would not work for my requirement as there is no user logged into the console. If there's no one logged in then there's shown on screen.&lt;/p&gt;
+
+&lt;p&gt;My solution is to use terminal multiplexer like &lt;a href="https://medium.com/@tholex/what-is-tmux-and-why-would-you-want-it-for-frontend-development-e43e8f370ef2"&gt;Tmux&lt;/a&gt;. Among its many useful features, there are a couple of that I am interested in. The first being the fact that a SSH session initiated via Tmux does not terminate upon user disconnection and all your processes continue to run in the background. &lt;/p&gt;
+
+&lt;p&gt;Secondly, it allows a remote user to connect to an existing SSH session. If I were to kick off a Tmux session on user log on, I am be able to connect to the same session from a remote computer. This means that I should connect to the session that is being shown on the physical display and interact with it as if I was seated in front of it.&lt;/p&gt;
+
+&lt;p&gt;I updated the&lt;code&gt;~/.bashrc&lt;/code&gt; of the &lt;code&gt;appsvcuser&lt;/code&gt; in order to &lt;a href="https://wiki.archlinux.org/index.php/tmux#Autostart_tmux_with_default_tmux_layout"&gt;launch Tmux on logon&lt;/a&gt;. I also used the technique described on &lt;a href="https://superuser.com/a/863940"&gt;this post&lt;/a&gt;  to make sure that only one instance of Tmux always running at a given time.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Login as the execution account - &lt;code&gt;appsvcuser&lt;/code&gt; in my example.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo nano ~/.bashrc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Scroll all the way to the bottom of the file and paste the following block of text:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if [[ `tty` == "/dev/tty1" ]] &amp;amp;&amp;amp; [[ -z "$TMUX" ]];then 
+        tmux new -s "nfx"                              
+fi                                                     
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Connecting to the Tmux session:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Remote into the RPi via SSH.&lt;/li&gt;
+&lt;li&gt;Use the &lt;code&gt;tmux ls&lt;/code&gt; command to get a list of all the sessions running in the background.&lt;/li&gt;
+&lt;li&gt;The connect to the running session &lt;code&gt;tmux a -t nfx&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/RpiLcdTmux/40_ssh_connectivity.png" alt="Connection" /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;Right now the display is on all the time, I would need to figure out a way to timeout or turn it off manually.&lt;/p&gt;
+
+&lt;p&gt;The LCD is compatible with both the Raspberry PI Zero and its big brother variants so these same instructions can be applied to get them both running.&lt;/p&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/goodtft/LCD-show"&gt;GitHub - goodtft/LCD-show: 2.4" 2.8"3.2" 3.5" 5.0" 7.0" TFT LCD driver for the Raspberry PI 3B+/A/A+/B/B+/PI2/ PI3/ZERO/ZERO W&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://unix.stackexchange.com/a/401798"&gt;Automatically Login on Debian 9.2.1 Command Line - Unix &amp;amp; Linux Stack Exchange&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://kerpanic.wordpress.com/2017/03/30/loading-tmux-on-boot-in-linux/"&gt;Loading tmux on Boot in Linux – Kernel Panic&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://wiki.archlinux.org/index.php/tmux#Autostart_tmux_with_default_tmux_layout"&gt;tmux - ArchWiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://wiki.archlinux.org/index.php/getty"&gt;getty - ArchWiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://gist.githubusercontent.com/afair/3489752/raw/e7106ac93c8f9602d3843696692a87cfb43c2d21/tmux.cheat"&gt;tmux cheat sheet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.raspberrypi.org/forums/viewtopic.php?t=143581"&gt;XPT2046 Touch Screen instructions for Raspbery Pi 3 - Raspberry Pi Forums&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.jeffgeerling.com/blog/2016/review-elecrow-hdmi-5-800x480-tft-display-xpt2046-touch-controller"&gt;Calibirating the touch screen&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content></entry><entry><id>http://nullfactory.net/2018/06/generator-nullfactory-xrm-1-7-0-released/</id><title type="text">generator-nullfactory-xrm 1.7.0 Released!</title><summary type="html">&lt;p&gt;I just &lt;a href="https://www.npmjs.com/package/generator-nullfactory-xrm"&gt;released&lt;/a&gt; version &lt;code&gt;1.7.0&lt;/code&gt; of &lt;code&gt;generator-nullfactory-xrm&lt;/code&gt;. This release includes a lot of defect fixes, dependency version upgrades and refactored code.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Feature #37: Added ability to upgrade tooling PowerShell scripts via the generator.
@@ -623,12 +735,17 @@
 
 &lt;p&gt;&lt;code&gt;cat log.txt -tail 5 -wait&lt;/code&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;em&gt;Update 2019-01-30:&lt;/em&gt; I recently had the requirement to monitor a file for some text and then note the timestamp of when it was written. It is based off of &lt;a href="https://blogs.technet.microsoft.com/rmilne/2016/06/03/powershell-tail-command/#comment-90245"&gt;this suggested solution&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;cat .\processed-users.txt -tail 5 -wait | ? { $_ -like '&lt;em&gt;SEARCH_STRING_HERE&lt;/em&gt;' } | % { Write-Host $(Get-Date -Format T) -noNewLine -ForegroundColor Blue; Write-Host " $_"   }&lt;/p&gt;
+
 &lt;h2&gt;References&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://stackoverflow.com/questions/187587/looking-for-a-windows-equivalent-of-the-unix-tail-command"&gt;Looking for a windows equivalent of the unix tail command - Stack Overflow&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://stackify.com/13-ways-to-tail-a-log-file-on-windows-unix/"&gt;13 Ways to Tail a Log File on Windows &amp;amp; Linux: Top Tools&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Management/Get-Content?view=powershell-5.1"&gt;Microsoft Docs - Get-Content&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://blogs.technet.microsoft.com/rmilne/2016/06/03/powershell-tail-command/#comment-90245"&gt;PowerShell Tail Command – 250 Hello&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry><entry><id>http://nullfactory.net/2017/10/mocking-and-testing-a-webservice-using-soapui/</id><title type="text">Mocking and Testing a WebService using SoapUI</title><summary type="html">&lt;p&gt;I have recently been working on an implementation of a WCF client interacts with a remote SOAP web service. Unfortunately this service did not have a development version that I could interactively test my requests against.&lt;/p&gt;
 
@@ -753,169 +870,5 @@ return resp
 &lt;li&gt;&lt;a href="https://www.soapui.org/getting-started/your-first-soapui-project.html"&gt;Your First SoapUI Project | Getting started with SoapUI&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.soapui.org/getting-started/10-tips-for-the-soapui-beginner.html"&gt;10 Tips for the SoapUI Beginner | Getting started with SoapUI&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://stackoverflow.com/questions/32975240/soapui-mock-service-custom-sequence-of-responses"&gt;groovy - SoapUI Mock Service Custom Sequence of Responses - Stack Overflow&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content></entry><entry><id>http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/</id><title type="text">Continuous Integration and Continuous Delivery of Dynamics 365 Solutions using VSTS</title><summary type="html">&lt;p&gt;In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that &lt;a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff"&gt;every change made to a system can be deployed&lt;/a&gt; successfully to secondary environment:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Continuous Integration (CI)&lt;/p&gt;
-
-&lt;p&gt;A CI build is one that is usually kicked off any time a piece of code is checked-in in order to give early visibility of any potential failures. The success of a build is dependent on the actual build plus any unit tests.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Scheduled&lt;/p&gt;
-
-&lt;p&gt;A scheduled build, also commonly referred to as a &lt;code&gt;Nightly Build&lt;/code&gt;, is a build and release that is performed on a regular cadence - usually every night. Once again, on the successful completion of the build and automated unit test, a new release is pushed to the staging environment.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Both methods appear to be doing the same thing, so when should I choose a CI build + release over a scheduled build? The most &lt;a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds"&gt;common metric&lt;/a&gt; appears to be the duration of your build and unit tests. The size of the team, the project and code complexity and the frequency of check-ins can have an impact on the time it takes for build and long running unit tests to execute. In these scenarios a &lt;code&gt;Scheduled&lt;/code&gt; build makes more sense.&lt;/p&gt;
-
-&lt;h2&gt;Overview&lt;/h2&gt;
-
-&lt;p&gt;I was disappointed to find out that, at the time of writing this post, VSTS release definitions does not provide an option to trigger off a successful a scheduled build. The only options available are to trigger it off of a CI build or the automated schedule on the release itself. &lt;/p&gt;
-
-&lt;p&gt;Luckily, Rene van Osnabrugge's &lt;a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/"&gt;excellent post&lt;/a&gt; provides us with a workaround for this restriction. Here's an overview how it works:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Setup a single build that performs all three roles (manually invoked, CI and scheduled). &lt;/li&gt;
-&lt;li&gt;Add a task into the build that would to figure out which method was used to invoke. &lt;/li&gt;
-&lt;li&gt;Apply the the reason as a build tag onto itself. &lt;/li&gt;
-&lt;li&gt;Update the release definition to filter the the release trigger to be filtered only the scheduled tags.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Lets get started setting it up.&lt;/p&gt;
-
-</summary><published>2017-06-24T14:00:00Z</published><updated>2017-06-24T14:00:00Z</updated><link rel="alternate" href="http://nullfactory.net/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/" /><content type="html">&lt;p&gt;In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that &lt;a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff"&gt;every change made to a system can be deployed&lt;/a&gt; successfully to secondary environment:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;Continuous Integration (CI)&lt;/p&gt;
-
-&lt;p&gt;A CI build is one that is usually kicked off any time a piece of code is checked-in in order to give early visibility of any potential failures. The success of a build is dependent on the actual build plus any unit tests.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Scheduled&lt;/p&gt;
-
-&lt;p&gt;A scheduled build, also commonly referred to as a &lt;code&gt;Nightly Build&lt;/code&gt;, is a build and release that is performed on a regular cadence - usually every night. Once again, on the successful completion of the build and automated unit test, a new release is pushed to the staging environment.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Both methods appear to be doing the same thing, so when should I choose a CI build + release over a scheduled build? The most &lt;a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds"&gt;common metric&lt;/a&gt; appears to be the duration of your build and unit tests. The size of the team, the project and code complexity and the frequency of check-ins can have an impact on the time it takes for build and long running unit tests to execute. In these scenarios a &lt;code&gt;Scheduled&lt;/code&gt; build makes more sense.&lt;/p&gt;
-
-&lt;h2&gt;Overview&lt;/h2&gt;
-
-&lt;p&gt;I was disappointed to find out that, at the time of writing this post, VSTS release definitions does not provide an option to trigger off a successful a scheduled build. The only options available are to trigger it off of a CI build or the automated schedule on the release itself. &lt;/p&gt;
-
-&lt;p&gt;Luckily, Rene van Osnabrugge's &lt;a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/"&gt;excellent post&lt;/a&gt; provides us with a workaround for this restriction. Here's an overview how it works:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Setup a single build that performs all three roles (manually invoked, CI and scheduled). &lt;/li&gt;
-&lt;li&gt;Add a task into the build that would to figure out which method was used to invoke. &lt;/li&gt;
-&lt;li&gt;Apply the the reason as a build tag onto itself. &lt;/li&gt;
-&lt;li&gt;Update the release definition to filter the the release trigger to be filtered only the scheduled tags.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Lets get started setting it up.&lt;/p&gt;
-
-&lt;!--excerpt--&gt;
-
-&lt;h2&gt;Prerequisites&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Visual Studio Team Services&lt;/li&gt;
-&lt;li&gt;Existing team build - I will be re-using a Dynamics CRM project that I have used in &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/"&gt;my previous post&lt;/a&gt;. &lt;/li&gt;
-&lt;li&gt;Existing release definition - Once again, I am using one that I've setup &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;previously&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;The Build Definition&lt;/h2&gt;
-
-&lt;p&gt;As in my previous posts I will be using a standard Dynamics CRM build for this demonstration. Follow the instructions in &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-build-part-2/"&gt;my previous post&lt;/a&gt; for setting this up .&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/10_BuildDefinition.png" alt="Build Definition" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now let's make the following modifications:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;From within the build definition, navigate to the &lt;code&gt;Triggers&lt;/code&gt; tab.&lt;/li&gt;
-&lt;li&gt;Enable the Continuous Integration trigger.&lt;/li&gt;
-&lt;li&gt;Check the &lt;code&gt;Batch changes while a build is in progress&lt;/code&gt; check box. &lt;/li&gt;
-&lt;li&gt;Add a new Path filter by clicking the &lt;code&gt;add&lt;/code&gt; button.&lt;/li&gt;
-&lt;li&gt;Set the type to &lt;code&gt;Exclude&lt;/code&gt; and &lt;code&gt;Path specification&lt;/code&gt; to &lt;code&gt;/Nullfactory.Xrm.Tooling&lt;/code&gt;. We don't really care for our tools to  This is so that we only trigger on the actual solution and not the supporting tools/project.&lt;/li&gt;
-&lt;li&gt;Now enable the scheduled trigger.&lt;/li&gt;
-&lt;li&gt;Provide a schedule that works for your team.&lt;/li&gt;
-&lt;li&gt;Finally, save the changes.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/20_BuildDefinitionTrigger.png" alt="Build Definition Trigger" /&gt;&lt;/p&gt;
-
-&lt;h3&gt;Tagging The Build&lt;/h3&gt;
-
-&lt;p&gt;Next, we update the build to tag itself upon a successful build.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;I downloaded the &lt;a href="https://gist.githubusercontent.com/renevanosnabrugge/3fa094790fab2b06db970d0da81a71b0/raw/a99220346be3803297412a4b580d8e1bd6dcbcf0/Set-BuildTagToTrigger.ps1"&gt;Set-BuildTagToTrigger.ps1&lt;/a&gt; script and added it part of the &lt;code&gt;Nullfactory.Xrm.Tooling/Scripts&lt;/code&gt; project folder.&lt;/li&gt;
-&lt;li&gt;Commit and push the changes to the remote repository.&lt;/li&gt;
-&lt;li&gt;From within the build editor, click on the &lt;code&gt;Add Task&lt;/code&gt; button and select a PowerShell task. I placed it as the last step in the order.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Configure it with the following values:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Display Name :&lt;code&gt;Tag Build Reason&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Type : &lt;code&gt;File Path&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Script Path : &lt;code&gt;Nullfactory.Xrm.Tooling/Scripts/Set-BuildTagToTrigger.ps1&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Arguments : &lt;code&gt;-BuildId $(Build.BuildId)&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/30_SetTagReasonPowerShell.png" alt="Set Tag Reason PowerShell" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Ensure that the task only runs if all previous tasks have succeeded. Do this by navigating into &lt;code&gt;Control Options&lt;/code&gt; section and selecting the option within the &lt;code&gt;Run this task&lt;/code&gt; drop down.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;In order for the the script to have authenticated access to the REST service it requires access to the OAuth token. Do this now navigating to the &lt;code&gt;Options&lt;/code&gt; tab and enabling the &lt;code&gt;Allow scripts to access OAuth token&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/40_AllowODataToken.png" alt="OData Token" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Queue a new build and verify that a tag was associated with the build. Note that since we invoked the build explicitly, a &lt;code&gt;manual&lt;/code&gt; tag was added.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/50_VerifyBuild.png" alt="Verify Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The tags applied to the new build are the same values as the build reason environmental variable. We only care about the following scenarios:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Manual&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;IndividualCI&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;BatchedCI&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Schedule&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In fact, we only care about the &lt;code&gt;Schedule&lt;/code&gt; typed of builds. Find the full list of available values &lt;a href="https://www.visualstudio.com/en-us/docs/build/define/variables"&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;The Release Definition&lt;/h2&gt;
-
-&lt;p&gt;Now that the build is complete and we've proven that the solution is good enough to be deployed, let's create and augment our release definition.&lt;/p&gt;
-
-&lt;p&gt;Follow the steps &lt;a href="http://nullfactory.net/2016/11/release-strategy-for-dynamics-crm-setting-up-the-release-part-3/"&gt;described here&lt;/a&gt; to create the basic release definition. Ensure that the linked source is the build definition we created earlier.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;From within the release definition edit screen, navigate to the &lt;code&gt;Triggers&lt;/code&gt; menu.&lt;/li&gt;
-&lt;li&gt;Check the &lt;code&gt;Continuous Deployment&lt;/code&gt; check box.&lt;/li&gt;
-&lt;li&gt;Select the build as the source from the drop down and the branch it should monitor.&lt;/li&gt;
-&lt;li&gt;Add &lt;code&gt;schedule&lt;/code&gt; as the tag filter.&lt;/li&gt;
-&lt;li&gt;Click &lt;code&gt;Save&lt;/code&gt; to confirm changes.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/60_ReleaseDefinition.png" alt="Updated Release Definition" /&gt;&lt;/p&gt;
-
-&lt;h2&gt;Verification&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Verify that the when the build is triggered via the schedule and that it has a &lt;code&gt;schedule&lt;/code&gt; tag is associated upon completion.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/70_ScheduledBuild.png" alt="Verify Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Verify that a release was deployed off of it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src="http://nullfactory.net/images/posts/CrmCICD/80_TriggeredRelease.png" alt="Verify Build" /&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;References&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/learn/what-is-continuous-integration/"&gt;What is Continuous Integration? | DevOps&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/learn/what-is-continuous-delivery/"&gt;What is Continuous Delivery? | DevOps&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff"&gt;Continuous Delivery Vs. Continuous Deployment: What's the Diff? | Puppet&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds"&gt;Continuous Integration vs. Nightly Builds - Stack Overflow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/define/triggers"&gt;Build definition triggers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/"&gt;Trigger Release Pipeline only for Scheduled builds | The Road to ALM&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/scripts/"&gt;Use a PowerShell script to customize your build process&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.visualstudio.com/en-us/docs/build/define/variables"&gt;Build variables&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content></entry></feed>

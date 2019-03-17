@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory" />
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SOAP,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio,Visual Studio Team Services,WCF,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Linux,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,Raspberry-Pi,REST,Security,SharePoint,SOAP,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Tmux,Virtualization,Visual Studio,Visual Studio Team Services,WCF,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -39,6 +39,31 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/sharing-configuration-between-webjobs/">Sharing Configuration Between WebJobs</a></h2>
+      <p class="post-date">29 Aug 2015
+
+      | <a href="/category/azure" title="Azure">Azure</a>
+</p>
+
+      <p>
+		
+		<p>The project I am working on started out with the single webjob and has since grown to multiple jobs running in parallel. They are all hosted within a dedicated web app, which allows us to scale the jobs independent of the rest of the application. And because they share a single container there is the added side effect of the jobs sharing all the Application Settings and connection strings too.</p>
+
+<p>While each webjob had its own class library, I didn't want to maintain multiple copies of  the <code>App.Config</code> file. I decided to share the the common bits (<code>AppSettings</code> and <code>ConnectionString</code> sections) in their own files:</p>
+
+<ol>
+<li><p>In one of the webjob projects, I moved the <code>AppSettings</code> and <code>ConnectionStrings</code> into their own <code>.config</code> files - <code>appSettings.config</code> and <code>connectionStrings.config</code> respectively.</p></li>
+<li><p>Next, I referenced them back to the <code>App.config</code> using the <code>configSource</code> attribute.</p></li>
+<li><p>Finally, I added the same files as linked files to the otherweb jobs and set their <code>Copy to Output Directory</code> file property to <code>Copy Always</code>.</p></li>
+</ol>
+
+<p>This works well enough, but for one caveat - which prompted me to write this post in the first place. The problem is that the <code>Web Deploy Package</code> publishing process does not appear to honor folder structures for the config files. That means that if you've separated the configuration into sub folders (like shown below), the publishing process would flatten it out.</p>
+
+
+		<p><a href="/2015/08/sharing-configuration-between-webjobs/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/08/enable-ssrs-remote-error-sharepoint-integrated/">Enable SSRS Remote Errors in SharePoint Integrated Mode</a></h2>
       <p class="post-date">28 Aug 2015
@@ -314,25 +339,6 @@ The problem with the free tiers is that there's a high possibility that the web 
 
 
 		<p><a href="/2015/03/creating-a-self-signed-wild-card-ssl-certificate/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2015/03/could-not-establish-trust-relationship-ssl-tls/">Could Not Establish Trust Relationship for SSL/TLS Secure Channel</a></h2>
-      <p class="post-date">02 Mar 2015
-
-      | <a href="/category/security" title="Security">Security</a>
-</p>
-
-      <p>
-		
-		<p>A while back I worked on a project that required me to integrate to a third-party web service. The web service also in development in parallel by the external team and our team was provided a development endpoint that would be used for testing. </p>
-
-<p>The problem was the certificate used in the SSL was the same as the one production. This resulted in any call to the web service throwing an <code>Could not establish trust relationship for SSL/TLS secure channel</code> error because of the url mismatch. </p>
-
-<p>Due to various constraints we were unable to get certificate replaced. So our temporary work around was to make our code to explicitly trust the external web service host:</p>
-
-
-		<p><a href="/2015/03/could-not-establish-trust-relationship-ssl-tls/">Read more...</a></p>
 	  </p>
     </div>
 </div>

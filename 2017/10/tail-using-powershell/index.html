@@ -61,12 +61,17 @@
 
 <p><code>cat log.txt -tail 5 -wait</code></p>
 
+<p><em>Update 2019-01-30:</em> I recently had the requirement to monitor a file for some text and then note the timestamp of when it was written. It is based off of <a href="https://blogs.technet.microsoft.com/rmilne/2016/06/03/powershell-tail-command/#comment-90245">this suggested solution</a>.</p>
+
+<p>cat .\processed-users.txt -tail 5 -wait | ? { $_ -like '<em>SEARCH_STRING_HERE</em>' } | % { Write-Host $(Get-Date -Format T) -noNewLine -ForegroundColor Blue; Write-Host " $_"   }</p>
+
 <h2>References</h2>
 
 <ul>
 <li><a href="https://stackoverflow.com/questions/187587/looking-for-a-windows-equivalent-of-the-unix-tail-command">Looking for a windows equivalent of the unix tail command - Stack Overflow</a></li>
 <li><a href="https://stackify.com/13-ways-to-tail-a-log-file-on-windows-unix/">13 Ways to Tail a Log File on Windows &amp; Linux: Top Tools</a></li>
 <li><a href="https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Management/Get-Content?view=powershell-5.1">Microsoft Docs - Get-Content</a></li>
+<li><a href="https://blogs.technet.microsoft.com/rmilne/2016/06/03/powershell-tail-command/#comment-90245">PowerShell Tail Command – 250 Hello</a></li>
 </ul>
 
 

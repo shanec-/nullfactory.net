@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>the nullfactory - Configuring Raspberry PI Zero + LCD Display + Tmux</title>
+	<meta name="description" content="the nullfactory">
+	<meta name="keywords" content="Raspberry-Pi,Linux,Tmux" />
+
+	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/stylesheets/base.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/github.css" type="text/css" />
+	<link rel="stylesheet" href="http://www.nullfactory.net/stylesheets/octicons.css" type="text/css" />
+  <link rel="stylesheet" type="text/css" href="http://www.nullfactory.net/stylesheets/font-awesome/css/font-awesome.min.css" />
+	<link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans|Bungee" rel="stylesheet">
+	<link rel="canonical" href="http://nullfactory.net/2019/03/configuring-rpi-zero-lcd-display-tmux/" />
+</head>
+<body>
+  <!-- header -->
+	<div class="header-container">
+	  <header>
+		  <ul class="nav">
+			<!--Change the  URL here if working on an absolute domain-->
+			<li><a href="http://www.nullfactory.net"><span class="logo">the nullfactory</span></a></li>
+			<li><a href="http://www.nullfactory.net/archive"><span style="margin-right: 6px;"></span>archive</a></li>
+			<li><a href="http://www.nullfactory.net/about"><span style="margin-right: 6px;"></span>about</a></li>
+		  </ul>
+	  </header>
+	</div>
+  <!-- header -->
+
+  <div class="container">
+		<div class="listing">
+	<div class="post other link">
+		<h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2019/03/configuring-rpi-zero-lcd-display-tmux/">Configuring Raspberry PI Zero + LCD Display + Tmux</a></h2>
+		<p class="post-date">17 Mar 2019
+				| <a href="/category/raspberry-pi">Raspberry-Pi</a>
+				| <a href="/category/linux">Linux</a>
+				| <a href="/category/tmux">Tmux</a>
+	  </p>
+
+		
+
+		<p>I needed a display for a new project that I am working on and saw that the 3.5 RPI Display Board was on sale and decided to pick one up.  I've previously used mini OLED displays before, but they're pretty limited by its size and the colors that it can display. This is a 480x320 resolution device that is designed to affix right onto the Raspberry Pi (RPi) GPIO pins. The installation is simple as you'd imagine:</p>
+
+<p><img src="/images/posts/RpiLcdTmux/10_final_form.jpg" alt="Connection" /></p>
+
+<p><img src="/images/posts/RpiLcdTmux/20_connection.jpg" alt="Connection" /></p>
+
+<p>For the project I had in mind, I do not need a fancy GUI nor the use of the touch controller. The display will be used to show console statistics and accessing the device using SSH. </p>
+
+<!--excerpt-->
+
+<h2>Install and Configure LCD Show</h2>
+
+<p>I am using a vanilla Raspbian lite and no additional drivers were required to get this working. All we need to do is configure some boot scripts and introduce some new configuration files. It's possible to do this <a href="https://www.raspberrypi.org/forums/viewtopic.php?t=143581">manually</a>, but thankfully <a href="https://github.com/goodtft/LCD-show">LCD-Show</a> automates the process for us.</p>
+
+<p>Installation of LCD-Show and switching between displays is pretty straight forward:</p>
+
+<ol>
+<li>Clone the repository. <code>git clone https://github.com/goodtft/LCD-show.git</code></li>
+<li>Give the new folder execute permission. <code>chmod -R 755 LCD-show</code></li>
+<li>For my version of the display I need to use the LCD 35 version of the file. Run the <code>LCD35-show</code> script.</li>
+<li>Reboot the Pi using <code>sudo shutdown -r now</code> or <code>sudo reboot</code>.</li>
+</ol>
+
+<p>Upon reboot the LCD panel should be your primary display. </p>
+
+<p>It would have been nice if I could have mirrored the HDMI output and the LCD panel at the same time, but I could not figure out how to do this or if it was possible at all. </p>
+
+<p>In order to flip back to HDMI as the primary, execute the <code>LCD-hdmi</code> script and reboot to take effect.</p>
+
+<p><img src="/images/posts/RpiLcdTmux/30_panel.jpg" alt="Connection" /></p>
+
+<h2>Automatic Login</h2>
+
+<p>In order to show console of my program on screen we need to login as a user and I want this to happen  automatically at boot time. </p>
+
+<p>I followed the instructions in <a href="https://unix.stackexchange.com/a/401798">this post</a> in order to configure auto login on boot:</p>
+
+<ol>
+<li>Edit the <code>/etc/systemd/logind.conf</code> file and uncomment the <code>#NAutoVTs=6</code> line to <code>NAutoVTs=1</code></li>
+<li>Create a new file at <code>/etc/systemd/system/getty@tty1.service.d/override.conf</code>.</li>
+<li><p>Add the following content:</p>
+
+<pre><code>[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin appsvcuser --noclear %I 38400 linux`
+</code></pre></li>
+</ol>
+
+<p>Replace the <code>autologin</code> parameter value with the user you would like to login. In my scenario there is no possibility to physically access and compromise the device, even then I would recommend to use an account with the least amount of privileged to accomplish your tasks.</p>
+
+<ol>
+<li>Start the <code>getty@tty1.service</code> service using <code>systemctl enable getty@tty1.service</code> command.</li>
+<li>Reboot using <code>sudo shutdown -r now</code> or <code>sudo reboot</code>.</li>
+</ol>
+
+<h2>Configure Tmux</h2>
+
+<p>I initially attempted to configure it using <a href="https://kerpanic.wordpress.com/2017/03/30/loading-tmux-on-boot-in-linux/">this approach</a>, but quickly realised that it would not work for my requirement as there is no user logged into the console. If there's no one logged in then there's shown on screen.</p>
+
+<p>My solution is to use terminal multiplexer like <a href="https://medium.com/@tholex/what-is-tmux-and-why-would-you-want-it-for-frontend-development-e43e8f370ef2">Tmux</a>. Among its many useful features, there are a couple of that I am interested in. The first being the fact that a SSH session initiated via Tmux does not terminate upon user disconnection and all your processes continue to run in the background. </p>
+
+<p>Secondly, it allows a remote user to connect to an existing SSH session. If I were to kick off a Tmux session on user log on, I am be able to connect to the same session from a remote computer. This means that I should connect to the session that is being shown on the physical display and interact with it as if I was seated in front of it.</p>
+
+<p>I updated the<code>~/.bashrc</code> of the <code>appsvcuser</code> in order to <a href="https://wiki.archlinux.org/index.php/tmux#Autostart_tmux_with_default_tmux_layout">launch Tmux on logon</a>. I also used the technique described on <a href="https://superuser.com/a/863940">this post</a>  to make sure that only one instance of Tmux always running at a given time.</p>
+
+<ol>
+<li>Login as the execution account - <code>appsvcuser</code> in my example.</li>
+<li><code>sudo nano ~/.bashrc</code></li>
+<li><p>Scroll all the way to the bottom of the file and paste the following block of text:</p>
+
+<pre><code>if [[ `tty` == "/dev/tty1" ]] &amp;&amp; [[ -z "$TMUX" ]];then 
+        tmux new -s "nfx"                              
+fi                                                     
+</code></pre></li>
+</ol>
+
+<p>Connecting to the Tmux session:</p>
+
+<ol>
+<li>Remote into the RPi via SSH.</li>
+<li>Use the <code>tmux ls</code> command to get a list of all the sessions running in the background.</li>
+<li>The connect to the running session <code>tmux a -t nfx</code>.</li>
+</ol>
+
+<p><img src="/images/posts/RpiLcdTmux/40_ssh_connectivity.png" alt="Connection" /></p>
+
+<h2>Final Thoughts</h2>
+
+<p>Right now the display is on all the time, I would need to figure out a way to timeout or turn it off manually.</p>
+
+<p>The LCD is compatible with both the Raspberry PI Zero and its big brother variants so these same instructions can be applied to get them both running.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://github.com/goodtft/LCD-show">GitHub - goodtft/LCD-show: 2.4" 2.8"3.2" 3.5" 5.0" 7.0" TFT LCD driver for the Raspberry PI 3B+/A/A+/B/B+/PI2/ PI3/ZERO/ZERO W</a></li>
+<li><a href="https://unix.stackexchange.com/a/401798">Automatically Login on Debian 9.2.1 Command Line - Unix &amp; Linux Stack Exchange</a></li>
+<li><a href="https://kerpanic.wordpress.com/2017/03/30/loading-tmux-on-boot-in-linux/">Loading tmux on Boot in Linux – Kernel Panic</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/tmux#Autostart_tmux_with_default_tmux_layout">tmux - ArchWiki</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/getty">getty - ArchWiki</a></li>
+<li><a href="https://gist.githubusercontent.com/afair/3489752/raw/e7106ac93c8f9602d3843696692a87cfb43c2d21/tmux.cheat">tmux cheat sheet</a></li>
+<li><a href="https://www.raspberrypi.org/forums/viewtopic.php?t=143581">XPT2046 Touch Screen instructions for Raspbery Pi 3 - Raspberry Pi Forums</a></li>
+<li><a href="https://www.jeffgeerling.com/blog/2016/review-elecrow-hdmi-5-800x480-tft-display-xpt2046-touch-controller">Calibirating the touch screen</a></li>
+</ul>
+
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<div class="addthis_sharing_toolbox"></div>
+
+		<div id="disqus_thread"></div>
+<script>
+    var reset_disqus = function(){
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                //this.page.identifier = '';
+                this.page.url = 'http://nullfactory.net/2019/03/configuring-rpi-zero-lcd-display-tmux/';
+                //this.page.title = '';
+            }
+        });
+    };
+
+    var disqus_shortname = 'thenullfactory';
+    var disqus_url = 'http://nullfactory.net/2019/03/configuring-rpi-zero-lcd-display-tmux/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    window.addEventListener('orientationchange', reset_disqus);
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	</div>
+
+	<!-- Go to www.addthis.com/dashboard to customize your tools -->
+	<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53ba83f94ea9c78f" async="async"></script>
+</div>
+  </div>
+
+  <!-- /.main -->
+
+  <script type="text/javascript">
+var _gaq = _gaq || [];
+
+_gaq.push(['_setAccount', 'UA-57983893-1']);
+_gaq.push(['_trackPageview']);
+        
+(function () {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

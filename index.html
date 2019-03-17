@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<title>the nullfactory</title>
 	<meta name="description" content="the nullfactory" />
-	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,REST,Security,SharePoint,SOAP,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Virtualization,Visual Studio,Visual Studio Team Services,WCF,Windows,Windows Phone,Yeoman" />
+	<meta name="keywords" content="ALM,Azure,Azure Storage Accounts,CDN,Code Access Security,commitizen,conventional-changelog,Deployment,Dynamics CRM,Dynamics CRM Online,Entity Framework,generator-nullfactory-xrm,Git,HtmlAgilityPack,Hyper-V,Linux,Log4Net,Miscellaneous,Mobile Development,nodejs,npm,Octopus Deploy,PowerShell,Raspberry-Pi,REST,Security,SharePoint,SOAP,SQL Server,SQL Server Data Tools,SQL Server Reporting Services,StyleCop,Team Build,Team Foundation Server,TFS Tips,TFSVC,Tmux,Virtualization,Visual Studio,Visual Studio Team Services,WCF,Windows,Windows Phone,Yeoman" />
 
 	<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="the nullfactory" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -39,6 +39,29 @@
   </div>
 </header>
  <div class="listing">
+    <div class="post other link">
+      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2019/03/configuring-rpi-zero-lcd-display-tmux/">Configuring Raspberry PI Zero + LCD Display + Tmux</a></h2>
+      <p class="post-date">17 Mar 2019
+
+      | <a href="/category/raspberry-pi" title="Raspberry-Pi">Raspberry-Pi</a>
+      | <a href="/category/linux" title="Linux">Linux</a>
+      | <a href="/category/tmux" title="Tmux">Tmux</a>
+</p>
+
+      <p>
+		
+		<p>I needed a display for a new project that I am working on and saw that the 3.5 RPI Display Board was on sale and decided to pick one up.  I've previously used mini OLED displays before, but they're pretty limited by its size and the colors that it can display. This is a 480x320 resolution device that is designed to affix right onto the Raspberry Pi (RPi) GPIO pins. The installation is simple as you'd imagine:</p>
+
+<p><img src="/images/posts/RpiLcdTmux/10_final_form.jpg" alt="Connection" /></p>
+
+<p><img src="/images/posts/RpiLcdTmux/20_connection.jpg" alt="Connection" /></p>
+
+<p>For the project I had in mind, I do not need a fancy GUI nor the use of the touch controller. The display will be used to show console statistics and accessing the device using SSH. </p>
+
+
+		<p><a href="/2019/03/configuring-rpi-zero-lcd-display-tmux/">Read more...</a></p>
+	  </p>
+    </div>
     <div class="post other link">
       <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2018/06/generator-nullfactory-xrm-1-7-0-released/">generator-nullfactory-xrm 1.7.0 Released!</a></h2>
       <p class="post-date">18 Jun 2018
@@ -297,51 +320,6 @@
 
 
 		<p><a href="/2017/10/mocking-and-testing-a-webservice-using-soapui/">Read more...</a></p>
-	  </p>
-    </div>
-    <div class="post other link">
-      <h2><span class="mega-octicon octicon-file-text" style="min-width: 32px;"></span><a href="/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/">Continuous Integration and Continuous Delivery of Dynamics 365 Solutions using VSTS</a></h2>
-      <p class="post-date">25 Jun 2017
-
-      | <a href="/category/alm" title="ALM">ALM</a>
-      | <a href="/category/visual-studio-team-services" title="Visual Studio Team Services">Visual Studio Team Services</a>
-      | <a href="/category/dynamics-crm" title="Dynamics CRM">Dynamics CRM</a>
-      | <a href="/category/dynamics-crm-online" title="Dynamics CRM Online">Dynamics CRM Online</a>
-      | <a href="/category/git" title="Git">Git</a>
-</p>
-
-      <p>
-		
-		<p>In previous posts I've setup build and release defintions for Dynamics CRM solutions and in this one I try my attempt at setting up an automated Continuous Delivery pipeline. There are two popular strategies used to make sure that <a href="https://puppet.com/blog/continuous-delivery-vs-continuous-deployment-what-s-diff">every change made to a system can be deployed</a> successfully to secondary environment:</p>
-
-<ul>
-<li><p>Continuous Integration (CI)</p>
-
-<p>A CI build is one that is usually kicked off any time a piece of code is checked-in in order to give early visibility of any potential failures. The success of a build is dependent on the actual build plus any unit tests.</p></li>
-<li><p>Scheduled</p>
-
-<p>A scheduled build, also commonly referred to as a <code>Nightly Build</code>, is a build and release that is performed on a regular cadence - usually every night. Once again, on the successful completion of the build and automated unit test, a new release is pushed to the staging environment.</p></li>
-</ul>
-
-<p>Both methods appear to be doing the same thing, so when should I choose a CI build + release over a scheduled build? The most <a href="https://stackoverflow.com/questions/417134/continuous-integration-vs-nightly-builds">common metric</a> appears to be the duration of your build and unit tests. The size of the team, the project and code complexity and the frequency of check-ins can have an impact on the time it takes for build and long running unit tests to execute. In these scenarios a <code>Scheduled</code> build makes more sense.</p>
-
-<h2>Overview</h2>
-
-<p>I was disappointed to find out that, at the time of writing this post, VSTS release definitions does not provide an option to trigger off a successful a scheduled build. The only options available are to trigger it off of a CI build or the automated schedule on the release itself. </p>
-
-<p>Luckily, Rene van Osnabrugge's <a href="https://roadtoalm.com/2017/03/30/trigger-release-pipeline-only-for-scheduled-builds/">excellent post</a> provides us with a workaround for this restriction. Here's an overview how it works:</p>
-
-<ul>
-<li>Setup a single build that performs all three roles (manually invoked, CI and scheduled). </li>
-<li>Add a task into the build that would to figure out which method was used to invoke. </li>
-<li>Apply the the reason as a build tag onto itself. </li>
-<li>Update the release definition to filter the the release trigger to be filtered only the scheduled tags.</li>
-</ul>
-
-<p>Lets get started setting it up.</p>
-
-
-		<p><a href="/2017/06/continuous-integration-and-continuous-delivery-of-dynamics-365-solutions-using-vsts/">Read more...</a></p>
 	  </p>
     </div>
 </div>
